@@ -23,6 +23,13 @@
 #include "cal3d/cal3d.h"
 #include "../scene/textureManager.h"
 
+
+static const std::string FT_TEXTUREPATH = "..\\textures\\";
+
+typedef CalVector FTVect;
+
+
+
 #endif
 
 

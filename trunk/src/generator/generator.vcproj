@@ -235,6 +235,30 @@
 				Name="scene"
 				>
 				<File
+					RelativePath=".\src\framework\scene\iprimitive.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\iprimitive.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\marker.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\marker.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\primitiveManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\primitiveManager.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\scene\textureManager.cpp"
 					>
 				</File>

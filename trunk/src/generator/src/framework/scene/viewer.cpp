@@ -23,13 +23,14 @@ Viewer::Viewer()
 {
   m_calCoreModel = new CalCoreModel("dummy");
 
-  m_width = 1280;
-  m_height = 480;
-  m_bFullscreen = false;
+  m_width = glutGet (GLUT_SCREEN_WIDTH);
+  m_height = (glutGet (GLUT_SCREEN_HEIGHT))/2;
+  m_bFullScreen = false;
   m_pitchAngle = 20.0f;
   m_yawAngle = 0; 
   m_distance = 800.0f;
-  m_camheight = 0.0f;
+  m_camLeftRight = 0.0f;
+  m_camUpDown = 0.0f;
   m_mouseX = 0;
   m_mouseY = 0;
   m_bLeftMouseButtonDown = false;
@@ -62,23 +63,23 @@ Viewer::~Viewer()
 {
 }
 
-bool Viewer::getFullscreen()
+bool Viewer::GetFullScreen()
 {
-  return m_bFullscreen;
+  return m_bFullScreen;
 }
 
-int Viewer::getHeight()
+int Viewer::GetHeight()
 {
   return m_height;
 }
 
-int Viewer::getWidth()
+int Viewer::GetWidth()
 {
   return m_width;
 }
 
 /*----- Read a int from file stream (to avoid Little/Big endian issue) -----*/
-int readInt( std::ifstream *file ) 
+int ReadInt( std::ifstream *file ) 
 {
 	int x = 0;
 	for ( int i = 0; i < 32; i+=8 ) 
@@ -91,7 +92,7 @@ int readInt( std::ifstream *file )
  }
 
 /*----- Load and create a texture from a given file -----*/
-GLuint Viewer::loadTexture(const std::string& strFilename)
+GLuint Viewer::LoadTexture(const std::string& strFilename)
 {
   GLuint textureId=0;
   if(_stricmp(strrchr(strFilename.c_str(),'.'),".raw")==0)
@@ -158,7 +159,7 @@ GLuint Viewer::loadTexture(const std::string& strFilename)
 
 
 /*----- Create the Viewer -----*/
-bool Viewer::onCreate(int argc, char *argv[])
+bool Viewer::OnCreate(int argc, char *argv[])
 {
   // show some information
   std::cout << "o----------------------------------------------------------------o" << std::endl;
@@ -176,9 +177,9 @@ bool Viewer::onCreate(int argc, char *argv[])
   for(arg = 1; arg < argc; arg++)
   {
     // check for fullscreen flag
-    if(strcmp(argv[arg], "--fullscreen") == 0) m_bFullscreen = true;
+    if(strcmp(argv[arg], "--fullscreen") == 0) m_bFullScreen = true;
     // check for window flag
-    else if(strcmp(argv[arg], "--window") == 0) m_bFullscreen = false;
+    else if(strcmp(argv[arg], "--window") == 0) m_bFullScreen = false;
     // check for dimension flag
     else if((strcmp(argv[arg], "--dimension") == 0) && (argc - arg > 2))
     {
@@ -200,7 +201,7 @@ bool Viewer::onCreate(int argc, char *argv[])
     else
     {
       // parse the model configuration file
-      if(!parseModelConfiguration(argv[arg])) return false;
+      if(!ParseModelConfiguration(argv[arg])) return false;
 
       // set model configuration flag
       bModelConfiguration = true;
@@ -236,10 +237,10 @@ bool Viewer::onCreate(int argc, char *argv[])
 }
 
 /*----- Handle an idle event -----*/
-void Viewer::onIdle()
+void Viewer::OnIdle()
 {
   // get the current tick value
-  unsigned int tick = Simulation::getTick();
+  unsigned int tick = Simulation::GetTick();
 
   // calculate the amount of elapsed seconds
   float elapsedSeconds = (float)(tick - m_lastTick) / 1000.0f;
@@ -291,7 +292,7 @@ void Viewer::onIdle()
 
 
 /*----- Initialize the Viewer -----*/
-bool Viewer::onInit()
+bool Viewer::OnInit()
 {
   //OGL lighting
   GLfloat light_ambient[]  = { 0.8f, 0.8f, 0.8f, 1.0f };
@@ -311,7 +312,7 @@ bool Viewer::onInit()
       std::string strFilename = pCoreMaterial->getMapFilename(mapId);
 
       // load the texture from the file
-      GLuint textureId = loadTexture(strFilename);
+      GLuint textureId = LoadTexture(strFilename);
 
       // store the opengl texture id in the user data of the map
       pCoreMaterial->setMapUserData(mapId, (Cal::UserData)textureId);
@@ -372,9 +373,9 @@ bool Viewer::onInit()
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
   // load and create textures for application mka 2007.06.10
-  if (!prepareResources()) return false;
+  if (!PrepareResources()) return false;
 
-  m_lastTick = Simulation::getTick();
+  m_lastTick = Simulation::GetTick();
   
   // we're done
   std::cout << "Initialization done." << std::endl;
@@ -385,22 +386,22 @@ bool Viewer::onInit()
   return true;
 }
 /*----- prepare resources  -----*/
-bool Viewer::prepareResources()
+bool Viewer::PrepareResources()
 {
 	// load necessary textures - openGL context must be active otherwise TextureGeneration doesn't work
-	char *strFilename = "..\\textures\\";
-	m_textureManager->LoadTexture("..\\textures\\grass.bmp");
+	//std::string texturePath = "..\\textures\\";
+	GLuint floorTexture = m_textureManager->LoadTexture(FT_TEXTUREPATH + "grass.bmp");
 	// LoadTexture(strFilename+ "grassfloor128x128.tga");
     
     // PREPARE DISPLAY LISTS
 	// REMEMBER ABOUT preparing display lists before starting drawing
-    initTexturedFloor(m_textureManager->LoadTexture("..\\textures\\grass.bmp"));
-	initNormalFloor();
+    InitTexturedFloor(floorTexture);
+	InitNormalFloor();
     return true;
 }
 
 /*----- Handle a key event -----*/
-void Viewer::onKey(unsigned char key, int x, int y)
+void Viewer::OnKey(unsigned char key, int x, int y)
 {
   switch(key)
   {
@@ -449,21 +450,21 @@ void Viewer::onKey(unsigned char key, int x, int y)
 
 
 /*----- Handle special keys (F1, F2, UP, DOWN, etc.)   -----*/
-void Viewer::onSpecial(int key, int x, int y)
+void Viewer::OnSpecial(int key, int x, int y)
 {
   switch(key) 
   {
     case GLUT_KEY_UP:
-      m_distance -= 3.0f;
+ //     m_distance -= 3.0f;
       break;
     case GLUT_KEY_DOWN:
-      m_distance += 3.0f;
+ //     m_distance += 3.0f;
       break;
     case GLUT_KEY_RIGHT:
-      m_camheight += 3.0f;
+//      m_camheight += 3.0f;
       break;
     case GLUT_KEY_LEFT:
-      m_camheight -= 3.0f;
+//      m_camheight -= 3.0f;
       break;
     default:
       break;	
@@ -471,7 +472,7 @@ void Viewer::onSpecial(int key, int x, int y)
 }
 
 /*----- Handle a mouse button down event -----*/
-void Viewer::onMouseButtonDown(int button, int x, int y)
+void Viewer::OnMouseButtonDown(int button, int x, int y)
 {
   // update mouse button states
   if(button == GLUT_LEFT_BUTTON)
@@ -484,13 +485,17 @@ void Viewer::onMouseButtonDown(int button, int x, int y)
     m_bRightMouseButtonDown = true;
   }
 
+  if(button == GLUT_MIDDLE_BUTTON)
+  {
+	m_bMiddleMouseButtonDown = true;
+  }
   // update internal mouse position
   m_mouseX = x;
   m_mouseY = y;
 }
 
 /*----- Handle a mouse button up event -----*/
-void Viewer::onMouseButtonUp(int button, int x, int y)
+void Viewer::OnMouseButtonUp(int button, int x, int y)
 {
   // update mouse button states
   if(button == GLUT_LEFT_BUTTON)
@@ -503,6 +508,11 @@ void Viewer::onMouseButtonUp(int button, int x, int y)
     m_bRightMouseButtonDown = false;
   }
 
+  if(button == GLUT_MIDDLE_BUTTON)
+  {
+	m_bMiddleMouseButtonDown = false;
+  }
+
   // update internal mouse position
   m_mouseX = x;
   m_mouseY = y;
@@ -510,9 +520,9 @@ void Viewer::onMouseButtonUp(int button, int x, int y)
 
 
 /*----- Handle a mouse move event -----*/
-void Viewer::onMouseMove(int x, int y)
+void Viewer::OnMouseMove(int x, int y)
 {
-  // update twist/tilt angles
+  // update pitch/yaw angles
   if(m_bLeftMouseButtonDown)
   {
     // calculate new angles
@@ -528,6 +538,12 @@ void Viewer::onMouseMove(int x, int y)
     if(m_distance < 0.0f) m_distance = 0.0f;
   }
 
+  // update Y screen position
+  if(m_bMiddleMouseButtonDown)
+  {
+	//calculate new Y position
+	m_camUpDown +=(float)(y-m_mouseY);	
+  }	
   // update internal mouse position
   m_mouseX = x;
   m_mouseY = y;
@@ -535,7 +551,7 @@ void Viewer::onMouseMove(int x, int y)
 
 
 /*----- Handle a render event -----*/
-void Viewer::onRender()
+void Viewer::OnRender()
 {
   // clear the vertex and face counters
   m_vertexCount = 0;
@@ -555,32 +571,31 @@ void Viewer::onRender()
   glLoadIdentity();
 
   // set camera position
-  glTranslatef(0.0f, 0.0f, -m_distance * m_scale);
+  glTranslatef(0.0f, m_camUpDown, -m_distance * m_scale);
   glRotatef(m_pitchAngle, 1.0f, 0.0f, 0.0f);
   glRotatef(m_yawAngle, 0.0f, 1.0f, 0.0f);
-  glTranslatef(0.0f, 0.0f, -90.0f * m_scale);
-  glTranslatef(0.0f, 0.0f, m_camheight);
+  //glTranslatef(0.0f, 0.0f, -90.0f * m_scale);
 
 
   // glLightfv(GL_LIGHT0, GL_POSITION, l);
-  renderScene();
+  RenderScene();
   glEnable(GL_CULL_FACE);
 
 
   // now we draw the shadow
   glPushMatrix();
-  glShadowProjection(m_lightPosition,m_e,m_normal);  
+  GlShadowProjection(m_lightPosition,m_e,m_normal);  
   glColor3f(0.0f,0.0f,0.0f);
-  renderModel(true);	
+  RenderModel(true);	
   glPopMatrix();
 
  // draw the object that casts the shadow
   glPushMatrix();
-  renderModel(false);	
+  RenderModel(false);	
   glPopMatrix();
 
   // render the cursor
-  renderCursor();
+  RenderCursor();
 
   // swap the front- and back-buffer
   glutSwapBuffers();
@@ -590,7 +605,7 @@ void Viewer::onRender()
 }
 
 /*----- Shut the Viewer down -----*/
-void Viewer::onShutdown()
+void Viewer::OnShutdown()
 {
   delete m_calModel;
   m_textureManager->DeleteAllTextures();
@@ -610,7 +625,7 @@ void Viewer::onShutdown()
 // Everything that is drawn after this call is "squashed" down
 // to the plane. Hint: Gray or black color and no lighting 
 // looks good for shadows *g*
-void Viewer::glShadowProjection(float * l, float * e, float * n)
+void Viewer::GlShadowProjection(float * l, float * e, float * n)
 {
   float d, c;
   float mat[16];
@@ -650,7 +665,7 @@ void Viewer::glShadowProjection(float * l, float * e, float * n)
 
 
 /*----- Render the cursor -----*/
-void Viewer::renderCursor()
+void Viewer::RenderCursor()
 {
   // switch to orthogonal projection for the cursor
   glMatrixMode(GL_PROJECTION);
@@ -677,7 +692,7 @@ void Viewer::renderCursor()
 }
 
 /*----- render avatar model -----*/
-void Viewer::renderModel(bool shadow)
+void Viewer::RenderModel(bool shadow)
 {
     
   glPushMatrix();
@@ -694,11 +709,11 @@ void Viewer::renderModel(bool shadow)
 	m_calModel->getSkeleton()->calculateBoundingBoxes();
   
     if (m_renderMethod == 0) 
-		renderModelMesh(shadow);
+		RenderModelMesh(shadow);
 	else if (m_renderMethod == 1) 
-		renderModelSkeleton(shadow);
+		RenderModelSkeleton(shadow);
 	else if (m_renderMethod == 2)
-		renderModelBoundingBox(shadow);
+		RenderModelBoundingBox(shadow);
 
     // clear light
     if (!shadow)
@@ -712,7 +727,7 @@ void Viewer::renderModel(bool shadow)
 
 
 /*-----  Render mesh of the model  -----*/
-void Viewer::renderModelMesh(bool shadow)
+void Viewer::RenderModelMesh(bool shadow)
 {
 
 
@@ -841,7 +856,7 @@ void Viewer::renderModelMesh(bool shadow)
 
 }
 /*----- Render skeleton of the model -----*/
-void Viewer::renderModelSkeleton(bool shadow)
+void Viewer::RenderModelSkeleton(bool shadow)
 {
  
   glEnable(GL_COLOR_MATERIAL);
@@ -886,7 +901,7 @@ void Viewer::renderModelSkeleton(bool shadow)
 }
 
 /*----- Render bounding box boundaries of the model -----*/
-void Viewer::renderModelBoundingBox(bool shadow)
+void Viewer::RenderModelBoundingBox(bool shadow)
 {  
 
    CalSkeleton *pCalSkeleton = m_calModel->getSkeleton();
@@ -957,7 +972,7 @@ void Viewer::renderModelBoundingBox(bool shadow)
 
 
 /*----- Render Scene elements (floor, walls etc) -----*/
-void Viewer::renderScene()
+void Viewer::RenderScene()
 {
 	glPushMatrix();
 	//glRotatef(-90,1,0,0);
@@ -975,7 +990,7 @@ void Viewer::renderScene()
 
 }
 /*----- Prepare non textured floor -----*/
-void Viewer::initNormalFloor()
+void Viewer::InitNormalFloor()
 {
 	int i;
 	float lightDots[] = {0.9f,0.9f,0.36f}; 
@@ -1047,7 +1062,7 @@ void Viewer::initNormalFloor()
 
 
 /*----- Prepare textured floor -----*/
-void  Viewer::initTexturedFloor(unsigned int textureNumber)
+void  Viewer::InitTexturedFloor(unsigned int textureNumber)
 {
     int tileSize = 128;
 	int x, y;
@@ -1088,7 +1103,7 @@ void  Viewer::initTexturedFloor(unsigned int textureNumber)
 
 
 /*----- Set the viewer window dimension  -----*/
-void Viewer::setDimension(int width, int height)
+void Viewer::SetDimension(int width, int height)
 {
   // store new width and height values
   m_width = width;
@@ -1100,7 +1115,7 @@ void Viewer::setDimension(int width, int height)
 
 
 /*----- Parse the configuration file and load the whole model  -----*/
-bool Viewer::parseModelConfiguration(const std::string& strFilename)
+bool Viewer::ParseModelConfiguration(const std::string& strFilename)
 {
   // open the model configuration file
   std::ifstream file;

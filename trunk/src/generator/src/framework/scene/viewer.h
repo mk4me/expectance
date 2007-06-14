@@ -19,16 +19,18 @@ class Viewer
 protected:
   int m_width;
   int m_height;
-  bool m_bFullscreen;
+  bool m_bFullScreen;
   float m_pitchAngle; // OX
   float m_yawAngle;   // OY
   float m_rollAngle;  // OZ
   float m_distance;
-  float m_camheight;
+  float m_camLeftRight;
+  float m_camUpDown;
   int m_mouseX;
   int m_mouseY;
   bool m_bLeftMouseButtonDown;
   bool m_bRightMouseButtonDown;
+  bool m_bMiddleMouseButtonDown;
   unsigned int m_lastTick;
   bool m_bPaused;
 
@@ -60,35 +62,35 @@ public:
 
 // member functions
 public:
-  bool getFullscreen();
-  int getHeight();
-  int getWidth();
-  bool onCreate(int argc, char *argv[]);
-  void onIdle();
-  bool onInit();
-  void onKey(unsigned char key, int x, int y);
-  void onSpecial(int key, int x, int y);
-  void onMouseButtonDown(int button, int x, int y);
-  void onMouseButtonUp(int button, int x, int y);
-  void onMouseMove(int x, int y);
-  void onRender();
-  void onShutdown();
-  void setDimension(int width, int height);
+  bool GetFullScreen();
+  int  GetHeight();
+  int  GetWidth();
+  bool OnCreate(int argc, char *argv[]);
+  void OnIdle();
+  bool OnInit();
+  void OnKey(unsigned char key, int x, int y);
+  void OnSpecial(int key, int x, int y);
+  void OnMouseButtonDown(int button, int x, int y);
+  void OnMouseButtonUp(int button, int x, int y);
+  void OnMouseMove(int x, int y);
+  void OnRender();
+  void OnShutdown();
+  void SetDimension(int width, int height);
 
 protected:
-  GLuint loadTexture(const std::string& strFilename);
-  bool parseModelConfiguration(const std::string& strFilename);
+  GLuint LoadTexture(const std::string& strFilename);
+  bool ParseModelConfiguration(const std::string& strFilename);
 
-  void renderCursor();
-  void renderModel(bool shadow);
-  void renderModelMesh(bool shadow);
-  void renderModelSkeleton(bool shadow);
-  void renderModelBoundingBox(bool shadow);
-  void renderScene();
-  bool prepareResources();
-  void initNormalFloor();
-  void initTexturedFloor(unsigned int textureNumber);
-  void glShadowProjection(float * l, float * e, float * n);
+  void RenderCursor();
+  void RenderModel(bool shadow);
+  void RenderModelMesh(bool shadow);
+  void RenderModelSkeleton(bool shadow);
+  void RenderModelBoundingBox(bool shadow);
+  void RenderScene();
+  bool PrepareResources();
+  void InitNormalFloor();
+  void InitTexturedFloor(unsigned int textureNumber);
+  void GlShadowProjection(float * l, float * e, float * n);
 };
 
 extern Viewer theViewer;

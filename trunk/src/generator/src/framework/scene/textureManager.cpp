@@ -107,6 +107,8 @@ struct TexRef {
 	/// the size of the loaded texture
 	unsigned int size;
 
+	/// the alias 
+	
 	/// ctor
 	TexRef(unsigned id_,unsigned sz) : idx(id_),ref(1),size(sz) {}
 	/// ctor
@@ -125,7 +127,7 @@ std::map<std::string,TexRef> g_Textures;
 /// \param	filename	-	the image file to use for the texture
 /// \return	compressed	-	if true DXT compression will be used.
 ///
-unsigned int TextureManager::LoadTexture(const char* filename,bool compressed) {
+unsigned int TextureManager::LoadTexture(const std::string filename,bool compressed) {
 
 	// check to see if file is already loaded.
 	std::map<std::string,TexRef>::iterator it = g_Textures.find(filename);
@@ -138,7 +140,7 @@ unsigned int TextureManager::LoadTexture(const char* filename,bool compressed) {
 	unsigned int w=0,h=0,bpp=0;
 	unsigned char* pixels=0;
 
-	int len = static_cast<int>(strlen(filename));
+	int len = filename.length(); 
 
 	// load a bmp
 	if( (filename[len-3] == 'b' || filename[len-3] == 'B') &&
@@ -282,6 +284,34 @@ unsigned int TextureManager::GetTotalTextureSize() {
 }
 
 
+/*----- Extract filename -----*/
+char *TextureManager::ExtractFileName(const char *path)
+{
+  char buf[256],*p,*q;
+  int n;
+  strcpy(buf,path);
+  /*Delete extension*/
+  n=strlen(buf);
+  p=buf+n;
+  while (*--p!='.' && p>buf);
+  if (*p=='.')
+   {
+	*p='\0';
+	printf("Filename without extension: %s\n",buf);
+   }
+  else
+   {
+	printf("Filename doesn't have an extension\n");
+	p=buf+n;
+   }
+  /*Compute filename length*/
+  q=p;
+  while (*--q!='\\');
+  ++q;
+  //Filename length: p-q
+  //Filename without path: q
+  return q;
+}
 
 /******************************************************** TGA *****************************************************/
 #ifndef IN
@@ -486,7 +516,7 @@ void FlipDaImage( unsigned char* data, unsigned int rowsize,unsigned int height)
 /*
  *	A function to load a tga file and return the OpenGL texture object
  */
-int TextureManager::LoadTgaImage(const char filename[],unsigned char** ppData,unsigned int* w,unsigned int* h,unsigned int* bpp)
+int TextureManager::LoadTgaImage(const std::string filename,unsigned char** ppData,unsigned int* w,unsigned int* h,unsigned int* bpp)
 {
 
 	/*
@@ -498,7 +528,7 @@ int TextureManager::LoadTgaImage(const char filename[],unsigned char** ppData,un
 	/*
 	 *	Create a file pointer called fp and attempt to open the file
 	 */
-	FILE *fp = fopen(filename,"rb");
+	FILE *fp = fopen(filename.c_str(),"rb");
 
 	/*
 	 *	if the file pointer is equal to NULL, the file failed to open
@@ -968,10 +998,10 @@ PcxColour;
  *	\param	bpp			-	the bytes per pixel of the image file.
  *	\return	1 if ok, 0 otherwise
  */
-int TextureManager::LoadPcxImage( const char filename[], unsigned char** pixels,  unsigned int* w, unsigned int* h, unsigned int* bpp)
+int TextureManager::LoadPcxImage( const std::string filename, unsigned char** pixels,  unsigned int* w, unsigned int* h, unsigned int* bpp)
 {
 	/* open the file */
-	FILE* fp = fopen( filename,"rb" );
+	FILE* fp = fopen( filename.c_str(),"rb" );
 
 	/* if opened OK */
 	if(fp)
@@ -1329,12 +1359,12 @@ ColorMapEntry;
  *	\brief	This function loads a bitmap image
  *	\param	filename	-
  */
-int TextureManager::LoadBmpImage(const char filename[], unsigned char** pixels, unsigned int*   w, unsigned int*   h, unsigned int*   bpp)
+int TextureManager::LoadBmpImage(const std::string filename, unsigned char** pixels, unsigned int*   w, unsigned int*   h, unsigned int*   bpp)
 {
 	BitmapFileHeader	FileHeader;
 	BitmapInfoHeader 	ImageHeader;
 
-	FILE *fp = fopen( filename, "rb" );
+	FILE *fp = fopen( filename.c_str(), "rb" );
 
 	/* ensure file is a happy file... */
 	if( fp == NULL )

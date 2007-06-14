@@ -12,7 +12,7 @@ class Simulation
 public:
 	Simulation(void);
 	virtual ~Simulation(void);
-	static unsigned int getTick();
+	static unsigned int GetTick();
 };
 
 #endif
