@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="windows-1250"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
@@ -72,7 +72,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib"
 				OutputFile="../../bin/Debug/generator.exe"
-				LinkIncremental="0"
+				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\cal3d\Debug"
 				GenerateDebugInformation="true"
@@ -206,16 +206,60 @@
 			<Filter
 				Name="avatar"
 				>
+				<File
+					RelativePath=".\src\framework\avatar\avatar.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\avatar\avatar.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="core"
 				>
+				<File
+					RelativePath=".\src\framework\core\application.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\core\application.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\core\config.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\core\config.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\core\controlmanager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\core\controlmanager.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\core\controlobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\core\controlobject.h"
+					>
+				</File>
 				<File
 					RelativePath=".\src\framework\core\global.h"
 					>
 				</File>
 				<File
 					RelativePath=".\src\framework\core\main.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\core\message.h"
 					>
 				</File>
 				<File
@@ -234,26 +278,6 @@
 			<Filter
 				Name="scene"
 				>
-				<File
-					RelativePath=".\src\framework\scene\ftObject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\ftObject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\irenderable.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\marker.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\marker.h"
-					>
-				</File>
 				<File
 					RelativePath=".\src\framework\scene\textureManager.cpp"
 					>
@@ -274,10 +298,46 @@
 			<Filter
 				Name="utility"
 				>
+				<File
+					RelativePath=".\src\framework\utility\debug.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\utility\debug.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="ai"
 				>
+			</Filter>
+			<Filter
+				Name="motion"
+				>
+				<File
+					RelativePath=".\src\framework\motion\blender.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\motion\blender.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\motion\modifier.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\motion\modifier.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\motion\motion.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\motion\motion.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 	</Files>

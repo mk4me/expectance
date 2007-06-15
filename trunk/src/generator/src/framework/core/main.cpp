@@ -11,6 +11,7 @@
 #include "global.h"
 #include "../scene/viewer.h"
 //#include "../scene/primitiveManager.h"
+#include "application.h"
 
 /*----- GLUT callback functions  -----*/                                        
 void DisplayFunc()
@@ -71,6 +72,7 @@ void ReshapeFunc(int width, int height)
 /*----- Main entry point of the application -----*/
 int main(int argc, char *argv[])
 {
+    ft::Application::getInstance()->initModules();
   // initialize the GLUT system
   glutInit(&argc, argv);
 
