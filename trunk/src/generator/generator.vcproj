@@ -72,7 +72,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib"
 				OutputFile="../../bin/Debug/generator.exe"
-				LinkIncremental="1"
+				LinkIncremental="0"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\cal3d\Debug"
 				GenerateDebugInformation="true"
@@ -235,11 +235,15 @@
 				Name="scene"
 				>
 				<File
-					RelativePath=".\src\framework\scene\iprimitive.cpp"
+					RelativePath=".\src\framework\scene\ftObject.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\scene\iprimitive.h"
+					RelativePath=".\src\framework\scene\ftObject.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\irenderable.h"
 					>
 				</File>
 				<File
@@ -248,14 +252,6 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\scene\marker.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\primitiveManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\primitiveManager.h"
 					>
 				</File>
 				<File

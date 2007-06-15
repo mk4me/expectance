@@ -28,6 +28,9 @@ static const std::string FT_TEXTUREPATH = "..\\textures\\";
 
 typedef CalVector FTVect;
 
+struct FTColor {
+byte r,g,b;
+};
 
 
 #endif
