@@ -56,7 +56,7 @@ Avatar* AvatarFactory::CreateAvatar(const std::string modelName, std::string ava
     {
         newModel = new CalModel(coreModel);
         InitModelMeshes(coreModel, newModel);
-        newAvatar = new Avatar(newModel, coreModel, modelName);
+        newAvatar = new Avatar(newModel, coreModel, avatarName);
     
         std::cout << "AvatarFactory::CreateAvatar,new avatar " + avatarName + " created." << std::endl;
     }

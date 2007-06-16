@@ -12,7 +12,7 @@
 
 namespace ft
 {
-    class Avatar : public ControlObject, public SceneObject
+    class Avatar : public ControlObject
     {
     public:
 		Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
@@ -27,9 +27,11 @@ namespace ft
 
 
         void OnMessage(Message& msg);  // OVERRIDEN, receives a message from ControlManager
-        virtual void OnUpdate(float elapsedTime);  // OVERRIDEN, updates by ControlManager 
+        virtual void OnUpdate(float elapsedSeconds);  // OVERRIDEN, updates by ControlManager 
 		virtual bool Render();
 		void setRenderMethod(const int renderMethod);
+
+        void InitAnimation(int startAnim);
 
     private:
         std::string m_name;
@@ -44,6 +46,13 @@ namespace ft
 		void RenderModelMesh(bool shadow);
 		void RenderModelSkeleton(bool shadow);
 		void RenderModelBoundingBox(bool shadow);
+
+        //// ANIMATIONS
+        int m_currentAnimationId;
+        float m_leftAnimationTime;
+        float m_blendTime;
+        bool m_bPaused;
+
        
     };
 };

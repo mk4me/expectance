@@ -7,10 +7,11 @@
 #define _GEN_CONTROL_OBJECT_H
 
 #include "message.h"
+#include "../scene/SceneObject.h"
 
 namespace ft
 {
-    class ControlObject
+    class ControlObject : public SceneObject
     {
     public:
         ControlObject(void) { /*empty*/}

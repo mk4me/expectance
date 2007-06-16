@@ -8,6 +8,8 @@
 
 #include "message.h"
 #include "controlobject.h" 
+#include "simulation.h"
+#include <map>
 
 namespace ft
 {
@@ -20,17 +22,36 @@ namespace ft
         static ControlManager* getInstance();
         static void DestroyInstance();
 
-        void OnUpdate(float elapsedTime);  // caled from window application
+        void Init();
+
+        void OnUpdate();  // caled from window application
 
         void SendMessage(const Message& msg);  //request to send a message to registered objects
 
-        void AddControlObject(ControlObject* object);
-        void RemoveControlObject(ControlObject* object);
+        bool AddControlObject(ControlObject* pObj);
+        bool  RemoveControlObject(ControlObject* pObj);
+
+        void setTimeScale(float timeScale) { m_timeScale = timeScale; }
+        float getTimeScale() { return m_timeScale; }
+
+        void UpdateObjects(float elapsedSeconds);
+        void increraseFramesCounter() {   m_fpsFrames++;  }
+
+        void Dump();
 
     private:
+
+        unsigned int m_lastTick;
+
+        float m_fpsDuration;
+        int m_fpsFrames;
+        int m_fps;
+        float m_timeScale;
+
         
         static ControlManager* m_instance;
-        //ControlObject vector
+
+        std::map<std::string,ControlObject*> m_objects;
 
         // focused object 
 

@@ -10,8 +10,10 @@
 
 
 #include "../core/global.h"
+#include "../avatar/avatar.h"
 
 
+using namespace ft;
 
 class Viewer
 {
@@ -31,23 +33,24 @@ protected:
   bool m_bLeftMouseButtonDown;
   bool m_bRightMouseButtonDown;
   bool m_bMiddleMouseButtonDown;
-  unsigned int m_lastTick;
+//  unsigned int m_lastTick;
   bool m_bPaused;
 
-  CalCoreModel* m_calCoreModel;
-  CalModel* m_calModel;
+//  CalCoreModel* m_calCoreModel;
+//  CalModel* m_calModel;
+//  Avatar* m_avatar;
   float m_scale;
-  int m_currentAnimationId;
-  float m_leftAnimationTime;
-  float m_blendTime;
+//  int m_currentAnimationId;
+//  float m_leftAnimationTime;
+//  float m_blendTime;
   float m_lodLevel;
   int m_vertexCount;
   int m_faceCount;
 
-  float m_fpsDuration;
-  int m_fpsFrames;
-  int m_fps;
-  float m_timeScale;
+//  float m_fpsDuration;
+//  int m_fpsFrames;
+//  int m_fps;
+//  float m_timeScale;
 
   int m_renderMethod;
   int m_renderScene;
@@ -82,10 +85,10 @@ protected:
 //  bool ParseModelConfiguration(const std::string& strFilename);
 
   void RenderCursor();
-  void RenderModel(bool shadow);
-  void RenderModelMesh(bool shadow);
-  void RenderModelSkeleton(bool shadow);
-  void RenderModelBoundingBox(bool shadow);
+//  void RenderModel(bool shadow);
+//  void RenderModelMesh(bool shadow);
+//  void RenderModelSkeleton(bool shadow);
+//  void RenderModelBoundingBox(bool shadow);
   void RenderScene();
   bool PrepareResources();
   void InitNormalFloor();

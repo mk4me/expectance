@@ -21,6 +21,31 @@ Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel)
     m_calCoreModel = calCoreModel;
 }
 
+void Avatar::InitAnimation(int startAnim)
+{
+  m_bPaused = false;
+  m_blendTime = 0.3f;
+  // set initial animation state
+  if(m_calCoreModel->getCoreAnimationCount() > 0)
+  {
+    m_currentAnimationId = startAnim;
+    m_leftAnimationTime = m_calCoreModel->getCoreAnimation(m_currentAnimationId)->getDuration() - m_blendTime;
+    if(m_calCoreModel->getCoreAnimationCount() > 1)
+    {
+      m_calModel->getMixer()->executeAction(m_currentAnimationId, 0.0f, m_blendTime);
+    }
+    else
+    {
+      m_calModel->getMixer()->blendCycle(m_currentAnimationId, 1.0f, 0.0f);
+    }
+  }
+  else
+  {
+    m_currentAnimationId = -1;
+    m_leftAnimationTime = -1.0f;
+  }
+}
+
 void Avatar::SetCalModel(CalModel* calModel)
 {
     m_calModel = calModel;
@@ -46,9 +71,34 @@ void Avatar::OnMessage(Message& msg)
     DBG("Avatar::OnMessage: received");
 }
 
-void Avatar::OnUpdate(float elapsedTime)
+void Avatar::OnUpdate(float elapsedSeconds)
 {
+  // update the model if not paused
+  if(!m_bPaused)
+  {
+    // check if the time has come to blend to the next animation
+    if(m_calCoreModel->getCoreAnimationCount() > 1)
+    {
+      m_leftAnimationTime -= elapsedSeconds;
+      if(m_leftAnimationTime <= m_blendTime)
+      {
+        // get the next animation
+        m_currentAnimationId = (m_currentAnimationId + 1) % m_calCoreModel->getCoreAnimationCount();
 
+        // fade in the new animation
+        m_calModel->getMixer()->executeAction(m_currentAnimationId, m_leftAnimationTime, m_blendTime);
+
+        // adjust the animation time left until next animation flip
+        m_leftAnimationTime = m_calCoreModel->getCoreAnimation(m_currentAnimationId)->getDuration() - m_blendTime;
+      }
+    }
+  
+	if(!m_bPaused)
+	{
+		m_calModel->update(elapsedSeconds);
+    }
+  }
+  
 }
 
 bool Avatar::Render()
@@ -89,9 +139,6 @@ void Avatar::setRenderMethod(const int renderMethod)
 {
 	m_renderMethod = renderMethod;
 }
-
-
-
 
 void Avatar::RenderModelMesh(bool shadow)
 {

@@ -15,10 +15,10 @@
 #endif
 
 #include "Viewer.h"
-#include "../core/simulation.h"
-#include "../avatar/avatar.h"
+//#include "../core/simulation.h"
 #include "../avatar/avatarfactory.h"
 #include "../scene/scenemanager.h"
+#include "../core/controlmanager.h"
 
 
 
@@ -40,21 +40,21 @@ Viewer::Viewer()
   m_mouseY = 0;
   m_bLeftMouseButtonDown = false;
   m_bRightMouseButtonDown = false;
-  m_lastTick = 0;
+//  m_lastTick = 0;
   m_bPaused = false;
   m_renderScene = 1;
   m_renderMethod = 0;
   m_scale = 1.0f;
-  m_blendTime = 0.3f;
+//  m_blendTime = 0.3f;
   m_lodLevel = 1.0f;
   m_vertexCount = 0;
   m_faceCount = 0;
 
-  m_fpsDuration = 0.0f;
-  m_fpsFrames = 0;
-  m_fps = 0;
+//  m_fpsDuration = 0.0f;
+//  m_fpsFrames = 0;
+//  m_fps = 0;
 
-  m_timeScale = 1;
+//  m_timeScale = 1;
 
   m_lightPosition[0] = 3000.0; m_lightPosition[1] = 6000.0; m_lightPosition[2] = 0.0; // Coordinates of the light source
   m_normal[0] = 0.0; m_normal[1] = -1.0; m_normal[2] = 0.0;                           // Normal vector for the plane
@@ -136,22 +136,6 @@ bool Viewer::OnCreate(int argc, char *argv[])
       std::cerr << "Usage: " << argv[0] << " [--fullscreen] [--window] [--dimension width height] [--help] model-configuration-file" << std::endl;
       return false;
     }
-    // must be the model configuration file then
-    else
-    {
-      // parse the model configuration file
-//      if(!ParseModelConfiguration(argv[arg])) return false; //ABAK rem
-
-      // set model configuration flag
-      bModelConfiguration = true;
-    }
-  }
-
-  // check if we have successfully loaded a model configuration
-  if(!bModelConfiguration)
-  {
-    std::cerr << "No model configuration file given." << std::endl;
-    return false;
   }
 
   return true;
@@ -160,53 +144,9 @@ bool Viewer::OnCreate(int argc, char *argv[])
 /*----- Handle an idle event -----*/
 void Viewer::OnIdle()
 {
-  // get the current tick value
-	unsigned int tick = ft::Simulation::GetTick();
-
-  // calculate the amount of elapsed seconds
-  float elapsedSeconds = (float)(tick - m_lastTick) / 1000.0f;
-
-  // adjust fps counter
-  m_fpsDuration += elapsedSeconds;
-  if(m_fpsDuration >= 1.0f)
-  {
-    m_fps = (int)((float)m_fpsFrames / m_fpsDuration);
-	printf("%d\n",m_fps);
-    m_fpsDuration = 0.0f;
-    m_fpsFrames = 0;
-  }
-
-  elapsedSeconds *= m_timeScale;
-
-  // update the model if not paused
-  if(!m_bPaused)
-  {
-    // check if the time has come to blend to the next animation
-    if(m_calCoreModel->getCoreAnimationCount() > 1)
-    {
-      m_leftAnimationTime -= elapsedSeconds;
-      if(m_leftAnimationTime <= m_blendTime)
-      {
-        // get the next animation
-        m_currentAnimationId = (m_currentAnimationId + 1) % m_calCoreModel->getCoreAnimationCount();
-
-        // fade in the new animation
-        m_calModel->getMixer()->executeAction(m_currentAnimationId, m_leftAnimationTime, m_blendTime);
-
-        // adjust the animation time left until next animation flip
-        m_leftAnimationTime = m_calCoreModel->getCoreAnimation(m_currentAnimationId)->getDuration() - m_blendTime;
-      }
-    }
+  //update ControlManager
+  ft::ControlManager::getInstance()->OnUpdate();
   
-	if(!m_bPaused)
-	{
-		m_calModel->update(elapsedSeconds);
-    }
-  }
-
-  // current tick will be last tick next round
-  m_lastTick = tick;
-
   // update the screen
   glutPostRedisplay();
 }
@@ -220,39 +160,20 @@ bool Viewer::OnInit()
   GLfloat light_diffuse[]  = { 0.5f, 0.5f, 0.5f, 1.0f };
   GLfloat light_specular[] = { 0.1f, 0.1f, 0.1f, 1.0f };
   
-  ft::Avatar* av = ft::AvatarFactory::getInstance()->CreateAvatar("cally.cfg", "First avatar");
+  ft::Avatar* av1 = ft::AvatarFactory::getInstance()->CreateAvatar("cally.cfg", "First avatar");
 
-  if (av != NULL)
+  if (av1 != NULL)
   {
-      m_calModel = av->GetCalModel();
-      m_calCoreModel = av->GetCalCoreModel();
-	  
-	  ft::SceneManager::getInstance()->AddObject(av); 
+	  ft::SceneManager::getInstance()->AddObject(av1); 
+      ft::ControlManager::getInstance()->AddControlObject(av1);
+      av1->InitAnimation(0);
   }
   else
-  {
-      std::cout << "ERRRRROOOOOOOOOOORRR  m_calModel is NULL " << std::endl;
-  }
+       std::cout << "ERRRRROOOOOOOOOOORRR  creation of 1 avatar failed " << std::endl;
+  
+  
+  ft::ControlManager::getInstance()->Dump();
 
-  // set initial animation state
-  if(m_calCoreModel->getCoreAnimationCount() > 0)
-  {
-    m_currentAnimationId = 0;
-    m_leftAnimationTime = m_calCoreModel->getCoreAnimation(m_currentAnimationId)->getDuration() - m_blendTime;
-    if(m_calCoreModel->getCoreAnimationCount() > 1)
-    {
-      m_calModel->getMixer()->executeAction(m_currentAnimationId, 0.0f, m_blendTime);
-    }
-    else
-    {
-      m_calModel->getMixer()->blendCycle(m_currentAnimationId, 1.0f, 0.0f);
-    }
-  }
-  else
-  {
-    m_currentAnimationId = -1;
-    m_leftAnimationTime = -1.0f;
-  }
 
   //OGL Initialization mka 2007.06.10
   
@@ -279,7 +200,8 @@ bool Viewer::OnInit()
   // load and create textures for application mka 2007.06.10
   if (!PrepareResources()) return false;
 
-  m_lastTick = ft::Simulation::GetTick();
+  ft::ControlManager::getInstance()->Init();
+//  m_lastTick = ft::Simulation::GetTick();
   
   // we're done
   std::cout << "Initialization done." << std::endl;
@@ -335,10 +257,10 @@ void Viewer::OnKey(unsigned char key, int x, int y)
       m_bPaused = !m_bPaused;
       break;
     case '*':
-      m_timeScale *= 1.1f;
+      ft::ControlManager::getInstance()->setTimeScale(  ft::ControlManager::getInstance()->getTimeScale() * 1.1f);
       break;
     case '/':
-      m_timeScale /= 1.1f;
+      ft::ControlManager::getInstance()->setTimeScale(  ft::ControlManager::getInstance()->getTimeScale() / 1.1f);
       break;
     // test for the lod keys
     default:
@@ -350,7 +272,7 @@ void Viewer::OnKey(unsigned char key, int x, int y)
   }
 
   // set the (possible) new lod level
-  m_calModel->setLodLevel(m_lodLevel);
+  //m_calModel->setLodLevel(m_lodLevel);  //TODO: abak:  apply this to avatars globally
 }
 
 
@@ -507,13 +429,14 @@ void Viewer::OnRender()
   glutSwapBuffers();
 
   // increase frame counter
-  m_fpsFrames++;  
+//  m_fpsFrames++;  
+  ft::ControlManager::getInstance()->increraseFramesCounter();
 }
 
 /*----- Shut the Viewer down -----*/
 void Viewer::OnShutdown()
 {
-  delete m_calModel;
+//  delete m_calModel;
   m_textureManager->DeleteAllTextures();
 }
 
@@ -598,7 +521,7 @@ void Viewer::RenderCursor()
 }
 
 /*----- render avatar model -----*/
-void Viewer::RenderModel(bool shadow)
+/*void Viewer::RenderModel(bool shadow)
 {
     
   glPushMatrix();
@@ -630,9 +553,10 @@ void Viewer::RenderModel(bool shadow)
 	}
   glPopMatrix();
 }
-
+*/
 
 /*-----  Render mesh of the model  -----*/
+/*
 void Viewer::RenderModelMesh(bool shadow)
 {
 
@@ -761,7 +685,9 @@ void Viewer::RenderModelMesh(bool shadow)
 
 
 }
+*/
 /*----- Render skeleton of the model -----*/
+/*
 void Viewer::RenderModelSkeleton(bool shadow)
 {
  
@@ -805,8 +731,10 @@ void Viewer::RenderModelSkeleton(bool shadow)
 
   glDisable(GL_COLOR_MATERIAL);
 }
+*/
 
 /*----- Render bounding box boundaries of the model -----*/
+/*
 void Viewer::RenderModelBoundingBox(bool shadow)
 {  
 
@@ -870,11 +798,7 @@ void Viewer::RenderModelBoundingBox(bool shadow)
    glEnd();
    glDisable(GL_COLOR_MATERIAL);	
 }
-
-
-
-
-
+*/
 
 
 /*----- Render Scene elements (floor, walls etc) -----*/
