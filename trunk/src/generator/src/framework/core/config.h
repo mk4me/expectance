@@ -24,9 +24,9 @@ namespace ft
         bool LoadConfigFile();
         bool ReloadConfigFile();
 
-        bool IsKey(std::string& key);
-        std::string GetStrVal(std::string& key);
-        int GetIntVal(std::string& key);
+        bool IsKey(const char * key);
+        const char* GetStrVal(const char * key);
+        int GetIntVal(const char * key);
 
         static void TEST_CONFIG();  // to test if Config works properly
 

@@ -240,7 +240,7 @@ void AvatarFactory::InitCoreModelMaterials(CalCoreModel* coreModel)
       std::string strFilename = pCoreMaterial->getMapFilename(mapId);
 
       // load the texture from the file
-      GLuint textureId = LoadTexture(strFilename);
+      GLuint textureId = LoadTexture(strFilename);  //TODO: abak:  use TextureManager here
 
       // store the opengl texture id in the user data of the map
       pCoreMaterial->setMapUserData(mapId, (Cal::UserData)textureId);

@@ -32,12 +32,18 @@ void Application::DestroyInstance()
     DBG("Application::getInstace(): instance of Application destroyed  ");
 }
 
+void Application::InitConfig()
+{
+    DBG("Application::InitConfig().");
+    Config::getInstance()->LoadConfigFile();  //with creation of singleton in getInstance()
+    Config::TEST_CONFIG();
+
+
+}
+
 void Application::InitModules()
 {
     DBG("Application::InitModules().");
-
-    Config::getInstance()->LoadConfigFile();  //with creation of singleton in getInstance()
-    Config::TEST_CONFIG();
 
     ControlManager::getInstance();  //enforced creation of singleton
     AvatarFactory::getInstance();  //enforced creation of singleton

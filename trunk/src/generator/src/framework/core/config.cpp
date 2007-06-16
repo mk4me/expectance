@@ -112,9 +112,9 @@ bool Config::ReloadConfigFile()
     return LoadConfigFile();
 }
 
-bool Config::IsKey(std::string& key)
+bool Config::IsKey(const char * key)
 {
-    bool result = true;
+    bool result = false;
   	std::map<std::string,std::string>::iterator it = m_entries.find(key);
     if ( it!=m_entries.end()) 
         result = true;
@@ -122,22 +122,22 @@ bool Config::IsKey(std::string& key)
     return result;
 }
 
-std::string Config::GetStrVal(std::string& key)
+const char* Config::GetStrVal(const char * key)
 {
-    std::string result;
+    const char* result;
   	std::map<std::string,std::string>::iterator it = m_entries.find(key);
     if ( it!=m_entries.end()) 
-        result = it->second;
+        result = it->second.c_str();
     else
         result = "<KEY_NOT_FOUND>";
 
     return result;
 }
 
-int Config::GetIntVal(std::string& key)
+int Config::GetIntVal(const char * key)
 {
-    std::string val = GetStrVal(key);
-    return atoi (val.c_str());
+    const char * val = GetStrVal(key);
+    return atoi (val);
 }
 
 
@@ -166,11 +166,11 @@ void Config::TEST_CONFIG()
     std::string param_int = "param_int";
     std::string param_bad = "param_bad";
 
-    std::cout << "Read from config <" << param_str << "> val: " << Config::getInstance()->GetStrVal(param_str) 
+    std::cout << "Read from config <" << param_str << "> val: " << Config::getInstance()->GetStrVal(param_str.c_str()) 
         << std::endl;
     std::cout << "Read from config <" << param_int << "> increased by 1 val: " 
-        << Config::getInstance()->GetIntVal(param_int) + 1  << std::endl;
-    std::cout << "Read from config <" << param_bad << "> val: " << Config::getInstance()->GetStrVal(param_bad) 
+        << Config::getInstance()->GetIntVal(param_int.c_str()) + 1  << std::endl;
+    std::cout << "Read from config <" << param_bad << "> val: " << Config::getInstance()->GetStrVal(param_bad.c_str()) 
         << std::endl;
 }
 

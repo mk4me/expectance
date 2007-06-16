@@ -14,6 +14,7 @@ namespace ft
         static Application* getInstance();
         static void DestroyInstance();
 
+        void InitConfig();
         void InitModules();
         void InitSceneObjects();
 

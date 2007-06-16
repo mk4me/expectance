@@ -27,7 +27,7 @@ Viewer::Viewer()
 
   m_width = glutGet (GLUT_SCREEN_WIDTH);
   m_height = (glutGet (GLUT_SCREEN_HEIGHT))/2;
-  m_bFullScreen = false;
+//  m_bFullScreen = false;
   m_pitchAngle = 20.0f;
   m_yawAngle = 0; 
   m_distance = 800.0f;
@@ -65,10 +65,10 @@ Viewer::~Viewer()
 {
 }
 
-bool Viewer::GetFullScreen()
-{
-  return m_bFullScreen;
-}
+//bool Viewer::GetFullScreen()
+//{
+//  return m_bFullScreen;
+//}
 
 int Viewer::GetHeight()
 {
@@ -113,11 +113,11 @@ bool Viewer::OnCreate(int argc, char *argv[])
   for(arg = 1; arg < argc; arg++)
   {
     // check for fullscreen flag
-    if(strcmp(argv[arg], "--fullscreen") == 0) m_bFullScreen = true;
+    //if(strcmp(argv[arg], "--fullscreen") == 0) m_bFullScreen = true;
     // check for window flag
-    else if(strcmp(argv[arg], "--window") == 0) m_bFullScreen = false;
+    //else if(strcmp(argv[arg], "--window") == 0) m_bFullScreen = false;
     // check for dimension flag
-    else if((strcmp(argv[arg], "--dimension") == 0) && (argc - arg > 2))
+    if((strcmp(argv[arg], "--dimension") == 0) && (argc - arg > 2))
     {
       m_width = atoi(argv[++arg]);
       m_height = atoi(argv[++arg]);

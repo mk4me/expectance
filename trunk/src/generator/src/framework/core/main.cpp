@@ -12,6 +12,9 @@
 #include "../scene/viewer.h"
 //#include "../scene/primitiveManager.h"
 #include "application.h"
+#include "config.h"
+
+using namespace ft;
 
 /*----- GLUT callback functions  -----*/                                        
 void DisplayFunc()
@@ -72,6 +75,7 @@ void ReshapeFunc(int width, int height)
 /*----- Main entry point of the application -----*/
 int main(int argc, char *argv[])
 {
+    ft::Application::getInstance()->InitConfig();
   // initialize the GLUT system
   glutInit(&argc, argv);
 
@@ -88,8 +92,12 @@ int main(int argc, char *argv[])
   // set all GLUT modes
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(theViewer.GetWidth(), theViewer.GetHeight());
-  glutCreateWindow("Arena (c) FToday 2007");
-  if(theViewer.GetFullScreen()) glutFullScreen();
+
+  glutCreateWindow(Config::getInstance()->GetStrVal("application_name"));
+
+  if (Config::getInstance()->GetIntVal("full_screen") == 1)
+      glutFullScreen();
+
   glutSetCursor(GLUT_CURSOR_NONE);
 
   // register all GLUT callback functions

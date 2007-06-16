@@ -19,7 +19,7 @@ class Viewer
 protected:
   int m_width;
   int m_height;
-  bool m_bFullScreen;
+//  bool m_bFullScreen;
   float m_pitchAngle; // OX
   float m_yawAngle;   // OY
   float m_rollAngle;  // OZ
