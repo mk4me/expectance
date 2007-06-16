@@ -78,8 +78,8 @@ public:
   void SetDimension(int width, int height);
 
 protected:
-  GLuint LoadTexture(const std::string& strFilename);
-  bool ParseModelConfiguration(const std::string& strFilename);
+//  GLuint LoadTexture(const std::string& strFilename);
+//  bool ParseModelConfiguration(const std::string& strFilename);
 
   void RenderCursor();
   void RenderModel(bool shadow);
