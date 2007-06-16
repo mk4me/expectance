@@ -1,10 +1,14 @@
 /*
  * Copyright (c) 2007, FutureToday. All rights reserved.
- * author: abak
+ * author: abak, mka
  */
 
 #ifndef _GEN_SCENE_MANAGER_H
 #define _GEN_SCENE_MANAGER_H
+
+#include "../utility/debug.h"
+#include "sceneobject.h"
+#include <map>
 
 namespace ft
 {
@@ -17,12 +21,18 @@ namespace ft
         static SceneManager * getInstance();
         static void DestroyInstance();
 
-    private:
-        
-        static SceneManager* m_instance;
+		bool AddObject(SceneObject* pObj);   
+		SceneObject* getObject(std::string id);
+		bool RemoveObject(SceneObject*);
+		bool RemoveObject(std::string id);
+		void Render();
 
-        
-        
+    private:
+		
+        static SceneManager* m_instance;
+		std::map<std::string,SceneObject*> g_SceneObjects;        
+
+                
     };
 };
 

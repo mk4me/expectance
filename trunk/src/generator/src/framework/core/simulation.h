@@ -1,18 +1,22 @@
-//----------------------------------------------------------------------------//
-// Simulation.h                                                               //
-// Copyright (C) 2007 Future Today                                            //
-// author M.Kulbacki                                                          //
-//----------------------------------------------------------------------------//
-#pragma once
-#ifndef SIMULATION_H
-#define SIMULATION_H
+/*
+ * Copyright (c) 2007, FutureToday. All rights reserved.
+ * author: mka
+ */
 
-class Simulation
+
+#pragma once
+#ifndef _GEN_SIMULATION_H
+#define _GEN_SIMULATION_H
+
+namespace ft
 {
-public:
-	Simulation(void);
-	virtual ~Simulation(void);
-	static unsigned int GetTick();
+	class Simulation
+	{
+	public:
+		Simulation(void);
+		virtual ~Simulation(void);
+		static unsigned int GetTick();
+	};
 };
 
-#endif
+#endif //_GEN_SIMULATION_H

@@ -295,6 +295,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\framework\scene\sceneobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\sceneobject.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\scene\textureManager.cpp"
 					>
 				</File>

@@ -1,8 +1,8 @@
-//----------------------------------------------------------------------------//
-// Simulation.h                                                               //
-// Copyright (C) 2007 Future Today                                            //
-// author M.Kulbacki                                                          //
-//----------------------------------------------------------------------------//
+/*
+ * Copyright (c) 2007, FutureToday. All rights reserved.
+ * author: mka
+ */
+
 
 #ifdef _WIN32
 #include <windows.h>
@@ -11,6 +11,8 @@
 #endif
 
 #include "simulation.h"
+
+using namespace ft;
 
 Simulation::Simulation()
 {

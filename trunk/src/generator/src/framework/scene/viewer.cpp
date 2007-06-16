@@ -18,6 +18,9 @@
 #include "../core/simulation.h"
 #include "../avatar/avatar.h"
 #include "../avatar/avatarfactory.h"
+#include "../scene/scenemanager.h"
+
+
 
 Viewer theViewer;
 
@@ -158,7 +161,7 @@ bool Viewer::OnCreate(int argc, char *argv[])
 void Viewer::OnIdle()
 {
   // get the current tick value
-  unsigned int tick = Simulation::GetTick();
+	unsigned int tick = ft::Simulation::GetTick();
 
   // calculate the amount of elapsed seconds
   float elapsedSeconds = (float)(tick - m_lastTick) / 1000.0f;
@@ -223,6 +226,8 @@ bool Viewer::OnInit()
   {
       m_calModel = av->GetCalModel();
       m_calCoreModel = av->GetCalCoreModel();
+	  
+	  ft::SceneManager::getInstance()->AddObject(av); 
   }
   else
   {
@@ -274,7 +279,7 @@ bool Viewer::OnInit()
   // load and create textures for application mka 2007.06.10
   if (!PrepareResources()) return false;
 
-  m_lastTick = Simulation::GetTick();
+  m_lastTick = ft::Simulation::GetTick();
   
   // we're done
   std::cout << "Initialization done." << std::endl;
@@ -323,6 +328,7 @@ void Viewer::OnKey(unsigned char key, int x, int y)
       break;
     case 's':
       m_renderMethod = (m_renderMethod+1) % 3;
+	  dynamic_cast<ft::Avatar*>(ft::SceneManager::getInstance()->getObject("cally.cfg"))->setRenderMethod(m_renderMethod);
       break;
     // test for pause event
     case ' ':
@@ -485,12 +491,13 @@ void Viewer::OnRender()
   glPushMatrix();
   GlShadowProjection(m_lightPosition,m_e,m_normal);  
   glColor3f(0.0f,0.0f,0.0f);
-  RenderModel(true);	
+  ft::SceneManager::getInstance()->Render(); //RenderModel(true);	
   glPopMatrix();
 
  // draw the object that casts the shadow
   glPushMatrix();
-  RenderModel(false);	
+  //RenderModel(false);	
+  ft::SceneManager::getInstance()->Render();
   glPopMatrix();
 
   // render the cursor
