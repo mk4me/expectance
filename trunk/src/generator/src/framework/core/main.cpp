@@ -72,7 +72,6 @@ void ReshapeFunc(int width, int height)
 /*----- Main entry point of the application -----*/
 int main(int argc, char *argv[])
 {
-    ft::Application::getInstance()->initModules();
   // initialize the GLUT system
   glutInit(&argc, argv);
 
@@ -109,6 +108,9 @@ int main(int argc, char *argv[])
     std::cerr << "Initialization of the viewer failed." << std::endl;
     return -1;
   }
+
+    ft::Application::getInstance()->InitModules();
+    ft::Application::getInstance()->InitSceneObjects();
 
   // run the GLUT message loop
   glutMainLoop();

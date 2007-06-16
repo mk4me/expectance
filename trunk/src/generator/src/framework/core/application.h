@@ -14,7 +14,8 @@ namespace ft
         static Application* getInstance();
         static void DestroyInstance();
 
-        void initModules();
+        void InitModules();
+        void InitSceneObjects();
 
     private:
         static Application* m_instance;

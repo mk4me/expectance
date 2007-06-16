@@ -6,6 +6,8 @@
 #include "application.h"
 #include "config.h"
 #include "controlmanager.h"
+#include "../avatar/avatarfactory.h"
+#include "../scene/scenemanager.h"
 #include "../utility/debug.h"
 
 using namespace ft;
@@ -23,7 +25,6 @@ Application* Application::getInstance()
     return m_instance;
 }
 
-
 void Application::DestroyInstance()
 {
     if (m_instance != NULL)
@@ -31,13 +32,19 @@ void Application::DestroyInstance()
     DBG("Application::getInstace(): instance of Application destroyed  ");
 }
 
-void Application::initModules()
+void Application::InitModules()
 {
-    
+    DBG("Application::InitModules().");
+
     Config::getInstance()->LoadConfigFile();  //with creation of singleton in getInstance()
     Config::TEST_CONFIG();
 
     ControlManager::getInstance();  //enforced creation of singleton
-
+    AvatarFactory::getInstance();  //enforced creation of singleton
+    SceneManager::getInstance();  //enforced creation of singleton
 }
 
+void Application::InitSceneObjects()
+{
+    DBG("Application::InitSceneObjects().");
+}

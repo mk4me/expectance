@@ -214,6 +214,14 @@
 					RelativePath=".\src\framework\avatar\avatar.h"
 					>
 				</File>
+				<File
+					RelativePath=".\src\framework\avatar\avatarfactory.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\avatar\avatarfactory.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="core"
@@ -278,6 +286,14 @@
 			<Filter
 				Name="scene"
 				>
+				<File
+					RelativePath=".\src\framework\scene\scenemanager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\scenemanager.h"
+					>
+				</File>
 				<File
 					RelativePath=".\src\framework\scene\textureManager.cpp"
 					>
