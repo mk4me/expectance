@@ -14,10 +14,15 @@ namespace ft
     class Avatar : public ControlObject
     {
     public:
-        Avatar(const std::string name) { m_name = name; }
+        Avatar(CalModel* calModel, CalCoreModel* calCoreModel); 
 	    virtual ~Avatar(void) { /*empty*/}
 
-        void SetCalModel(CalModel* m_calModel);
+        void SetCalModel(CalModel* calModel);
+        CalModel* GetCalModel();
+
+        void SetCalCoreModel(CalCoreModel* calCoreModel);
+        CalCoreModel* GetCalCoreModel();
+
 
         void OnMessage(Message& msg);  // OVERRIDEN, receives a message from ControlManager
         virtual void OnUpdate(float elapsedTime);  // OVERRIDEN, updates by ControlManager 
@@ -26,6 +31,7 @@ namespace ft
         std::string m_name;
 
         CalModel* m_calModel;  //cal3d model which is represented by this avatar object
+        CalCoreModel* m_calCoreModel;
        
     };
 };
