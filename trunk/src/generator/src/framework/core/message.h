@@ -13,8 +13,11 @@ namespace ft
 {
     //TYPES of MEDDAGES
     static const int MSG_CONTROL_PAUSE = 0;  //param: NULL
-    static const int MSG_PROPERTY_LOD = 1;  //param: float
-    static const int MSG_PROPERTY_RENDER_METHOD = 2;  //param: NULL  , changes render method into next one
+    static const int MSG_CONTROL_START = 1;  //param: NULL
+    static const int MSG_CONTROL_STOP = 2;  //param: NULL
+
+    static const int MSG_PROPERTY_LOD = 3;  //param: float
+    static const int MSG_PROPERTY_RENDER_METHOD = 4;  //param: NULL  , changes render method into next one
 
 
 

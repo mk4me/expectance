@@ -71,7 +71,7 @@ void ControlManager::OnUpdate()
   m_lastTick = tick;
 }
 
-void ControlManager::SendMessage(Message* msg)
+void ControlManager::SendMessage(Message* msg, bool deleteAfterSent)
 {
     if (DEBUG_MESSAGES)
         std::cout << "ControlManager::SendMessage: "<< Message::_GET_MSG_NAME(msg->getType())  << std::endl;
@@ -83,6 +83,14 @@ void ControlManager::SendMessage(Message* msg)
     {
         it->second->OnMessage(msg);
     }
+
+    if (deleteAfterSent && msg != NULL)
+    {
+        if (msg->getParam() != NULL)
+            delete msg->getParam();
+        delete msg;
+    }
+
 }
 
 bool ControlManager::AddControlObject(ControlObject* pObj)
@@ -118,7 +126,6 @@ bool ControlManager::RemoveControlObject(ControlObject* pObj)
 	}
     cout << "ERR: ControlManager::RemoveControlObject object " << _id << " not found in Control Manager " << std::endl;
 	return false;
-
 }
 
 void ControlManager::Dump()
@@ -131,7 +138,6 @@ void ControlManager::Dump()
     {
         cout << " - - id " << it->first << std::endl;
     }
-  
 }
 
 void ControlManager::UpdateObjects(float elapsedSeconds)

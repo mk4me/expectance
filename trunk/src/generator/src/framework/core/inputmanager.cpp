@@ -39,7 +39,7 @@ void InputManager::OnKey(unsigned char key, int x, int y)
       exit(0);
       break;
     case ' ':
-        ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_PAUSE));
+        ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_PAUSE), true);
         break;
     case '*':
       ControlManager::getInstance()->setTimeScale(  ControlManager::getInstance()->getTimeScale() * 1.1f);
@@ -48,7 +48,7 @@ void InputManager::OnKey(unsigned char key, int x, int y)
       ControlManager::getInstance()->setTimeScale(  ControlManager::getInstance()->getTimeScale() / 1.1f);
       break;
     case 's':
-      ControlManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_RENDER_METHOD));  
+      ControlManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_RENDER_METHOD), true);  
       break;
 
     case 'g':
@@ -58,7 +58,7 @@ void InputManager::OnKey(unsigned char key, int x, int y)
       if((key >= '0') && (key <= '9'))
       {
         float lod = (key == '0') ? 1.0f : (key - '0') * 0.1f;
-        ControlManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_LOD, new MessageParam(lod)));
+        ControlManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_LOD, new MessageParam(lod)), true);
       }
       break;
   }
@@ -71,11 +71,11 @@ void InputManager::OnSpecial(int key, int x, int y)
   switch(key) 
   {
     case GLUT_KEY_UP:
- //     m_distance -= 3.0f;
+      ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_START, NULL), true);
       break;
     case GLUT_KEY_DOWN:
- //     m_distance += 3.0f;
-      break;
+        ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_STOP, NULL), true);
+       break;
     case GLUT_KEY_RIGHT:
 //      m_camheight += 3.0f;
       break;

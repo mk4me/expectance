@@ -26,7 +26,7 @@ namespace ft
 
         void OnUpdate();  // caled from window application
 
-        void SendMessage(Message* msg);  //request to send a message to registered objects
+        void SendMessage(Message* msg, bool deleteAfterSent);  //request to send a message to registered objects
 
         bool AddControlObject(ControlObject* pObj);
         bool  RemoveControlObject(ControlObject* pObj);

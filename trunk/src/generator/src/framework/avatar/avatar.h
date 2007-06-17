@@ -27,37 +27,28 @@ namespace ft
 
 
         void OnMessage(Message* msg);  // OVERRIDEN, receives a message from ControlManager
-        virtual void OnUpdate(float elapsedSeconds);  // OVERRIDEN, updates by ControlManager 
 		virtual bool Render();
 
         void ChangeRendeMethod();
 		void setRenderMethod(const int renderMethod);
 
-        void InitAnimation(int startAnim);
-
         void SetLodLevel(float level);
+
+    protected:
+        CalModel* m_calModel;  //cal3d model which is represented by this avatar object
+        CalCoreModel* m_calCoreModel;
 
     private:
         std::string m_name;
 
-        CalModel* m_calModel;  //cal3d model which is represented by this avatar object
-        CalCoreModel* m_calCoreModel;
-
-		int m_vertexCount;  //tmp
+   	    int m_vertexCount;  //tmp
 		int m_faceCount;    //tmp
 		bool m_shadow;      //tmp
 		int m_renderMethod; //tmp
 		void RenderModelMesh(bool shadow);
 		void RenderModelSkeleton(bool shadow);
 		void RenderModelBoundingBox(bool shadow);
-
-        //// ANIMATIONS
-        int m_currentAnimationId;
-        float m_leftAnimationTime;
-        float m_blendTime;
-        bool m_bPaused;
-
-       
+      
     };
 };
 

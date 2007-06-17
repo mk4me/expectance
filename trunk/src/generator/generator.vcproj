@@ -374,6 +374,14 @@
 					RelativePath=".\src\framework\motion\motion.h"
 					>
 				</File>
+				<File
+					RelativePath=".\src\framework\motion\movableavatar.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\motion\movableavatar.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 	</Files>

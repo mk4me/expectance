@@ -9,7 +9,7 @@
 
 #include "../core/global.h"
 #include <map>
-#include "avatar.h"
+#include "../motion/movableavatar.h"
 
 namespace ft
 {

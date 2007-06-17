@@ -52,12 +52,16 @@ void Application::InitSceneObjects()
 {
     DBG("Application::InitSceneObjects().");
 
-    Avatar* av = Application::getInstance()->CreateAvatarOnScene("cally.cfg", "FirstAvatar");
-    if (av != NULL)  av->InitAnimation(0);
+    MovableAvatar* av = dynamic_cast<MovableAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally.cfg", "FirstAvatar"));
+    if (av != NULL)  
+    {
+        av->Init();
+        av->Dump();
+    }
   
 //    Avatar* av2 = Application::getInstance()->CreateAvatarOnScene("cally.cfg", "SecondAvatar");
 //    if (av2 != NULL)  av2->InitAnimation(1);
-
+    
 
      ft::ControlManager::getInstance()->Dump();
 }
