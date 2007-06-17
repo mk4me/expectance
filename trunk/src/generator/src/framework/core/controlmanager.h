@@ -26,7 +26,7 @@ namespace ft
 
         void OnUpdate();  // caled from window application
 
-        void SendMessage(const Message& msg);  //request to send a message to registered objects
+        void SendMessage(Message* msg);  //request to send a message to registered objects
 
         bool AddControlObject(ControlObject* pObj);
         bool  RemoveControlObject(ControlObject* pObj);
@@ -40,6 +40,8 @@ namespace ft
         void Dump();
 
     private:
+        
+        static ControlManager* m_instance;
 
         unsigned int m_lastTick;
 
@@ -47,9 +49,6 @@ namespace ft
         int m_fpsFrames;
         int m_fps;
         float m_timeScale;
-
-        
-        static ControlManager* m_instance;
 
         std::map<std::string,ControlObject*> m_objects;
 

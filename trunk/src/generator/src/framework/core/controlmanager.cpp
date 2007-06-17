@@ -71,8 +71,18 @@ void ControlManager::OnUpdate()
   m_lastTick = tick;
 }
 
-void ControlManager::SendMessage(const Message& msg)
+void ControlManager::SendMessage(Message* msg)
 {
+    if (DEBUG_MESSAGES)
+        std::cout << "ControlManager::SendMessage: "<< Message::_GET_MSG_NAME(msg->getType())  << std::endl;
+
+    //TODO: abak:  this update should be synchronized with adding and removing ControlObjects
+
+   	std::map<std::string,ControlObject*>::iterator it=m_objects.begin();
+	for( ; it != m_objects.end(); ++it )
+    {
+        it->second->OnMessage(msg);
+    }
 }
 
 bool ControlManager::AddControlObject(ControlObject* pObj)

@@ -13,6 +13,7 @@
 //#include "../scene/primitiveManager.h"
 #include "application.h"
 #include "config.h"
+#include "inputmanager.h"
 
 using namespace ft;
 
@@ -39,18 +40,18 @@ void IdleFunc()
 void KeyboardFunc(unsigned char key, int x, int y)
 {
   // redirect the message to the viewer instance
-  theViewer.OnKey(key, x, theViewer.GetHeight() - y - 1);
+    InputManager::getInstance()->OnKey(key, x, theViewer.GetHeight() - y - 1);
 }
 
 void SpecialFunc(int key, int x, int y)
 {
-  theViewer.OnSpecial(key, x, theViewer.GetHeight() - y - 1);
+  InputManager::getInstance()->OnSpecial(key, x, theViewer.GetHeight() - y - 1);
 }
 
 void MotionFunc(int x, int y)
 {
   // redirect the message to the viewer instance
-  theViewer.OnMouseMove(x, theViewer.GetHeight() - y - 1);
+  InputManager::getInstance()->OnMouseMove(x, theViewer.GetHeight() - y - 1);
 }
 
 void MouseFunc(int button, int state, int x, int y)
@@ -58,11 +59,11 @@ void MouseFunc(int button, int state, int x, int y)
   // redirect the message to the viewer instance
   if(state == GLUT_DOWN)
   {
-    theViewer.OnMouseButtonDown(button, x, theViewer.GetHeight() - y - 1);
+    InputManager::getInstance()->OnMouseButtonDown(button, x, theViewer.GetHeight() - y - 1);
   }
   else if(state == GLUT_UP)
   {
-    theViewer.OnMouseButtonUp(button, x, theViewer.GetHeight() - y - 1);
+    InputManager::getInstance()->OnMouseButtonUp(button, x, theViewer.GetHeight() - y - 1);
   }
 }
 

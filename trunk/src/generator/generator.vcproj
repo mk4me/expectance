@@ -263,7 +263,19 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\framework\core\inputmanager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\core\inputmanager.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\core\main.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\core\message.cpp"
 					>
 				</File>
 				<File

@@ -6,11 +6,18 @@
 #ifndef _GEN_MESSAGE_H
 #define _GEN_MESSAGE_H
 
-
 #include <string>
+
 
 namespace ft
 {
+    //TYPES of MEDDAGES
+    static const int MSG_CONTROL_PAUSE = 0;  //param: NULL
+    static const int MSG_PROPERTY_LOD = 1;  //param: float
+    static const int MSG_PROPERTY_RENDER_METHOD = 2;  //param: NULL  , changes render method into next one
+
+
+
     ///////////////////////////////
 
     class MessageParam
@@ -39,7 +46,16 @@ namespace ft
           
     class Message
     {
-        Message(const int type, const MessageParam& param = NULL) { /*empty*/}
+    public:
+        Message(const int type, MessageParam* param = NULL) { m_type = type; m_param = param; }
+
+        int getType() { return m_type; }
+        MessageParam* getParam() { return m_param; }
+
+        static std::string _GET_MSG_NAME(int msg);
+    private:
+        int m_type;
+        MessageParam* m_param;
     };
 };
 

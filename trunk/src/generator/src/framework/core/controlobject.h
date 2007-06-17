@@ -17,7 +17,7 @@ namespace ft
         ControlObject(void) { /*empty*/}
 	    virtual ~ControlObject(void) { /*empty*/}
 
-        virtual void OnMessage(Message& msg);  // receives a message from ControlManager
+        virtual void OnMessage(Message* msg);  // receives a message from ControlManager
 
         virtual void OnUpdate(float elapsedTime);  // updates by ControlManager
     };

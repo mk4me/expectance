@@ -15,22 +15,20 @@
 #endif
 
 #include "Viewer.h"
-//#include "../core/simulation.h"
 #include "../avatar/avatarfactory.h"
 #include "../scene/scenemanager.h"
 #include "../core/controlmanager.h"
+#include "../core/application.h"
 
-
+using namespace ft;
 
 Viewer theViewer;
 
 Viewer::Viewer()
 {
-//  m_calCoreModel = new CalCoreModel("dummy");
-
   m_width = glutGet (GLUT_SCREEN_WIDTH);
   m_height = (glutGet (GLUT_SCREEN_HEIGHT))/2;
-//  m_bFullScreen = false;
+
   m_pitchAngle = 20.0f;
   m_yawAngle = 0; 
   m_distance = 800.0f;
@@ -40,21 +38,13 @@ Viewer::Viewer()
   m_mouseY = 0;
   m_bLeftMouseButtonDown = false;
   m_bRightMouseButtonDown = false;
-//  m_lastTick = 0;
-  m_bPaused = false;
+
   m_renderScene = 1;
   m_renderMethod = 0;
   m_scale = 1.0f;
-//  m_blendTime = 0.3f;
-  m_lodLevel = 1.0f;
+
   m_vertexCount = 0;
   m_faceCount = 0;
-
-//  m_fpsDuration = 0.0f;
-//  m_fpsFrames = 0;
-//  m_fps = 0;
-
-//  m_timeScale = 1;
 
   m_lightPosition[0] = 3000.0; m_lightPosition[1] = 6000.0; m_lightPosition[2] = 0.0; // Coordinates of the light source
   m_normal[0] = 0.0; m_normal[1] = -1.0; m_normal[2] = 0.0;                           // Normal vector for the plane
@@ -67,11 +57,6 @@ Viewer::Viewer()
 Viewer::~Viewer()
 {
 }
-
-//bool Viewer::GetFullScreen()
-//{
-//  return m_bFullScreen;
-//}
 
 int Viewer::GetHeight()
 {
@@ -115,11 +100,7 @@ bool Viewer::OnCreate(int argc, char *argv[])
   int arg;
   for(arg = 1; arg < argc; arg++)
   {
-    // check for fullscreen flag
-    //if(strcmp(argv[arg], "--fullscreen") == 0) m_bFullScreen = true;
-    // check for window flag
-    //else if(strcmp(argv[arg], "--window") == 0) m_bFullScreen = false;
-    // check for dimension flag
+     // check for dimension flag
     if((strcmp(argv[arg], "--dimension") == 0) && (argc - arg > 2))
     {
       m_width = atoi(argv[++arg]);
@@ -159,21 +140,8 @@ bool Viewer::OnInit()
   GLfloat light_ambient[]  = { 0.8f, 0.8f, 0.8f, 1.0f };
   GLfloat light_diffuse[]  = { 0.5f, 0.5f, 0.5f, 1.0f };
   GLfloat light_specular[] = { 0.1f, 0.1f, 0.1f, 1.0f };
-  
-  ft::Avatar* av1 = ft::AvatarFactory::getInstance()->CreateAvatar("cally.cfg", "First avatar");
-
-  if (av1 != NULL)
-  {
-	  ft::SceneManager::getInstance()->AddObject(av1); 
-      ft::ControlManager::getInstance()->AddControlObject(av1);
-      av1->InitAnimation(0);
-  }
-  else
-       std::cout << "ERRRRROOOOOOOOOOORRR  creation of 1 avatar failed " << std::endl;
-  
-  
-  ft::ControlManager::getInstance()->Dump();
-
+    
+  Application::getInstance()->InitSceneObjects();
 
   //OGL Initialization mka 2007.06.10
   
@@ -226,55 +194,10 @@ bool Viewer::PrepareResources()
     return true;
 }
 
-/*----- Handle a key event -----*/
-void Viewer::OnKey(unsigned char key, int x, int y)
+void Viewer::ChangeSceneRenderMethod()
 {
-  switch(key)
-  {
-    // test for quit event
-    case 27:
-    case 'q':
-    case 'Q':
-      exit(0);
-      break;
-    case '-':
-      m_lodLevel -= 0.1f;
-      if(m_lodLevel < 0.0f) m_lodLevel = 0.0f;
-      break;
-    case '+':
-      m_lodLevel += 0.1f;
-      if(m_lodLevel > 1.0f) m_lodLevel = 1.0f;
-      break;
-    case 'g':
-      m_renderScene = (m_renderScene+1) % 2;
-      break;
-    case 's':
-      m_renderMethod = (m_renderMethod+1) % 3;
-	  dynamic_cast<ft::Avatar*>(ft::SceneManager::getInstance()->getObject("cally.cfg"))->setRenderMethod(m_renderMethod);
-      break;
-    // test for pause event
-    case ' ':
-      m_bPaused = !m_bPaused;
-      break;
-    case '*':
-      ft::ControlManager::getInstance()->setTimeScale(  ft::ControlManager::getInstance()->getTimeScale() * 1.1f);
-      break;
-    case '/':
-      ft::ControlManager::getInstance()->setTimeScale(  ft::ControlManager::getInstance()->getTimeScale() / 1.1f);
-      break;
-    // test for the lod keys
-    default:
-      if((key >= '0') && (key <= '9'))
-      {
-        m_lodLevel = (key == '0') ? 1.0f : (key - '0') * 0.1f;
-      }
-      break;
-  }
-
-  // set the (possible) new lod level
-  //m_calModel->setLodLevel(m_lodLevel);  //TODO: abak:  apply this to avatars globally
+    m_renderScene = (m_renderScene+1) % 2;
 }
-
 
 /*----- Handle special keys (F1, F2, UP, DOWN, etc.)   -----*/
 void Viewer::OnSpecial(int key, int x, int y)
@@ -519,286 +442,6 @@ void Viewer::RenderCursor()
 
   glDisable(GL_BLEND);
 }
-
-/*----- render avatar model -----*/
-/*void Viewer::RenderModel(bool shadow)
-{
-    
-  glPushMatrix();
-	glRotatef(-90,1.0f,0.0f,0.0f); //must rotate because of 3dmax model representation ZYX to OGL XYZ
-    // set global OpenGL states
-    if (!shadow)
-    {
-		glEnable(GL_DEPTH_TEST);
-		glShadeModel(GL_SMOOTH);
-		glEnable(GL_LIGHTING);
-		glEnable(GL_LIGHT0);
-	}
-    
-	m_calModel->getSkeleton()->calculateBoundingBoxes();
-  
-    if (m_renderMethod == 0) 
-		RenderModelMesh(shadow);
-	else if (m_renderMethod == 1) 
-		RenderModelSkeleton(shadow);
-	else if (m_renderMethod == 2)
-		RenderModelBoundingBox(shadow);
-
-    // clear light
-    if (!shadow)
-    {
-		glDisable(GL_LIGHTING);
-		glDisable(GL_LIGHT0);
-		glDisable(GL_DEPTH_TEST);
-	}
-  glPopMatrix();
-}
-*/
-
-/*-----  Render mesh of the model  -----*/
-/*
-void Viewer::RenderModelMesh(bool shadow)
-{
-
-
-  // get the renderer of the model
-  CalRenderer *pCalRenderer = m_calModel->getRenderer();
-
-  // begin the rendering loop
-  if(pCalRenderer->beginRendering())
-  {
-    // we will use vertex arrays, so enable them
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_NORMAL_ARRAY);
-
-    // get the number of meshes
-    int meshCount = pCalRenderer->getMeshCount();
-
-    // render all meshes of the model
-    for(int meshId = 0; meshId < meshCount; meshId++)
-    {
-      // get the number of submeshes
-      int submeshCount = pCalRenderer->getSubmeshCount(meshId);
-
-      // render all submeshes of the mesh
-      for(int submeshId = 0; submeshId < submeshCount; submeshId++)
-      {
-        // select mesh and submesh for further data access
-        if(pCalRenderer->selectMeshSubmesh(meshId, submeshId))
-        {
-          unsigned char meshColor[4];
-          GLfloat materialColor[4];
-
-		  if (!shadow)
-		  {
-          // set the material ambient color
-          pCalRenderer->getAmbientColor(&meshColor[0]);
-          materialColor[0] = meshColor[0] / 255.0f;  materialColor[1] = meshColor[1] / 255.0f; materialColor[2] = meshColor[2] / 255.0f; materialColor[3] = meshColor[3] / 255.0f;
-          glMaterialfv(GL_FRONT, GL_AMBIENT, materialColor);
-
-          // set the material diffuse color
-          pCalRenderer->getDiffuseColor(&meshColor[0]);
-          materialColor[0] = meshColor[0] / 255.0f;  materialColor[1] = meshColor[1] / 255.0f; materialColor[2] = meshColor[2] / 255.0f; materialColor[3] = meshColor[3] / 255.0f;
-          glMaterialfv(GL_FRONT, GL_DIFFUSE, materialColor);
-
-          // set the material specular color
-          pCalRenderer->getSpecularColor(&meshColor[0]);
-          materialColor[0] = meshColor[0] / 255.0f;  materialColor[1] = meshColor[1] / 255.0f; materialColor[2] = meshColor[2] / 255.0f; materialColor[3] = meshColor[3] / 255.0f;
-          glMaterialfv(GL_FRONT, GL_SPECULAR, materialColor);
-
-          // set the material shininess factor
-          float shininess;
-          shininess = 50.0f; //pCalRenderer->getShininess();
-          glMaterialfv(GL_FRONT, GL_SHININESS, &shininess);
-		  }
-		  
-		  
-          // get the transformed vertices of the submesh
-          static float meshVertices[30000][3];
-          int vertexCount = pCalRenderer->getVertices(&meshVertices[0][0]);
-
-          // get the transformed normals of the submesh
-          static float meshNormals[30000][3];
-          pCalRenderer->getNormals(&meshNormals[0][0]);
-
-          // get the texture coordinates of the submesh
-          static float meshTextureCoordinates[30000][2];
-          int textureCoordinateCount = pCalRenderer->getTextureCoordinates(0, &meshTextureCoordinates[0][0]);
-
-          // get the faces of the submesh
-          static CalIndex meshFaces[50000][3];
-          int faceCount = pCalRenderer->getFaces(&meshFaces[0][0]);
-
-          // set the vertex and normal buffers
-          glVertexPointer(3, GL_FLOAT, 0, &meshVertices[0][0]);
-          glNormalPointer(GL_FLOAT, 0, &meshNormals[0][0]);
-
-          if(!shadow)
-          {
-          // set the texture coordinate buffer and state if necessary
-          if((pCalRenderer->getMapCount() > 0) && (textureCoordinateCount > 0))
-          {
-            glEnable(GL_TEXTURE_2D);
-            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-            glEnable(GL_COLOR_MATERIAL);
-
-            // set the texture id we stored in the map user data
-            glBindTexture(GL_TEXTURE_2D, (GLuint)pCalRenderer->getMapUserData(0));
-
-            // set the texture coordinate buffer
-            glTexCoordPointer(2, GL_FLOAT, 0, &meshTextureCoordinates[0][0]);
-            glColor3f(1.0f, 1.0f, 1.0f);
-          }
-
-		  }
-          
-          // draw the submesh
-		  
-          if(sizeof(CalIndex)==2)
-            glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_SHORT, &meshFaces[0][0]);
-          else
-            glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_INT, &meshFaces[0][0]);
-
-          // disable the texture coordinate state if necessary
-          if((pCalRenderer->getMapCount() > 0) && (textureCoordinateCount > 0))
-          {
-            glDisable(GL_COLOR_MATERIAL);
-            glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-            glDisable(GL_TEXTURE_2D);
-          }
-
-          // adjust the vertex and face counter
-          m_vertexCount += vertexCount;
-          m_faceCount += faceCount;
-
-        }
-      }
-    }
-
-    // clear vertex array state
-    glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_VERTEX_ARRAY);
-
-    // end the rendering
-    pCalRenderer->endRendering();
-  }
-
-
-}
-*/
-/*----- Render skeleton of the model -----*/
-/*
-void Viewer::RenderModelSkeleton(bool shadow)
-{
- 
-  glEnable(GL_COLOR_MATERIAL);
-  
-  // draw the bone lines
-  float lines[1024][2][3];
-  int nrLines = m_calModel->getSkeleton()->getBoneLines(&lines[0][0][0]);
-
-  glLineWidth(3.0f);
-  if (!shadow)
-     glColor3f(1.0f, 1.0f, 0.0f);
-  else 
-     glColor3f(0.0f, 0.0f, 0.0f);
-
-  glBegin(GL_LINES);
-  for(int currLine = 0; currLine < nrLines; currLine++)
-  {
-    glVertex3f(lines[currLine][0][0], lines[currLine][0][1], lines[currLine][0][2]);
-    glVertex3f(lines[currLine][1][0], lines[currLine][1][1], lines[currLine][1][2]);
-  }
-  glEnd();
-  glLineWidth(1.0f);
-
-  // draw the bone points
-  float points[1024][3];
-  int nrPoints = m_calModel->getSkeleton()->getBonePoints(&points[0][0]);
-
-  glPointSize(4.0f);
-  glBegin(GL_POINTS);
-  if (!shadow)
-     glColor3f(0.0f, 0.0f, 1.0f);
-  else
-     glColor3f(0.0f, 0.0f, 0.0f);
-  for(int currPoint = 0; currPoint < nrPoints; currPoint++)
-  {
-    glVertex3f(points[currPoint][0], points[currPoint][1], points[currPoint][2]);
-  }
-  glEnd();
-  glPointSize(1.0f);
-
-  glDisable(GL_COLOR_MATERIAL);
-}
-*/
-
-/*----- Render bounding box boundaries of the model -----*/
-/*
-void Viewer::RenderModelBoundingBox(bool shadow)
-{  
-
-   CalSkeleton *pCalSkeleton = m_calModel->getSkeleton();
-
-   std::vector<CalBone*> &vectorCoreBone = pCalSkeleton->getVectorBone();
-   
-   glEnable(GL_COLOR_MATERIAL);
-   if (!shadow)
-	 glColor3f(1.0f, 1.0f, 0.0f);
-   else
-     glColor3f(0.0f, 0.0f, 0.0f);
-   glBegin(GL_LINES);      
-
-   for(size_t boneId=0;boneId<vectorCoreBone.size();++boneId)
-   {
-      CalBoundingBox & calBoundingBox  = vectorCoreBone[boneId]->getBoundingBox();
-
-	  CalVector p[8];
-	  calBoundingBox.computePoints(p);
-
-	  
-	  glVertex3f(p[0].x,p[0].y,p[0].z);
-	  glVertex3f(p[1].x,p[1].y,p[1].z);
-
-	  glVertex3f(p[0].x,p[0].y,p[0].z);
-	  glVertex3f(p[2].x,p[2].y,p[2].z);
-
-	  glVertex3f(p[1].x,p[1].y,p[1].z);
-	  glVertex3f(p[3].x,p[3].y,p[3].z);
-
-	  glVertex3f(p[2].x,p[2].y,p[2].z);
-	  glVertex3f(p[3].x,p[3].y,p[3].z);
-
-  	  glVertex3f(p[4].x,p[4].y,p[4].z);
-	  glVertex3f(p[5].x,p[5].y,p[5].z);
-
-	  glVertex3f(p[4].x,p[4].y,p[4].z);
-	  glVertex3f(p[6].x,p[6].y,p[6].z);
-
-	  glVertex3f(p[5].x,p[5].y,p[5].z);
-	  glVertex3f(p[7].x,p[7].y,p[7].z);
-
-	  glVertex3f(p[6].x,p[6].y,p[6].z);
-	  glVertex3f(p[7].x,p[7].y,p[7].z);
-
-	  glVertex3f(p[0].x,p[0].y,p[0].z);
-	  glVertex3f(p[4].x,p[4].y,p[4].z);
-
-	  glVertex3f(p[1].x,p[1].y,p[1].z);
-	  glVertex3f(p[5].x,p[5].y,p[5].z);
-
-	  glVertex3f(p[2].x,p[2].y,p[2].z);
-	  glVertex3f(p[6].x,p[6].y,p[6].z);
-
-	  glVertex3f(p[3].x,p[3].y,p[3].z);
-	  glVertex3f(p[7].x,p[7].y,p[7].z);  
-
-   }
-
-   glEnd();
-   glDisable(GL_COLOR_MATERIAL);	
-}
-*/
 
 
 /*----- Render Scene elements (floor, walls etc) -----*/

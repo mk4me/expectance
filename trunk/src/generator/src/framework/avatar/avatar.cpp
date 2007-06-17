@@ -66,9 +66,23 @@ CalCoreModel* Avatar::GetCalCoreModel()
     return m_calCoreModel;
 }
 
-void Avatar::OnMessage(Message& msg)
+void Avatar::OnMessage(Message* msg)
 {
-    DBG("Avatar::OnMessage: received");
+    if (DEBUG_MESSAGES)
+        std::cout << "Avatar<" << getID() << "> received message: " << Message::_GET_MSG_NAME(msg->getType()) << std::endl;
+
+    if (msg->getType() == MSG_CONTROL_PAUSE)
+    {
+        m_bPaused = !m_bPaused;
+    } 
+    else if (msg->getType() == MSG_PROPERTY_LOD) 
+    {
+        SetLodLevel(msg->getParam()->getFloatValue());
+    } 
+    else if (msg->getType() == MSG_PROPERTY_RENDER_METHOD)
+    {
+        ChangeRendeMethod();
+    }
 }
 
 void Avatar::OnUpdate(float elapsedSeconds)
@@ -133,6 +147,11 @@ bool Avatar::Render()
 	glPopMatrix();
 	m_shadow= !m_shadow; // temporary hack
 	return true;
+}
+
+void Avatar::ChangeRendeMethod()
+{
+    m_renderMethod = (m_renderMethod+1) % 3;
 }
 
 void Avatar::setRenderMethod(const int renderMethod)
@@ -366,4 +385,13 @@ void Avatar::RenderModelBoundingBox(bool shadow)
 	glEnd();
 	glDisable(GL_COLOR_MATERIAL);	
 
+}
+
+void Avatar::SetLodLevel(float level)
+{
+    if (m_calModel != NULL)
+    {
+        std::cout << "Avatar<" << getID() <<"> SetLodLevel " << level << std::endl;
+        m_calModel->setLodLevel(level);
+    }
 }

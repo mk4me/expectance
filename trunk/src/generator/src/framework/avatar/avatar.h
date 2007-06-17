@@ -26,12 +26,16 @@ namespace ft
         CalCoreModel* GetCalCoreModel();
 
 
-        void OnMessage(Message& msg);  // OVERRIDEN, receives a message from ControlManager
+        void OnMessage(Message* msg);  // OVERRIDEN, receives a message from ControlManager
         virtual void OnUpdate(float elapsedSeconds);  // OVERRIDEN, updates by ControlManager 
 		virtual bool Render();
+
+        void ChangeRendeMethod();
 		void setRenderMethod(const int renderMethod);
 
         void InitAnimation(int startAnim);
+
+        void SetLodLevel(float level);
 
     private:
         std::string m_name;

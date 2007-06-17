@@ -37,8 +37,6 @@ void Application::InitConfig()
     DBG("Application::InitConfig().");
     Config::getInstance()->LoadConfigFile();  //with creation of singleton in getInstance()
     Config::TEST_CONFIG();
-
-
 }
 
 void Application::InitModules()
@@ -53,4 +51,26 @@ void Application::InitModules()
 void Application::InitSceneObjects()
 {
     DBG("Application::InitSceneObjects().");
+
+    Avatar* av = Application::getInstance()->CreateAvatarOnScene("cally.cfg", "FirstAvatar");
+    if (av != NULL)  av->InitAnimation(0);
+  
+//    Avatar* av2 = Application::getInstance()->CreateAvatarOnScene("cally.cfg", "SecondAvatar");
+//    if (av2 != NULL)  av2->InitAnimation(1);
+
+
+     ft::ControlManager::getInstance()->Dump();
+}
+
+
+Avatar* Application::CreateAvatarOnScene(const std::string& calCoreModel,const  std::string& name)
+{
+  Avatar* avatar = ft::AvatarFactory::getInstance()->CreateAvatar(calCoreModel, name);
+  if (avatar != NULL)
+  {
+	  SceneManager::getInstance()->AddObject(avatar); 
+      ControlManager::getInstance()->AddControlObject(avatar);
+  }
+
+  return avatar;
 }

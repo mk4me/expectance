@@ -7,7 +7,7 @@
 
 using namespace ft;
 
-void ControlObject::OnMessage(Message& msg)
+void ControlObject::OnMessage(Message* msg)
 {
 }
 

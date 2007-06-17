@@ -11,6 +11,8 @@
 
 #define DBG(x) Debug::out(x)
 
+#define DEBUG_MESSAGES true
+
 #define FT_PREFIX "<FT>"
 
 namespace ft
