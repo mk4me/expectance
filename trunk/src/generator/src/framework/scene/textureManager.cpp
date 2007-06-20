@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------//
-// textureManager.cpp                                                         //
-// Copyright (C) 2007 Future Today                                            //
-// author mka																  //
-// based on Rob Bateman examples code                                         //
-//----------------------------------------------------------------------------//
+/*
+ * Copyright (c) 2007, FutureToday. All rights reserved.
+ * author: mka
+ * based on Rob Bateman examples code
+ */
 
 #include "TextureManager.h"
+
 
 // openGL extensions if not present, define them
 #ifndef GL_COMPRESSED_RGB_S3TC_DXT1_EXT
@@ -19,14 +19,37 @@
 #define GL_TEXTURE_COMPRESSED_IMAGE_SIZE 0x86A0
 #endif
 
-TextureManager::TextureManager(void)
+using namespace ft;
+
+TextureManager* TextureManager::m_instance = NULL;
+
+TextureManager* TextureManager::getInstance()
 {
+    if (m_instance == NULL)
+    {
+        DBG("TextureManager::getInstace(): instance of TextureManager created ");
+        m_instance = new TextureManager();
+    }
+
+    return m_instance;
 }
 
-TextureManager::~TextureManager(void)
+void TextureManager::DestroyInstance()
 {
-	DeleteAllTextures();
+	if (m_instance != NULL)
+	{
+		std::map<std::string,TexRef>::iterator it=m_instance->m_Textures.begin();
+		for( ; it != m_instance->m_Textures.end(); ++it ) {
+			glDeleteTextures(1,&it->second.idx);
+		}
+		m_instance->m_Textures.clear();
+
+		//m_instance->DeleteAllTextures();
+        delete m_instance;
+	}
 }
+
+
 
 //--------------------------------------------------------------------------
 /// \brief	This function takes raw image data and converts it to an openGL
@@ -95,30 +118,7 @@ unsigned int TextureManager::MakeGlTexture(GLenum Format,const unsigned char *pi
 
 }
 
-/// this structure is used to reference count OpenGL textures
-struct TexRef {
 
-	/// the openGL texture object
-	unsigned int idx;
-
-	/// the reference count
-	unsigned int ref;
-
-	/// the size of the loaded texture
-	unsigned int size;
-
-	/// the alias 
-	
-	/// ctor
-	TexRef(unsigned id_,unsigned sz) : idx(id_),ref(1),size(sz) {}
-	/// ctor
-	TexRef() : idx(0),ref(0),size(0) {}
-	/// ctor
-	TexRef(const TexRef& tr) : idx(tr.idx),ref(tr.ref),size(tr.size) {}
-};
-
-/// a global map of all currently loaded textures
-std::map<std::string,TexRef> g_Textures;
 
 //--------------------------------------------------------------------------
 /// \brief	This function loads the specified image file and returns the 
@@ -130,8 +130,8 @@ std::map<std::string,TexRef> g_Textures;
 unsigned int TextureManager::LoadTexture(const std::string filename,bool compressed) {
 
 	// check to see if file is already loaded.
-	std::map<std::string,TexRef>::iterator it = g_Textures.find(filename);
-	if ( it!=g_Textures.end()) {
+	std::map<std::string,TexRef>::iterator it = m_Textures.find(filename);
+	if ( it!=m_Textures.end()) {
 		it->second.ref++;
 		return it->second.idx;
 	}
@@ -201,7 +201,7 @@ unsigned int TextureManager::LoadTexture(const std::string filename,bool compres
 	free(pixels);
 	
 	// insert the texture into a map to keep track of it
-	g_Textures.insert( std::make_pair( std::string(filename), TexRef(tex_object,data_size) ) );
+	m_Textures.insert( std::make_pair( std::string(filename), TexRef(tex_object,data_size) ) );
 
 	// return GL texture object
 	return tex_object;
@@ -216,8 +216,8 @@ unsigned int TextureManager::LoadTexture(const std::string filename,bool compres
 void TextureManager::ReleaseTexture(unsigned int idx) {
 
 	// iterate through the textures to find the requested texture
-	std::map<std::string,TexRef>::iterator it=g_Textures.begin();
-	for( ; it != g_Textures.end(); ++it ) {
+	std::map<std::string,TexRef>::iterator it=m_Textures.begin();
+	for( ; it != m_Textures.end(); ++it ) {
 
 		// when found...
 		if(idx == it->second.idx) {
@@ -227,23 +227,11 @@ void TextureManager::ReleaseTexture(unsigned int idx) {
 
 				// delete texture
 				glDeleteTextures(1,&(it->second.idx));
-				g_Textures.erase(it);
+				m_Textures.erase(it);
 			}
 			return;
 		}
 	}
-}
-
-//--------------------------------------------------------------------------
-/// \brief	This function deletes all currently loaded textures
-///
-void TextureManager::DeleteAllTextures() {
-
-	std::map<std::string,TexRef>::iterator it=g_Textures.begin();
-	for( ; it != g_Textures.end(); ++it ) {
-		glDeleteTextures(1,&it->second.idx);
-	}
-	g_Textures.clear();
 }
 
 
@@ -256,8 +244,8 @@ void TextureManager::DeleteAllTextures() {
 unsigned int TextureManager::GetTextureSize(unsigned int idx) {
 
 	// iterate through the textures to find the requested texture
-	std::map<std::string,TexRef>::iterator it=g_Textures.begin();
-	for( ; it != g_Textures.end(); ++it ) {
+	std::map<std::string,TexRef>::iterator it=m_Textures.begin();
+	for( ; it != m_Textures.end(); ++it ) {
 
 		// when found...
 		if(idx == it->second.idx) {
@@ -276,8 +264,8 @@ unsigned int TextureManager::GetTextureSize(unsigned int idx) {
 unsigned int TextureManager::GetTotalTextureSize() {
 	unsigned int sz=0;
 	// iterate through the textures to find the requested texture
-	std::map<std::string,TexRef>::iterator it=g_Textures.begin();
-	for( ; it != g_Textures.end(); ++it ) {
+	std::map<std::string,TexRef>::iterator it=m_Textures.begin();
+	for( ; it != m_Textures.end(); ++it ) {
 		sz += it->second.size;		
 	}
 	return sz;
@@ -285,33 +273,33 @@ unsigned int TextureManager::GetTotalTextureSize() {
 
 
 /*----- Extract filename -----*/
-char *TextureManager::ExtractFileName(const char *path)
-{
-  char buf[256],*p,*q;
-  int n;
-  strcpy(buf,path);
-  /*Delete extension*/
-  n=strlen(buf);
-  p=buf+n;
-  while (*--p!='.' && p>buf);
-  if (*p=='.')
-   {
-	*p='\0';
-	printf("Filename without extension: %s\n",buf);
-   }
-  else
-   {
-	printf("Filename doesn't have an extension\n");
-	p=buf+n;
-   }
-  /*Compute filename length*/
-  q=p;
-  while (*--q!='\\');
-  ++q;
-  //Filename length: p-q
-  //Filename without path: q
-  return q;
-}
+//char *TextureManager::ExtractFileName(const char *path)
+//{
+//  char buf[256],*p,*q;
+//  int n;
+//  strcpy(buf,path);
+//  /*Delete extension*/
+//  n=strlen(buf);
+//  p=buf+n;
+//  while (*--p!='.' && p>buf);
+//  if (*p=='.')
+//   {
+//	*p='\0';
+//	printf("Filename without extension: %s\n",buf);
+//   }
+//  else
+//   {
+//	printf("Filename doesn't have an extension\n");
+//	p=buf+n;
+//   }
+//  /*Compute filename length*/
+//  q=p;
+//  while (*--q!='\\');
+//  ++q;
+//  //Filename length: p-q
+//  //Filename without path: q
+//  return q;
+//}
 
 /******************************************************** TGA *****************************************************/
 #ifndef IN

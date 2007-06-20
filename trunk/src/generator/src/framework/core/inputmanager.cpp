@@ -39,20 +39,22 @@ void InputManager::OnKey(unsigned char key, int x, int y)
       exit(0);
       break;
     case ' ':
-        ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_PAUSE), true);
-        break;
+      ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_PAUSE), true);
+      break;
     case '*':
       ControlManager::getInstance()->setTimeScale(  ControlManager::getInstance()->getTimeScale() * 1.1f);
       break;
     case '/':
       ControlManager::getInstance()->setTimeScale(  ControlManager::getInstance()->getTimeScale() / 1.1f);
       break;
-    case 's':
+    case 'r':
       ControlManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_RENDER_METHOD), true);  
       break;
-
-    case 'g':
-      theViewer.ChangeSceneRenderMethod();
+	case 's':
+      ControlManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_SHADOW), true);  
+  	  break;
+    case 'f':
+		OGLContext::getInstance()->changeFloorType();
       break;
     default:
       if((key >= '0') && (key <= '9'))
@@ -83,7 +85,7 @@ void InputManager::OnSpecial(int key, int x, int y)
 //      m_camheight -= 3.0f;
       break;
     default:
-        theViewer.OnSpecial(key, x, y);
+		Camera::getInstance()->OnSpecial(key, x, y);
       break;	
   }
 }
@@ -91,18 +93,18 @@ void InputManager::OnSpecial(int key, int x, int y)
 /*----- Handle a mouse button down event -----*/
 void InputManager::OnMouseButtonDown(int button, int x, int y)
 {
-    theViewer.OnMouseButtonDown(button, x, y);
+    Camera::getInstance()->OnMouseButtonDown(button, x, y);
 }
 
 /*----- Handle a mouse button up event -----*/
 void InputManager::OnMouseButtonUp(int button, int x, int y)
 {
-    theViewer.OnMouseButtonUp(button, x, y);
+    Camera::getInstance()->OnMouseButtonUp(button, x, y);
 }
 
 
 /*----- Handle a mouse move event -----*/
 void InputManager::OnMouseMove(int x, int y)
 {
-    theViewer.OnMouseMove(x, y);
+    Camera::getInstance()->OnMouseMove(x, y);
 }

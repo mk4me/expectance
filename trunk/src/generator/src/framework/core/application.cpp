@@ -44,8 +44,8 @@ void Application::InitModules()
     DBG("Application::InitModules().");
 
     ControlManager::getInstance();  //enforced creation of singleton
-    AvatarFactory::getInstance();  //enforced creation of singleton
-    SceneManager::getInstance();  //enforced creation of singleton
+    AvatarFactory::getInstance();   //enforced creation of singleton
+    SceneManager::getInstance();    //enforced creation of singleton
 }
 
 void Application::InitSceneObjects()

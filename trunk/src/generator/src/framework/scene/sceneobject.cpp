@@ -27,8 +27,15 @@ void SceneObject::setColor(const FTVect col)
 
 void SceneObject::setID(std::string id)
 {
-	m_id = id;
-	//TO DO MKA
+	if (!id.empty())
+	{
+		m_id = id;
+	}
+	else
+	{
+		///char * id =	itoa(static_cast<int>(this),m_id,10); not good idea what about referencing on the same instance of object?
+	}
+	//TODOMKA
 	//void SceneObject::setID(std::string id)
 	//{
 	//itoa(static_cast<int>(this),m_id,10);

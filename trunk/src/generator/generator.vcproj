@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="windows-1250"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
@@ -72,7 +72,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib"
 				OutputFile="../../bin/Debug/generator.exe"
-				LinkIncremental="1"
+				LinkIncremental="0"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\cal3d\Debug"
 				GenerateDebugInformation="true"
@@ -299,6 +299,22 @@
 				Name="scene"
 				>
 				<File
+					RelativePath=".\src\framework\scene\camera.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\camera.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\oglcontext.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\oglcontext.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\scene\scenemanager.cpp"
 					>
 				</File>
@@ -315,19 +331,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\scene\textureManager.cpp"
+					RelativePath=".\src\framework\scene\texturemanager.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\scene\textureManager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\viewer.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\viewer.h"
+					RelativePath=".\src\framework\scene\texturemanager.h"
 					>
 				</File>
 			</Filter>

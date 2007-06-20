@@ -8,7 +8,9 @@
 
 using namespace ft;
 
-Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName):m_renderMethod(0)
+Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName):
+m_renderMethod(0), 
+m_shadow(true)
 {
     m_calModel = calModel;
     m_calCoreModel = calCoreModel;
@@ -52,46 +54,47 @@ void Avatar::OnMessage(Message* msg)
     } 
     else if (msg->getType() == MSG_PROPERTY_RENDER_METHOD)
     {
-        ChangeRendeMethod();
+        ChangeRenderMethod();
     }
+	else if (msg->getType() == MSG_PROPERTY_SHADOW)
+	{
+		ChangeShadow();
+	}
 }
 
 
 bool Avatar::Render()
 {
+	if (m_shadow) //draw the shadow
+	{	
+		glPushMatrix();
+			OGLContext::getInstance()->GlShadowProjection();
+			glColor3f(0.0f,0.0f,0.0f);
+			glRotatef(-90,1.0f,0.0f,0.0f); 
+			RenderAvatar(m_renderMethod, m_shadow); 	
+		glPopMatrix();
+	}
+	
+	// draw the object that casts the shadow
+
+	glEnable(GL_DEPTH_TEST);
+	glShadeModel(GL_SMOOTH);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	//
 	glPushMatrix();
-	glRotatef(-90,1.0f,0.0f,0.0f); //must rotate because of 3dmax model representation ZYX to OGL XYZ
-	// set global OpenGL states
-	if (!m_shadow)
-	{
-		glEnable(GL_DEPTH_TEST);
-		glShadeModel(GL_SMOOTH);
-		glEnable(GL_LIGHTING);
-		glEnable(GL_LIGHT0);
-	}
-
-	m_calModel->getSkeleton()->calculateBoundingBoxes();
-
-	if (m_renderMethod == 0) 
-		RenderModelMesh(m_shadow);
-	else if (m_renderMethod == 1) 
-		RenderModelSkeleton(m_shadow);
-	else if (m_renderMethod == 2)
-		RenderModelBoundingBox(m_shadow);
-
-	// clear light
-	if (!m_shadow)
-	{
-		glDisable(GL_LIGHTING);
-		glDisable(GL_LIGHT0);
-		glDisable(GL_DEPTH_TEST);
-	}
+		glRotatef(-90,1.0f,0.0f,0.0f);
+		RenderAvatar(m_renderMethod, false);
 	glPopMatrix();
-	m_shadow= !m_shadow; // temporary hack
+	
+	// clear light
+	glDisable(GL_LIGHTING);
+	glDisable(GL_LIGHT0);
+	glDisable(GL_DEPTH_TEST);
 	return true;
 }
 
-void Avatar::ChangeRendeMethod()
+void Avatar::ChangeRenderMethod()
 {
     m_renderMethod = (m_renderMethod+1) % 3;
 }
@@ -101,7 +104,35 @@ void Avatar::setRenderMethod(const int renderMethod)
 	m_renderMethod = renderMethod;
 }
 
-void Avatar::RenderModelMesh(bool shadow)
+void Avatar::ChangeShadow()
+{
+    m_shadow = !m_shadow;
+}
+
+void Avatar::setShadow(const bool shadow)
+{
+	m_shadow = shadow;
+}
+
+void Avatar::RenderAvatar(const int renderMethod, const bool shadow)
+{
+	if (renderMethod == 0) 
+	{
+		RenderModelMesh(shadow);
+	}
+	else if (renderMethod == 1) 
+	{
+		RenderModelSkeleton(shadow);
+	}
+	else if (renderMethod == 2)
+	{
+  		m_calModel->getSkeleton()->calculateBoundingBoxes();
+		RenderModelBoundingBox(shadow);
+	}
+}
+
+
+void Avatar::RenderModelMesh(const bool shadow)
 {
 	// get the renderer of the model
 	CalRenderer *pCalRenderer = m_calModel->getRenderer();
@@ -223,7 +254,7 @@ void Avatar::RenderModelMesh(bool shadow)
 		pCalRenderer->endRendering();
 	}
 }
-void Avatar::RenderModelSkeleton(bool shadow)
+void Avatar::RenderModelSkeleton(const bool shadow)
 {
 	glEnable(GL_COLOR_MATERIAL);
 
@@ -266,7 +297,7 @@ void Avatar::RenderModelSkeleton(bool shadow)
 	glDisable(GL_COLOR_MATERIAL);
 
 }
-void Avatar::RenderModelBoundingBox(bool shadow)
+void Avatar::RenderModelBoundingBox(const bool shadow)
 {
 	CalSkeleton *pCalSkeleton = m_calModel->getSkeleton();
 

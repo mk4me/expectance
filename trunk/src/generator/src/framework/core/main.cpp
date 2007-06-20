@@ -1,128 +1,112 @@
-//----------------------------------------------------------------------------//
-// main.cpp                                                                   //
-// Copyright (C) 2007 Future Today                                            //
-// based on Bruno 'Beosil' Heidelberger code                                  //
-//----------------------------------------------------------------------------//
+/*
+ * Copyright (c) 2007, FutureToday. All rights reserved.
+ * author: mka, abak
+ */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
 #include "global.h"
-#include "../scene/viewer.h"
-//#include "../scene/primitiveManager.h"
 #include "application.h"
 #include "config.h"
 #include "inputmanager.h"
+#include "../scene/scenemanager.h"
 
 using namespace ft;
 
 /*----- GLUT callback functions  -----*/                                        
 void DisplayFunc()
 {
-  // render the scene
-  theViewer.OnRender();
-
+	SceneManager::getInstance()->OnRender(); 
 }
 
 void ExitFunc()
 {
-  // shut the viewer instance down
-  theViewer.OnShutdown();
+   // shut down OGL Content
+   SceneManager::getInstance()->CleanUp();
 }
 
 void IdleFunc()
 {
   // redirect to the viewer instance
-  theViewer.OnIdle();
+  //theViewer.OnIdle(); //sman or contr man
+  
+  //update ControlManager
+  ControlManager::getInstance()->OnUpdate();
+  glutPostRedisplay();
 }
 
 void KeyboardFunc(unsigned char key, int x, int y)
 {
-  // redirect the message to the viewer instance
-    InputManager::getInstance()->OnKey(key, x, theViewer.GetHeight() - y - 1);
+    InputManager::getInstance()->OnKey(key, x,  OGLContext::getInstance()->getHeight() - y - 1);
 }
 
 void SpecialFunc(int key, int x, int y)
 {
-  InputManager::getInstance()->OnSpecial(key, x, theViewer.GetHeight() - y - 1);
+	InputManager::getInstance()->OnSpecial(key, x, OGLContext::getInstance()->getHeight() - y - 1);
 }
 
 void MotionFunc(int x, int y)
 {
-  // redirect the message to the viewer instance
-  InputManager::getInstance()->OnMouseMove(x, theViewer.GetHeight() - y - 1);
+	InputManager::getInstance()->OnMouseMove(x, OGLContext::getInstance()->getHeight() - y - 1);
 }
 
 void MouseFunc(int button, int state, int x, int y)
 {
-  // redirect the message to the viewer instance
   if(state == GLUT_DOWN)
   {
-    InputManager::getInstance()->OnMouseButtonDown(button, x, theViewer.GetHeight() - y - 1);
+    InputManager::getInstance()->OnMouseButtonDown(button, x, OGLContext::getInstance()->getHeight() - y - 1);
   }
   else if(state == GLUT_UP)
   {
-    InputManager::getInstance()->OnMouseButtonUp(button, x, theViewer.GetHeight() - y - 1);
+    InputManager::getInstance()->OnMouseButtonUp(button, x, OGLContext::getInstance()->getHeight() - y - 1);
   }
 }
 
 void ReshapeFunc(int width, int height)
 {
-  // set the new width/height values
-  theViewer.SetDimension(width, height);
+	OGLContext::getInstance()->setWindowSize(width, height);
 }
 
-/*----- Main entry point of the application -----*/
+
 int main(int argc, char *argv[])
 {
-    ft::Application::getInstance()->InitConfig();
-  // initialize the GLUT system
-  glutInit(&argc, argv);
+	ft::Application::getInstance()->InitConfig();
+	// initialize the GLUT system
+	glutInit(&argc, argv);
+	atexit(ExitFunc);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	glutInitWindowSize(glutGet (GLUT_SCREEN_WIDTH), (glutGet (GLUT_SCREEN_HEIGHT))/2);
+	glutCreateWindow(Config::getInstance()->GetStrVal("application_name"));
 
-  // create our view instance
-  if(!theViewer.OnCreate(argc, argv))
-  {
-    std::cerr << "Creation of the viewer failed." << std::endl;
-    return -1;
-  }
+	if (Config::getInstance()->GetIntVal("full_screen") == 1)
+	{
+		glutFullScreen();
+	}
+	//TODOMKA glutSetCursor(GLUT_CURSOR_NONE);
 
-  // register our own exit callback
-  atexit(ExitFunc);
+	// register all GLUT callback functions
+	glutIdleFunc(IdleFunc);
+	glutMouseFunc(MouseFunc);
+	glutMotionFunc(MotionFunc);
+	glutPassiveMotionFunc(MotionFunc);
+	glutReshapeFunc(ReshapeFunc);
+	glutDisplayFunc(DisplayFunc);
+	glutKeyboardFunc(KeyboardFunc);
+	glutSpecialFunc(SpecialFunc);
 
-  // set all GLUT modes
-  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-  glutInitWindowSize(theViewer.GetWidth(), theViewer.GetHeight());
+	if(!ft::SceneManager::getInstance()->Init())
+	{
+		std::cerr << "Initialization of the Arena failed." << std::endl;
+		return -1;
+	}
 
-  glutCreateWindow(Config::getInstance()->GetStrVal("application_name"));
+	ft::Application::getInstance()->InitModules();
+	ft::Application::getInstance()->InitSceneObjects();
 
-  if (Config::getInstance()->GetIntVal("full_screen") == 1)
-      glutFullScreen();
+	// run the GLUT message loop
+	glutMainLoop();
 
-  glutSetCursor(GLUT_CURSOR_NONE);
-
-  // register all GLUT callback functions
-  glutIdleFunc(IdleFunc);
-  glutMouseFunc(MouseFunc);
-  glutMotionFunc(MotionFunc);
-  glutPassiveMotionFunc(MotionFunc);
-  glutReshapeFunc(ReshapeFunc);
-  glutDisplayFunc(DisplayFunc);
-  glutKeyboardFunc(KeyboardFunc);
-  glutSpecialFunc(SpecialFunc);
-  
-  // initialize our viewer instance
-  if(!theViewer.OnInit())
-  {
-    std::cerr << "Initialization of the viewer failed." << std::endl;
-    return -1;
-  }
-
-    ft::Application::getInstance()->InitModules();
-    ft::Application::getInstance()->InitSceneObjects();
-
-  // run the GLUT message loop
-  glutMainLoop();
-
-  return 0;
+	return 0;
 }

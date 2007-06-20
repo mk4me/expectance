@@ -5,7 +5,6 @@
 
 #include "scenemanager.h"
 
-
 using namespace ft;
 
 SceneManager* SceneManager::m_instance = NULL;
@@ -16,6 +15,9 @@ SceneManager* SceneManager::getInstance()
     {
         DBG("SceneManager::getInstace(): instance of SceneManager created ");
         m_instance = new SceneManager();
+		
+		TextureManager::getInstance();  // enforced creation of singleton
+		Camera::getInstance();			// enforced creation of singleton
     }
 
     return m_instance;
@@ -34,6 +36,51 @@ void SceneManager::DestroyInstance()
         delete m_instance;
     }
 }
+
+bool SceneManager::Init()
+{
+	Camera::getInstance()->Init();
+	OGLContext::getInstance()->Init();
+	Application::getInstance()->InitSceneObjects();
+	
+	if (!InitSceneObjects()) 
+	{
+		return false;
+	}
+	return true;
+}
+
+bool SceneManager::InitSceneObjects()
+{
+
+	OGLContext::getInstance()->InitNormalFloorDL(20);
+	if (!OGLContext::getInstance()->InitTexturedFloorDL(20)) return false;
+	if (!OGLContext::getInstance()->InitLogoDL()) return false;
+
+	ControlManager::getInstance()->Init();
+
+	return true;
+}
+
+void SceneManager::OnRender()
+{
+	OGLContext::getInstance()->RenderScene();
+	RenderObjects();
+	OGLContext::getInstance()->RenderLogo();
+
+	///	RenderCursor();
+	// swap the front- and back-buffer
+	glutSwapBuffers();
+
+	// increase frame counter
+	ft::ControlManager::getInstance()->increraseFramesCounter();
+}
+
+void SceneManager::CleanUp()
+{
+	TextureManager::getInstance()->DestroyInstance();	
+}
+
 
 
 
@@ -86,7 +133,7 @@ bool SceneManager::RemoveObject(std::string id)
 	return false;
 }
 
-void SceneManager::Render()
+void SceneManager::RenderObjects()
 {
 	SceneObject *pObj;
 	// iterate through the objects to find object needs rendering
@@ -94,7 +141,7 @@ void SceneManager::Render()
 	for( ; it != g_SceneObjects.end(); ++it ) {
 		if ((pObj = dynamic_cast<SceneObject*>(it->second))!=NULL)
 		{
-			// TODO mka if (pObj->Visible) 
+			// TODOMKA if (pObj->Visible) 
 			pObj->Render();
 		}
 	}
