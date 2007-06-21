@@ -21,15 +21,19 @@ namespace ft
 		~SceneObject(void);
 		virtual bool Render()=0;
 
-		void setPosition(const FTVect position);
-		void setOrientation(const FTVect orientation);
-		void setColor(const FTVect color);
-		void setID(std::string ID);		
-		FTVect getPosition() const;
-		FTVect getColor() const;
-		std::string getID() const;
+		SceneObject& setPosition(const FTVect &position);
+		SceneObject& setOrientation(const FTVect &orientation);
+		SceneObject& setColor(const FTVect &color);
+		SceneObject& setID(const std::string &id);		
+		const FTVect& getPosition() const;
+		const FTVect& getOrientation() const;
+		const FTVect& getColor() const;
+		const std::string& getID() const;
+		const bool isVisible() const;
+
 		void PrintInfo(void) const;
 	protected:
+		bool m_visible;
 		FTVect m_position, m_orientation;
 		FTVect m_color;
 		float m_alpha;

@@ -15,18 +15,25 @@ namespace ft {
 	class Line : public SceneObject  
 	{
 	public:
-		Line(std::string id);
-		Line(FTVect &start, FTVect &end, const std::string id);
-		Line(FTVect &position, FTVect &orientation, const float length, const std::string id);
-		Line(FTVect &start, FTVect &end, const std::string id, FTVect &color);
+		Line(const std::string& id);
+		Line(const std::string& id, bool arrow);
+		Line(const FTVect& start, const FTVect& end, const std::string& id);
+		Line(const FTVect& position, const FTVect& orientation, float length, const std::string& id);
 		virtual ~Line(void);
 		virtual bool Render();
-		bool isActive();
+		Line& setLenght(const float lenght);
+		Line& setStart(const FTVect &start);
+		Line& setEnd(const FTVect &end);
+		Line& setArrow(const bool arrow);
+		void Show();
+		void Hide();
+
+
 	protected:
-		bool m_active;
 		FTVect m_start;
 		FTVect m_end;
-		float m_length;
+		float m_lenght;
+		bool m_arrow;
 	};
 };
 

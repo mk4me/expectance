@@ -141,7 +141,7 @@ void SceneManager::RenderObjects()
 	for( ; it != g_SceneObjects.end(); ++it ) {
 		if ((pObj = dynamic_cast<SceneObject*>(it->second))!=NULL)
 		{
-			// TODOMKA if (pObj->Visible) 
+			if (pObj->isVisible()) 
 			pObj->Render();
 		}
 	}
