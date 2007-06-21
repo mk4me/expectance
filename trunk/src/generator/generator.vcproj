@@ -489,6 +489,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\framework\scene\line.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\line.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\scene\oglcontext.cpp"
 					>
 				</File>

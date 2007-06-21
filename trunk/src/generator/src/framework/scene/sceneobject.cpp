@@ -8,6 +8,10 @@ using namespace ft;
 
 SceneObject::SceneObject(void)
 {
+	m_position.set(0,0,0);
+	m_orientation.set(0,0,1);
+	m_color.set(1.0,1.0,1.0); //white
+	m_alpha = 1;
 }
 
 SceneObject::~SceneObject(void)
@@ -19,6 +23,10 @@ void SceneObject::setPosition(const FTVect pos)
 	m_position = pos;
 }
 
+void SceneObject::setOrientation(const FTVect orientation)
+{
+	m_orientation = orientation;
+}
 void SceneObject::setColor(const FTVect col)
 {
 	m_color = col;

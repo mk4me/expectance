@@ -12,6 +12,7 @@
 #include "config.h"
 #include "inputmanager.h"
 #include "../scene/scenemanager.h"
+#include "../scene/line.h"
 
 using namespace ft;
 
@@ -104,6 +105,7 @@ int main(int argc, char *argv[])
 
 	ft::Application::getInstance()->InitModules();
 	ft::Application::getInstance()->InitSceneObjects();
+	ft::SceneManager::getInstance()->AddObject(new Line(FTVect(1,0,1), FTVect(10,10,10), 100,"Linia I"));
 
 	// run the GLUT message loop
 	glutMainLoop();
