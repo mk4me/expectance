@@ -33,7 +33,7 @@ namespace ft
 		float getYawAngle();
 		float getRollAngle();
 		float getCamUpDown();
-
+		//float c_debug;
     private:
         static Camera* m_instance;
 
@@ -44,6 +44,7 @@ namespace ft
 		float m_camLeftRight, m_camUpDown;
 		int m_mouseX, m_mouseY;
 		bool m_bLeftMouseButtonDown, m_bRightMouseButtonDown, m_bMiddleMouseButtonDown;
+
     };
 };
 

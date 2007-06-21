@@ -38,12 +38,27 @@ void Camera::Init()
 	m_bLeftMouseButtonDown = false;
 	m_bRightMouseButtonDown = false;
 	m_bMiddleMouseButtonDown = false;
+
+	//c_debug = 0.0;
 }
 
 /*----- Handle a key event -----*/
 void Camera::OnKey(unsigned char key, int x, int y)
 {
-
+  switch(key)
+  {
+    // test for .... everything
+   //// case 'o':
+   ////   c_debug+=0.1;if (c_debug>1.0) c_debug=0.0;
+	  ////std::cout << "info -> "<<c_debug<< std::endl;
+   ////   break;
+   //// case 'p':
+   ////   c_debug-=0.1;if (c_debug<0.0) c_debug=1.0;
+	  ////std::cout << "blending -> "<<c_debug<< std::endl;
+   ////   break;
+    default:
+      break;
+  }
 }
 
 

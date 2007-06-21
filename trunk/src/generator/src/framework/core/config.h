@@ -6,8 +6,10 @@
 #ifndef _GEN_CONFIG_H
 #define _GEN_CONFIG_H
 
-#define CONFIG_FILE "../application.cfg"
+#define CONFIG_FILE "data/application.cfg"
 
+#include "global.h"
+#include "../utility/debug.h"
 #include <string>
 #include <map>
 

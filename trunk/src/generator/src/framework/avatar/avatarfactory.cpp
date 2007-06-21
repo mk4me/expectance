@@ -97,7 +97,8 @@ bool AvatarFactory::ParseModelConfiguration(const std::string& strFilename, CalC
 {
   // open the model configuration file
   std::ifstream file;
-  file.open(strFilename.c_str(), std::ios::in | std::ios::binary);
+  std::string fn = FT_MODELPATH+strFilename;
+  file.open(fn.c_str(), std::ios::in | std::ios::binary);
   if(!file)
   {
     std::cerr << "Failed to open model configuration file '" << strFilename << "'." << std::endl;
@@ -162,7 +163,7 @@ bool AvatarFactory::ParseModelConfiguration(const std::string& strFilename, CalC
     {
       // load core skeleton
       std::cout << "Loading skeleton '" << strData << "'..." << std::endl;
-      if(!coreModel->loadCoreSkeleton(strData))
+      if(!coreModel->loadCoreSkeleton(FT_MODELPATH+strData))
       {
         CalError::printLastError();
         return false;
@@ -172,7 +173,7 @@ bool AvatarFactory::ParseModelConfiguration(const std::string& strFilename, CalC
     {
       // load core animation
       std::cout << "Loading animation '" << strData << "'..." << std::endl;
-      if(coreModel->loadCoreAnimation(strData) == -1)
+      if(coreModel->loadCoreAnimation(FT_MODELPATH+strData) == -1)
       {
         CalError::printLastError();
         return false;
@@ -182,7 +183,7 @@ bool AvatarFactory::ParseModelConfiguration(const std::string& strFilename, CalC
     {
       // load core mesh
       std::cout << "Loading mesh '" << strData << "'..." << std::endl;
-      if(coreModel->loadCoreMesh(strData) == -1)
+      if(coreModel->loadCoreMesh(FT_MODELPATH+strData) == -1)
       {
         CalError::printLastError();
         return false;
@@ -192,7 +193,7 @@ bool AvatarFactory::ParseModelConfiguration(const std::string& strFilename, CalC
     {
       // load core material
       std::cout << "Loading material '" << strData << "'..." << std::endl;
-      if(coreModel->loadCoreMaterial(strData) == -1)
+      if(coreModel->loadCoreMaterial(FT_MODELPATH+strData) == -1)
       {
         CalError::printLastError();
         return false;

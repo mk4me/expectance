@@ -244,7 +244,7 @@ bool OGLContext::InitLogoDL()
 			return false;
 
 		glBindTexture(GL_TEXTURE_2D,logoTexture);
-		glColor3f(1.0f, 1.0f, 1.0f);
+		glColor4f(1.0f, 1.0f, 1.0f, 0.3f);
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
 			glTexCoord2f(1.0f, 1.0f); glVertex2i(_width, 0);

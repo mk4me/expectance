@@ -62,6 +62,7 @@ void InputManager::OnKey(unsigned char key, int x, int y)
         float lod = (key == '0') ? 1.0f : (key - '0') * 0.1f;
         ControlManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_LOD, new MessageParam(lod)), true);
       }
+	  Camera::getInstance()->OnKey(key, x, y);
       break;
   }
 }

@@ -24,7 +24,8 @@
 #include "../scene/textureManager.h"
 
 
-static const std::string FT_TEXTUREPATH = "..\\textures\\";
+static const std::string FT_TEXTUREPATH = "data\\textures\\";
+static const std::string FT_MODELPATH = "data\\cally\\";
 
 typedef CalVector FTVect;
 
