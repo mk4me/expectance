@@ -10,6 +10,7 @@ rmdir /S /Q "src/cal3d/FT Full Debug Max 6"
 rmdir /S /Q "src/cal3d/FT Full Release Max 6"
 rmdir /S /Q "src/generator/FT Full Debug Max 6"
 rmdir /S /Q "src/generator/FT Full Release Max 6"
+rmdir /S /Q _ReSharper.Generator
 
 del /F bin\release\*.exp
 del /F bin\release\*.ilk 

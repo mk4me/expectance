@@ -38,7 +38,7 @@ Line::Line(const FTVect& start, const FTVect& end, const std::string& id):m_arro
 
 Line::~Line(void)
 {
-	std::cout << m_id << " line deleted\n";
+	std::cout << getID() << " line deleted\n";
 }
 
 bool Line::Render()

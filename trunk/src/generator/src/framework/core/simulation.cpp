@@ -24,7 +24,7 @@ Simulation::~Simulation()
 
 
 /*----- Get the current millisecond tick count -----*/
-unsigned int Simulation::GetTick()
+unsigned int Simulation::getTick()
 {
 #ifdef _WIN32
 	return GetTickCount();

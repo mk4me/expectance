@@ -9,12 +9,12 @@
 
 #define _CRT_SECURE_NO_WARNINGS 1
 
-#include "../core/global.h"
+#include "../core/baseobject.h"
 
 
 namespace ft
 {
-	class SceneObject
+	class SceneObject: public BaseObject
 	{
 	public:
 		SceneObject(void);
@@ -24,11 +24,11 @@ namespace ft
 		SceneObject& setPosition(const FTVect &position);
 		SceneObject& setOrientation(const FTVect &orientation);
 		SceneObject& setColor(const FTVect &color);
-		SceneObject& setID(const std::string &id);		
+		
 		const FTVect& getPosition() const;
 		const FTVect& getOrientation() const;
 		const FTVect& getColor() const;
-		const std::string& getID() const;
+
 		const bool isVisible() const;
 
 		void PrintInfo(void) const;
@@ -37,7 +37,7 @@ namespace ft
 		FTVect m_position, m_orientation;
 		FTVect m_color;
 		float m_alpha;
-		std::string m_id;
+
 	};
 };
 

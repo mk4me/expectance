@@ -15,7 +15,7 @@ namespace ft
 	public:
 		Simulation(void);
 		virtual ~Simulation(void);
-		static unsigned int GetTick();
+		static unsigned int getTick();
 	};
 };
 

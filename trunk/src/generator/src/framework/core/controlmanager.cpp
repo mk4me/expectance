@@ -33,7 +33,7 @@ void ControlManager::Init()
 
   setTimeScale(1);
 
-  m_lastTick = ft::Simulation::GetTick();
+  m_lastTick = ft::Simulation::getTick();
 
 }
 
@@ -47,7 +47,7 @@ void ControlManager::DestroyInstance()
 void ControlManager::OnUpdate()
 {
       // get the current tick value
-  unsigned int tick = ft::Simulation::GetTick();
+  unsigned int tick = ft::Simulation::getTick();
 
   // calculate the amount of elapsed seconds
   float elapsedSeconds = (float)(tick - m_lastTick) / 1000.0f;

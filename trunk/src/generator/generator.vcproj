@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="windows-1250"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
@@ -414,6 +414,14 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\core\application.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\core\baseobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\core\baseobject.h"
 					>
 				</File>
 				<File
