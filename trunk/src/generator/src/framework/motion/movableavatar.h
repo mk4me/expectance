@@ -8,6 +8,8 @@
 
 #include "cal3d/cal3d.h"
 #include "../avatar/avatar.h"
+#include "../utility/Quat.h"
+
 #include "motion.h"
 #include <map>
 
@@ -36,6 +38,11 @@ namespace ft
         float m_leftAnimationTime;
         float m_blendTime;
         bool m_bPaused;
+
+        CalVector m_vTranslation;
+        CalVector m_vLastPos;
+
+        Quat m_vRotation;
 
         std::map<std::string,Motion*> m_motions;
 

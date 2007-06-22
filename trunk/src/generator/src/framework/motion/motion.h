@@ -13,6 +13,7 @@ namespace ft
 {
     //NAMES of MOTIONS
     static const std::string MOTION_WALK_LOOP = "data\\cally\\cally_walkloop.CAF";  
+    //static const std::string MOTION_WALK_LOOP = "data\\cally\\cally_ballerina.CAF";  
 
     class Motion
     {

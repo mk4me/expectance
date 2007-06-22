@@ -29,13 +29,13 @@ namespace ft
     public:
         MessageParam(int value) { m_nValue = value; }
         MessageParam(float value) { m_fValue = value; }
-        MessageParam(std::string & value) { m_strValue = value; }
-        MessageParam(void * value) { m_ptrValue = value; }
+        MessageParam(const std::string value) { m_strValue = value; }
+//        MessageParam(void * value) { m_ptrValue = value; } //WARNING : this consructos is improperly called for string values 
 
         int getIntValue() { return m_nValue; }
         float getFloatValue() { return m_fValue; }
         std::string getStrValue() { return m_strValue; }
-        void* getObjecttValue() { return m_ptrValue; }
+//        void* getObjecttValue() { return m_ptrValue; } 
         
     private:
         int m_nValue;

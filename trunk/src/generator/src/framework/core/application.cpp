@@ -58,10 +58,14 @@ void Application::InitSceneObjects()
         av->Init();
         av->Dump();
     }
+    MovableAvatar* av2 = dynamic_cast<MovableAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally.cfg", "SecondAvatar"));
+    if (av != NULL)  
+    {
+        av2->Init();
+        av2->Dump();
+    }
+
   
-//    Avatar* av2 = Application::getInstance()->CreateAvatarOnScene("cally.cfg", "SecondAvatar");
-//    if (av2 != NULL)  av2->InitAnimation(1);
-    
 
      ft::ControlManager::getInstance()->Dump();
 }

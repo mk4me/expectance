@@ -10,7 +10,7 @@
 			>
 			<DebugSettings
 				Command="$(TargetPath)"
-				WorkingDirectory="$(ProjectDir)..\..\data\cally\"
+				WorkingDirectory="$(SolutionDir)"
 				CommandArguments="cally.cfg"
 				Attach="false"
 				DebuggerType="3"

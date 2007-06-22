@@ -74,10 +74,10 @@ void InputManager::OnSpecial(int key, int x, int y)
   switch(key) 
   {
     case GLUT_KEY_UP:
-      ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_START, NULL), true);
+      ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_START, new MessageParam("FirstAvatar")), true);
       break;
     case GLUT_KEY_DOWN:
-        ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_STOP, NULL), true);
+        ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_STOP, new MessageParam("FirstAvatar")), true);
        break;
     case GLUT_KEY_RIGHT:
 //      m_camheight += 3.0f;
