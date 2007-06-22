@@ -54,16 +54,12 @@ bool Line::Render()
 			glVertex3f(m_start.x, m_start.y, m_start.z);
 			glVertex3f(m_end.x, m_end.y, m_end.z);
 		glEnd();
-//TODOMKA order it !!!
 		glEnable(GL_BLEND);
 		glShadeModel(GL_SMOOTH);
-		//glEnable(GL_LIGHTING);
-		//glEnable(GL_LIGHT0);
 		glDisable(GL_CULL_FACE);
 
 		if(m_arrow)
 		{
-			//glColor4f(m_color.x, m_color.y, m_color.z, 0.99f);
 			GLUquadricObj* pQuadric = gluNewQuadric();
 
 			FTVect v = m_end-m_start;
@@ -76,33 +72,22 @@ bool Line::Render()
 			if(v.z < 0.0f)
 				angle = 180.0f-angle;
 
-   //        // the rotation vector
+           // the rotation vector
            FTVect rot(v.y,-v.x,0.0f);
 
-			GLdouble radius = 6;
-				// the tube
-				//glPushMatrix();
-				// glTranslatef(m_start.x, m_start.y, m_start.z);
-				// glPushMatrix();
-				//   glRotatef(-angle,rot.x,rot.y,rot.z);
-				//   gluCylinder(pQuadric,radius,radius,ratio*height,10,1);
-				// glPopMatrix();
-				//glPopMatrix(); 
+			GLdouble radius = 5;
 			// the arrow (cone)
 			glPushMatrix();
 			 glTranslatef(m_end.x, m_end.y, m_end.z);
 			 glPushMatrix();
 			   glRotatef(-angle,rot.x,rot.y,rot.z);
-			   gluCylinder(pQuadric,radius,0,2.5*radius,10,1);
+			   gluCylinder(pQuadric,radius,0,2*radius,10,1);
 			 glPopMatrix();
 			glPopMatrix();
 		  gluDeleteQuadric(pQuadric);
 
 		}
 		glEnable(GL_CULL_FACE);
-		//glDisable(GL_LIGHTING);
-		//glDisable(GL_LIGHT0);
-		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_BLEND);
 	glPopMatrix();
 	return true;
