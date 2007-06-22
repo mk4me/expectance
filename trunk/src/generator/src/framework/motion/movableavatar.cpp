@@ -5,6 +5,7 @@
 
 #include "movableavatar.h"
 #include "../utility/debug.h"
+#include "../utility/Cal3dMathsConversion.h"
 
 using namespace ft;
 using namespace std;
@@ -13,7 +14,7 @@ MovableAvatar::MovableAvatar(CalModel* calModel, CalCoreModel* calCoreModel, con
 :Avatar(calModel, calCoreModel, modelName)
 {
     m_vTranslation = CalVector(0,0,0);
-    m_vRotation = Quat();
+    m_vRotation = CalQuaternion();
 }
 
 MovableAvatar::~MovableAvatar()
@@ -147,17 +148,12 @@ void MovableAvatar::OnUpdate(float elapsedSeconds)
         CalSkeleton *skel = m_calModel->getSkeleton();
         CalBone *bone = skel->getBone(0);
 
-        //SET ROTATION
-        CalQuaternion currRotatation = bone->getRotation();
-
-        //SET TRANSLATION
-
-
         CalVector currPos = bone->getTranslation();
-        
         CalVector diff = currPos - m_vLastPos;
+
+        CalQuaternion currRotatation = bone->getRotation();
+//        CalQuaternion rotDiff = currRotatation - m_vLastRotation;
         
-        //boolean changedAnimCycle = ( diff.length() > 50)
         
         if ( diff.length() > 50)
         {
@@ -166,59 +162,35 @@ void MovableAvatar::OnUpdate(float elapsedSeconds)
             m_vTranslation += add;
         }
 
+        bone->setRotation(currRotatation * m_vRotation);
+
         m_vLastPos = currPos;;
-
         currPos += m_vTranslation;
-
         bone->setTranslation(currPos);
-        bone->calculateState();
-        
 
-//        m_vLastTranslationDelta = currPos -  ;
-        
-        
+        bone->calculateState();
+       
     }
 }
 
 void MovableAvatar::OnMessage(Message* msg)
 {
     Avatar::OnMessage(msg);
-    if (msg->getType() == MSG_PROPERTY_LOD) 
+    if (msg->getType() == MSG_TEST) 
     {
-        
-/*        std::string id = getID();
 
-        if (id.compare("FirstAvatar") == 0 )
-        {
             CalSkeleton *skel = m_calModel->getSkeleton();
 
             CalBone *bone = skel->getBone(0);
 
             CalQuaternion currRotation = bone->getRotation();
+            Quat newRot(1.5f, Vec(0,0,1)); 
+            currRotation *= QuatToCalQuat(newRot);
+            bone->setRotation(currRotation);
 
-            Quat newOrientation = currRotation * QuatToCalQuat();
-
-            std::cout << " CalBone Translation : x " << calv.x << " y " << calv.y << " z " << calv.z << std::endl;
-
-            CalVector absoluteVect = bone->getTranslationAbsolute();
-            std::cout << " CalBone Translation absolute : x " << absoluteVect.x << " y " << absoluteVect.y << " z " << absoluteVect.z << std::endl;
-
-            CalCoreBone* coreBone = bone->getCoreBone();
-
-
-            CalVector trans(100, 50, 0);
-            
-
-
-            trans += bone->getCoreBone()->getTranslation();
-            bone->setTranslation(trans);
-            
-            //CalQuaternion calq(0,0,1, 90);
-            //bone->setRotation(calq);
-            //coreBone->setTranslation(calv);
             bone->calculateState();
-        }
-*/
+
+        
     } 
     else if (msg->getType() == MSG_CONTROL_PAUSE)
     {
@@ -245,5 +217,26 @@ void MovableAvatar::OnMessage(Message* msg)
             m_vTranslation = CalVector(0,0,0);
         }
     }
+    else if (msg->getType() == MSG_CONTROL_TURN_LEFT)
+    {
+        if (  getID().compare(msg->getParam()->getStrValue()) == 0   )
+        {
+            cout << "MovableAvatar : turn left " << std::endl;
+            Quat addRot = Quat(-0.2f, Vec(0,0,1));
+            m_vRotation *= QuatToCalQuat(addRot);
+        }
+    }
+    else if (msg->getType() == MSG_CONTROL_TURN_RIGHT)
+    {
+        if (  getID().compare(msg->getParam()->getStrValue()) == 0   )
+        {
+            cout << "MovableAvatar : turn left " << std::endl;
+            Quat addRot = Quat(0.2f, Vec(0,0,1));
+            m_vRotation *= QuatToCalQuat(addRot);
+        }
+    }
+
+
+    
 }
 

@@ -32,6 +32,9 @@ void InputManager::OnKey(unsigned char key, int x, int y)
  
   switch(key)
   {
+    case 't':
+      ControlManager::getInstance()->SendMessage(new Message(MSG_TEST), true);
+       break;     
     // test for quit event
     case 27:
     case 'q':
@@ -77,13 +80,13 @@ void InputManager::OnSpecial(int key, int x, int y)
       ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_START, new MessageParam("FirstAvatar")), true);
       break;
     case GLUT_KEY_DOWN:
-        ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_STOP, new MessageParam("FirstAvatar")), true);
+       ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_STOP, new MessageParam("FirstAvatar")), true);
        break;
     case GLUT_KEY_RIGHT:
-//      m_camheight += 3.0f;
+      ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_TURN_RIGHT, new MessageParam("FirstAvatar")), true);
       break;
     case GLUT_KEY_LEFT:
-//      m_camheight -= 3.0f;
+      ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_TURN_LEFT, new MessageParam("FirstAvatar")), true);
       break;
     default:
 		Camera::getInstance()->OnSpecial(key, x, y);

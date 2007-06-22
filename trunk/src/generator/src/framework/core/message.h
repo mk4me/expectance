@@ -12,13 +12,19 @@
 namespace ft
 {
     //TYPES of MESSAGES
+    static const int MSG_TEST = -1; // only for test
     static const int MSG_CONTROL_PAUSE = 0;  //param: NULL
     static const int MSG_CONTROL_START = 1;  //param: NULL
     static const int MSG_CONTROL_STOP = 2;  //param: NULL
+    static const int MSG_CONTROL_TURN_LEFT = 3;  //param: NULL
+    static const int MSG_CONTROL_TURN_RIGHT = 4;  //param: NULL
 
-    static const int MSG_PROPERTY_LOD = 3;  //param: float
-    static const int MSG_PROPERTY_RENDER_METHOD = 4;  //param: NULL  , changes render method into next one
-	static const int MSG_PROPERTY_SHADOW = 5; //param bool
+
+    static const int MSG_PROPERTY_LOD = 5;  //param: float
+    static const int MSG_PROPERTY_RENDER_METHOD = 6;  //param: NULL  , changes render method into next one
+	static const int MSG_PROPERTY_SHADOW = 7; //param bool
+
+    
 
 
 

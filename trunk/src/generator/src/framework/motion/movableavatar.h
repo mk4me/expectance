@@ -42,7 +42,7 @@ namespace ft
         CalVector m_vTranslation;
         CalVector m_vLastPos;
 
-        Quat m_vRotation;
+        CalQuaternion m_vRotation;
 
         std::map<std::string,Motion*> m_motions;
 
