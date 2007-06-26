@@ -505,6 +505,22 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\framework\scene\menuitem.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\menuitem.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\menumanager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\menumanager.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\scene\oglcontext.cpp"
 					>
 				</File>
@@ -558,6 +574,14 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\utility\Quat.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\utility\stringhelper.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\utility\stringhelper.h"
 					>
 				</File>
 				<File

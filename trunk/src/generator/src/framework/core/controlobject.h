@@ -11,7 +11,7 @@
 
 namespace ft
 {
-    class ControlObject : public SceneObject
+    class ControlObject : public virtual BaseObject
     {
     public:
         ControlObject(void) { /*empty*/}

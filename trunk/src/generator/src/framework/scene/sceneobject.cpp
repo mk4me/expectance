@@ -15,8 +15,9 @@ SceneObject::SceneObject(void)
 	m_visible = true;
 }
 
-SceneObject::~SceneObject(void)
+bool SceneObject::Render()
 {
+	return true;
 }
 
 SceneObject& SceneObject::setPosition(const FTVect& pos)

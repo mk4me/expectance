@@ -13,7 +13,7 @@
 
 namespace ft
 {
-    class Avatar : public ControlObject
+    class Avatar : public ControlObject, public SceneObject
     {
     public:
 		Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);

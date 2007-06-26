@@ -42,6 +42,7 @@ bool SceneManager::Init()
 	Camera::getInstance()->Init();
 	OGLContext::getInstance()->Init();
 	Application::getInstance()->InitSceneObjects();
+	MenuManager::getInstance()->Init();
 	
 	if (!InitSceneObjects()) 
 	{
@@ -57,7 +58,8 @@ bool SceneManager::InitSceneObjects()
 	if (!OGLContext::getInstance()->InitTexturedFloorDL(20)) return false;
 	if (!OGLContext::getInstance()->InitLogoDL()) return false;
 
-	ControlManager::getInstance()->Init();
+	ControlManager::getInstance()->Init();			
+///MKATODO	ControlManager::getInstance()->AddControlObject(MenuManager::getInstance());
 
 	return true;
 }
@@ -66,7 +68,9 @@ void SceneManager::OnRender()
 {
 	OGLContext::getInstance()->RenderScene();
 	RenderObjects();
+	//render 2D
 	OGLContext::getInstance()->RenderLogo();
+	MenuManager::getInstance()->Render();
 
 	///	RenderCursor();
 	// swap the front- and back-buffer

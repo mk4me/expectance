@@ -24,7 +24,10 @@ namespace ft
     static const int MSG_PROPERTY_RENDER_METHOD = 6;  //param: NULL  , changes render method into next one
 	static const int MSG_PROPERTY_SHADOW = 7; //param bool
 
-    
+    //
+	static const int MSG_INPUT_KEY_PRESSED = 8;
+	static const int MSG_MENU_ITEM_SELECTED = 9;
+
 
 
 

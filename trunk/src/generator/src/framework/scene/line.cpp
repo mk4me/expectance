@@ -20,7 +20,8 @@ Line::Line(const FTVect& position, const FTVect& orientation, float lenght, cons
 	tmpv = (m_start + tmpv*lenght);
 
 	setLenght(lenght).setStart(position).setEnd(tmpv);
-	setPosition(position).setOrientation(orientation).setID(id);
+	setPosition(position).setOrientation(orientation);
+	setID(id);
 	
 
 	//Line(position, tmpv, id); 

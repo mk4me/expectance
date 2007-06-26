@@ -22,7 +22,8 @@ std::string Message::_GET_MSG_NAME(int msg)
     case MSG_PROPERTY_RENDER_METHOD: strMsg = "MSG_PROPERTY_RENDER_METHOD"; break;
 	case MSG_PROPERTY_SHADOW: strMsg = "MSG_PROPERTY_SHADOW"; break;
     case MSG_TEST: strMsg = "MSG_TEST"; break;
-        
+	case MSG_INPUT_KEY_PRESSED: strMsg ="MSG_INPUT_KEY_PRESSED"; break;
+	case MSG_MENU_ITEM_SELECTED: strMsg ="MSG_MENU_ITEM_SELECTED"; break;       
     default: strMsg = "<unknown>"; break;
     }
     

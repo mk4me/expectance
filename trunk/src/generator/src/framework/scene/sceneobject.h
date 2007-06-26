@@ -14,12 +14,12 @@
 
 namespace ft
 {
-	class SceneObject: public BaseObject
+	class SceneObject: public virtual BaseObject
 	{
 	public:
 		SceneObject(void);
-		~SceneObject(void);
-		virtual bool Render()=0;
+		virtual~SceneObject(void) {};
+		virtual bool Render();
 
 		SceneObject& setPosition(const FTVect &position);
 		SceneObject& setOrientation(const FTVect &orientation);

@@ -18,10 +18,10 @@ namespace ft
     public:
 		BaseObject(void); 
 	    virtual ~BaseObject(void);
-		BaseObject& setID(const std::string &id);
 		const std::string& getID() const;
 		const std::string& getIDCounter() const;
-
+	protected:
+		BaseObject& setID(const std::string &id);
 	private:
 		void calculateID();
 		static unsigned long long ID_COUNTER;

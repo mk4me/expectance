@@ -134,6 +134,18 @@ const char* Config::GetStrVal(const char * key)
     return result;
 }
 
+const std::string Config::GetStrVal(const std::string& key)
+{
+	std::string result;
+  	std::map<std::string,std::string>::iterator it = m_entries.find(key);
+    if ( it!=m_entries.end()) 
+        result = it->second;
+    else
+        result = "<KEY_NOT_FOUND>";
+
+    return result;
+}
+
 int Config::GetIntVal(const char * key)
 {
     const char * val = GetStrVal(key);
