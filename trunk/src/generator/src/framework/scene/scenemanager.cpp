@@ -69,7 +69,7 @@ void SceneManager::OnRender()
 	OGLContext::getInstance()->RenderScene();
 	RenderObjects();
 	//render 2D
-	OGLContext::getInstance()->RenderLogo();
+	OGLContext::getInstance()->Render2D();
 	MenuManager::getInstance()->Render();
 
 	///	RenderCursor();

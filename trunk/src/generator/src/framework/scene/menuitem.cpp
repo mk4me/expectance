@@ -16,7 +16,6 @@ MenuItem::MenuItem(int x, int y)
 	setPosition(FTVect(x,y,0)); // albo setPosition2D
 	m_width = 32;
 	m_height = 32;
-
 }
 
 bool MenuItem::Render()
@@ -34,6 +33,7 @@ const MenuItem* MenuItem::getObject(unsigned int i) const
 {
 	return m_menuItems[i];
 }
+
 const std::vector<MenuItem*> MenuItem::getSubMenu() const
 {
 	return m_menuItems;
@@ -46,24 +46,37 @@ MenuItem& MenuItem::setInfoLabel(const std::string& label)
 	return *this;
 }
 
-MenuItem& MenuItem::setTexureFile(const std::string& filename)
+MenuItem& MenuItem::setTexureID(unsigned int textureID)
 {
-	m_filename = filename;
+	m_textureID = textureID;
 	return *this;
 }
+
+const std::string& MenuItem::getDescriptionLabel() const
+{
+	return m_label;
+}
+const unsigned int MenuItem::getTextureID() const
+{
+	return m_textureID;
+}
+
 
 void MenuItem::setWidth(int size)
 {
 	m_width = size;
 }
+
 void MenuItem::setHeight(int size)
 {
 	m_height = size;
 }
+
 const int MenuItem::getWidth() const
 {
 	return m_width;
 }
+
 const int MenuItem::getHeight() const
 {
 	return m_height;

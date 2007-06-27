@@ -28,9 +28,10 @@ namespace ft
 		const std::vector<MenuItem*> getSubMenu() const;
 
 		MenuItem& setInfoLabel(const std::string& label);
-		MenuItem& setTexureFile(const std::string& filename);
+		MenuItem& setTexureID(unsigned int textureID);
+		unsigned int bindTexture(const std::string& filename);
 		const std::string& getDescriptionLabel() const;
-		const GLint getTextureID() const;
+		const unsigned int getTextureID() const;
 
 		void setWidth(int size);
 		void setHeight(int size);
@@ -41,6 +42,8 @@ namespace ft
 		std::string m_label, m_filename;
 		std::vector <MenuItem *> m_menuItems;
 		int m_width, m_height;
+		unsigned int m_textureID;
+
 
 		
     };

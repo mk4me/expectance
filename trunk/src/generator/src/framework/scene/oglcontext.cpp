@@ -42,6 +42,10 @@ void OGLContext::changeFloorType()
 	m_floorType = !m_floorType;
 }
 
+void OGLContext::hideFTLogo()
+{
+	m_logoFT = !m_logoFT;
+}
 
 void OGLContext::setWindowSize(int width, int height)
 {
@@ -56,6 +60,7 @@ void OGLContext::Init()
 	m_width = glutGet (GLUT_SCREEN_WIDTH);
 	m_height = (glutGet (GLUT_SCREEN_HEIGHT))/2;
 	m_floorType = 0;
+	m_logoFT = 0;
 
 	GLfloat light_ambient[]  = { 0.8f, 0.8f, 0.8f, 1.0f };
 	GLfloat light_diffuse[]  = { 0.5f, 0.5f, 0.5f, 1.0f };
@@ -230,8 +235,8 @@ bool OGLContext::InitLogoDL()
 {
 	GLuint logoTexture;
 	GLfloat _width,_height;
-	_width = 112;
-	_height = 40;
+	_width = 90;
+	_height = 32;
 
 	glNewList(OGL_DL_LOGO,GL_COMPILE);
 		
@@ -291,24 +296,74 @@ void OGLContext::RenderScene()
 
 	glEnable(GL_CULL_FACE);
 
+
 }
 
-void OGLContext::RenderLogo()
+void OGLContext::Render2D()
 {
 	// must be accesible in the global scope for 2D stuff
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, (GLdouble)m_width, 0, (GLdouble)m_height, -1.0f, 1.0f);
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glPushMatrix();
-		glTranslatef(m_width-122,10,0);
-		glCallList(OGL_DL_LOGO);
-	glPopMatrix();
+	GLOrtho2DCorrection();
+
+	if (m_logoFT) 
+	{
+		glPushMatrix();
+			glTranslatef(m_width/2-100,-m_height/2+10,0);
+			glCallList(OGL_DL_LOGO);
+		glPopMatrix();
+	}
+
+	//glPushMatrix();
+	//	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//	glEnable(GL_BLEND);
+	//	glEnable(GL_LINE_SMOOTH);
+	//	//glLineWidth(2.0);
+	//	glColor4f(1,1,1,0.1f);
+	//	//OGLWriteStroke(-m_width/-10, -m_height/2+20, "This is antialiased.");
+	//	OGLWriteBitmap(6,-m_width/2+5, -m_height/2+65, "This is antialiased.");
+	//	glDisable(GL_LINE_SMOOTH);
+	//	glDisable(GL_BLEND);
+	//glPopMatrix();
+
 }
 
+void OGLContext::GLOrtho2DCorrection()
+{
+	int w;
+	int h;
+	GLdouble size;
+	GLdouble aspect;
 
+	w = m_width;
+	h = m_height;
+	aspect = (GLdouble)w / (GLdouble)h;
+
+	// Use the whole window.
+	//glViewport(0, 0, w, h);
+
+	// We are going to do some 2-D orthographic drawing.
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	size = (GLdouble)((w >= h) ? w : h) / 2.0;
+	if (w <= h) 
+	{
+		aspect = (GLdouble)h/(GLdouble)w;
+		glOrtho(-size, size, -size*aspect, size*aspect,	-100000.0, 100000.0);
+	}
+	else 
+	{
+		aspect = (GLdouble)w/(GLdouble)h;
+		glOrtho(-size*aspect, size*aspect, -size, size,	-100000.0, 100000.0);
+	}
+
+	// Make the world and window coordinates coincide so that 1.0 in
+	// model space equals one pixel in window space.
+	glScaled(aspect, aspect, 1.0);
+
+	// Now determine where to draw things.
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+}
 
 /*-----  prepare shadow projection for current model    -----*/
 // Multiply the current ModelView-Matrix with a shadow-projetion
@@ -365,4 +420,27 @@ void OGLContext::GlShadowProjection()
     float point[] = {0,0,0};              // Point of the plane
 
 	GlShadowProjection(lightPosition,point,normal);
+}
+
+void OGLContext::OGLWriteBitmap(int font, int x, int y, char *text)
+{
+	int len, i;
+	if ((font>6)||(font<0)) font = 4;
+	glRasterPos2f(x, y);
+	len = (int) strlen(text);
+	for (i = 0; i < len; i++)
+	{
+		glutBitmapCharacter(bitmap_fonts[font], text[i]);
+	}
+}
+
+void OGLContext::OGLWriteStroke(int x, int y, char *text)
+{
+    char *p;
+    glPushMatrix();
+    glTranslatef(x, y, 0);
+	glScaled(0.1,0.1,0.1);
+    for (p = text; *p; p++)
+        glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
+    glPopMatrix();
 }

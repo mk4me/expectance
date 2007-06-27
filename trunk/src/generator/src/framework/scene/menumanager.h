@@ -10,6 +10,7 @@
 #include "../core/config.h"
 #include "../utility/stringhelper.h"
 #include "menuitem.h"
+#include "oglcontext.h"
 
 
 
