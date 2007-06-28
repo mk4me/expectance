@@ -29,3 +29,9 @@ const std::string& BaseObject::getID() const
 	return m_id;
 }
 
+std::string BaseObject::toString()
+{
+    std::string brace("<");
+    return brace + getClassName() + "-" + getID() +">";
+}
+

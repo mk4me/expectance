@@ -29,8 +29,9 @@ TimeLine* TimeLineFactory::CreateTimeLine(Motion *motion)
 {
     TimeLine* timeLine = new TimeLine();
 //    TimeLineTrack* timeLineTrack = new TimeLineTrack();
-    TimeLineMotion* timeLineMotion = new TimeLineMotion(motion);
-    
+    TimeLineMotion* timeLineMotion = new TimeLineMotion();
+    timeLineMotion->setMotion(motion);
+        
 //    timeLineTrack->AddObject(timeLineMotion);
     timeLine->AddObject(timeLineMotion);
     

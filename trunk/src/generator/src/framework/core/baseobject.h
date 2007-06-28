@@ -24,6 +24,7 @@ namespace ft
         const std::string& getName() {return m_name; }
 
         std::string getClassName();
+        virtual std::string toString(); 
 	protected:
 		BaseObject& setID(const std::string &id);
 	private:

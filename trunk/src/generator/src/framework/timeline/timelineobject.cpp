@@ -6,6 +6,14 @@
 
 using namespace ft;
 
+TimeLineObject::TimeLineObject()
+{
+    m_startTime = TIME_UNDEFINED;
+    m_endTime = TIME_UNDEFINED;
+
+    m_started = false;
+}
+
 void TimeLineObject::Destroy(void)
 {
     std::cout << toString() << " Destroy() " << std::endl;
@@ -53,6 +61,15 @@ Motion* MovableAvatar::GetMotion(std::string motionName)
 }
 */
 
+TimeLineObject* TimeLineObject::GetCurrentObject()
+{
+    TimeLineObject* result = NULL;
+    if (m_vObjects.size() > 0)
+        result = m_vObjects[0];
+    return result;
+}
+
+
 std::string TimeLineObject::getDepthStr(int depth)
 {
     std::string sep = "";
@@ -70,10 +87,4 @@ void TimeLineObject::Dump(int depth)
     {
         m_vObjects[n]->Dump(depth+1);
     }
-}
-
-std::string TimeLineObject::toString()
-{
-    std::string result = CLASS_NAME + "<" + getID() + ">";
-    return result;
 }

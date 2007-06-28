@@ -12,22 +12,39 @@
 
 namespace ft
 {
-    class TimeLineObject : BaseObject
+    static const int TIME_UNDEFINED = -1;
+
+    class TimeLineObject : public BaseObject
     {
     public:
-        TimeLineObject() { CLASS_NAME = "TimeLineObject"; } 
+        TimeLineObject();
         virtual ~TimeLineObject(void) { /* empty */ }
-        void Destroy(void);
+        virtual void Destroy(void);
 
         bool AddObject(TimeLineObject* object);
 //        bool  RemoveObject(TimeLineObject* object);
 //        TimeLineObject* GetObject(int);
+        
+        void setStartTime(float startTime) { m_startTime = startTime; }
+        float getStartTime() { return m_startTime; }
+
+        void setEndTime(float endTime) { m_endTime = endTime; }
+        float getEndTime() { return m_endTime; }
+
+        void setStarted(bool set) { m_started = set; }
+        bool isStarted() { return m_started; }
+
+        TimeLineObject* GetCurrentObject();
+
+
         std::string getDepthStr(int depth);
         virtual void Dump(int depth);
-        virtual std::string toString(); 
  
     protected:
-        std::string CLASS_NAME;
+        float m_startTime;
+        float m_endTime;
+
+        bool m_started;
 
         std::vector<TimeLineObject*> m_vObjects;
     };

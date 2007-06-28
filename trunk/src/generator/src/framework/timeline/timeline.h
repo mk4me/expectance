@@ -6,38 +6,28 @@
 #ifndef _GEN_TIMELINE_H
 #define _GEN_TIMELINE_H
 
-#include "timelineobject.h"
+
 #include "timelinemotion.h"
-#include "timelinemodifier.h"
+
 #include "../motion/motion.h"
 
 namespace ft
 {
-    class TimeLine : public TimeLineObject
+    class TimeLine : public TimeLineMotion
     {
     public:
-        TimeLine(void)  { CLASS_NAME = "TimeLine"; m_modifier = NULL;}
+        TimeLine(void);
         virtual ~TimeLine(void) { /* empty */}
 
         void Destroy(void) { /* TODO: abak: to implement */ }
 
+        void Reset();
 
-        /* Adds motion to timeline
-         * @param index of motion on timeline
-         * @return object that represents this motion on timeline
-         */
-        TimeLineMotion* AddMotion(Motion* motion, int ind);
-        /* Removes motion of given index from timeline
-         * @return if operation succeed
-         */
-        bool RemoveMotion(int ind);
+        virtual void Execute(float elapsedSeconds, Avatar* avatar);
 
 
     private:
-           float length;  //length of timeline (defined by time)
-           TimeLineModifier *m_modifier;
-
-
+        float m_currTime;  //current time while timeline is being executed
     };
 };
 

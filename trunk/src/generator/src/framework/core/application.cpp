@@ -60,12 +60,12 @@ void Application::InitAvatars()
         av->Init();
         av->Dump();
     }
-    MovableAvatar* av2 = dynamic_cast<MovableAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally.cfg", "SecondAvatar"));
-    if (av != NULL)  
-    {
-        av2->Init();
-        av2->Dump();
-    }
+    //MovableAvatar* av2 = dynamic_cast<MovableAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally.cfg", "SecondAvatar"));
+    //if (av != NULL)  
+    //{
+    //    av2->Init();
+    //    av2->Dump();
+    //}
 
   
 

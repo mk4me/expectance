@@ -46,7 +46,7 @@ CalCoreModel* Avatar::GetCalCoreModel()
 void Avatar::OnMessage(Message* msg)
 {
     if (DEBUG_MESSAGES)
-        std::cout << "Avatar<" << getID() << "> received message: " << Message::_GET_MSG_NAME(msg->getType()) << std::endl;
+        std::cout << toString() << " received message: " << Message::_GET_MSG_NAME(msg->getType()) << std::endl;
 
     if (msg->getType() == MSG_PROPERTY_LOD) 
     {
