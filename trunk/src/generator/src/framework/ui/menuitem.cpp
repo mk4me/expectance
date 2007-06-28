@@ -18,11 +18,6 @@ MenuItem::MenuItem(int x, int y)
 	m_height = 32;
 }
 
-bool MenuItem::Render()
-{
-	return true;
-}
-
 void MenuItem::AddObject(MenuItem *menuElement)
 {
 	m_menuItems.push_back(menuElement);
@@ -39,6 +34,11 @@ const std::vector<MenuItem*> MenuItem::getSubMenu() const
 	return m_menuItems;
 }
 
+const std::string& MenuItem::getMenuName() 
+{
+	return getName();
+}
+
 
 MenuItem& MenuItem::setInfoLabel(const std::string& label)
 {
@@ -52,7 +52,7 @@ MenuItem& MenuItem::setTexureID(unsigned int textureID)
 	return *this;
 }
 
-const std::string& MenuItem::getDescriptionLabel() const
+const std::string& MenuItem::getLabel() const
 {
 	return m_label;
 }

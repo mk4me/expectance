@@ -55,8 +55,8 @@ namespace ft
 
 		void GlShadowProjection(float * l, float * e, float * n);
 		void GlShadowProjection();
-		void OGLWriteBitmap(int font, int x, int y, char *text);
-		void OGLWriteStroke(int x, int y, char *text);
+		void OGLWriteBitmap(int font, int x, int y, const char *text);
+		void OGLWriteStroke(int x, int y, const char *text);
 
 	private:
 		void GLOrtho2DCorrection();

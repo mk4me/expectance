@@ -25,8 +25,11 @@ namespace ft
 	static const int MSG_PROPERTY_SHADOW = 7; //param bool
 
     //
-	static const int MSG_INPUT_KEY_PRESSED = 8;
-	static const int MSG_MENU_ITEM_SELECTED = 9;
+ 	  static const int MSG_MENU_ITEM_SELECTED = 8;
+	//static const int MSG_INPUT_KEY_PRESSED = 9;
+	//static const int MSG_INPUT_BUTTON_PRESSED = 10;
+	//static const int MSG_INPUT_BUTTON_RELEASED = 11;
+	//static const int MSG_INPUT_MOUSE_MOVED = 12;
 
 
 
@@ -38,7 +41,8 @@ namespace ft
     public:
         MessageParam(int value) { m_nValue = value; }
         MessageParam(float value) { m_fValue = value; }
-        MessageParam(const std::string value) { m_strValue = value; }
+		MessageParam(const std::string value) { m_strValue = value; }
+//        MessageParam(const std::string value) { m_strValue = value; }
 //        MessageParam(void * value) { m_ptrValue = value; } //WARNING : this consructos is improperly called for string values 
 
         int getIntValue() { return m_nValue; }

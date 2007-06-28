@@ -12,7 +12,7 @@
 #include "camera.h"
 #include "oglcontext.h"
 #include "texturemanager.h"
-#include "menumanager.h"
+#include "../ui/menumanager.h"
 #include "../core/application.h"
 #include "../core/controlmanager.h"
 

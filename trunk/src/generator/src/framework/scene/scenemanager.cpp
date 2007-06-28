@@ -41,7 +41,7 @@ bool SceneManager::Init()
 {
 	Camera::getInstance()->Init();
 	OGLContext::getInstance()->Init();
-	MenuManager::getInstance()->Init(); 
+	MenuManager::getInstance()->Init(0,0); 
 	
 	if (!InitSceneObjects()) 
 	{

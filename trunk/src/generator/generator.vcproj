@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="windows-1250"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
@@ -484,6 +484,22 @@
 			<Filter
 				Name="ui"
 				>
+				<File
+					RelativePath=".\src\framework\ui\menuitem.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\ui\menuitem.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\ui\menumanager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\ui\menumanager.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="scene"
@@ -502,22 +518,6 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\scene\line.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\menuitem.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\menuitem.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\menumanager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\menumanager.h"
 					>
 				</File>
 				<File

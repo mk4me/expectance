@@ -104,13 +104,28 @@ void InputManager::OnSpecial(int key, int x, int y)
 /*----- Handle a mouse button down event -----*/
 void InputManager::OnMouseButtonDown(int button, int x, int y)
 {
-    Camera::getInstance()->OnMouseButtonDown(button, x, y);
+	std::cout << "Nacisnieto button: " << button <<"w pozycji (x,y) = (" <<x<<", "<<y<<")"<<endl;
+	if (y < 60)
+	{
+		MenuManager::getInstance()->OnMouseButtonDown(button, x, y);
+	}
+	else	//the rest
+	{
+		Camera::getInstance()->OnMouseButtonDown(button, x, y);
+	}
 }
 
 /*----- Handle a mouse button up event -----*/
 void InputManager::OnMouseButtonUp(int button, int x, int y)
 {
-    Camera::getInstance()->OnMouseButtonUp(button, x, y);
+	if (y<60)
+	{
+		MenuManager::getInstance()->OnMouseButtonUp(button, x, y);
+	}
+	else	//the rest
+	{
+		Camera::getInstance()->OnMouseButtonUp(button, x, y);
+	}
 }
 
 

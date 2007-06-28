@@ -422,7 +422,7 @@ void OGLContext::GlShadowProjection()
 	GlShadowProjection(lightPosition,point,normal);
 }
 
-void OGLContext::OGLWriteBitmap(int font, int x, int y, char *text)
+void OGLContext::OGLWriteBitmap(int font, int x, int y, const char *text)
 {
 	int len, i;
 	if ((font>6)||(font<0)) font = 4;
@@ -434,13 +434,16 @@ void OGLContext::OGLWriteBitmap(int font, int x, int y, char *text)
 	}
 }
 
-void OGLContext::OGLWriteStroke(int x, int y, char *text)
+void OGLContext::OGLWriteStroke(int x, int y, const char *text)
 {
-    char *p;
+	int i, len;
     glPushMatrix();
     glTranslatef(x, y, 0);
 	glScaled(0.1,0.1,0.1);
-    for (p = text; *p; p++)
-        glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
+	len = (int) strlen(text);
+	for (i = 0; i < len; i++)
+	{
+        glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
+	}
     glPopMatrix();
 }

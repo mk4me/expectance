@@ -26,14 +26,18 @@ void MenuManager::DestroyInstance()
         delete m_instance;
 }
 
-bool MenuManager::Init()
+bool MenuManager::Init(int x, int y)
 {
-	unsigned int listID = 1000;
+	bool final = true;
+	static unsigned int listID = 1000; // hope that system textures wont be so much
 	vector<string> tokenizer;
 	std::string menuOptions;
 	GLuint logoTexture;
+	m_avtiveButton = -1;
+	m_x = x;
+	m_y = y;
 	//1. read main menu options
-	m_mainMenu = new MenuItem(0,0); //main menu w (0,0)
+	m_mainMenu = new MenuItem(x,y); //main menu w (x,y)
 	menuOptions = Config::getInstance()->GetStrVal("main_menu");
 	menuOptions = StringHelper::ClearBrakets(menuOptions, '(',')');
 	menuOptions = StringHelper::RemoveChar(menuOptions,' ');
@@ -57,15 +61,18 @@ bool MenuManager::Init()
 			glNewList(listID,GL_COMPILE);
 				glEnable(GL_TEXTURE_2D);
 				if ((logoTexture = ft::TextureManager::getInstance()-> LoadTexture(FT_TEXTUREPATH + menuParameters[1]))==0)
-					return 1;
-					glBindTexture(GL_TEXTURE_2D,logoTexture);
-					glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
-					glBegin(GL_QUADS);
-						glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
-						glTexCoord2f(1.0f, 1.0f); glVertex2i(32, 0);
-						glTexCoord2f(1.0f, 0.0f); glVertex2i(32, 32);
-						glTexCoord2f(0.0f, 0.0f); glVertex2i(0, 32);
-					glEnd();
+				{
+					final = false;
+					return 0;
+				}
+				glBindTexture(GL_TEXTURE_2D,logoTexture);
+				glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
+				glBegin(GL_QUADS);
+					glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
+					glTexCoord2f(1.0f, 1.0f); glVertex2i(32, 0);
+					glTexCoord2f(1.0f, 0.0f); glVertex2i(32, 32);
+					glTexCoord2f(0.0f, 0.0f); glVertex2i(0, 32);
+				glEnd();
 				glDisable(GL_TEXTURE_2D);
 			glEndList();
 
@@ -79,38 +86,29 @@ bool MenuManager::Init()
 
 	}
 	//2. dispatch each option
-
+	m_width = m_mainMenu->getWidth()*m_mainMenu->getSubMenu().size();
+	m_height = m_mainMenu->getHeight();
 	//3. add option to 
-	return true;
+	return final;
 }
 
-void MenuManager::Configure()
+int MenuManager::checkScope(int x, int y)
 {
-	// trzeba odczytaæ dane z pliku tekstowego ( wszystkie z przedrostkiem menu) i utworzyæ kolekcjê obiektów typu button (musi miec ja dostêpn¹ publicznie)
+	float xDiv;
+	unsigned int item = m_mainMenu->getWidth();
 
+	if (((x>m_x)&&(x<m_x+m_width))&&((y>0)&&(y<m_height+m_y)))
+	{
+		xDiv = x/item; //take length
+		item = static_cast<int>(xDiv);
+		if ((item >= 0)&&(item<= m_mainMenu->getSubMenu().size()-1))
+			return item;
+		else
+			return 0;
+	}
+	else
+		return -1;
 }
-
-
-
-void MenuManager::OnMessage(Message* msg)
-{
-    if (DEBUG_MESSAGES)
-        std::cout << "MenuManager<" << getID() << "> received message: " << Message::_GET_MSG_NAME(msg->getType()) << std::endl;
-
- //   if (msg->getType() == MSG_PROPERTY_LOD) 
- //   {
- //       SetLodLevel(msg->getParam()->getFloatValue());
- //   } 
- //   else if (msg->getType() == MSG_PROPERTY_RENDER_METHOD)
- //   {
- //       ChangeRenderMethod();
- //   }
-	//else if (msg->getType() == MSG_PROPERTY_SHADOW)
-	//{
-	//	ChangeShadow();
-	//}
-}
-
 
 
 bool MenuManager::Render()
@@ -145,13 +143,21 @@ bool MenuManager::Render()
 			glPopMatrix();
 		}
 
-		glLoadIdentity();
-		glTranslatef(-x,-y-10,0);
-		//get apropriate text
-		glEnable(GL_LINE_SMOOTH);
-			glColor4f(1,1,1,0.5f);
-			OGLContext::getInstance()->OGLWriteBitmap(5,5, 50, "Menu text is going to be here.");
-		glDisable(GL_LINE_SMOOTH);
+		if (m_avtiveButton != -1)
+		{
+			std::string lab = m_mainMenu->getSubMenu().at(m_avtiveButton)->getLabel();
+			glLoadIdentity();
+			glTranslatef(-x,-y,0);
+			glColor4f(0.7f, 0.7f, 0.7f, 0.3f);
+			glRectf(m_avtiveButton*32+2,2,(m_avtiveButton+1)*32,32);
+			glLoadIdentity();
+			glTranslatef(-x,-y-10,0);
+			//get apropriate text
+			glEnable(GL_LINE_SMOOTH);
+				glColor4f(1,1,1,0.5f);
+				OGLContext::getInstance()->OGLWriteBitmap(5,5, 50, lab.c_str());
+			glDisable(GL_LINE_SMOOTH);
+		}
 
 
 		glDisable(GL_BLEND);
@@ -164,4 +170,38 @@ bool MenuManager::Render()
 const MenuItem* MenuManager::getMainMenu() const
 {
 	return m_mainMenu;
+}
+
+//label from pressed button
+void MenuManager::OnMouseButtonDown(int button, int x, int y)
+{
+	int btn;
+	if ((btn=checkScope(x,y))>=0)
+	{
+		m_pressedButton = btn;
+		std::cout <<"Button selected "<< btn << endl;
+	}
+
+}
+
+//enter to pressed button (message from it)
+void MenuManager::OnMouseButtonUp(int button, int x, int y)
+{
+	int btn;
+	if ((btn=checkScope(x,y))>=0)
+	{
+		m_releasedButon = btn;
+		if (m_pressedButton == m_releasedButon)
+		{
+			m_avtiveButton = m_releasedButon;
+			std::string id = m_mainMenu->getSubMenu().at(m_avtiveButton)->getMenuName();
+			ControlManager::getInstance()->SendMessage(new Message(MSG_MENU_ITEM_SELECTED, new MessageParam(id)), true);
+		}
+		std::cout <<"Button released "<< btn << endl;
+	}
+
+}
+void MenuManager::OnMouseMove(int x, int y)
+{
+
 }
