@@ -18,7 +18,7 @@ namespace ft
 
         void InitConfig();
         void InitModules();
-        void InitSceneObjects();
+        void InitAvatars();
 
         Avatar* CreateAvatarOnScene(const std::string& calCoreModel,const std::string& name);
 

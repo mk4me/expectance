@@ -46,11 +46,11 @@ void Application::InitModules()
 
     ControlManager::getInstance()->Init();  //enforced creation of singleton
     AvatarFactory::getInstance();   //enforced creation of singleton
-    SceneManager::getInstance();    //enforced creation of singleton
+    SceneManager::getInstance()->Init();    //enforced creation of singleton
     TimeLineFactory::getInstance(); //enforced creation of singleton
 }
 
-void Application::InitSceneObjects()
+void Application::InitAvatars()
 {
     DBG("Application::InitSceneObjects().");
 

@@ -97,13 +97,8 @@ int main(int argc, char *argv[])
 	glutKeyboardFunc(KeyboardFunc);
 	glutSpecialFunc(SpecialFunc);
 
-    ft::Application::getInstance()->InitModules();
-	if(!ft::SceneManager::getInstance()->Init())
-	{
-		std::cerr << "Initialization of the Arena failed." << std::endl;
-		return -1;
-	}
-    Application::getInstance()->InitSceneObjects();
+    Application::getInstance()->InitModules();
+    Application::getInstance()->InitAvatars();
 	
 	// some examples of use lines
 	Line *ln, *ln1, *ln2, *ln3;
