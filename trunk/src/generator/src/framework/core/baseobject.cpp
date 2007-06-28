@@ -13,34 +13,19 @@ BaseObject::BaseObject(void)
 	ID_COUNTER++;
 	std::stringstream sstr;
 	sstr << ID_COUNTER;
-	m_idCntr = sstr.str();
-	m_idFull = typeid(*this).name() + m_idCntr;
+	m_id = "BaseObject" + sstr.str();;
 
 }
 BaseObject::~BaseObject(void) { /*empty*/}
 
 
+std::string BaseObject::getClassName()
+{
+    return typeid(*this).name();
+}
+
 const std::string& BaseObject::getID() const
 {
-	return m_idFull;
+	return m_id;
 }
 
-const std::string& BaseObject::getIDCounter() const 
-{
-	return m_idCntr;
-}
-
-
-BaseObject& BaseObject::setID(const std::string& id)
-{
-	if (!id.empty())
-	{
-		m_idFull = id;	
-	}
-	else
-	{
-		m_idFull = getID();
-	}
-	return *this;
-
-}

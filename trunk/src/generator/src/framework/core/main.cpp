@@ -106,16 +106,22 @@ int main(int argc, char *argv[])
 	ln1 = new Line(FTVect(100,100,100), FTVect(30,40,10), "Linia I");
 	ln1->setStart(FTVect(0,0,0)).setEnd(FTVect(100,200,200)).setColor(FTVect(1,0,0));
 	
+    
+
 	ft::SceneManager::getInstance()->AddObject(ln);
 	ft::SceneManager::getInstance()->AddObject(ln1);
-	ft::SceneManager::getInstance()->AddObject(new Line(FTVect(100,100,100), FTVect(30,40,10), 100, "LiniaII"));
-	ft::SceneManager::getInstance()->AddObject(new Line("LiniaIII"));
+    ln2 = new Line(FTVect(100,100,100), FTVect(30,40,10), 100, "LiniaII");
+
+	ft::SceneManager::getInstance()->AddObject(ln2);
+    
+    ln3 = new Line("LiniaIII");
+	ft::SceneManager::getInstance()->AddObject(ln3);
 	
 	ln1->setColor(FTVect(1,1,0));
 	ln->setStart(FTVect(100,0,0)).setEnd(FTVect(400,0,0)).setColor(FTVect(0,0,1));
-	ln2 = dynamic_cast<Line*>(SceneManager::getInstance()->getObject("LiniaII"));
+//	ln2 = dynamic_cast<Line*>(SceneManager::getInstance()->getObject("LiniaII"));
 	ln2->setColor(FTVect(0,1,0));
-	ln3 = dynamic_cast<Line*>(SceneManager::getInstance()->getObject("LiniaIII"));
+//	ln3 = dynamic_cast<Line*>(SceneManager::getInstance()->getObject("LiniaIII"));
 	ln3->setStart(FTVect(0,100,0)).setEnd(FTVect(200,100,0)).setColor(FTVect(1,1,0));
 	ln1->Hide();
 	ln1->setColor(FTVect(0,1,1));

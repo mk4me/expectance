@@ -14,7 +14,7 @@ m_shadow(true)
 {
     m_calModel = calModel;
     m_calCoreModel = calCoreModel;
-	setID(modelName);
+	setName(modelName);
 }
 
 Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel)

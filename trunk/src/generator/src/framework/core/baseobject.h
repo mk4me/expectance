@@ -19,18 +19,18 @@ namespace ft
 		BaseObject(void); 
 	    virtual ~BaseObject(void);
 		const std::string& getID() const;
-		const std::string& getIDCounter() const;
+
+        void setName(const std::string name) { m_name = name; }
+        const std::string& getName() {return m_name; }
+
+        std::string getClassName();
 	protected:
 		BaseObject& setID(const std::string &id);
 	private:
-		void calculateID();
 		static unsigned long long ID_COUNTER;
-		std::string m_idFull;
-		std::string m_idCntr;
+		std::string m_id;
+        std::string m_name;
     };
-
-
-
 };
 
 #endif //_GEN_CONTROL_OBJECT_H

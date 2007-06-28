@@ -5,9 +5,9 @@
 
 #include "menuitem.h"
 using namespace ft;
-MenuItem::MenuItem(const std::string& id, int x, int y)
+MenuItem::MenuItem(const std::string& name, int x, int y)
 {	
-	setID(id);
+	setName(name);
 	MenuItem(x,y);
 }
 

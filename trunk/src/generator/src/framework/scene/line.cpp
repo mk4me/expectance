@@ -7,13 +7,13 @@
 
 using namespace ft;
 
-Line::Line(const std::string& id):m_arrow(false)
+Line::Line(const std::string& name):m_arrow(false)
 {
-	setID(id);
+	setName(name);
 	
 }
 
-Line::Line(const FTVect& position, const FTVect& orientation, float lenght, const std::string& id):m_arrow(false)
+Line::Line(const FTVect& position, const FTVect& orientation, float lenght, const std::string& name):m_arrow(false)
 {
 	FTVect tmpv = orientation;
 	tmpv.normalize();
@@ -21,19 +21,19 @@ Line::Line(const FTVect& position, const FTVect& orientation, float lenght, cons
 
 	setLenght(lenght).setStart(position).setEnd(tmpv);
 	setPosition(position).setOrientation(orientation);
-	setID(id);
+	setName(name);
 	
 
-	//Line(position, tmpv, id); 
+	//Line(position, tmpv, name); 
 }
 
 
-Line::Line(const FTVect& start, const FTVect& end, const std::string& id):m_arrow(false)
+Line::Line(const FTVect& start, const FTVect& end, const std::string& name):m_arrow(false)
 {
 	m_start = start;
 	m_end = end;
 
-	setID(id);
+	setName(name);
 }
 
 

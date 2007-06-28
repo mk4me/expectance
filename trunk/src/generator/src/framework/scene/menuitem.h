@@ -15,7 +15,7 @@ namespace ft
 	class MenuItem:  public SceneObject
     {
     public:
-        MenuItem(const std::string& id, int x, int y); 
+        MenuItem(const std::string& name, int x, int y); 
 		MenuItem(int x, int y); 
 	    virtual ~MenuItem(void) { /*empty*/}
         

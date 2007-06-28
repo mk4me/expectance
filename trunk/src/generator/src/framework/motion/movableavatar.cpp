@@ -17,6 +17,7 @@ MovableAvatar::MovableAvatar(CalModel* calModel, CalCoreModel* calCoreModel, con
     m_vRotation = CalQuaternion();
     m_timeLine = NULL;
     m_timeLineStarted = false;
+    setName(modelName);
 }
 
 MovableAvatar::~MovableAvatar()
@@ -235,9 +236,9 @@ void MovableAvatar::OnMessage(Message* msg)
     } 
     else if (msg->getType() == MSG_CONTROL_START)
     {
-        std::string myId = getID();
+        std::string myName = getName();
         std::string requestedId = msg->getParam()->getStrValue();
-        if (getID().compare(msg->getParam()->getStrValue()) == 0   )
+        if (getName().compare(msg->getParam()->getStrValue()) == 0   )
         {
             cout << "MovableAvatar : blendCycle -> " << MOTION_WALK_LOOP << std::endl;
             int animId = GetMotion(MOTION_WALK_LOOP)->getAnimID();
@@ -246,7 +247,7 @@ void MovableAvatar::OnMessage(Message* msg)
     }
     else if (msg->getType() == MSG_CONTROL_STOP)
     {
-        if (  getID().compare(msg->getParam()->getStrValue()) == 0   )
+        if (  getName().compare(msg->getParam()->getStrValue()) == 0   )
         {
             cout << "MovableAvatar : clearCycle -> " << MOTION_WALK_LOOP << std::endl;
             int animId = GetMotion(MOTION_WALK_LOOP)->getAnimID();
@@ -256,7 +257,7 @@ void MovableAvatar::OnMessage(Message* msg)
     }
     else if (msg->getType() == MSG_CONTROL_TURN_LEFT)
     {
-        if (  getID().compare(msg->getParam()->getStrValue()) == 0   )
+        if (  getName().compare(msg->getParam()->getStrValue()) == 0   )
         {
             cout << "MovableAvatar : turn left " << std::endl;
             Quat addRot = Quat(-0.2f, Vec(0,0,1));
@@ -265,7 +266,7 @@ void MovableAvatar::OnMessage(Message* msg)
     }
     else if (msg->getType() == MSG_CONTROL_TURN_RIGHT)
     {
-        if (  getID().compare(msg->getParam()->getStrValue()) == 0   )
+        if (  getName().compare(msg->getParam()->getStrValue()) == 0   )
         {
             cout << "MovableAvatar : turn left " << std::endl;
             Quat addRot = Quat(0.2f, Vec(0,0,1));

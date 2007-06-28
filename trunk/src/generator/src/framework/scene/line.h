@@ -15,10 +15,10 @@ namespace ft {
 	class Line : public SceneObject  
 	{
 	public:
-		Line(const std::string& id);
+		Line(const std::string& name);
 		Line(const std::string& id, bool arrow);
-		Line(const FTVect& start, const FTVect& end, const std::string& id);
-		Line(const FTVect& position, const FTVect& orientation, float length, const std::string& id);
+		Line(const FTVect& start, const FTVect& end, const std::string& name);
+		Line(const FTVect& position, const FTVect& orientation, float length, const std::string& name);
 		virtual ~Line(void);
 		virtual bool Render();
 		Line& setLenght(const float lenght);
