@@ -15,10 +15,14 @@ MovableAvatar::MovableAvatar(CalModel* calModel, CalCoreModel* calCoreModel, con
 {
     m_vTranslation = CalVector(0,0,0);
     m_vRotation = CalQuaternion();
+    m_timeLine = NULL;
+    m_timeLineStarted = false;
 }
 
 MovableAvatar::~MovableAvatar()
 {
+    if (m_timeLine != NULL)
+        m_timeLine->Destroy();
 }
 
 bool MovableAvatar::AddMotion(Motion* motion)
@@ -67,14 +71,41 @@ Motion* MovableAvatar::GetMotion(std::string motionName)
 
 void MovableAvatar::InitMotions()
 {
+    Motion * motionForTimeLine = NULL;
     int animCount = m_calCoreModel->getCoreAnimationCount();
     for (int i=0; i<animCount; i++)
     {
         CalCoreAnimation* anim = m_calCoreModel->getCoreAnimation(i);
         std::string animName = anim->getFilename();
-        this->AddMotion(new Motion(animName, i));
+
+        Motion* mot = new Motion(animName, i);
+        if (i==0)
+            motionForTimeLine = mot;
+
+        this->AddMotion(mot);
+    }
+
+    if (motionForTimeLine != NULL)
+    {
+        m_timeLine = TimeLineFactory::getInstance()->CreateTimeLine(motionForTimeLine);
     }
 }
+
+void MovableAvatar::StartTimeLine()
+{
+    m_timeLineStarted = true;
+}
+
+void MovableAvatar::StopTimeLine()
+{
+    m_timeLineStarted = false;
+}
+
+void MovableAvatar::UpdateTimeLine(float elapsedSeconds)
+{
+    m_calModel->update(elapsedSeconds);
+}
+
 
 void MovableAvatar::Dump()
 {
@@ -86,7 +117,13 @@ void MovableAvatar::Dump()
     {
         cout << " - - id " << it->first << std::endl;
     }
-}
+
+    cout << "- time line:" << std::endl;
+    if (m_timeLine != NULL)
+        m_timeLine->Dump(2);
+    else
+       cout << "- - NULL" << endl;
+}   
 
 
 void MovableAvatar::Init()
@@ -143,7 +180,7 @@ void MovableAvatar::OnUpdate(float elapsedSeconds)
   */
     if(!m_bPaused)
     {
-        m_calModel->update(elapsedSeconds);
+        UpdateTimeLine(elapsedSeconds);
 
         CalSkeleton *skel = m_calModel->getSkeleton();
         CalBone *bone = skel->getBone(0);

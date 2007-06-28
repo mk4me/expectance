@@ -8,6 +8,7 @@
 #include "controlmanager.h"
 #include "../avatar/avatarfactory.h"
 #include "../scene/scenemanager.h"
+#include "../timeline/timelinefactory.h"
 #include "../utility/debug.h"
 
 using namespace ft;
@@ -43,9 +44,10 @@ void Application::InitModules()
 {
     DBG("Application::InitModules().");
 
-    ControlManager::getInstance();  //enforced creation of singleton
+    ControlManager::getInstance()->Init();  //enforced creation of singleton
     AvatarFactory::getInstance();   //enforced creation of singleton
     SceneManager::getInstance();    //enforced creation of singleton
+    TimeLineFactory::getInstance(); //enforced creation of singleton
 }
 
 void Application::InitSceneObjects()

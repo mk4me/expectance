@@ -9,6 +9,7 @@
 #include "cal3d/cal3d.h"
 #include "../avatar/avatar.h"
 #include "../utility/Quat.h"
+#include "../timeline/timelinefactory.h"
 
 #include "motion.h"
 #include <map>
@@ -46,7 +47,16 @@ namespace ft
 
         std::map<std::string,Motion*> m_motions;
 
+        TimeLine* m_timeLine;
+
+        bool m_timeLineStarted;
+
         void InitMotions();
+
+        void StartTimeLine();
+        void StopTimeLine();
+        void UpdateTimeLine(float elapsedSeconds);
+
     };
 };
 

@@ -41,8 +41,9 @@ bool SceneManager::Init()
 {
 	Camera::getInstance()->Init();
 	OGLContext::getInstance()->Init();
-	Application::getInstance()->InitSceneObjects();
-	MenuManager::getInstance()->Init();
+	//Application::getInstance()->InitSceneObjects();
+	MenuManager::getInstance()->Init(); //rem by abak as redundant
+
 	
 	if (!InitSceneObjects()) 
 	{
@@ -58,7 +59,7 @@ bool SceneManager::InitSceneObjects()
 	if (!OGLContext::getInstance()->InitTexturedFloorDL(20)) return false;
 	if (!OGLContext::getInstance()->InitLogoDL()) return false;
 
-	ControlManager::getInstance()->Init();			
+//	ControlManager::getInstance()->Init();	//rem by abak as redundant		
 ///MKATODO	ControlManager::getInstance()->AddControlObject(MenuManager::getInstance());
 
 	return true;

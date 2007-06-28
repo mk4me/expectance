@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="windows-1250"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
@@ -630,6 +630,58 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\motion\movableavatar.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="timeline"
+				>
+				<File
+					RelativePath=".\src\framework\timeline\timeline.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\timeline\timeline.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\timeline\timelineblender.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\timeline\timelineblender.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\timeline\timelinefactory.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\timeline\timelinefactory.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\timeline\timelinemodifier.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\timeline\timelinemodifier.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\timeline\timelinemotion.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\timeline\timelinemotion.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\timeline\timelineobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\timeline\timelineobject.h"
 					>
 				</File>
 			</Filter>
