@@ -13,8 +13,6 @@ using namespace std;
 MovableAvatar::MovableAvatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName)
 :Avatar(calModel, calCoreModel, modelName)
 {
-    m_vTranslation = CalVector(0,0,0);
-    m_vRotation = CalQuaternion();
     m_timeLine = NULL;
     m_timeLineStarted = false;
     setName(modelName);
@@ -110,11 +108,11 @@ void MovableAvatar::StopTimeLine()
 
 void MovableAvatar::UpdateTimeLine(float elapsedSeconds)
 {
+    m_calModel->update(elapsedSeconds);
     if (m_timeLine != NULL && m_timeLineStarted)
     {
         m_timeLine->Execute(elapsedSeconds, this);
     }
-    m_calModel->update(elapsedSeconds);
 }
 
 
@@ -192,32 +190,6 @@ void MovableAvatar::OnUpdate(float elapsedSeconds)
     if(!m_bPaused)
     {
         UpdateTimeLine(elapsedSeconds);
-
-        CalSkeleton *skel = m_calModel->getSkeleton();
-        CalBone *bone = skel->getBone(0);
-
-        CalVector currPos = bone->getTranslation();
-        CalVector diff = currPos - m_vLastPos;
-
-        CalQuaternion currRotatation = bone->getRotation();
-//        CalQuaternion rotDiff = currRotatation - m_vLastRotation;
-        
-        
-        if ( diff.length() > 50)
-        {
-            CalVector add = m_vLastPos;
-            add.z = 0;
-            m_vTranslation += add;
-        }
-
-        bone->setRotation(currRotatation * m_vRotation);
-
-        m_vLastPos = currPos;;
-        currPos += m_vTranslation;
-        bone->setTranslation(currPos);
-
-        bone->calculateState();
-       
     }
 }
 
@@ -273,7 +245,7 @@ void MovableAvatar::OnMessage(Message* msg)
         {
             cout << "MovableAvatar : turn left " << std::endl;
             Quat addRot = Quat(-0.2f, Vec(0,0,1));
-            m_vRotation *= QuatToCalQuat(addRot);
+//            m_vRotation *= QuatToCalQuat(addRot);
         }
     }
     else if (msg->getType() == MSG_CONTROL_TURN_RIGHT)
@@ -282,7 +254,7 @@ void MovableAvatar::OnMessage(Message* msg)
         {
             cout << "MovableAvatar : turn left " << std::endl;
             Quat addRot = Quat(0.2f, Vec(0,0,1));
-            m_vRotation *= QuatToCalQuat(addRot);
+//            m_vRotation *= QuatToCalQuat(addRot);
         }
     }
 

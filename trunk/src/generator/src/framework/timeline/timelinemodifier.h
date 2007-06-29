@@ -17,7 +17,7 @@ namespace ft
         TimeLineModifier() { /* empty */ } 
         virtual ~TimeLineModifier(void) { /* empty */ }
 
-        void Apply(float elapsedSeconds, Avatar* avatar);
+        virtual void Apply(float elapsedSeconds, Avatar* avatar);
     };
 };
 

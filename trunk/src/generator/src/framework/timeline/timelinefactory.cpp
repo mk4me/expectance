@@ -3,6 +3,7 @@
  * author: abak
  */
 #include "timelinefactory.h"
+#include "translationmodifier.h"
 
 using namespace ft;
 
@@ -31,7 +32,7 @@ TimeLine* TimeLineFactory::CreateTimeLine(Motion *motion)
 //    TimeLineTrack* timeLineTrack = new TimeLineTrack();
     TimeLineMotion* timeLineMotion = new TimeLineMotion();
     timeLineMotion->setMotion(motion);
-        
+    timeLineMotion->AddModifier(new TranslationModifier());
 //    timeLineTrack->AddObject(timeLineMotion);
     timeLine->AddObject(timeLineMotion);
     

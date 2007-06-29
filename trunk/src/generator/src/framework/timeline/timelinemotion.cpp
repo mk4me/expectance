@@ -116,6 +116,15 @@ void TimeLineMotion::Dump(int depth)
     else
         std::cout << getDepthStr(depth+1) << "blender: NULL " << std::endl;
 
+    std::cout << getDepthStr(depth+1) << "modifiers list: " << m_vModifiers.size();
+    if (m_vModifiers.size() > 0)
+    {
+        for (int m=0; m<(int)m_vModifiers.size(); m++)
+        {
+            m_vModifiers[m]->Dump(depth);
+        }
+    }
+
 }   
 
 std::string TimeLineMotion::toString()
