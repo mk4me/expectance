@@ -69,6 +69,15 @@ TimeLineObject* TimeLineObject::GetCurrentObject()
     return result;
 }
 
+void TimeLineObject::Reset()
+{
+    for (int n=0; n<(int)m_vObjects.size(); n++)
+    {
+        m_vObjects[n]->Reset();
+    }
+
+    //here is place to reset this object
+}
 
 std::string TimeLineObject::getDepthStr(int depth)
 {

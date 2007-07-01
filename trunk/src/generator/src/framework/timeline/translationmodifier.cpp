@@ -41,3 +41,11 @@ void TranslationModifier::Apply(float elapsedSeconds,Avatar* avatar)
         bone->setTranslation(currPos);
         bone->calculateState();
 }
+
+void TranslationModifier::Reset()
+{
+    TimeLineObject::Reset();
+
+    m_vTranslation = CalVector(0,0,0);
+    m_vRotation = CalQuaternion();
+}

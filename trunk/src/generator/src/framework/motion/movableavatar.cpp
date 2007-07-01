@@ -14,7 +14,6 @@ MovableAvatar::MovableAvatar(CalModel* calModel, CalCoreModel* calCoreModel, con
 :Avatar(calModel, calCoreModel, modelName)
 {
     m_timeLine = NULL;
-    m_timeLineStarted = false;
     setName(modelName);
 }
 
@@ -93,12 +92,12 @@ void MovableAvatar::InitMotions()
 void MovableAvatar::StartTimeLine()
 {
     cout << toString() << "StartTimeLine()" << endl;
-    m_timeLineStarted = true;
+    if (m_timeLine != NULL)
+        m_timeLine->Start();
 }
 
 void MovableAvatar::StopTimeLine()
 {
-    m_timeLineStarted = false;
     if (m_timeLine != NULL)
     {
         m_timeLine->Reset();
@@ -109,7 +108,7 @@ void MovableAvatar::StopTimeLine()
 void MovableAvatar::UpdateTimeLine(float elapsedSeconds)
 {
     m_calModel->update(elapsedSeconds);
-    if (m_timeLine != NULL && m_timeLineStarted)
+    if (m_timeLine != NULL && m_timeLine->isStarted())
     {
         m_timeLine->Execute(elapsedSeconds, this);
     }
@@ -160,6 +159,7 @@ void MovableAvatar::Init()
     m_currentAnimationId = -1;
     m_leftAnimationTime = -1.0f;
   }*/
+
 }
 
 void MovableAvatar::OnUpdate(float elapsedSeconds)
@@ -234,9 +234,6 @@ void MovableAvatar::OnMessage(Message* msg)
         {
             cout << "MovableAvatar : clearCycle -> " << MOTION_WALK_LOOP << std::endl;
             StopTimeLine();
-//            int animId = GetMotion(MOTION_WALK_LOOP)->getAnimID();
-//            m_calModel->getMixer()->clearCycle(animId, 0.0f);
-//            m_vTranslation = CalVector(0,0,0);
         }
     }
     else if (msg->getType() == MSG_CONTROL_TURN_LEFT)
@@ -257,8 +254,6 @@ void MovableAvatar::OnMessage(Message* msg)
 //            m_vRotation *= QuatToCalQuat(addRot);
         }
     }
-
-
     
 }
 

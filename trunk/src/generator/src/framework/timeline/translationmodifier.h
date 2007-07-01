@@ -18,6 +18,9 @@ namespace ft
         virtual ~TranslationModifier(void) { /* empty */ }
 
         void Apply(float elapsedSeconds, Avatar* avatar);
+
+        virtual void Reset(); // resets current object and its children
+
     private:
         CalVector m_vTranslation;
         CalVector m_vLastPos;

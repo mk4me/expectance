@@ -36,6 +36,8 @@ namespace ft
 
         TimeLineObject* GetCurrentObject();
 
+        virtual void Reset(); // resets current object and its children
+
 
         std::string getDepthStr(int depth);
         virtual void Dump(int depth);

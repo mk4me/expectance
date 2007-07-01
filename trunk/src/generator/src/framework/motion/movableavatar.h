@@ -44,8 +44,6 @@ namespace ft
 
         TimeLine* m_timeLine;
 
-        bool m_timeLineStarted;
-
         void InitMotions();
 
         void StartTimeLine();
