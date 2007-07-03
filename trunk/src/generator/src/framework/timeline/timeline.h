@@ -21,8 +21,6 @@ namespace ft
 
         void Destroy(void) { /* TODO: abak: to implement */ }
 
-        void Reset();
-
         virtual void Execute(float elapsedSeconds, Avatar* avatar);
 
 

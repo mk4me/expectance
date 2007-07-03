@@ -11,10 +11,7 @@ TimeLine::TimeLine()
     m_currTime = TIME_UNDEFINED;
 }
 
-void TimeLine::Reset()
-{
-    m_currTime = 0;
-}
+
 void TimeLine::Execute(float elapsedSeconds, Avatar* avatar)
 {
     m_currTime += elapsedSeconds;

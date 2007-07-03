@@ -49,6 +49,7 @@ void TimeLineMotion::ResetParams()
     setToFinish(false);
     m_currLoop = -1;  // not started yet
     setAnimStarted(false);
+    m_animTime = -1;
 }
 
 bool TimeLineMotion::AddModifier(TimeLineModifier* modifier)
@@ -72,7 +73,12 @@ bool TimeLineMotion::AddTrack(TimeLineMotion* trackMotion)
 
 void TimeLineMotion::Start()
 {
+    PrintDebug("Start");
+
     setStarted(true);
+
+    if (m_motionRef!=NULL)
+        m_animTime = 0;
 
     if (m_vObjects.size()>0)
     {
@@ -85,6 +91,7 @@ void TimeLineMotion::Start()
 }
 void TimeLineMotion::Stop()
 {
+    PrintDebug("Stop");
     setStarted(false);
 }
 
@@ -159,6 +166,7 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, Avatar* avatar)
                 currMotion->setToFinish(true);
             }
             currMotion->Execute(elapsedSeconds, avatar);
+            //anyStarted = currMotion->isStarted(); //TODO: investigate why not working for every case 
             anyStarted = true;
         }
         else  // there is no started motion
@@ -168,7 +176,7 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, Avatar* avatar)
                 m_currSubMotion++;
                 nextMotion->Start();
                 nextMotion->Execute(elapsedSeconds, avatar);
-                anyStarted = true;
+                anyStarted = true;  //TODO : investigate if enought
             }
             else
             {
@@ -204,12 +212,18 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
     {
         if (isAnimStarted())
         {
-            CalCoreAnimation* anim = avatar->GetCalCoreModel()->getCoreAnimation(m_motionRef->getAnimID());
+            int animId = m_motionRef->getAnimID();
+            CalCoreAnimation* anim = avatar->GetCalCoreModel()->getCoreAnimation(animId);
+
+            m_animTime += elapsedSeconds;  //TODO: ABAK: consider other animation time detection (maybe by cla3d function)
+
+            float animTime = avatar->GetCalModel()->getMixer()->getAnimationTime();
+            float animDuration = anim->getDuration();
 
             if (this->isAnimLoop())
             {
                 // check if current loop is finished
-                if (avatar->GetCalModel()->getMixer()->getAnimationTime() >= anim->getDuration())
+                if ( m_animTime >= animDuration)
                 {
                     if (isToFinish() || m_currLoop >= (m_loopNumber -1))
                     {
@@ -219,13 +233,14 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
                     else
                     {
                         m_currLoop++;
+                        m_animTime = 0;
                     }
                 }
             }
             else
             {
                 //check if anim cycle finished
-                if (avatar->GetCalModel()->getMixer()->getAnimationTime() >= anim->getDuration())
+                if (m_animTime >= animDuration)
                 {
                     setAnimStarted(false);
                 }

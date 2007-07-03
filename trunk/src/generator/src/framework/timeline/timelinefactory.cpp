@@ -32,8 +32,9 @@ TimeLine* TimeLineFactory::CreateTimeLine(Motion *motion)
 //    TimeLineTrack* timeLineTrack = new TimeLineTrack();
     TimeLineMotion* timeLineMotion = new TimeLineMotion();
     timeLineMotion->setMotion(motion);
-    timeLineMotion->setAnimLoop(true);
-    timeLineMotion->AddModifier(new TranslationModifier());
+    timeLineMotion->setLoopNumber(2);
+//    timeLineMotion->setAnimLoop(true);
+//    timeLineMotion->AddModifier(new TranslationModifier());
 //    timeLineTrack->AddObject(timeLineMotion);
     timeLine->AddObject(timeLineMotion);
     

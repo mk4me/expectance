@@ -4,8 +4,9 @@
  */
 
 #include "movableavatar.h"
+#include "../timeline/translationmodifier.h"
 #include "../utility/debug.h"
-#include "../utility/Cal3dMathsConversion.h"
+//#include "../utility/Cal3dMathsConversion.h"
 
 using namespace ft;
 using namespace std;
@@ -70,6 +71,7 @@ Motion* MovableAvatar::GetMotion(std::string motionName)
 void MovableAvatar::InitMotions()
 {
     Motion * motionForTimeLine = NULL;
+    Motion * motionForTimeLine_2 = NULL;
     int animCount = m_calCoreModel->getCoreAnimationCount();
     for (int i=0; i<animCount; i++)
     {
@@ -79,13 +81,31 @@ void MovableAvatar::InitMotions()
         Motion* mot = new Motion(animName, i);
         if (i==0)
             motionForTimeLine = mot;
+        if (i==1)
+            motionForTimeLine_2 = mot;
+
 
         this->AddMotion(mot);
     }
 
     if (motionForTimeLine != NULL)
     {
-        m_timeLine = TimeLineFactory::getInstance()->CreateTimeLine(motionForTimeLine);
+        m_timeLine = new TimeLine();
+        TimeLineMotion* timeLineMotion = new TimeLineMotion();
+        timeLineMotion->setMotion(motionForTimeLine);
+        timeLineMotion->setLoopNumber(2);
+        timeLineMotion->setAnimLoop(true);
+        m_timeLine->AddObject(timeLineMotion);
+
+        if (motionForTimeLine_2 != NULL)
+        {
+            TimeLineMotion* timeLineMotion = new TimeLineMotion();
+            timeLineMotion->setMotion(motionForTimeLine_2);
+            m_timeLine->AddObject(timeLineMotion);
+        }
+        
+
+        m_timeLine->AddModifier(new TranslationModifier());
     }
 }
 

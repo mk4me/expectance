@@ -97,3 +97,8 @@ void TimeLineObject::Dump(int depth)
         m_vObjects[n]->Dump(depth+1);
     }
 }
+
+void TimeLineObject::PrintDebug(const std::string& text)
+{
+    std::cout << toString()<< ":" << text << std::endl;
+}

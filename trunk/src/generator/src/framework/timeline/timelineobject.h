@@ -49,6 +49,8 @@ namespace ft
         bool m_started;
 
         std::vector<TimeLineObject*> m_vObjects;
+
+        void PrintDebug(const std::string& text);
     };
 };
 

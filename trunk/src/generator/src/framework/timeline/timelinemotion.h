@@ -76,6 +76,7 @@ namespace ft
         int m_currLoop;
 
         bool m_animStarted;  // indicates if anim for this motion is already perfomed
+        float m_animTime;
 
         bool m_interrupting;  // indicates if this motion should immediately interuppt the previous motion
         bool m_isToFinish;  //marker if this motion should be finished as soobn as possible
