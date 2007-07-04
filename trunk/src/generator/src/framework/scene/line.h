@@ -25,11 +25,8 @@ namespace ft {
 		Line& setStart(const FTVect &start);
 		Line& setEnd(const FTVect &end);
 		Line& setArrow(const bool arrow);
-		void Show();
-		void Hide();
 
-
-	protected:
+	private:
 		FTVect m_start;
 		FTVect m_end;
 		float m_lenght;

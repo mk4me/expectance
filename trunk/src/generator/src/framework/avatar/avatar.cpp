@@ -70,7 +70,7 @@ bool Avatar::Render()
 		glPushMatrix();
 			OGLContext::getInstance()->GlShadowProjection();
 			glColor3f(0.0f,0.0f,0.0f);
-			glRotatef(-90,1.0f,0.0f,0.0f); 
+			//glRotatef(-90,1.0f,0.0f,0.0f); //unnecessary while XYZ order in cal files
 			RenderAvatar(m_renderMethod, m_shadow); 	
 		glPopMatrix();
 	}
@@ -83,7 +83,7 @@ bool Avatar::Render()
 	glEnable(GL_LIGHT0);
 	//
 	glPushMatrix();
-		glRotatef(-90,1.0f,0.0f,0.0f);
+		//glRotatef(-90,1.0f,0.0f,0.0f); //unnecessary while XYZ order in cal files
 		RenderAvatar(m_renderMethod, false);
 	glPopMatrix();
 	

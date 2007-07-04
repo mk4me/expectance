@@ -54,13 +54,22 @@ const FTVect& SceneObject::getColor() const
 	return m_color;
 }
 
+void SceneObject::Show()
+{
+	m_visible = true;
+}
+
+void SceneObject::Hide()
+{
+	m_visible = false;
+}
 
 const bool SceneObject::isVisible() const
 {
 	return m_visible;
 }
 
-void SceneObject::PrintInfo(void) const
+const void SceneObject::PrintInfo(void) const
 {
 	std::cout << "ID " << getID() <<", location = [" << m_position.x <<", " << m_position.y << ", " << m_position.z 
 	<<"], m_color = [" << m_color.x << ", "<<m_color.y<<", "<< m_color.z <<"] \n";

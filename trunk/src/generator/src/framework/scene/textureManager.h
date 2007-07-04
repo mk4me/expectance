@@ -10,6 +10,11 @@
 #ifndef _GEN_TEXTURE_MANAGER_H
 #define _GEN_TEXTURE_MANAGER_H
 
+#ifndef _CRT_SECURE_NO_WARNINGS    //against fopen ms warnings
+#define _CRT_SECURE_NO_WARNINGS 1
+#endif
+
+
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>

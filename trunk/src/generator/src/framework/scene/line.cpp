@@ -113,15 +113,6 @@ Line& Line::setLenght(const float lenght)
 	return *this;
 }
 
-void Line::Show()
-{
-	m_visible = true;
-}
-
-void Line::Hide()
-{
-	m_visible = false;
-}
 
 Line& Line::setArrow(const bool arrow)
 {

@@ -8,6 +8,8 @@
 
 #include <map>
 #include "../utility/debug.h"
+#include "line.h"
+#include "traceline.h"
 #include "sceneobject.h"
 #include "camera.h"
 #include "oglcontext.h"
@@ -15,6 +17,7 @@
 #include "../ui/menumanager.h"
 #include "../core/application.h"
 #include "../core/controlmanager.h"
+
 
 
 namespace ft
@@ -35,6 +38,7 @@ namespace ft
 
 		bool AddObject(SceneObject* pObj);   
 		SceneObject* getObject(std::string id);
+		SceneObject* getObjectByName(std::string name);
 		bool RemoveObject(SceneObject*);
 		bool RemoveObject(std::string id);
 		void RenderObjects();

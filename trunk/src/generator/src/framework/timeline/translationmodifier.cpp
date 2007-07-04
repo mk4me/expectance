@@ -10,6 +10,8 @@ TranslationModifier::TranslationModifier()
 {
     m_vTranslation = CalVector(0,0,0);
     m_vRotation = CalQuaternion();
+	
+	tracer = dynamic_cast<TraceLine*>(ft::SceneManager::getInstance()->getObjectByName("TL1")); //for debug
 }
 
 void TranslationModifier::Apply(float elapsedSeconds,Avatar* avatar)
@@ -30,9 +32,10 @@ void TranslationModifier::Apply(float elapsedSeconds,Avatar* avatar)
         if ( diff.length() > 50)
         {
             CalVector add = m_vLastPos;
-            add.z = 0;
+            add.y = 0;
             m_vTranslation += add;
         }
+		tracer->AddPoint(m_vTranslation); //for debug
 
         bone->setRotation(currRotatation * m_vRotation);
 

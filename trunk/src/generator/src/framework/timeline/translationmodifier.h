@@ -8,6 +8,7 @@
 
 #include "timelinemodifier.h"
 #include "../utility/Cal3dMathsConversion.h"
+#include "../scene/scenemanager.h"
 
 namespace ft
 {
@@ -25,6 +26,7 @@ namespace ft
         CalVector m_vTranslation;
         CalVector m_vLastPos;
         CalQuaternion m_vRotation;
+		TraceLine *tracer;
 
     };
 };

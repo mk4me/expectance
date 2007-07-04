@@ -7,8 +7,6 @@
 #ifndef _GEN_SCENE_OBJECT_H
 #define _GEN_SCENE_OBJECT_H
 
-#define _CRT_SECURE_NO_WARNINGS 1
-
 #include "../core/baseobject.h"
 
 
@@ -28,10 +26,12 @@ namespace ft
 		const FTVect& getPosition() const;
 		const FTVect& getOrientation() const;
 		const FTVect& getColor() const;
+		void Show();
+		void Hide();
 
 		const bool isVisible() const;
+		const void PrintInfo(void) const;
 
-		void PrintInfo(void) const;
 	protected:
 		bool m_visible;
 		FTVect m_position, m_orientation;

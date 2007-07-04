@@ -84,8 +84,6 @@ void SceneManager::CleanUp()
 }
 
 
-
-
 bool SceneManager::AddObject(SceneObject* pObj)
 {
 	std::string _id = pObj->getID();
@@ -110,6 +108,16 @@ SceneObject * SceneManager::getObject(std::string id)
 	return NULL;
 }
 
+
+SceneObject * SceneManager::getObjectByName(std::string name)
+{
+	std::map<std::string,SceneObject*>::iterator it = m_instance->g_SceneObjects.begin();
+	for( ; it != m_instance->g_SceneObjects.end(); ++it ) {
+		if (name.compare(it->second->getName()) == 0)
+			return it->second;
+    }
+	return NULL;
+}
 
 bool SceneManager::RemoveObject(SceneObject* pObj)
 {

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2007, FutureToday. All rights reserved.
- * author: abak
+ * author: abak, mka
  */
 
 #include "avatarfactory.h"
@@ -154,7 +154,12 @@ bool AvatarFactory::ParseModelConfiguration(const std::string& strFilename, CalC
     strData = strBuffer.substr(pos, strBuffer.find_first_of("\n\r", pos) - pos);
 
     // handle the model creation
-    if(strKey == "scale")
+    if(strKey == "source") //mka - for correct axis order of loaded data
+	{
+		if(strData.compare("3dsmax")==0)
+			CalLoader::setLoadingMode(LOADER_ROTATE_X_AXIS);
+	}
+	else if(strKey == "scale")
     {
       // set rendering scale factor
       //m_scale = atof(strData.c_str());  //TODO  abak: it should be used somewhere
