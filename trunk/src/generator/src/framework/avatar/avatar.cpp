@@ -15,14 +15,24 @@ m_shadow(true)
     m_calModel = calModel;
     m_calCoreModel = calCoreModel;
 	setName(modelName);
-	m_hardwareRendering = Init();
+	if (OGLContext::getInstance()->HardwareAcceleration == 1) //try to check Vertex Shader in the hardware
+	{
+		m_hardwareRendering = CheckHardwareAcceleration();
+	}
+	else
+		m_hardwareRendering = false;
 }
 
 Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel)
 {
     m_calModel = calModel;
     m_calCoreModel = calCoreModel;
-	m_hardwareRendering = Init();
+	if (OGLContext::getInstance()->HardwareAcceleration == 1) //try to check Vertex Shader in the hardware
+	{
+		m_hardwareRendering = CheckHardwareAcceleration();
+	}
+	else
+		m_hardwareRendering = false;
 }
 
 Avatar::~Avatar()
@@ -30,19 +40,22 @@ Avatar::~Avatar()
 	delete m_calHardwareModel;
 	delete m_calModel;
 	delete m_calCoreModel;
-
-	glDeleteProgramsARB(1, &m_vertexProgramId);
-	glDeleteBuffersARB(6, m_bufferObject);	
+	
+	if (m_hardwareRendering)
+	{
+		glDeleteProgramsARB(1, &m_vertexProgramId);
+		glDeleteBuffersARB(6, m_bufferObject);	
+	}
 }
 
-bool Avatar::Init()
+bool Avatar::CheckHardwareAcceleration()
 {
+
 	if(!loadBufferObject())
 	{
 	  std::cerr << "Error loading vertex buffer object." << std::endl;
 	  return false;
 	}
-
 
 	if(!loadVertexProgram())
 	{

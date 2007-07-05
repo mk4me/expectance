@@ -52,6 +52,7 @@ bool SceneManager::Init()
 
 	MenuManager::getInstance()->Init(0,0); 
 
+	m_menuOGL = true; //show OGL menu by default
 
 	return true;
 }
@@ -74,7 +75,8 @@ void SceneManager::OnRender()
 	RenderObjects();
 	//render 2D
 	OGLContext::getInstance()->Render2D();
-	MenuManager::getInstance()->Render();
+	if (m_menuOGL)
+		MenuManager::getInstance()->Render();
 
 	///	RenderCursor();
 	// swap the front- and back-buffer
@@ -161,4 +163,9 @@ void SceneManager::RenderObjects()
 			pObj->Render();
 		}
 	}
+}
+
+void SceneManager::hideMenu()
+{
+	m_menuOGL = !m_menuOGL;
 }

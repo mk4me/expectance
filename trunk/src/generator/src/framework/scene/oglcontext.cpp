@@ -57,20 +57,29 @@ void OGLContext::setWindowSize(int width, int height)
 
 bool OGLContext::Init()
 {
-	glewInit();
-
-	if (!GLEW_ARB_vertex_program)
+	if(Config::getInstance()->IsKey("hardware_acceleration"))
 	{
-	  std::cerr << "Error ARB_vertex_program OpenGL extension not found." << std::endl;
-	  return false;
+		HardwareAcceleration = Config::getInstance()->GetIntVal("hardware_acceleration");
 	}
+	else
+		HardwareAcceleration = 0; // no config settings
 
-	if (!GLEW_ARB_vertex_buffer_object)
+	if (HardwareAcceleration == 1)
 	{
-	  std::cerr << "Error ARB_vertex_buffer_object OpenGL extension not found." << std::endl;
-	  return false;
-	}
+		glewInit();
 
+		if (!GLEW_ARB_vertex_program)
+		{
+		  std::cerr << "Error ARB_vertex_program OpenGL extension not found." << std::endl;
+		  return false;
+		}
+
+		if (!GLEW_ARB_vertex_buffer_object)
+		{
+		  std::cerr << "Error ARB_vertex_buffer_object OpenGL extension not found." << std::endl;
+		  return false;
+		}
+	}
 
 	m_width = glutGet (GLUT_SCREEN_WIDTH);
 	m_height = (glutGet (GLUT_SCREEN_HEIGHT))/2;

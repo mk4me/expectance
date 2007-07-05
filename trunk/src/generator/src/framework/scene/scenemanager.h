@@ -42,11 +42,12 @@ namespace ft
 		bool RemoveObject(SceneObject*);
 		bool RemoveObject(std::string id);
 		void RenderObjects();
-
+		void hideMenu();
     private:
 		
         static SceneManager* m_instance;
-		std::map<std::string,SceneObject*> g_SceneObjects;             
+		std::map<std::string,SceneObject*> g_SceneObjects;
+		bool m_menuOGL;
     };
 };
 

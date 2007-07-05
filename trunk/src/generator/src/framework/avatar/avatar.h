@@ -21,7 +21,7 @@ namespace ft
 		Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
 		Avatar(CalModel* calModel, CalCoreModel* calCoreModel); 
 	    virtual ~Avatar(void);
-		bool Init();
+		bool CheckHardwareAcceleration();
         void SetCalModel(CalModel* calModel);
         CalModel* GetCalModel();
 		
