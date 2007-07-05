@@ -44,3 +44,10 @@ inline Quat CalQuatToQuat(const CalQuaternion &cq) {
 inline CalQuaternion QuatToCalQuat(const Quat &q) {
   return CalQuaternion(q.I(), q.J(), q.K(), q.S());
 };
+
+//! Pi the constant
+const float Pi = 3.14159265358979323846f;
+//! convert and angle in degrees to radians
+inline float degToRad(float angle){return angle*Pi/180.0f;};
+//! convert and angle in radians to degrees
+inline float radToDeg(float angle){return angle*180.0f/Pi;};

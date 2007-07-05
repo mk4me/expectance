@@ -8,7 +8,7 @@
 #define _GEN_SCENE_OBJECT_H
 
 #include "../core/baseobject.h"
-
+#include "../utility/Cal3dMathsConversion.h"
 
 namespace ft
 {
@@ -31,7 +31,7 @@ namespace ft
 
 		const bool isVisible() const;
 		const void PrintInfo(void) const;
-
+		CalQuaternion m_vRotation; //tmp
 	protected:
 		bool m_visible;
 		FTVect m_position, m_orientation;

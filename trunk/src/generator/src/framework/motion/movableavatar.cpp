@@ -93,25 +93,25 @@ void MovableAvatar::InitMotions()
         m_timeLine = new TimeLine();
         TimeLineMotion* timeLineMotion = new TimeLineMotion();
         timeLineMotion->setMotion(motionForTimeLine);
-        timeLineMotion->setLoopNumber(2);
+        //timeLineMotion->setLoopNumber(2);
         timeLineMotion->setAnimLoop(true);
         m_timeLine->AddObject(timeLineMotion);
 
-        if (motionForTimeLine_2 != NULL)
-        {
-            TimeLineMotion* timeLineMotion = new TimeLineMotion();
-            //timeLineMotion->setInterupting(true);
-            timeLineMotion->setMotion(motionForTimeLine_2);
-            m_timeLine->AddObject(timeLineMotion);
-        }
+        //if (motionForTimeLine_2 != NULL)
+        //{
+        //    TimeLineMotion* timeLineMotion = new TimeLineMotion();
+        //    //timeLineMotion->setInterupting(true);
+        //    timeLineMotion->setMotion(motionForTimeLine_2);
+        //    m_timeLine->AddObject(timeLineMotion);
+        //}
         
         // last motion to achive IDLE position
-        TimeLineMotion *idleMotion = new TimeLineMotion();
-        idleMotion->setAnimLoop(true);
-        Motion* fakeMotion = new Motion("",-1);
-        fakeMotion->setFakeAnim(true);
-        idleMotion->setMotion(fakeMotion);
-        m_timeLine->AddObject(idleMotion);
+        //TimeLineMotion *idleMotion = new TimeLineMotion();
+        //idleMotion->setAnimLoop(true);
+        //Motion* fakeMotion = new Motion("",-1);
+        //fakeMotion->setFakeAnim(true);
+        //idleMotion->setMotion(fakeMotion);
+        //m_timeLine->AddObject(idleMotion);
        
 
         m_timeLine->AddModifier(new TranslationModifier());
@@ -270,8 +270,8 @@ void MovableAvatar::OnMessage(Message* msg)
         if (  getName().compare(msg->getParam()->getStrValue()) == 0   )
         {
             cout << "MovableAvatar : turn left " << std::endl;
-            Quat addRot = Quat(-0.2f, Vec(0,0,1));
-//            m_vRotation *= QuatToCalQuat(addRot);
+            Quat addRot = Quat(degToRad(2.0f), Vec(0,1,0));
+            m_vRotation *= QuatToCalQuat(addRot);
         }
     }
     else if (msg->getType() == MSG_CONTROL_TURN_RIGHT)
@@ -279,8 +279,8 @@ void MovableAvatar::OnMessage(Message* msg)
         if (  getName().compare(msg->getParam()->getStrValue()) == 0   )
         {
             cout << "MovableAvatar : turn left " << std::endl;
-            Quat addRot = Quat(0.2f, Vec(0,0,1));
-//            m_vRotation *= QuatToCalQuat(addRot);
+            Quat addRot = Quat(degToRad(-2.0f), Vec(0,1,0));
+            m_vRotation *= QuatToCalQuat(addRot);
         }
     }
     

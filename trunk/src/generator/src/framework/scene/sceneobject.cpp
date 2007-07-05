@@ -13,6 +13,7 @@ SceneObject::SceneObject(void)
 	m_color.set(1.0,1.0,1.0); //white
 	m_alpha = 1;
 	m_visible = true;
+	m_vRotation = QuatToCalQuat(Quat(degToRad(0.0f), Vec(0,1,0))); // according to Z axis
 }
 
 bool SceneObject::Render()

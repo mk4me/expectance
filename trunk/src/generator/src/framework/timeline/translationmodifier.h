@@ -7,7 +7,7 @@
 #define _GEN_TRANSLATION_MODIFIER_H
 
 #include "timelinemodifier.h"
-#include "../utility/Cal3dMathsConversion.h"
+
 #include "../scene/scenemanager.h"
 
 namespace ft
@@ -25,7 +25,7 @@ namespace ft
     private:
         CalVector m_vTranslation;
         CalVector m_vLastPos;
-        CalQuaternion m_vRotation;
+        //CalQuaternion m_vRotation;
 		TraceLine *tracer;
 
     };
