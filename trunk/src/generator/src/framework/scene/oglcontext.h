@@ -45,7 +45,7 @@ namespace ft
 		void changeFloorType();
 		void hideFTLogo();
 
-		void Init();
+		bool Init();
 		//void InitCursorDL();
 		void InitNormalFloorDL(int size);
 		bool InitTexturedFloorDL(int size);

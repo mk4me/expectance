@@ -513,6 +513,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\framework\scene\glew.c"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\scene\line.cpp"
 					>
 				</File>
@@ -560,6 +564,22 @@
 					RelativePath=".\src\framework\scene\traceline.h"
 					>
 				</File>
+				<Filter
+					Name="GL"
+					>
+					<File
+						RelativePath=".\src\framework\scene\GL\glew.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\framework\scene\GL\glxew.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\framework\scene\GL\wglew.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="utility"

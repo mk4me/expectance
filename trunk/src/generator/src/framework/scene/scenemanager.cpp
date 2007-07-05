@@ -40,13 +40,19 @@ void SceneManager::DestroyInstance()
 bool SceneManager::Init()
 {
 	Camera::getInstance()->Init();
-	OGLContext::getInstance()->Init();
-	MenuManager::getInstance()->Init(0,0); 
-	
+	if (!OGLContext::getInstance()->Init())
+	{
+		return false;
+	}
+
 	if (!InitSceneObjects()) 
 	{
 		return false;
 	}
+
+	MenuManager::getInstance()->Init(0,0); 
+
+
 	return true;
 }
 

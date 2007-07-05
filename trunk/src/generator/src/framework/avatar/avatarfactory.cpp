@@ -268,12 +268,24 @@ void AvatarFactory::InitModelMeshes(CalCoreModel* coreModel, CalModel* model)
   // set the material set of the whole model
   model->setMaterialSet(0);
 
+
+  // Disable internal data
+  // this disable spring system necessary for video hardware acceleration
+
+  std::cout << "Disable internal." << std::endl;
+  model->disableInternalData();
+
 }
 void AvatarFactory::ReleaseCalCoreModels()
 {
     //TODO: add releasing models
     // - delete each memeber of map
     // - make clear() on map
+	std::map<std::string,CalCoreModel*>::iterator it = m_instance->m_coreModels.begin();
+	for( ; it != m_instance->m_coreModels.end(); ++it ) {
+		delete it->second;
+    }
+    m_instance->m_coreModels.clear();
 }
 
 /*----- Load and create a texture from a given file -----*/

@@ -55,8 +55,23 @@ void OGLContext::setWindowSize(int width, int height)
 }
 
 
-void OGLContext::Init()
+bool OGLContext::Init()
 {
+	glewInit();
+
+	if (!GLEW_ARB_vertex_program)
+	{
+	  std::cerr << "Error ARB_vertex_program OpenGL extension not found." << std::endl;
+	  return false;
+	}
+
+	if (!GLEW_ARB_vertex_buffer_object)
+	{
+	  std::cerr << "Error ARB_vertex_buffer_object OpenGL extension not found." << std::endl;
+	  return false;
+	}
+
+
 	m_width = glutGet (GLUT_SCREEN_WIDTH);
 	m_height = (glutGet (GLUT_SCREEN_HEIGHT))/2;
 	m_floorType = 0;
@@ -82,6 +97,8 @@ void OGLContext::Init()
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
+
+	return true;
 }
 
 //void OGLContext::InitCursorDL()
@@ -447,3 +464,5 @@ void OGLContext::OGLWriteStroke(int x, int y, const char *text)
 	}
     glPopMatrix();
 }
+
+
