@@ -34,8 +34,8 @@ void TranslationModifier::Apply(float elapsedSeconds,Avatar* avatar)
             CalVector add = m_vLastPos;
             add.y = 0;
             m_vTranslation += add;
-        }
 		tracer->AddPoint(m_vTranslation); //for debug
+        }
 
         bone->setRotation(currRotatation * m_vRotation);
 
