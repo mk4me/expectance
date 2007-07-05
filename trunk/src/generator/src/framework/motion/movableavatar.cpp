@@ -100,10 +100,19 @@ void MovableAvatar::InitMotions()
         if (motionForTimeLine_2 != NULL)
         {
             TimeLineMotion* timeLineMotion = new TimeLineMotion();
+            //timeLineMotion->setInterupting(true);
             timeLineMotion->setMotion(motionForTimeLine_2);
             m_timeLine->AddObject(timeLineMotion);
         }
         
+        // last motion to achive IDLE position
+        TimeLineMotion *idleMotion = new TimeLineMotion();
+        idleMotion->setAnimLoop(true);
+        Motion* fakeMotion = new Motion("",-1);
+        fakeMotion->setFakeAnim(true);
+        idleMotion->setMotion(fakeMotion);
+        m_timeLine->AddObject(idleMotion);
+       
 
         m_timeLine->AddModifier(new TranslationModifier());
     }

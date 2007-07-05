@@ -12,7 +12,7 @@ TimeLineMotion::TimeLineMotion(void)
     m_blender = NULL;
     m_motionRef = NULL; 
 
-    m_loopNumber = 0;
+    m_loopNumber = -1;
 
     setInterupting(false);
 
@@ -218,14 +218,24 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
             m_animTime += elapsedSeconds;  //TODO: ABAK: consider other animation time detection (maybe by cla3d function)
 
             float animTime = avatar->GetCalModel()->getMixer()->getAnimationTime();
-            float animDuration = anim->getDuration();
+            float animDuration;
+            
+            if (m_motionRef->isFakeAnim())
+            {
+                animDuration = 0;
+            }
+            else
+            {
+                animDuration = anim->getDuration();
+            }
 
             if (this->isAnimLoop())
             {
                 // check if current loop is finished
                 if ( m_animTime >= animDuration)
                 {
-                    if (isToFinish() || m_currLoop >= (m_loopNumber -1))
+                    //if m_loopNumber is -1 this means that this motion is infinitive
+                    if ( isToFinish() || (  m_loopNumber>=0   &&    (m_currLoop >= (m_loopNumber-1)) ) )
                     {
                         avatar->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
                         setAnimStarted(false);
@@ -250,12 +260,18 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
         {
             if (this->isAnimLoop())
             {
-                avatar->GetCalModel()->getMixer()->blendCycle(m_motionRef->getAnimID(), 1.0f, 0.0f);
+                if (! m_motionRef->isFakeAnim() )
+                {
+                    avatar->GetCalModel()->getMixer()->blendCycle(m_motionRef->getAnimID(), 1.0f, 0.0f);
+                }
                 m_currLoop = 0;
             }
             else
             {
-                avatar->GetCalModel()->getMixer()->executeAction(m_motionRef->getAnimID(), 0, 0);
+                if (! m_motionRef->isFakeAnim() )
+                {
+                    avatar->GetCalModel()->getMixer()->executeAction(m_motionRef->getAnimID(), 0, 0);
+                }
             }
             setAnimStarted(true);
         }

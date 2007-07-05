@@ -18,7 +18,7 @@ namespace ft
     class Motion
     {
     public:
-        Motion(const std::string animName, int anim_id) { setAnimName(animName); setAnimID(anim_id); } 
+        Motion(const std::string animName, int anim_id);
         virtual ~Motion(void) { /* empty */}
 
         void setAnimName(const std::string animName) { m_animName = animName; }
@@ -27,9 +27,14 @@ namespace ft
         void setAnimID(int anim_id) { m_anim_id = anim_id; }
         int getAnimID() { return m_anim_id; }
 
+        void setFakeAnim(bool set) { m_fakeAnim = set; }
+        bool isFakeAnim() { return m_fakeAnim; }
+
     private:
         std::string m_animName;
         int m_anim_id;
+
+        bool m_fakeAnim;
     };
 };
 

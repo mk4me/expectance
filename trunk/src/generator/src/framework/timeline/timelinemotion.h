@@ -72,7 +72,7 @@ namespace ft
         TimeLineBlender* m_blender;
 
         bool m_animLoop;  // if the motion is looped
-        int m_loopNumber; // defines length of looped motion by number of cycles
+        int m_loopNumber; // defines length of looped motion by number of cycles (if value is -1 it is infinite)
         int m_currLoop;
 
         bool m_animStarted;  // indicates if anim for this motion is already perfomed
