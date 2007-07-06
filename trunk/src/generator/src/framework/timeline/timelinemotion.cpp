@@ -151,97 +151,110 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, Avatar* avatar)
                 currMotion->setToFinish(true);
             }
             currMotion->Execute(elapsedSeconds, avatar);
-            //anyStarted = currMotion->isStarted(); //TODO: investigate why not working for every case 
             anyStarted = true;
-        }
-        else  // there is no started motion
-        {
-            if (nextMotion !=NULL)
+            
+            
+            bool nextMotionToStart = false;
+
+            if (!currMotion->isStarted() || IsBlendingToStart(currMotion, nextMotion, avatar))
+            {
+                nextMotionToStart = true;
+            }
+
+            if (nextMotionToStart && nextMotion !=NULL)
             {
                 m_currSubMotion++;
                 nextMotion->Start();
                 nextMotion->Execute(elapsedSeconds, avatar);
-                anyStarted = true;  //TODO : investigate if enought
+                anyStarted = true; 
             }
             else
             {
-                m_currSubMotion = -1;  // no more submotions to execute
+                if (!currMotion->isStarted())
+                    m_currSubMotion = -1;  // no more submotions to execute
             }
         }
     }
+
+
+    //TODO : consider if next motion is shorter than blending overlap
     return anyStarted;
 }
 
 
 void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
 {
-    if (m_motionRef != NULL)
+    if (m_motionRef == NULL)
+        return;
+
+    if (isAnimStarted())
     {
-        if (isAnimStarted())
-        {
-            int animId = m_motionRef->getAnimID();
-            CalCoreAnimation* anim = avatar->GetCalCoreModel()->getCoreAnimation(animId);
+                int animId = m_motionRef->getAnimID();
+                CalCoreAnimation* anim = avatar->GetCalCoreModel()->getCoreAnimation(animId);
 
-            m_animTime += elapsedSeconds;  //TODO: ABAK: consider other animation time detection (maybe by cla3d function)
+                m_animTime += elapsedSeconds;  //TODO: ABAK: consider other animation time detection (maybe by cla3d function)
 
-            float animTime = avatar->GetCalModel()->getMixer()->getAnimationTime();
-            float animDuration;
-            
-            if (m_motionRef->isNullAnim())
-            {
-                animDuration = 0;
-            }
-            else
-            {
-                animDuration = anim->getDuration();
-            }
-
-            if (this->isAnimLoop())
-            {
-                // check if current loop is finished
-                if ( m_animTime >= animDuration)
+                float animTime = avatar->GetCalModel()->getMixer()->getAnimationTime();
+                float animDuration;
+                
+                if (m_motionRef->isNullAnim())
                 {
-                    //if m_loopNumber is -1 this means that this motion is infinitive
-                    if ( isToFinish() || (  m_loopNumber>=0   &&    (m_currLoop >= (m_loopNumber-1)) ) )
+                    animDuration = 0;
+                }
+                else
+                {
+                    animDuration = anim->getDuration();
+                }
+
+                if (this->isAnimLoop())
+                {
+                    int i=0;
+                    // check if current loop is finished
+                    if ( m_animTime >= animDuration)
                     {
-                        avatar->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
+                        //if m_loopNumber is -1 this means that this motion is infinitive
+                        if ( isToFinish() || (  m_loopNumber>=0   &&    (m_currLoop >= (m_loopNumber-1)) ) )
+                        {
+                            avatar->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
+                            std::cout << " anim stopped (cycled)" << std::endl;
+                            setAnimStarted(false);
+                        }
+                        else
+                        {
+                            m_currLoop++;
+                            m_animTime = 0;
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    //check if anim finished
+                    if (m_animTime >= animDuration)
+                    {
+                        std::cout << " anim stopped (action)" << std::endl;
                         setAnimStarted(false);
                     }
-                    else
-                    {
-                        m_currLoop++;
-                        m_animTime = 0;
-                    }
                 }
-            }
-            else
+    }
+    else // anim not started 
+    {
+        if (this->isAnimLoop())
+        {
+            if (! m_motionRef->isNullAnim() )
             {
-                //check if anim cycle finished
-                if (m_animTime >= animDuration)
-                {
-                    setAnimStarted(false);
-                }
+                avatar->GetCalModel()->getMixer()->blendCycle(m_motionRef->getAnimID(), 1.0f, 0.0f);
             }
+            m_currLoop = 0;
         }
         else
         {
-            if (this->isAnimLoop())
+            if (! m_motionRef->isNullAnim() )
             {
-                if (! m_motionRef->isNullAnim() )
-                {
-                    avatar->GetCalModel()->getMixer()->blendCycle(m_motionRef->getAnimID(), 1.0f, 0.0f);
-                }
-                m_currLoop = 0;
+                avatar->GetCalModel()->getMixer()->executeAction(m_motionRef->getAnimID(), 0.0f, 0.0f);
             }
-            else
-            {
-                if (! m_motionRef->isNullAnim() )
-                {
-                    avatar->GetCalModel()->getMixer()->executeAction(m_motionRef->getAnimID(), 0.0f, 0.0f);
-                }
-            }
-            setAnimStarted(true);
         }
+        setAnimStarted(true);
     }
 
     return;
@@ -270,6 +283,49 @@ void TimeLineMotion::ExecuteModifiers(float elapsedSeconds, Avatar* avatar)
             m_vModifiers[m]->Apply(elapsedSeconds, avatar);
         }
     }
+}
+
+bool TimeLineMotion::IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotion* nextMotion, Avatar* avatar)
+{
+    bool result = false;
+    TimeLineBlender* blender = currMotion->getBlender();
+    if (blender != NULL)
+    {
+        if (!currMotion->isAnimLoop() || currMotion->isToFinish())
+        {
+            float animDuration = currMotion->GetMotionDuration(avatar);
+            float animTime = currMotion->getAnimTime();
+            
+
+            if (animDuration>=0)
+            {
+                float animLeftTime = animDuration - animTime;
+                if (animLeftTime <= blender->getOverlap())
+                {
+                    std::cout << toString() << " blending started for animLeftTime " << animLeftTime  << std::endl;
+                    result = true;
+                }
+            }
+        }
+    }
+    
+    return result;
+}
+
+float TimeLineMotion::GetMotionDuration(Avatar* avatar)
+{
+    float duration = -1;
+    if (m_motionRef != NULL)
+    {
+        int animId = m_motionRef->getAnimID();
+        CalCoreAnimation* anim = avatar->GetCalCoreModel()->getCoreAnimation(animId);
+        if (anim != NULL)
+        {
+            duration = anim->getDuration();
+        }
+    }
+
+    return duration;
 }
 
 void TimeLineMotion::Reset()

@@ -13,8 +13,14 @@ namespace ft
     class TimeLineBlender : public TimeLineObject
     {
     public:
-        TimeLineBlender() { /* empty */ } 
+        TimeLineBlender(float overlap) { m_overlap = overlap; } 
         virtual ~TimeLineBlender(void) { /* empty */ }
+
+        void setOverlap(bool set) { m_overlap = set; }
+        float getOverlap() { return m_overlap; }
+
+    private:
+        float m_overlap;
     };
 };
 

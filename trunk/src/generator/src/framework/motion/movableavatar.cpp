@@ -202,6 +202,7 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
     {
         TimeLineMotion* timeLineMotion = new TimeLineMotion();
         timeLineMotion->setMotion(mot);
+        timeLineMotion->setBlender(new TimeLineBlender(0.3f));
         timeLine->AddObject(timeLineMotion);
     }
 

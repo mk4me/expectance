@@ -57,6 +57,10 @@ namespace ft
         void setAnimStarted(bool set) { m_animStarted = set; }
         bool isAnimStarted() { return m_animStarted; }
 
+        float getAnimTime() { return m_animTime; }
+
+        float GetMotionDuration(Avatar* avatar);
+
 
         virtual void Reset(); // resets current object and its children
 
@@ -88,6 +92,7 @@ namespace ft
         std::vector<TimeLineModifier*> m_vModifiers;
 
         void ResetParams();
+        bool IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotion* nextMotion, Avatar* avatar);
         
     };
 };
