@@ -3,7 +3,7 @@
  * author: abak
  */
 #include "timelinefactory.h"
-#include "translationmodifier.h"
+#include "lcsmodifier.h"
 
 using namespace ft;
 
@@ -34,7 +34,7 @@ TimeLine* TimeLineFactory::CreateTimeLine(Motion *motion)
     timeLineMotion->setMotion(motion);
     timeLineMotion->setLoopNumber(2);
 //    timeLineMotion->setAnimLoop(true);
-//    timeLineMotion->AddModifier(new TranslationModifier());
+//    timeLineMotion->AddModifier(new LCSModifier());
 //    timeLineTrack->AddObject(timeLineMotion);
     timeLine->AddObject(timeLineMotion);
     

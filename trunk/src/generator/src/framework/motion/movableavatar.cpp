@@ -4,7 +4,7 @@
  */
 
 #include "movableavatar.h"
-#include "../timeline/translationmodifier.h"
+#include "../timeline/lcsmodifier.h"
 #include "../utility/debug.h"
 //#include "../utility/Cal3dMathsConversion.h"
 
@@ -196,16 +196,34 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
         timeLineMotion->setMotion(mot);
         timeLine->AddObject(timeLineMotion);
     }
-        
+
+    mot = GetMotion(MOTION_WALK_STOP);
+    if (mot != NULL)
+    {
+        TimeLineMotion* timeLineMotion = new TimeLineMotion();
+        timeLineMotion->setMotion(mot);
+        timeLine->AddObject(timeLineMotion);
+    }
+
+    mot = GetMotion(MOTION_WALK_IDLE);
+    if (mot != NULL)
+    {
+        TimeLineMotion* timeLineMotion = new TimeLineMotion();
+        timeLineMotion->setMotion(mot);
+		timeLineMotion->setAnimLoop(true);
+        timeLine->AddObject(timeLineMotion);
+    }
+
+
      //last motion to achive IDLE position
-    TimeLineMotion *idleMotion = new TimeLineMotion();
-    idleMotion->setAnimLoop(true);
-    //idleMotion->setInterupting(true);
-    idleMotion->setMotion(new Motion());
-    timeLine->AddObject(idleMotion);
+    //TimeLineMotion *idleMotion = new TimeLineMotion();
+    //idleMotion->setAnimLoop(true);
+    ////idleMotion->setInterupting(true);
+    //idleMotion->setMotion(new Motion());
+    //timeLine->AddObject(idleMotion);
        
 
-    timeLine->AddModifier(new TranslationModifier());
+    timeLine->AddModifier(new LCSModifier());
     
     return timeLine;
 }
