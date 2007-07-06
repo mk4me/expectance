@@ -10,6 +10,7 @@
 #include "../avatar/avatar.h"
 #include "../utility/Quat.h"
 #include "../timeline/timelinefactory.h"
+#include "../scene/scenemanager.h"
 
 #include "motion.h"
 #include <map>
@@ -19,6 +20,8 @@ namespace ft
     class MovableAvatar : public Avatar
     {
     public:
+        bool TRACE;
+
 		MovableAvatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName); 
 	    virtual ~MovableAvatar(void);
 
@@ -30,6 +33,11 @@ namespace ft
         bool AddMotion(Motion* motion);
         bool  RemoveMotion(Motion* motion);
         Motion* GetMotion(std::string motionName);
+
+        void StartTimeLine(TimeLine *timeLine);
+        void StopTimeLine();
+
+
         void Dump();
 
 
@@ -43,12 +51,14 @@ namespace ft
         std::map<std::string,Motion*> m_motions;
 
         TimeLine* m_timeLine;
-
+        
         void InitMotions();
 
-        void StartTimeLine();
-        void StopTimeLine();
         void UpdateTimeLine(float elapsedSeconds);
+
+        TimeLine* CreateTestTimeLine();
+
+        TraceLine *tracer_start_pos;
 
     };
 };

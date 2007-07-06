@@ -12,12 +12,15 @@
 namespace ft
 {
     //NAMES of MOTIONS
+    static const std::string MOTION_WALK_START = "data\\cally\\cally_walkstart.CAF";  
     static const std::string MOTION_WALK_LOOP = "data\\cally\\cally_walkloop.CAF";  
     static const std::string MOTION_DANCE = "data\\cally\\cally_ballerina.CAF";  
 
     class Motion
     {
     public:
+        
+        Motion();
         Motion(const std::string animName, int anim_id);
         virtual ~Motion(void) { /* empty */}
 
@@ -27,14 +30,12 @@ namespace ft
         void setAnimID(int anim_id) { m_anim_id = anim_id; }
         int getAnimID() { return m_anim_id; }
 
-        void setFakeAnim(bool set) { m_fakeAnim = set; }
-        bool isFakeAnim() { return m_fakeAnim; }
+       
+        bool isNullAnim() { return (m_anim_id == -1);}
 
     private:
         std::string m_animName;
         int m_anim_id;
-
-        bool m_fakeAnim;
     };
 };
 

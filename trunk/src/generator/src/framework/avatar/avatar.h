@@ -40,7 +40,13 @@ namespace ft
 
         void SetLodLevel(float level);
 
+        void setStartPosition(const CalVector& pos) { m_vStartPosition = pos; }  //TODO : should be move to MovablaAvatar
+        const CalVector& getStartPosition() { return m_vStartPosition; }
+
     protected:
+        CalVector m_vStartPosition; //TODO : should be move to MovablaAvatar
+        
+
 		bool loadBufferObject();
 		bool loadVertexProgram();
         CalModel* m_calModel;  //cal3d model which is represented by this avatar object

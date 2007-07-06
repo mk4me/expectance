@@ -15,18 +15,22 @@ namespace ft
     class TranslationModifier : public TimeLineModifier
     {
     public:
+        bool TRACE;
+
         TranslationModifier();
-        virtual ~TranslationModifier(void) { /* empty */ }
+        virtual ~TranslationModifier(void);
 
         void Apply(float elapsedSeconds, Avatar* avatar);
 
         virtual void Reset(); // resets current object and its children
 
     private:
+        bool m_translationInited;
         CalVector m_vTranslation;
         CalVector m_vLastPos;
         //CalQuaternion m_vRotation;
-		TraceLine *tracer;
+		TraceLine *tracer_translation;
+        TraceLine *tracer_curr_pos;
 
     };
 };

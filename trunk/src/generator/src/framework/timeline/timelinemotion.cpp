@@ -100,7 +100,6 @@ void TimeLineMotion::Execute(float elapsedSeconds, Avatar* avatar)
     ExecuteTracks(elapsedSeconds, avatar);
     bool anyStarted = ExecuteSubMotions(elapsedSeconds, avatar);
     ExecuteAnim(elapsedSeconds, avatar);
-    ExecuteModifiers(elapsedSeconds, avatar);
 
     if (!anyStarted && !isAnimStarted())
     {
@@ -125,20 +124,6 @@ void TimeLineMotion::ExecuteTracks(float elapsedSeconds, Avatar* avatar)
 //
 bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, Avatar* avatar)
 {
-//ad 2) wykonanie sekwencji pod-ruchow					
-//- ruch musi zawierac wskaznik na akatualnie wykonywany pod-ruch 					
-//- sprawdz czy wykonywany jest jakis pod-ruch
-//	- jesli tak:
-        //- sprawdz czy jest nastepny z flaga 'interupting'
-	       // - jesli tak:
-	       //     - ustaw aktualnie wykonywany podruch do zakonczenia
-        //    - jesli nie nie to nie rob nic
-//
-//	- jesli nie:
-//			- sprawdz czy jest jakis nastepny ruch do wykonania
-//				- jesli tak to wykonaj podruch
-//				- jesli nie to zaznacz ze nie ma wiecej ruchow do wykonania
-
     bool anyStarted = false;
  
     TimeLineMotion* currMotion = NULL;
@@ -190,24 +175,6 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, Avatar* avatar)
 
 void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
 {
-
- //   ad 1) Wykonywanie pojedynczego ruchu:
-    //- jesli podlaczona jest animacja
-	//  - jesi tak to sprawdz czy animacja wystartowana:
-	    //	- jesli tak to:
-	    //		- sprawdz czy ruch cykliczny
-				    //- jesli tak to sprawdz czy biezaca petla sie zakonczyla
-        //                    - jesli tak:  sprawdz czy to ostatnia petla lub ruch jest zaznaczony do zakonczenia
-        //                           - jesli tak wykonaj clearCycle() oraz ustaw glowna animacje jako skonczona 
-    //                               - jesli nie to zwieksz licznik biezacej petli
-      
-			     //   - jesli nie to sprawdz czy animacja sie zakonczyla
-				    //	    - jesli tak to ustaw glowna animacje jako skonczona 
-
-	    //	- jesli nie to sprawdz czy cykliczny
-	    //		- jesli tak wystartuj animacje przez blendCycle() 
-	    //		- jesli nie to wystartuj animacje przez executeAction()
-
     if (m_motionRef != NULL)
     {
         if (isAnimStarted())
@@ -220,7 +187,7 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
             float animTime = avatar->GetCalModel()->getMixer()->getAnimationTime();
             float animDuration;
             
-            if (m_motionRef->isFakeAnim())
+            if (m_motionRef->isNullAnim())
             {
                 animDuration = 0;
             }
@@ -260,7 +227,7 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
         {
             if (this->isAnimLoop())
             {
-                if (! m_motionRef->isFakeAnim() )
+                if (! m_motionRef->isNullAnim() )
                 {
                     avatar->GetCalModel()->getMixer()->blendCycle(m_motionRef->getAnimID(), 1.0f, 0.0f);
                 }
@@ -268,9 +235,9 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
             }
             else
             {
-                if (! m_motionRef->isFakeAnim() )
+                if (! m_motionRef->isNullAnim() )
                 {
-                    avatar->GetCalModel()->getMixer()->executeAction(m_motionRef->getAnimID(), 0, 0);
+                    avatar->GetCalModel()->getMixer()->executeAction(m_motionRef->getAnimID(), 0.0f, 0.0f);
                 }
             }
             setAnimStarted(true);
@@ -282,7 +249,20 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
 
 void TimeLineMotion::ExecuteModifiers(float elapsedSeconds, Avatar* avatar)
 {
-    //Execute all modfiers
+    //execute modifiers for track 
+        // - TODO : in the future
+
+    //execute modifiers for current submotion
+    TimeLineMotion* currMotion = NULL;
+
+    if (m_currSubMotion >= 0)
+        currMotion = (TimeLineMotion*)m_vObjects[m_currSubMotion];
+
+    if (currMotion != NULL)
+        currMotion->ExecuteModifiers(elapsedSeconds, avatar);
+
+    
+    //Execute modfiers of this object
     if (m_vModifiers.size() > 0)
     {
         for (int m=0; m<(int)m_vModifiers.size(); m++)
