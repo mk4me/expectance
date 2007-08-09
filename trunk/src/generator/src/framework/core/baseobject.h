@@ -12,6 +12,9 @@
 namespace ft
 {
 
+	/**
+	 * Class BaseObject: <describe the behavior and responsibility of this class>
+	 **/
     class BaseObject 
     {
 

@@ -11,6 +11,11 @@ using namespace ft;
 AvatarFactory* AvatarFactory::m_instance = NULL;
 
 
+/**
+ * getInstance: <describe the responsibilities and behavior of this method>
+ *
+ * \return ft::AvatarFactory * <describe what is returned if appropriate>
+ **/
 AvatarFactory* AvatarFactory::getInstance()
 {
     if (m_instance == NULL)
@@ -22,6 +27,10 @@ AvatarFactory* AvatarFactory::getInstance()
     return m_instance;
 }
 
+/**
+ * DestroyInstance: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void AvatarFactory::DestroyInstance()
 {
     if (m_instance != NULL)
@@ -31,6 +40,13 @@ void AvatarFactory::DestroyInstance()
     }
 }
 
+/**
+ * CreateAvatar: <describe the responsibilities and behavior of this method>
+ *
+ * \param const std::string modelName <argument description>
+ * \param const std::string avatarName <argument description>
+ * \return ft::Avatar * <describe what is returned if appropriate>
+ **/
 Avatar* AvatarFactory::CreateAvatar(const std::string modelName, std::string avatarName)
 {
     std::cout << "AvatarFactory::CreateAvatar, for model: " + modelName + " with new name: " + avatarName << std::endl; 
@@ -66,6 +82,12 @@ Avatar* AvatarFactory::CreateAvatar(const std::string modelName, std::string ava
     return newAvatar;
 }
 
+/**
+ * LoadCalCoreModel: <describe the responsibilities and behavior of this method>
+ *
+ * \param const std::string modelName <argument description>
+ * \return CalCoreModel * <describe what is returned if appropriate>
+ **/
 CalCoreModel* AvatarFactory::LoadCalCoreModel(const std::string modelName)
 {
     std::cout << "AvatarFactory::LoadCalCoreModel, for model: " + modelName  << std::endl;
@@ -93,6 +115,13 @@ CalCoreModel* AvatarFactory::LoadCalCoreModel(const std::string modelName)
 /*----- Parse the configuration file and load the whole model  -----
  * NOTE: Extracted from Form Viewer app.
  */
+/**
+ * ParseModelConfiguration: <describe the responsibilities and behavior of this method>
+ *
+ * \param const std::string & strFilename <argument description>
+ * \param CalCoreModel * coreModel <argument description>
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool AvatarFactory::ParseModelConfiguration(const std::string& strFilename, CalCoreModel* coreModel)
 {
   // open the model configuration file
@@ -221,6 +250,11 @@ bool AvatarFactory::ParseModelConfiguration(const std::string& strFilename, CalC
   // NOTE: this is not the right way to do it, but this Viewer can't do the right
   // mapping without further information on the model etc., so this is the only
   // thing we can do here.
+/**
+ * InitCoreModelMaterials: <describe the responsibilities and behavior of this method>
+ *
+ * \param CalCoreModel * coreModel <argument description>
+ **/
 void AvatarFactory::InitCoreModelMaterials(CalCoreModel* coreModel)
 {
   int materialId;
@@ -255,6 +289,12 @@ void AvatarFactory::InitCoreModelMaterials(CalCoreModel* coreModel)
 
 }
 
+/**
+ * InitModelMeshes: <describe the responsibilities and behavior of this method>
+ *
+ * \param CalCoreModel * coreModel <argument description>
+ * \param CalModel * model <argument description>
+ **/
 void AvatarFactory::InitModelMeshes(CalCoreModel* coreModel, CalModel* model)
 {
  
@@ -276,6 +316,10 @@ void AvatarFactory::InitModelMeshes(CalCoreModel* coreModel, CalModel* model)
   model->disableInternalData();
 
 }
+/**
+ * ReleaseCalCoreModels: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void AvatarFactory::ReleaseCalCoreModels()
 {
     //TODO: add releasing models
@@ -289,6 +333,12 @@ void AvatarFactory::ReleaseCalCoreModels()
 }
 
 /*----- Load and create a texture from a given file -----*/
+/**
+ * LoadTexture: <describe the responsibilities and behavior of this method>
+ *
+ * \param const std::string & strFilename <argument description>
+ * \return GLuint <describe what is returned if appropriate>
+ **/
 GLuint AvatarFactory::LoadTexture(const std::string& strFilename)
 {
   GLuint textureId=0;

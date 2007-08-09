@@ -17,6 +17,9 @@
 
 namespace ft
 {
+	/**
+	 * Class Config: <describe the behavior and responsibility of this class>
+	 **/
     class Config
     {
     public:

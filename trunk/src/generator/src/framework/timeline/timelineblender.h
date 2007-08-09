@@ -10,6 +10,9 @@
 
 namespace ft
 {
+	/**
+	 * Class TimeLineBlender: <describe the behavior and responsibility of this class>
+	 **/
     class TimeLineBlender : public TimeLineObject
     {
     public:

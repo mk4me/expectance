@@ -9,6 +9,11 @@ using namespace ft;
 
 SceneManager* SceneManager::m_instance = NULL;
 
+/**
+ * getInstance: <describe the responsibilities and behavior of this method>
+ *
+ * \return ft::SceneManager * <describe what is returned if appropriate>
+ **/
 SceneManager* SceneManager::getInstance()
 {
     if (m_instance == NULL)
@@ -23,6 +28,10 @@ SceneManager* SceneManager::getInstance()
     return m_instance;
 }
 
+/**
+ * DestroyInstance: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void SceneManager::DestroyInstance()
 {
     if (m_instance != NULL)
@@ -37,6 +46,11 @@ void SceneManager::DestroyInstance()
     }
 }
 
+/**
+ * Init: <describe the responsibilities and behavior of this method>
+ *
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool SceneManager::Init()
 {
 	Camera::getInstance()->Init();
@@ -57,6 +71,11 @@ bool SceneManager::Init()
 	return true;
 }
 
+/**
+ * InitSceneObjects: <describe the responsibilities and behavior of this method>
+ *
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool SceneManager::InitSceneObjects()
 {
 
@@ -69,6 +88,10 @@ bool SceneManager::InitSceneObjects()
 	return true;
 }
 
+/**
+ * OnRender: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void SceneManager::OnRender()
 {
 	OGLContext::getInstance()->RenderScene();
@@ -86,12 +109,22 @@ void SceneManager::OnRender()
 	ft::ControlManager::getInstance()->increraseFramesCounter();
 }
 
+/**
+ * CleanUp: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void SceneManager::CleanUp()
 {
 	TextureManager::getInstance()->DestroyInstance();	
 }
 
 
+/**
+ * AddObject: <describe the responsibilities and behavior of this method>
+ *
+ * \param ft::SceneObject * pObj <argument description>
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool SceneManager::AddObject(SceneObject* pObj)
 {
 	std::string _id = pObj->getID();
@@ -107,6 +140,12 @@ bool SceneManager::AddObject(SceneObject* pObj)
 }  
 
 
+/**
+ * getObject: <describe the responsibilities and behavior of this method>
+ *
+ * \param std::string id <argument description>
+ * \return ft::SceneObject * <describe what is returned if appropriate>
+ **/
 SceneObject * SceneManager::getObject(std::string id)
 {
  	std::map<std::string,SceneObject*>::iterator it = g_SceneObjects.find(id);
@@ -117,6 +156,12 @@ SceneObject * SceneManager::getObject(std::string id)
 }
 
 
+/**
+ * getObjectByName: <describe the responsibilities and behavior of this method>
+ *
+ * \param std::string name <argument description>
+ * \return ft::SceneObject * <describe what is returned if appropriate>
+ **/
 SceneObject * SceneManager::getObjectByName(std::string name)
 {
 	std::map<std::string,SceneObject*>::iterator it = m_instance->g_SceneObjects.begin();
@@ -127,6 +172,12 @@ SceneObject * SceneManager::getObjectByName(std::string name)
 	return NULL;
 }
 
+/**
+ * RemoveObject: <describe the responsibilities and behavior of this method>
+ *
+ * \param ft::SceneObject *  <argument description>
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool SceneManager::RemoveObject(SceneObject* pObj)
 {
 	std::string _id = pObj->getID();
@@ -136,6 +187,12 @@ bool SceneManager::RemoveObject(SceneObject* pObj)
 }
 
 
+/**
+ * RemoveObject: <describe the responsibilities and behavior of this method>
+ *
+ * \param std::string id <argument description>
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool SceneManager::RemoveObject(std::string id)
 {
 	if (!id.empty())
@@ -151,6 +208,10 @@ bool SceneManager::RemoveObject(std::string id)
 	return false;
 }
 
+/**
+ * RenderObjects: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void SceneManager::RenderObjects()
 {
 	SceneObject *pObj;
@@ -165,6 +226,10 @@ void SceneManager::RenderObjects()
 	}
 }
 
+/**
+ * hideMenu: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void SceneManager::hideMenu()
 {
 	m_menuOGL = !m_menuOGL;

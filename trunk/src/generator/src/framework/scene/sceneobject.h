@@ -12,6 +12,9 @@
 
 namespace ft
 {
+	/**
+	 * Class SceneObject: <describe the behavior and responsibility of this class>
+	 **/
 	class SceneObject: public virtual BaseObject
 	{
 	public:

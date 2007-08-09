@@ -6,6 +6,11 @@
 #include "traceline.h"
 using namespace ft;
 
+/**
+ * TraceLine: <describe the responsibilities and behavior of this method>
+ *
+ * \param const std::string & name <argument description>
+ **/
 TraceLine::TraceLine(const std::string& name)
 {
 	setName(name);
@@ -14,6 +19,11 @@ TraceLine::TraceLine(const std::string& name)
 	m_marker = true;
 }
 
+/**
+ * Render: <describe the responsibilities and behavior of this method>
+ *
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool TraceLine::Render()
 {
 	if(m_traces.size() > 1) //minimum two elements
@@ -54,26 +64,48 @@ bool TraceLine::Render()
 	return true;
 }
 
+/**
+ * AddPoint: <describe the responsibilities and behavior of this method>
+ *
+ * \param const FTVect & point <argument description>
+ **/
 void TraceLine::AddPoint(const FTVect& point)
 {
 	m_traces.push_back(point);
 }
 
+/**
+ * ClearTrace: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void TraceLine::ClearTrace()
 {
 	m_traces.clear();
 }
 
+/**
+ * setColorMix: <describe the responsibilities and behavior of this method>
+ *
+ * \param bool mix <argument description>
+ **/
 void TraceLine::setColorMix(bool mix)
 {
 	m_colorMix = mix;
 }
 
+/**
+ * ShowMarker: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void TraceLine::ShowMarker()
 {
 	m_marker = true;
 }
 
+/**
+ * HideMarker: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void TraceLine::HideMarker()
 {
 	m_marker = false;

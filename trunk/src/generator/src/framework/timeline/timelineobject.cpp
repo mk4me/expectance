@@ -6,6 +6,10 @@
 
 using namespace ft;
 
+/**
+ * TimeLineObject: <describe the responsibilities and behavior of this method>
+ *
+ **/
 TimeLineObject::TimeLineObject()
 {
     m_startTime = TIME_UNDEFINED;
@@ -14,6 +18,10 @@ TimeLineObject::TimeLineObject()
     m_started = false;
 }
 
+/**
+ * Destroy: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void TimeLineObject::Destroy(void)
 {
     std::cout << toString() << " Destroy() " << std::endl;
@@ -26,6 +34,12 @@ void TimeLineObject::Destroy(void)
     m_vObjects.clear();
 }
 
+/**
+ * AddObject: <describe the responsibilities and behavior of this method>
+ *
+ * \param ft::TimeLineObject * object <argument description>
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool TimeLineObject::AddObject(TimeLineObject* object)
 {
     std::cout << " AddObject " << object->toString() << " to " << toString() << std::endl;
@@ -61,6 +75,11 @@ Motion* MovableAvatar::GetMotion(std::string motionName)
 }
 */
 
+/**
+ * GetCurrentObject: <describe the responsibilities and behavior of this method>
+ *
+ * \return ft::TimeLineObject * <describe what is returned if appropriate>
+ **/
 TimeLineObject* TimeLineObject::GetCurrentObject()
 {
     TimeLineObject* result = NULL;
@@ -69,6 +88,10 @@ TimeLineObject* TimeLineObject::GetCurrentObject()
     return result;
 }
 
+/**
+ * Reset: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void TimeLineObject::Reset()
 {
     for (int n=0; n<(int)m_vObjects.size(); n++)
@@ -79,6 +102,12 @@ void TimeLineObject::Reset()
     //here is place to reset this object
 }
 
+/**
+ * getDepthStr: <describe the responsibilities and behavior of this method>
+ *
+ * \param int depth <argument description>
+ * \return std::string <describe what is returned if appropriate>
+ **/
 std::string TimeLineObject::getDepthStr(int depth)
 {
     std::string sep = "";
@@ -87,6 +116,11 @@ std::string TimeLineObject::getDepthStr(int depth)
     return sep;
 }
 
+/**
+ * Dump: <describe the responsibilities and behavior of this method>
+ *
+ * \param int depth <argument description>
+ **/
 void TimeLineObject::Dump(int depth)
 {
 
@@ -98,6 +132,11 @@ void TimeLineObject::Dump(int depth)
     }
 }
 
+/**
+ * PrintDebug: <describe the responsibilities and behavior of this method>
+ *
+ * \param const std::string & text <argument description>
+ **/
 void TimeLineObject::PrintDebug(const std::string& text)
 {
     std::cout << toString()<< ":" << text << std::endl;

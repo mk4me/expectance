@@ -9,6 +9,11 @@ using namespace ft;
 
 InputManager* InputManager::m_instance = NULL;
 
+/**
+ * getInstance: <describe the responsibilities and behavior of this method>
+ *
+ * \return ft::InputManager * <describe what is returned if appropriate>
+ **/
 InputManager* InputManager::getInstance()
 {
     if (m_instance == NULL)
@@ -20,6 +25,10 @@ InputManager* InputManager::getInstance()
     return m_instance;
 }
 
+/**
+ * DestroyInstance: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void InputManager::DestroyInstance()
 {
     if (m_instance != NULL)
@@ -27,6 +36,13 @@ void InputManager::DestroyInstance()
 }
 
 /*----- Handle a key event -----*/
+/**
+ * OnKey: <describe the responsibilities and behavior of this method>
+ *
+ * \param unsigned char key <argument description>
+ * \param int x <argument description>
+ * \param int y <argument description>
+ **/
 void InputManager::OnKey(unsigned char key, int x, int y)
 {
  
@@ -83,6 +99,13 @@ void InputManager::OnKey(unsigned char key, int x, int y)
 
 
 /*----- Handle special keys (F1, F2, UP, DOWN, etc.)   -----*/
+/**
+ * OnSpecial: <describe the responsibilities and behavior of this method>
+ *
+ * \param int key <argument description>
+ * \param int x <argument description>
+ * \param int y <argument description>
+ **/
 void InputManager::OnSpecial(int key, int x, int y)
 {
   switch(key) 
@@ -106,6 +129,13 @@ void InputManager::OnSpecial(int key, int x, int y)
 }
 
 /*----- Handle a mouse button down event -----*/
+/**
+ * OnMouseButtonDown: <describe the responsibilities and behavior of this method>
+ *
+ * \param int button <argument description>
+ * \param int x <argument description>
+ * \param int y <argument description>
+ **/
 void InputManager::OnMouseButtonDown(int button, int x, int y)
 {
 	std::cout << "Nacisnieto button: " << button <<"w pozycji (x,y) = (" <<x<<", "<<y<<")"<<endl;
@@ -120,6 +150,13 @@ void InputManager::OnMouseButtonDown(int button, int x, int y)
 }
 
 /*----- Handle a mouse button up event -----*/
+/**
+ * OnMouseButtonUp: <describe the responsibilities and behavior of this method>
+ *
+ * \param int button <argument description>
+ * \param int x <argument description>
+ * \param int y <argument description>
+ **/
 void InputManager::OnMouseButtonUp(int button, int x, int y)
 {
 	if (y<60)
@@ -134,6 +171,12 @@ void InputManager::OnMouseButtonUp(int button, int x, int y)
 
 
 /*----- Handle a mouse move event -----*/
+/**
+ * OnMouseMove: <describe the responsibilities and behavior of this method>
+ *
+ * \param int x <argument description>
+ * \param int y <argument description>
+ **/
 void InputManager::OnMouseMove(int x, int y)
 {
     Camera::getInstance()->OnMouseMove(x, y);

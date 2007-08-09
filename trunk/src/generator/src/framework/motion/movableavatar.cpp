@@ -11,6 +11,13 @@
 using namespace ft;
 using namespace std;
 
+/**
+ * MovableAvatar: <describe the responsibilities and behavior of this method>
+ *
+ * \param CalModel * calModel <argument description>
+ * \param CalCoreModel * calCoreModel <argument description>
+ * \param const std::string modelName <argument description>
+ **/
 MovableAvatar::MovableAvatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName)
 :Avatar(calModel, calCoreModel, modelName)
 {
@@ -32,6 +39,10 @@ MovableAvatar::MovableAvatar(CalModel* calModel, CalCoreModel* calCoreModel, con
     }
  }
 
+/**
+ * ~MovableAvatar: <describe the responsibilities and behavior of this method>
+ *
+ **/
 MovableAvatar::~MovableAvatar()
 {
     if (m_timeLine != NULL)
@@ -44,6 +55,12 @@ MovableAvatar::~MovableAvatar()
     }
 }
 
+/**
+ * AddMotion: <describe the responsibilities and behavior of this method>
+ *
+ * \param ft::Motion * motion <argument description>
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool MovableAvatar::AddMotion(Motion* motion)
 {
     std::string _id = motion->getAnimName();
@@ -60,6 +77,12 @@ bool MovableAvatar::AddMotion(Motion* motion)
     cout << " MovableAvatar::AddMotion motion " << _id << " added to avatar " << std::endl;
 	return true;
 }
+/**
+ * RemoveMotion: <describe the responsibilities and behavior of this method>
+ *
+ * \param ft::Motion * motion <argument description>
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool  MovableAvatar::RemoveMotion(Motion* motion)
 {
     std::string _id = motion->getAnimName();
@@ -78,6 +101,12 @@ bool  MovableAvatar::RemoveMotion(Motion* motion)
 	return false;
 }
 
+/**
+ * GetMotion: <describe the responsibilities and behavior of this method>
+ *
+ * \param std::string motionName <argument description>
+ * \return ft::Motion * <describe what is returned if appropriate>
+ **/
 Motion* MovableAvatar::GetMotion(std::string motionName)
 {
     Motion * motion = NULL;
@@ -88,6 +117,10 @@ Motion* MovableAvatar::GetMotion(std::string motionName)
     return motion;
 }
 
+/**
+ * InitMotions: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void MovableAvatar::InitMotions()
 {
     int animCount = m_calCoreModel->getCoreAnimationCount();
@@ -102,6 +135,11 @@ void MovableAvatar::InitMotions()
     }
 }
 
+/**
+ * StartTimeLine: <describe the responsibilities and behavior of this method>
+ *
+ * \param ft::TimeLine * timeLine <argument description>
+ **/
 void MovableAvatar::StartTimeLine(TimeLine *timeLine)
 {
     cout << toString() << "StartTimeLine()" << endl;
@@ -112,6 +150,10 @@ void MovableAvatar::StartTimeLine(TimeLine *timeLine)
     }
 }
 
+/**
+ * StopTimeLine: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void MovableAvatar::StopTimeLine()
 {
     if (m_timeLine != NULL)
@@ -121,6 +163,11 @@ void MovableAvatar::StopTimeLine()
 
 }
 
+/**
+ * UpdateTimeLine: <describe the responsibilities and behavior of this method>
+ *
+ * \param float elapsedSeconds <argument description>
+ **/
 void MovableAvatar::UpdateTimeLine(float elapsedSeconds)
 {
 
@@ -138,6 +185,10 @@ void MovableAvatar::UpdateTimeLine(float elapsedSeconds)
 }
 
 
+/**
+ * Dump: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void MovableAvatar::Dump()
 {
     cout << "Dump MovableAvatar content: " << std::endl;
@@ -157,6 +208,10 @@ void MovableAvatar::Dump()
 }   
 
 
+/**
+ * Init: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void MovableAvatar::Init()
 {
   InitMotions();
@@ -166,6 +221,11 @@ void MovableAvatar::Init()
 
 }
 
+/**
+ * OnUpdate: <describe the responsibilities and behavior of this method>
+ *
+ * \param float elapsedSeconds <argument description>
+ **/
 void MovableAvatar::OnUpdate(float elapsedSeconds)
 {
      if(!m_bPaused)
@@ -174,6 +234,11 @@ void MovableAvatar::OnUpdate(float elapsedSeconds)
     }
 }
 
+/**
+ * CreateTestTimeLine: <describe the responsibilities and behavior of this method>
+ *
+ * \return ft::TimeLine * <describe what is returned if appropriate>
+ **/
 TimeLine* MovableAvatar::CreateTestTimeLine()
 {
     TimeLine* timeLine = new TimeLine();
@@ -229,6 +294,11 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
     return timeLine;
 }
 
+/**
+ * OnMessage: <describe the responsibilities and behavior of this method>
+ *
+ * \param ft::Message * msg <argument description>
+ **/
 void MovableAvatar::OnMessage(Message* msg)
 {
     Avatar::OnMessage(msg);

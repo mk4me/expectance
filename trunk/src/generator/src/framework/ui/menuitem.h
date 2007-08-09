@@ -12,6 +12,9 @@
 
 namespace ft
 {
+	/**
+	 * Class MenuItem: <describe the behavior and responsibility of this class>
+	 **/
 	class MenuItem: SceneObject 
 	{
     public:

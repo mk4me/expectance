@@ -12,6 +12,9 @@
 
 namespace ft
 {
+	/**
+	 * Class LCSModifier: <describe the behavior and responsibility of this class>
+	 **/
     class LCSModifier : public TimeLineModifier
     {
     public:

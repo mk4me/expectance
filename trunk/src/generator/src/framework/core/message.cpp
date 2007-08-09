@@ -6,6 +6,12 @@
 
 using namespace ft;
 
+/**
+ * _GET_MSG_NAME: <describe the responsibilities and behavior of this method>
+ *
+ * \param int msg <argument description>
+ * \return std::string <describe what is returned if appropriate>
+ **/
 std::string Message::_GET_MSG_NAME(int msg)
 {
     std::string strMsg;

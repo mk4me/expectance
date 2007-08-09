@@ -6,6 +6,10 @@
 
 using namespace ft;
 
+/**
+ * LCSModifier: <describe the responsibilities and behavior of this method>
+ *
+ **/
 LCSModifier::LCSModifier()
 {
     m_vTranslation = CalVector(0,0,0);
@@ -24,6 +28,10 @@ LCSModifier::LCSModifier()
     }	
 }
 
+/**
+ * ~LCSModifier: <describe the responsibilities and behavior of this method>
+ *
+ **/
 LCSModifier::~LCSModifier(void)
 {
     if (tracer_translation != NULL)
@@ -39,6 +47,12 @@ LCSModifier::~LCSModifier(void)
 
 }
 
+/**
+ * Apply: <describe the responsibilities and behavior of this method>
+ *
+ * \param float elapsedSeconds <argument description>
+ * \param ft::Avatar * avatar <argument description>
+ **/
 void LCSModifier::Apply(float elapsedSeconds,Avatar* avatar)
 {
     TimeLineModifier::Apply(elapsedSeconds, avatar);
@@ -105,6 +119,10 @@ void LCSModifier::Apply(float elapsedSeconds,Avatar* avatar)
         bone->calculateState();
 }
 
+/**
+ * Reset: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void LCSModifier::Reset()
 {
     TimeLineObject::Reset();

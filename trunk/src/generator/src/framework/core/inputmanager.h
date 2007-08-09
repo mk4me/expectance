@@ -17,6 +17,9 @@
 
 namespace ft
 {
+	/**
+	 * Class InputManager: <describe the behavior and responsibility of this class>
+	 **/
     class InputManager
     {
     public:

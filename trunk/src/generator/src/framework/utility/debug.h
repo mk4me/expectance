@@ -17,6 +17,9 @@
 
 namespace ft
 {
+	/**
+	 * Class Debug: <describe the behavior and responsibility of this class>
+	 **/
     class Debug
     {
     public:

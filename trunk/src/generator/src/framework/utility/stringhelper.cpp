@@ -3,6 +3,13 @@
 using namespace ft;
 
 // string tokenize
+/**
+ * Tokens: <describe the responsibilities and behavior of this method>
+ *
+ * \param const std::string & str <argument description>
+ * \param const std::string & delimiters <argument description>
+ * \return std::vector<string> <describe what is returned if appropriate>
+ **/
 vector<string> StringHelper::Tokens(const string& str,const string& delimiters)
 {
   vector<string> tokens;
@@ -52,6 +59,14 @@ vector<string> StringHelper::Tokens(const string& str,const string& delimiters)
 }
 
 
+/**
+ * ClearBrakets: <describe the responsibilities and behavior of this method>
+ *
+ * \param const std::string & str <argument description>
+ * \param const char start_bracket <argument description>
+ * \param const char end_bracket <argument description>
+ * \return std::string <describe what is returned if appropriate>
+ **/
 string StringHelper::ClearBrakets(const string& str, const char start_bracket, const char end_bracket)
 {
 	int start = str.find_first_not_of(start_bracket);
@@ -65,6 +80,13 @@ string StringHelper::ClearBrakets(const string& str, const char start_bracket, c
 	return str;
 }
 
+/**
+ * RemoveChar: <describe the responsibilities and behavior of this method>
+ *
+ * \param const std::string & str <argument description>
+ * \param const char character <argument description>
+ * \return std::string <describe what is returned if appropriate>
+ **/
 string StringHelper::RemoveChar(const string& str, const char character)
 {
 	std::string a;

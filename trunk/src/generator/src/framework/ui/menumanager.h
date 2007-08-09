@@ -16,6 +16,9 @@
 
 namespace ft
 {
+	/**
+	 * Class MenuManager: <describe the behavior and responsibility of this class>
+	 **/
 	class MenuManager
     {
     public:

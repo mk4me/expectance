@@ -11,6 +11,9 @@
 
 namespace ft
 {
+	/**
+	 * Class TimeLineModifier: <describe the behavior and responsibility of this class>
+	 **/
     class TimeLineModifier : public TimeLineObject
     {
     public:

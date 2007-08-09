@@ -12,6 +12,11 @@ using namespace std;
 
 ControlManager* ControlManager::m_instance = NULL;
 
+/**
+ * getInstance: <describe the responsibilities and behavior of this method>
+ *
+ * \return ft::ControlManager * <describe what is returned if appropriate>
+ **/
 ControlManager* ControlManager::getInstance()
 {
     if (m_instance == NULL)
@@ -23,6 +28,10 @@ ControlManager* ControlManager::getInstance()
     return m_instance;
 }
 
+/**
+ * Init: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void ControlManager::Init()
 {
   m_lastTick = 0;
@@ -37,6 +46,10 @@ void ControlManager::Init()
 
 }
 
+/**
+ * DestroyInstance: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void ControlManager::DestroyInstance()
 {
     if (m_instance != NULL)
@@ -44,6 +57,10 @@ void ControlManager::DestroyInstance()
 }
 
 
+/**
+ * OnUpdate: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void ControlManager::OnUpdate()
 {
       // get the current tick value
@@ -71,6 +88,12 @@ void ControlManager::OnUpdate()
   m_lastTick = tick;
 }
 
+/**
+ * SendMessageA: <describe the responsibilities and behavior of this method>
+ *
+ * \param ft::Message * msg <argument description>
+ * \param bool deleteAfterSent <argument description>
+ **/
 void ControlManager::SendMessage(Message* msg, bool deleteAfterSent)
 {
     if (DEBUG_MESSAGES)
@@ -93,6 +116,12 @@ void ControlManager::SendMessage(Message* msg, bool deleteAfterSent)
 
 }
 
+/**
+ * AddControlObject: <describe the responsibilities and behavior of this method>
+ *
+ * \param ft::ControlObject * pObj <argument description>
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool ControlManager::AddControlObject(ControlObject* pObj)
 {
 	std::string _id = pObj->getID();
@@ -110,6 +139,12 @@ bool ControlManager::AddControlObject(ControlObject* pObj)
 	return true;
 }
 
+/**
+ * RemoveControlObject: <describe the responsibilities and behavior of this method>
+ *
+ * \param ft::ControlObject * pObj <argument description>
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool ControlManager::RemoveControlObject(ControlObject* pObj)
 {
 	std::string _id = pObj->getID();
@@ -128,6 +163,10 @@ bool ControlManager::RemoveControlObject(ControlObject* pObj)
 	return false;
 }
 
+/**
+ * Dump: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void ControlManager::Dump()
 {
     cout << "Dump ControlManager content: " << std::endl;
@@ -140,6 +179,11 @@ void ControlManager::Dump()
     }
 }
 
+/**
+ * UpdateObjects: <describe the responsibilities and behavior of this method>
+ *
+ * \param float elapsedSeconds <argument description>
+ **/
 void ControlManager::UpdateObjects(float elapsedSeconds)
 {
     //TODO: abak:  this update should be synchronized with adding and removing ControlObjects

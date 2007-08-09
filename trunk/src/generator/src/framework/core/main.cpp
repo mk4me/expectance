@@ -17,17 +17,29 @@
 using namespace ft;
 
 /*----- GLUT callback functions  -----*/                                        
+/**
+ * DisplayFunc: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void DisplayFunc()
 {
 	SceneManager::getInstance()->OnRender(); 
 }
 
+/**
+ * ExitFunc: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void ExitFunc()
 {
    // shut down OGL Content
    SceneManager::getInstance()->CleanUp();
 }
 
+/**
+ * IdleFunc: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void IdleFunc()
 {
   // redirect to the viewer instance
@@ -38,21 +50,49 @@ void IdleFunc()
   glutPostRedisplay();
 }
 
+/**
+ * KeyboardFunc: <describe the responsibilities and behavior of this method>
+ *
+ * \param unsigned char key <argument description>
+ * \param int x <argument description>
+ * \param int y <argument description>
+ **/
 void KeyboardFunc(unsigned char key, int x, int y)
 {
     InputManager::getInstance()->OnKey(key, x,  OGLContext::getInstance()->getHeight() - y - 1);
 }
 
+/**
+ * SpecialFunc: <describe the responsibilities and behavior of this method>
+ *
+ * \param int key <argument description>
+ * \param int x <argument description>
+ * \param int y <argument description>
+ **/
 void SpecialFunc(int key, int x, int y)
 {
 	InputManager::getInstance()->OnSpecial(key, x, OGLContext::getInstance()->getHeight() - y - 1);
 }
 
+/**
+ * MotionFunc: <describe the responsibilities and behavior of this method>
+ *
+ * \param int x <argument description>
+ * \param int y <argument description>
+ **/
 void MotionFunc(int x, int y)
 {
 	InputManager::getInstance()->OnMouseMove(x, OGLContext::getInstance()->getHeight() - y - 1);
 }
 
+/**
+ * MouseFunc: <describe the responsibilities and behavior of this method>
+ *
+ * \param int button <argument description>
+ * \param int state <argument description>
+ * \param int x <argument description>
+ * \param int y <argument description>
+ **/
 void MouseFunc(int button, int state, int x, int y)
 {
   if(state == GLUT_DOWN)
@@ -65,12 +105,25 @@ void MouseFunc(int button, int state, int x, int y)
   }
 }
 
+/**
+ * ReshapeFunc: <describe the responsibilities and behavior of this method>
+ *
+ * \param int width <argument description>
+ * \param int height <argument description>
+ **/
 void ReshapeFunc(int width, int height)
 {
 	OGLContext::getInstance()->setWindowSize(width, height);
 }
 
 
+/**
+ * main: <describe the responsibilities and behavior of this method>
+ *
+ * \param int argc <argument description>
+ * \param char *[] argv <argument description>
+ * \return int <describe what is returned if appropriate>
+ **/
 int main(int argc, char *argv[])
 {
 	ft::Application::getInstance()->InitConfig();

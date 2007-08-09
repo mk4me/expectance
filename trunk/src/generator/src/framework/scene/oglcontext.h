@@ -30,6 +30,9 @@ namespace ft
       GLUT_BITMAP_HELVETICA_18     
    };
 
+	/**
+	 * Class OGLContext: <describe the behavior and responsibility of this class>
+	 **/
 	class OGLContext
 	{
 	public:

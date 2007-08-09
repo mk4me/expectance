@@ -6,6 +6,10 @@
 
 using namespace ft;
 
+/**
+ * TimeLineMotion: <describe the responsibilities and behavior of this method>
+ *
+ **/
 TimeLineMotion::TimeLineMotion(void)
 {
     m_animLoop = false;
@@ -20,6 +24,10 @@ TimeLineMotion::TimeLineMotion(void)
 
 }
 
+/**
+ * Destroy: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void TimeLineMotion::Destroy(void)
 {
     TimeLineObject::Destroy();
@@ -42,6 +50,10 @@ void TimeLineMotion::Destroy(void)
 
 }
 
+/**
+ * ResetParams: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void TimeLineMotion::ResetParams()
 {
     // initial paramters here
@@ -52,6 +64,12 @@ void TimeLineMotion::ResetParams()
     m_animTime = -1;
 }
 
+/**
+ * AddModifier: <describe the responsibilities and behavior of this method>
+ *
+ * \param ft::TimeLineModifier * modifier <argument description>
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool TimeLineMotion::AddModifier(TimeLineModifier* modifier)
 {
     std::cout << " AddModifier " << modifier->toString() << " to " << toString() << std::endl;
@@ -61,6 +79,12 @@ bool TimeLineMotion::AddModifier(TimeLineModifier* modifier)
 //        bool  TimeLineMotion::RemoveMdofier(TimeLineModifier* modfier);
 //        TimeLineModifier* TimeLineMotion::GetModifier(int);
 
+/**
+ * AddTrack: <describe the responsibilities and behavior of this method>
+ *
+ * \param ft::TimeLineMotion * trackMotion <argument description>
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool TimeLineMotion::AddTrack(TimeLineMotion* trackMotion)
 {
     std::cout << " AddOTrack " << trackMotion->toString() << " to " << toString() << std::endl;
@@ -71,6 +95,10 @@ bool TimeLineMotion::AddTrack(TimeLineMotion* trackMotion)
 //        TimeLineMotion* TimeLineMotion::GetTrack(int);
 
 
+/**
+ * Start: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void TimeLineMotion::Start()
 {
     PrintDebug("Start");
@@ -89,12 +117,22 @@ void TimeLineMotion::Start()
     }
 
 }
+/**
+ * Stop: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void TimeLineMotion::Stop()
 {
     PrintDebug("Stop");
     setStarted(false);
 }
 
+/**
+ * Execute: <describe the responsibilities and behavior of this method>
+ *
+ * \param float elapsedSeconds <argument description>
+ * \param ft::Avatar * avatar <argument description>
+ **/
 void TimeLineMotion::Execute(float elapsedSeconds, Avatar* avatar)
 {
     ExecuteTracks(elapsedSeconds, avatar);
@@ -107,6 +145,12 @@ void TimeLineMotion::Execute(float elapsedSeconds, Avatar* avatar)
     }
 }
 
+/**
+ * ExecuteTracks: <describe the responsibilities and behavior of this method>
+ *
+ * \param float elapsedSeconds <argument description>
+ * \param ft::Avatar * avatar <argument description>
+ **/
 void TimeLineMotion::ExecuteTracks(float elapsedSeconds, Avatar* avatar)
 {
         //handle all tracks
@@ -122,6 +166,13 @@ void TimeLineMotion::ExecuteTracks(float elapsedSeconds, Avatar* avatar)
 
 // Returns true if any submotion started, false if none submotion is started
 //
+/**
+ * ExecuteSubMotions: <describe the responsibilities and behavior of this method>
+ *
+ * \param float elapsedSeconds <argument description>
+ * \param ft::Avatar * avatar <argument description>
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, Avatar* avatar)
 {
     bool anyStarted = false;
@@ -182,6 +233,12 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, Avatar* avatar)
 }
 
 
+/**
+ * ExecuteAnim: <describe the responsibilities and behavior of this method>
+ *
+ * \param float elapsedSeconds <argument description>
+ * \param ft::Avatar * avatar <argument description>
+ **/
 void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
 {
     if (m_motionRef == NULL)
@@ -260,6 +317,12 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
     return;
 }
 
+/**
+ * ExecuteModifiers: <describe the responsibilities and behavior of this method>
+ *
+ * \param float elapsedSeconds <argument description>
+ * \param ft::Avatar * avatar <argument description>
+ **/
 void TimeLineMotion::ExecuteModifiers(float elapsedSeconds, Avatar* avatar)
 {
     //execute modifiers for track 
@@ -285,6 +348,14 @@ void TimeLineMotion::ExecuteModifiers(float elapsedSeconds, Avatar* avatar)
     }
 }
 
+/**
+ * IsBlendingToStart: <describe the responsibilities and behavior of this method>
+ *
+ * \param ft::TimeLineMotion * currMotion <argument description>
+ * \param ft::TimeLineMotion * nextMotion <argument description>
+ * \param ft::Avatar * avatar <argument description>
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool TimeLineMotion::IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotion* nextMotion, Avatar* avatar)
 {
     bool result = false;
@@ -312,6 +383,12 @@ bool TimeLineMotion::IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotio
     return result;
 }
 
+/**
+ * GetMotionDuration: <describe the responsibilities and behavior of this method>
+ *
+ * \param ft::Avatar * avatar <argument description>
+ * \return float <describe what is returned if appropriate>
+ **/
 float TimeLineMotion::GetMotionDuration(Avatar* avatar)
 {
     float duration = -1;
@@ -328,6 +405,10 @@ float TimeLineMotion::GetMotionDuration(Avatar* avatar)
     return duration;
 }
 
+/**
+ * Reset: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void TimeLineMotion::Reset()
 {
     TimeLineObject::Reset();
@@ -342,6 +423,11 @@ void TimeLineMotion::Reset()
 }
 
 
+/**
+ * Dump: <describe the responsibilities and behavior of this method>
+ *
+ * \param int depth <argument description>
+ **/
 void TimeLineMotion::Dump(int depth)
 {
     TimeLineObject::Dump(depth);
@@ -365,6 +451,11 @@ void TimeLineMotion::Dump(int depth)
 
 }   
 
+/**
+ * toString: <describe the responsibilities and behavior of this method>
+ *
+ * \return std::string <describe what is returned if appropriate>
+ **/
 std::string TimeLineMotion::toString()
 {
     std::string animName;

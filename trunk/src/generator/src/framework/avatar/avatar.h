@@ -15,6 +15,9 @@
 
 namespace ft
 {
+	/**
+	 * Class Avatar: <describe the behavior and responsibility of this class>
+	 **/
     class Avatar : public ControlObject, public SceneObject
     {
     public:

@@ -7,12 +7,25 @@
 
 using namespace ft;
 
+/**
+ * Line: <describe the responsibilities and behavior of this method>
+ *
+ * \param const std::string & name <argument description>
+ **/
 Line::Line(const std::string& name):m_arrow(false)
 {
 	setName(name);
 	
 }
 
+/**
+ * Line: <describe the responsibilities and behavior of this method>
+ *
+ * \param const FTVect & position <argument description>
+ * \param const FTVect & orientation <argument description>
+ * \param float length <argument description>
+ * \param const std::string & name <argument description>
+ **/
 Line::Line(const FTVect& position, const FTVect& orientation, float lenght, const std::string& name):m_arrow(false)
 {
 	FTVect tmpv = orientation;
@@ -28,6 +41,13 @@ Line::Line(const FTVect& position, const FTVect& orientation, float lenght, cons
 }
 
 
+/**
+ * Line: <describe the responsibilities and behavior of this method>
+ *
+ * \param const FTVect & start <argument description>
+ * \param const FTVect & end <argument description>
+ * \param const std::string & name <argument description>
+ **/
 Line::Line(const FTVect& start, const FTVect& end, const std::string& name):m_arrow(false)
 {
 	m_start = start;
@@ -37,11 +57,20 @@ Line::Line(const FTVect& start, const FTVect& end, const std::string& name):m_ar
 }
 
 
+/**
+ * ~Line: <describe the responsibilities and behavior of this method>
+ *
+ **/
 Line::~Line(void)
 {
 	std::cout << getID() << " line deleted\n";
 }
 
+/**
+ * Render: <describe the responsibilities and behavior of this method>
+ *
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool Line::Render()
 {
 	glPushMatrix();
@@ -94,12 +123,24 @@ bool Line::Render()
 	return true;
 }
 
+/**
+ * setStart: <describe the responsibilities and behavior of this method>
+ *
+ * \param const FTVect & start <argument description>
+ * \return ft::Line & <describe what is returned if appropriate>
+ **/
 Line& Line::setStart(const FTVect& start)
 {
 	m_start = start;
 	return *this;
 }
 
+/**
+ * setEnd: <describe the responsibilities and behavior of this method>
+ *
+ * \param const FTVect & end <argument description>
+ * \return ft::Line & <describe what is returned if appropriate>
+ **/
 Line& Line::setEnd(const FTVect& end)
 {
 	m_end = end;
@@ -107,6 +148,12 @@ Line& Line::setEnd(const FTVect& end)
 }
 
 
+/**
+ * setLenght: <describe the responsibilities and behavior of this method>
+ *
+ * \param const float lenght <argument description>
+ * \return ft::Line & <describe what is returned if appropriate>
+ **/
 Line& Line::setLenght(const float lenght)
 {
 	m_lenght = lenght;
@@ -114,6 +161,12 @@ Line& Line::setLenght(const float lenght)
 }
 
 
+/**
+ * setArrow: <describe the responsibilities and behavior of this method>
+ *
+ * \param const bool arrow <argument description>
+ * \return ft::Line & <describe what is returned if appropriate>
+ **/
 Line& Line::setArrow(const bool arrow)
 {
 	m_arrow = arrow;

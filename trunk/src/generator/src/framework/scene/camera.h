@@ -13,6 +13,9 @@
 
 namespace ft
 {
+	/**
+	 * Class Camera: <describe the behavior and responsibility of this class>
+	 **/
     class Camera
     {
     public:

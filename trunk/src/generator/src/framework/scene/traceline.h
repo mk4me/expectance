@@ -13,6 +13,9 @@
 #include "line.h"
 
 namespace ft {
+	/**
+	 * Class TraceLine: <describe the behavior and responsibility of this class>
+	 **/
 	class TraceLine : public SceneObject
 	{
 	public:

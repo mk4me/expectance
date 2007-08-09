@@ -36,6 +36,9 @@ namespace ft
 
     ///////////////////////////////
 
+	/**
+	 * Class MessageParam: <describe the behavior and responsibility of this class>
+	 **/
     class MessageParam
     {
     public:
@@ -61,6 +64,9 @@ namespace ft
 
     /* Base class for message */
           
+	/**
+	 * Class Message: <describe the behavior and responsibility of this class>
+	 **/
     class Message
     {
     public:

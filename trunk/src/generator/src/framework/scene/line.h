@@ -12,6 +12,9 @@
 #include "sceneobject.h"
 
 namespace ft {
+	/**
+	 * Class Line: <describe the behavior and responsibility of this class>
+	 **/
 	class Line : public SceneObject  
 	{
 	public:

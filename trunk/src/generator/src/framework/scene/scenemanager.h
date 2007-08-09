@@ -22,6 +22,9 @@
 
 namespace ft
 {
+	/**
+	 * Class SceneManager: <describe the behavior and responsibility of this class>
+	 **/
     class SceneManager
     {
     public:

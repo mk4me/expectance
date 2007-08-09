@@ -13,6 +13,9 @@
 
 namespace ft
 {
+	/**
+	 * Class AvatarFactory: <describe the behavior and responsibility of this class>
+	 **/
     class AvatarFactory 
     {
     public:

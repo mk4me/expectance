@@ -9,6 +9,11 @@ using namespace ft;
 
 TimeLineFactory* TimeLineFactory::m_instance = NULL;
 
+/**
+ * getInstance: <describe the responsibilities and behavior of this method>
+ *
+ * \return ft::TimeLineFactory * <describe what is returned if appropriate>
+ **/
 TimeLineFactory* TimeLineFactory::getInstance()
 {
     if (m_instance == NULL)
@@ -20,12 +25,22 @@ TimeLineFactory* TimeLineFactory::getInstance()
     return m_instance;
 }
 
+/**
+ * DestroyInstance: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void TimeLineFactory::DestroyInstance()
 {
     if (m_instance != NULL)
         delete m_instance;
 }
 
+/**
+ * CreateTimeLine: <describe the responsibilities and behavior of this method>
+ *
+ * \param ft::Motion * motion <argument description>
+ * \return ft::TimeLine * <describe what is returned if appropriate>
+ **/
 TimeLine* TimeLineFactory::CreateTimeLine(Motion *motion)
 {
     TimeLine* timeLine = new TimeLine();

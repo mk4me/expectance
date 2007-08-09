@@ -10,6 +10,9 @@
 
 namespace ft
 {
+	/**
+	 * Class Application: <describe the behavior and responsibility of this class>
+	 **/
     class Application
     {
     public:

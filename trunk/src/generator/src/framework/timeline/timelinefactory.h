@@ -12,6 +12,9 @@
 
 namespace ft
 {
+	/**
+	 * Class TimeLineFactory: <describe the behavior and responsibility of this class>
+	 **/
     class TimeLineFactory
     {
     public:

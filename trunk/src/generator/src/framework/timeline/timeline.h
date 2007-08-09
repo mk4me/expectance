@@ -13,6 +13,9 @@
 
 namespace ft
 {
+	/**
+	 * Class TimeLine: <describe the behavior and responsibility of this class>
+	 **/
     class TimeLine : public TimeLineMotion
     {
     public:

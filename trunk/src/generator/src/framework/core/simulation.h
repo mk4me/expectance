@@ -10,6 +10,9 @@
 
 namespace ft
 {
+	/**
+	 * Class Simulation: <describe the behavior and responsibility of this class>
+	 **/
 	class Simulation
 	{
 	public:

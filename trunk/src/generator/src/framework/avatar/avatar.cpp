@@ -8,6 +8,13 @@
 
 using namespace ft;
 
+/**
+ * Avatar: <describe the responsibilities and behavior of this method>
+ *
+ * \param CalModel * calModel <argument description>
+ * \param CalCoreModel * calCoreModel <argument description>
+ * \param const std::string modelName <argument description>
+ **/
 Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName):
 m_renderMethod(0), 
 m_shadow(true)
@@ -23,6 +30,12 @@ m_shadow(true)
 		m_hardwareRendering = false;
 }
 
+/**
+ * Avatar: <describe the responsibilities and behavior of this method>
+ *
+ * \param CalModel * calModel <argument description>
+ * \param CalCoreModel * calCoreModel <argument description>
+ **/
 Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel)
 {
     m_calModel = calModel;
@@ -35,6 +48,10 @@ Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel)
 		m_hardwareRendering = false;
 }
 
+/**
+ * ~Avatar: <describe the responsibilities and behavior of this method>
+ *
+ **/
 Avatar::~Avatar()
 {
 	delete m_calHardwareModel;
@@ -48,6 +65,11 @@ Avatar::~Avatar()
 	}
 }
 
+/**
+ * CheckHardwareAcceleration: <describe the responsibilities and behavior of this method>
+ *
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool Avatar::CheckHardwareAcceleration()
 {
 
@@ -66,26 +88,51 @@ bool Avatar::CheckHardwareAcceleration()
 	return true;
 }
 
+/**
+ * SetCalModel: <describe the responsibilities and behavior of this method>
+ *
+ * \param CalModel * calModel <argument description>
+ **/
 void Avatar::SetCalModel(CalModel* calModel)
 {
     m_calModel = calModel;
 }
 
+/**
+ * GetCalModel: <describe the responsibilities and behavior of this method>
+ *
+ * \return CalModel * <describe what is returned if appropriate>
+ **/
 CalModel* Avatar::GetCalModel()
 {
     return m_calModel;
 }
 
+/**
+ * SetCalCoreModel: <describe the responsibilities and behavior of this method>
+ *
+ * \param CalCoreModel * calCoreModel <argument description>
+ **/
 void Avatar::SetCalCoreModel(CalCoreModel* calCoreModel)
 {
     m_calCoreModel = calCoreModel;
 }
 
+/**
+ * GetCalCoreModel: <describe the responsibilities and behavior of this method>
+ *
+ * \return CalCoreModel * <describe what is returned if appropriate>
+ **/
 CalCoreModel* Avatar::GetCalCoreModel()
 {
     return m_calCoreModel;
 }
 
+/**
+ * OnMessage: <describe the responsibilities and behavior of this method>
+ *
+ * \param ft::Message * msg <argument description>
+ **/
 void Avatar::OnMessage(Message* msg)
 {
     if (DEBUG_MESSAGES)
@@ -106,6 +153,11 @@ void Avatar::OnMessage(Message* msg)
 }
 
 
+/**
+ * Render: <describe the responsibilities and behavior of this method>
+ *
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool Avatar::Render()
 {
 	if (m_shadow) //draw the shadow
@@ -139,26 +191,50 @@ bool Avatar::Render()
 	return true;
 }
 
+/**
+ * ChangeRenderMethod: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void Avatar::ChangeRenderMethod()
 {
     m_renderMethod = (m_renderMethod+1) % 3;
 }
 
+/**
+ * setRenderMethod: <describe the responsibilities and behavior of this method>
+ *
+ * \param const int renderMethod <argument description>
+ **/
 void Avatar::setRenderMethod(const int renderMethod)
 {
 	m_renderMethod = renderMethod;
 }
 
+/**
+ * ChangeShadow: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void Avatar::ChangeShadow()
 {
     m_shadow = !m_shadow;
 }
 
+/**
+ * setShadow: <describe the responsibilities and behavior of this method>
+ *
+ * \param const bool shadow <argument description>
+ **/
 void Avatar::setShadow(const bool shadow)
 {
 	m_shadow = shadow;
 }
 
+/**
+ * RenderAvatar: <describe the responsibilities and behavior of this method>
+ *
+ * \param const int renderMethod <argument description>
+ * \param const bool shadow <argument description>
+ **/
 void Avatar::RenderAvatar(const int renderMethod, const bool shadow)
 {
 	if (renderMethod == 0) 
@@ -180,6 +256,11 @@ void Avatar::RenderAvatar(const int renderMethod, const bool shadow)
 }
 
 
+/**
+ * SoftwareRenderModelMesh: <describe the responsibilities and behavior of this method>
+ *
+ * \param const bool shadow <argument description>
+ **/
 void Avatar::SoftwareRenderModelMesh(const bool shadow)
 {
 	// get the renderer of the model
@@ -303,6 +384,11 @@ void Avatar::SoftwareRenderModelMesh(const bool shadow)
 	}
 }
 
+/**
+ * HardwareRenderModelMesh: <describe the responsibilities and behavior of this method>
+ *
+ * \param const bool shadow <argument description>
+ **/
 void Avatar::HardwareRenderModelMesh(const bool shadow)
 {
 	glBindProgramARB( GL_VERTEX_PROGRAM_ARB, m_vertexProgramId );
@@ -412,6 +498,11 @@ void Avatar::HardwareRenderModelMesh(const bool shadow)
 	glBindProgramARB( GL_VERTEX_PROGRAM_ARB, 0 );
 }
 
+/**
+ * RenderModelSkeleton: <describe the responsibilities and behavior of this method>
+ *
+ * \param const bool shadow <argument description>
+ **/
 void Avatar::RenderModelSkeleton(const bool shadow)
 {
 	glEnable(GL_COLOR_MATERIAL);
@@ -455,6 +546,11 @@ void Avatar::RenderModelSkeleton(const bool shadow)
 	glDisable(GL_COLOR_MATERIAL);
 
 }
+/**
+ * RenderModelBoundingBox: <describe the responsibilities and behavior of this method>
+ *
+ * \param const bool shadow <argument description>
+ **/
 void Avatar::RenderModelBoundingBox(const bool shadow)
 {
 	CalSkeleton *pCalSkeleton = m_calModel->getSkeleton();
@@ -518,6 +614,11 @@ void Avatar::RenderModelBoundingBox(const bool shadow)
 
 }
 
+/**
+ * SetLodLevel: <describe the responsibilities and behavior of this method>
+ *
+ * \param float level <argument description>
+ **/
 void Avatar::SetLodLevel(float level)
 {
     if (m_calModel != NULL)
@@ -602,6 +703,11 @@ char vertexProgramStr[]=
 "DPH result.position.w, R0.xyzx, worldViewProjMatrix[3];\n"\
 "END\n";
 
+/**
+ * loadBufferObject: <describe the responsibilities and behavior of this method>
+ *
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool Avatar::loadBufferObject()
 {
 
@@ -686,6 +792,11 @@ bool Avatar::loadBufferObject()
 }
 
 
+/**
+ * loadVertexProgram: <describe the responsibilities and behavior of this method>
+ *
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool Avatar::loadVertexProgram()
 {
 	glGenProgramsARB( 1, &m_vertexProgramId );

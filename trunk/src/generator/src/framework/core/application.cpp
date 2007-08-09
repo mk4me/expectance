@@ -15,6 +15,11 @@ using namespace ft;
 
 Application* Application::m_instance = NULL;
 
+/**
+ * getInstance: <describe the responsibilities and behavior of this method>
+ *
+ * \return ft::Application * <describe what is returned if appropriate>
+ **/
 Application* Application::getInstance()
 {
     if (m_instance == NULL)
@@ -26,6 +31,10 @@ Application* Application::getInstance()
     return m_instance;
 }
 
+/**
+ * DestroyInstance: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void Application::DestroyInstance()
 {
     if (m_instance != NULL)
@@ -33,6 +42,10 @@ void Application::DestroyInstance()
     DBG("Application::getInstace(): instance of Application destroyed  ");
 }
 
+/**
+ * InitConfig: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void Application::InitConfig()
 {
     DBG("Application::InitConfig().");
@@ -40,6 +53,10 @@ void Application::InitConfig()
     Config::TEST_CONFIG();
 }
 
+/**
+ * InitModules: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void Application::InitModules()
 {
     DBG("Application::InitModules().");
@@ -50,6 +67,10 @@ void Application::InitModules()
     TimeLineFactory::getInstance(); //enforced creation of singleton
 }
 
+/**
+ * InitAvatars: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void Application::InitAvatars()
 {
     DBG("Application::InitSceneObjects().");
@@ -73,6 +94,13 @@ void Application::InitAvatars()
 }
 
 
+/**
+ * CreateAvatarOnScene: <describe the responsibilities and behavior of this method>
+ *
+ * \param const std::string & calCoreModel <argument description>
+ * \param const std::string & name <argument description>
+ * \return ft::Avatar * <describe what is returned if appropriate>
+ **/
 Avatar* Application::CreateAvatarOnScene(const std::string& calCoreModel,const  std::string& name)
 {
   Avatar* avatar = ft::AvatarFactory::getInstance()->CreateAvatar(calCoreModel, name);

@@ -18,6 +18,9 @@ using namespace std;
 
 namespace ft 
 {
+	/**
+	 * Class StringHelper: <describe the behavior and responsibility of this class>
+	 **/
 	class StringHelper
 	{
 		public:

@@ -52,6 +52,10 @@
 
 using namespace ft;
 
+/**
+ * Quat: <describe the responsibilities and behavior of this method>
+ *
+ **/
 Quat::Quat()								
 {
 	S() = 1.0; 
@@ -60,6 +64,14 @@ Quat::Quat()
 	K() = 0.0;
 };
 	
+/**
+ * Quat: <describe the responsibilities and behavior of this method>
+ *
+ * \param float s <argument description>
+ * \param float i <argument description>
+ * \param float j <argument description>
+ * \param float k <argument description>
+ **/
 Quat::Quat(float s, float i, float j, float k)
 {
 	S() = s; 
@@ -68,6 +80,11 @@ Quat::Quat(float s, float i, float j, float k)
 	K() = k;
 };
 
+/**
+ * Quat: <describe the responsibilities and behavior of this method>
+ *
+ * \param const float[] q <argument description>
+ **/
 Quat::Quat(const float q[4])					
 {
 	vals[0] = q[0]; 
@@ -77,11 +94,22 @@ Quat::Quat(const float q[4])
 };
 
 
+/**
+ * Quat: <describe the responsibilities and behavior of this method>
+ *
+ * \param float Angle <argument description>
+ * \param const ft::Vec & Axis <argument description>
+ **/
 Quat::Quat(float Angle, const Vec &Axis)	
 {
 	setAngleAxis(Angle, Axis);
 };
 
+/**
+ * Quat: <describe the responsibilities and behavior of this method>
+ *
+ * \param const ft::Quat & q <argument description>
+ **/
 Quat::Quat(const Quat &q)					
 {
 	S() = q.S(); 
@@ -91,6 +119,14 @@ Quat::Quat(const Quat &q)
 };
 	
 
+/**
+ * setAngleAxis: <describe the responsibilities and behavior of this method>
+ *
+ * \param float Angle <argument description>
+ * \param float x <argument description>
+ * \param float y <argument description>
+ * \param float z <argument description>
+ **/
 void Quat::setAngleAxis(float Angle, float x, float y, float z)
 {
 	float sA = static_cast<float>(sin(Angle/2.0));
@@ -102,6 +138,12 @@ void Quat::setAngleAxis(float Angle, float x, float y, float z)
 	S() = cA;
 }
 	
+/**
+ * getAngleAxis: <describe the responsibilities and behavior of this method>
+ *
+ * \param float & Angle <argument description>
+ * \param ft::Vec & Axis <argument description>
+ **/
 void Quat::getAngleAxis(float &Angle, Vec &Axis) const
 {
 	Angle = static_cast<float>(acosf(S())*2.0);
@@ -122,12 +164,24 @@ void Quat::getAngleAxis(float &Angle, Vec &Axis) const
 	};
 }
 
+/**
+ * getAngle: <describe the responsibilities and behavior of this method>
+ *
+ * \return float <describe what is returned if appropriate>
+ **/
 float Quat::getAngle()const
 {
 	return static_cast<float>(acosf(S())*2.0);
 };
 	
 
+/**
+ * pointAt: <describe the responsibilities and behavior of this method>
+ *
+ * \param const ft::Vec & original <argument description>
+ * \param const ft::Vec & desired <argument description>
+ * \return ft::Quat & <describe what is returned if appropriate>
+ **/
 Quat &Quat::pointAt(const Vec &original, const Vec &desired)
 {
 	Vec normOrig = original.normalized();
@@ -192,6 +246,12 @@ Quat &Quat::pointAt(const Vec &original, const Vec &desired)
 	return (*this);
 }
 
+/**
+ * operator *: <describe the responsibilities and behavior of this method>
+ *
+ * \param const ft::Quat & q <argument description>
+ * \return const ft::Quat <describe what is returned if appropriate>
+ **/
 const Quat Quat::operator*(const Quat &q) const
 {
 	Quat retVal;
@@ -204,6 +264,10 @@ const Quat Quat::operator*(const Quat &q) const
 }
 
 
+/**
+ * normalise: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void Quat::normalise()
 {
 	float norm = sqrt(S()*S() + I()*I() + J()*J() + K()*K());
@@ -225,6 +289,11 @@ void Quat::normalise()
 	}
 }
 
+/**
+ * Scale: <describe the responsibilities and behavior of this method>
+ *
+ * \param float f <argument description>
+ **/
 void Quat::Scale(float f)
 {
 	// get the angle and its sign (actually its just half the angle
@@ -261,6 +330,11 @@ void Quat::Scale(float f)
 // curves" (siggraph 85)
 // I return minus the angle because the quaternion definition
 // I use is the inverse of Shoemake's
+/**
+ * Xangle: <describe the responsibilities and behavior of this method>
+ *
+ * \return float <describe what is returned if appropriate>
+ **/
 float Quat::Xangle()
 {
 	float sinYangle = -(2.0f * I() * K() - 2.0f * J() * S());
@@ -292,6 +366,11 @@ float Quat::Xangle()
 // curves" (siggraph 85)
 // I return minus the angle because the quaternion definition
 // I use is the inverse of Shoemake's
+/**
+ * Yangle: <describe the responsibilities and behavior of this method>
+ *
+ * \return float <describe what is returned if appropriate>
+ **/
 float Quat::Yangle()
 {
 	float sinYangle = -(2.0f * I() * K() - 2.0f * J() * S());
@@ -309,6 +388,11 @@ float Quat::Yangle()
 // curves" (siggraph 85)
 // I return minus the angle because the quaternion definition
 // I use is the inverse of Shoemake's
+/**
+ * Zangle: <describe the responsibilities and behavior of this method>
+ *
+ * \return float <describe what is returned if appropriate>
+ **/
 float Quat::Zangle()
 {
 	float sinYangle = -(2.0f * I() * K() - 2.0f * J() * S());
@@ -329,6 +413,13 @@ float Quat::Zangle()
 	}
 };
 
+/**
+ * getEulerAngles: <describe the responsibilities and behavior of this method>
+ *
+ * \param float & X <argument description>
+ * \param float & Y <argument description>
+ * \param float & Z <argument description>
+ **/
 void Quat::getEulerAngles(float &X, float &Y, float &Z)
 {
 	X = Xangle();
@@ -336,12 +427,24 @@ void Quat::getEulerAngles(float &X, float &Y, float &Z)
 	Z = Zangle();
 };
 
+/**
+ * spherical_distance: <describe the responsibilities and behavior of this method>
+ *
+ * \param const ft::Quat & q1 <argument description>
+ * \param const ft::Quat & q2 <argument description>
+ * \return float <describe what is returned if appropriate>
+ **/
 float Quat::spherical_distance(const Quat &q1, const Quat &q2)
 {
 	Quat q = q2/q1;
 	return q.getAngle();
 }
 
+/**
+ * logMap: <describe the responsibilities and behavior of this method>
+ *
+ * \return ft::Vec <describe what is returned if appropriate>
+ **/
 Vec Quat::logMap()
 {
     float angle;
@@ -350,6 +453,12 @@ Vec Quat::logMap()
     return axis*angle;
 }
 
+/**
+ * expMap: <describe the responsibilities and behavior of this method>
+ *
+ * \param const ft::Vec & v <argument description>
+ * \return ft::Quat <describe what is returned if appropriate>
+ **/
 Quat Quat::expMap(const Vec &v)
 {
     return Quat(v.mag(), v.normalized());
@@ -378,6 +487,14 @@ Quat Quat::expMap(const Vec &v)
 };
 */
 
+/**
+ * slerp: <describe the responsibilities and behavior of this method>
+ *
+ * \param const ft::Quat & q1 <argument description>
+ * \param const ft::Quat & q2 <argument description>
+ * \param float t <argument description>
+ * \return ft::Quat <describe what is returned if appropriate>
+ **/
 Quat ft::slerp(const Quat &q1, const Quat &q2, float t)
 {
 	float ct = q1.S()*q2.S() + q1.I()*q2.I() + q1.J()*q2.J() + q1.K()*q2.K();

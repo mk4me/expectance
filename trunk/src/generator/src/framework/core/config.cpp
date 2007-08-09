@@ -13,6 +13,11 @@ using namespace ft;
 
 Config* Config::m_instance = NULL;
 
+/**
+ * getInstance: <describe the responsibilities and behavior of this method>
+ *
+ * \return ft::Config * <describe what is returned if appropriate>
+ **/
 Config* Config::getInstance()
 {
     if (m_instance == NULL)
@@ -25,12 +30,21 @@ Config* Config::getInstance()
 }
 
 
+/**
+ * DestroyInstance: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void Config::DestroyInstance()
 {
     if (m_instance != NULL)
         delete m_instance;
 }
 
+/**
+ * LoadConfigFile: <describe the responsibilities and behavior of this method>
+ *
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool Config::LoadConfigFile()
 {
 
@@ -105,6 +119,11 @@ bool Config::LoadConfigFile()
   return true;
 }
 
+/**
+ * ReloadConfigFile: <describe the responsibilities and behavior of this method>
+ *
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool Config::ReloadConfigFile()
 {
     DBG("Config::ReloadConfigFile()");
@@ -112,6 +131,12 @@ bool Config::ReloadConfigFile()
     return LoadConfigFile();
 }
 
+/**
+ * IsKey: <describe the responsibilities and behavior of this method>
+ *
+ * \param const char * key <argument description>
+ * \return bool <describe what is returned if appropriate>
+ **/
 bool Config::IsKey(const char * key)
 {
     bool result = false;
@@ -122,6 +147,12 @@ bool Config::IsKey(const char * key)
     return result;
 }
 
+/**
+ * GetStrVal: <describe the responsibilities and behavior of this method>
+ *
+ * \param const char * key <argument description>
+ * \return const char * <describe what is returned if appropriate>
+ **/
 const char* Config::GetStrVal(const char * key)
 {
     const char* result;
@@ -134,6 +165,12 @@ const char* Config::GetStrVal(const char * key)
     return result;
 }
 
+/**
+ * GetStrVal: <describe the responsibilities and behavior of this method>
+ *
+ * \param const std::string & key <argument description>
+ * \return const std::string <describe what is returned if appropriate>
+ **/
 const std::string Config::GetStrVal(const std::string& key)
 {
 	std::string result;
@@ -146,6 +183,12 @@ const std::string Config::GetStrVal(const std::string& key)
     return result;
 }
 
+/**
+ * GetIntVal: <describe the responsibilities and behavior of this method>
+ *
+ * \param const char * key <argument description>
+ * \return int <describe what is returned if appropriate>
+ **/
 int Config::GetIntVal(const char * key)
 {
     const char * val = GetStrVal(key);
@@ -153,6 +196,12 @@ int Config::GetIntVal(const char * key)
 }
 
 
+/**
+ * AddEntry: <describe the responsibilities and behavior of this method>
+ *
+ * \param std::string key <argument description>
+ * \param std::string val <argument description>
+ **/
 void Config::AddEntry(std::string key, std::string val)
 {
 	std::map<std::string,std::string>::iterator it = m_entries.find(key);
@@ -164,12 +213,20 @@ void Config::AddEntry(std::string key, std::string val)
     m_entries.insert( std::make_pair( std::string(key), std::string(val) ) );
 }
 
+/**
+ * ClearEntries: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void Config::ClearEntries()
 {
     //TODO: abak:  is there need to delete each string separately
     m_entries.clear();
 }
 
+/**
+ * TEST_CONFIG: <describe the responsibilities and behavior of this method>
+ *
+ **/
 void Config::TEST_CONFIG()
 {
     Config::getInstance()->ReloadConfigFile();

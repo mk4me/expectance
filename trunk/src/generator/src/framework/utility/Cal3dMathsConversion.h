@@ -29,18 +29,42 @@ using ft::Quat;
 #include <cal3d/cal3d.h>
 
 
+/**
+ * CalVecToVec: <describe the responsibilities and behavior of this method>
+ *
+ * \param const CalVector & cv <argument description>
+ * \return ft::Vec <describe what is returned if appropriate>
+ **/
 inline Vec CalVecToVec(const CalVector &cv) {
   return Vec(cv.x, cv.y, cv.z);
 };
 
+/**
+ * VecToCalVec: <describe the responsibilities and behavior of this method>
+ *
+ * \param const ft::Vec & v <argument description>
+ * \return CalVector <describe what is returned if appropriate>
+ **/
 inline CalVector VecToCalVec(const Vec &v) {
   return CalVector(v[0], v[1], v[2]);
 };
 
+/**
+ * CalQuatToQuat: <describe the responsibilities and behavior of this method>
+ *
+ * \param const CalQuaternion & cq <argument description>
+ * \return ft::Quat <describe what is returned if appropriate>
+ **/
 inline Quat CalQuatToQuat(const CalQuaternion &cq) {
   return Quat(cq.w, cq.x, cq.y, cq.z);
 };
 
+/**
+ * QuatToCalQuat: <describe the responsibilities and behavior of this method>
+ *
+ * \param const ft::Quat & q <argument description>
+ * \return CalQuaternion <describe what is returned if appropriate>
+ **/
 inline CalQuaternion QuatToCalQuat(const Quat &q) {
   return CalQuaternion(q.I(), q.J(), q.K(), q.S());
 };
@@ -48,6 +72,18 @@ inline CalQuaternion QuatToCalQuat(const Quat &q) {
 //! Pi the constant
 const float Pi = 3.14159265358979323846f;
 //! convert and angle in degrees to radians
+/**
+ * degToRad: <describe the responsibilities and behavior of this method>
+ *
+ * \param float angle <argument description>
+ * \return float <describe what is returned if appropriate>
+ **/
 inline float degToRad(float angle){return angle*Pi/180.0f;};
 //! convert and angle in radians to degrees
+/**
+ * radToDeg: <describe the responsibilities and behavior of this method>
+ *
+ * \param float angle <argument description>
+ * \return float <describe what is returned if appropriate>
+ **/
 inline float radToDeg(float angle){return angle*180.0f/Pi;};

@@ -14,9 +14,17 @@
 
 using namespace ft;
 
+/**
+ * Simulation: <describe the responsibilities and behavior of this method>
+ *
+ **/
 Simulation::Simulation()
 {
 }
+/**
+ * ~Simulation: <describe the responsibilities and behavior of this method>
+ *
+ **/
 Simulation::~Simulation()
 {
 }
@@ -24,6 +32,11 @@ Simulation::~Simulation()
 
 
 /*----- Get the current millisecond tick count -----*/
+/**
+ * getTick: <describe the responsibilities and behavior of this method>
+ *
+ * \return unsigned int <describe what is returned if appropriate>
+ **/
 unsigned int Simulation::getTick()
 {
 #ifdef _WIN32
