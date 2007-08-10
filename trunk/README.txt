@@ -20,3 +20,14 @@ a) when you want to introduce your modifications to SVN:
 - check if commited version works properly by checking out the trunk again to another directory 
 	on your PC (then check if compilation succeed and application runs properly)
  
+----------------------------------------
+Documentation 
+
+Prerequisities
+1. download the newest version of software: 
+a) Doxygen ver >= 1.5.3 from http://www.stack.nl/~dimitri/doxygen/
+b) Graphviz from http://www.graphviz.org/
+c) HTML Workshop (default location C:\Program Files\HTML Help Workshop\ in MS Windows XP Professional) or download from http://go.microsoft.com/fwlink/?linkid=14188
+d) eventually mscgen (for sequence diagrams) from http://www.mcternan.me.uk/mscgen/index.html and copy it under Graphviz\bin directory
+2. check localization of your installed tools and correct values of HHC_LOCATION, MSCGEN_PATH, DOT_PATH from Generator.doxy file
+

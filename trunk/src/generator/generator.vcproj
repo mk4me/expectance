@@ -585,10 +585,6 @@
 				Name="utility"
 				>
 				<File
-					RelativePath=".\src\framework\utility\Cal3dMathsConversion.h"
-					>
-				</File>
-				<File
 					RelativePath=".\src\framework\utility\debug.cpp"
 					>
 				</File>
@@ -597,11 +593,15 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\utility\Quat.cpp"
+					RelativePath=".\src\framework\utility\mathconversions.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\utility\Quat.h"
+					RelativePath=".\src\framework\utility\quat.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\utility\quat.h"
 					>
 				</File>
 				<File
@@ -613,11 +613,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\utility\Vec.cpp"
+					RelativePath=".\src\framework\utility\vec.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\utility\Vec.h"
+					RelativePath=".\src\framework\utility\vec.h"
 					>
 				</File>
 			</Filter>

@@ -19,22 +19,16 @@ using namespace std;
 namespace ft 
 {
 	/**
-	 * Class StringHelper: <describe the behavior and responsibility of this class>
+	 * Class StringHelper:
+	 * Utilities for String formatting, manipulation, and queries
 	 **/
 	class StringHelper
 	{
 		public:
-		static vector<string> Tokens(const string& str,const string& delimiters);
-		static string ClearBrakets(const string& str, const char start_bracket, const char end_bracket);
+		static vector<string> Split(const string& str,const string& delimiters);
+		static string ClearDelimiters(const string& str, const char start_bracket, const char end_bracket);
 		static string RemoveChar(const string& str, const char character);
 	};
-
-
-
-
-
-
-
 };
 
 #endif // _GEN_STRING_HELPER_H

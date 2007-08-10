@@ -9,11 +9,6 @@ using namespace ft;
 
 MenuManager* MenuManager::m_instance = NULL;
 
-/**
- * getInstance: <describe the responsibilities and behavior of this method>
- *
- * \return ft::MenuManager * <describe what is returned if appropriate>
- **/
 MenuManager* MenuManager::getInstance()
 {
     if (m_instance == NULL)
@@ -25,28 +20,17 @@ MenuManager* MenuManager::getInstance()
     return m_instance;
 }
 
-/**
- * DestroyInstance: <describe the responsibilities and behavior of this method>
- *
- **/
 void MenuManager::DestroyInstance()
 {
     if (m_instance != NULL)
         delete m_instance;
 }
 
-/**
- * Init: <describe the responsibilities and behavior of this method>
- *
- * \param int x <argument description>
- * \param int y <argument description>
- * \return bool <describe what is returned if appropriate>
- **/
 bool MenuManager::Init(int x, int y)
 {
 	bool final = true;
 	static unsigned int listID = 1000; // hope that system textures wont be so much
-	vector<string> tokenizer;
+	vector<string> tokens;
 	std::string menuOptions;
 	GLuint logoTexture;
 	m_avtiveButton = -1;
@@ -55,23 +39,24 @@ bool MenuManager::Init(int x, int y)
 	//1. read main menu options
 	m_mainMenu = new MenuItem(x,y); //main menu w (x,y)
 	menuOptions = Config::getInstance()->GetStrVal("main_menu");
-	menuOptions = StringHelper::ClearBrakets(menuOptions, '(',')');
+	menuOptions = StringHelper::ClearDelimiters(menuOptions, '(',')');
 	menuOptions = StringHelper::RemoveChar(menuOptions,' ');
-	tokenizer = StringHelper::Tokens(menuOptions, ",");
+	tokens = StringHelper::Split(menuOptions, ",");
 	
-	for (unsigned int i = 0; i <tokenizer.size(); i++) //create main menu
+	for (unsigned int i = 0; i <tokens.size(); i++) //create main menu
 	{
 		vector<string> menuParameters;
 		std::string menuOption;
-		menuOption = Config::getInstance()->GetStrVal(tokenizer[i]);
-		menuOption = StringHelper::ClearBrakets(menuOption, '(', ')');
-		menuParameters = StringHelper::Tokens(menuOption,",");
+		menuOption = Config::getInstance()->GetStrVal(tokens[i]);
+		menuOption = StringHelper::ClearDelimiters(menuOption, '(', ')');
+		menuParameters = StringHelper::Split(menuOption,",");
 		menuParameters[1] = StringHelper::RemoveChar(menuParameters[1],' ');
 		if (menuParameters.size() == 1) 
 			continue;
 		else
 		{
-			MenuItem *mi = new MenuItem(tokenizer[i],0,0);  // button id
+			// 2. dispatch each option
+			MenuItem *mi = new MenuItem(tokens[i],0,0);  // button id
 			mi->setInfoLabel(menuParameters[0]);            // button Information label
 			//create texture list
 			glNewList(listID,GL_COMPILE);
@@ -93,6 +78,7 @@ bool MenuManager::Init(int x, int y)
 			glEndList();
 
 			mi->setTexureID(listID);					// button texture filename
+			//3. add option to menu
 			m_mainMenu->AddObject(mi);
 			listID++;
 
@@ -101,20 +87,12 @@ bool MenuManager::Init(int x, int y)
 		menuOption.clear();
 
 	}
-	//2. dispatch each option
+    // count global width and height taking into consideration all options in menu (on the top level)
 	m_width = m_mainMenu->getWidth()*m_mainMenu->getSubMenu().size();
-	m_height = m_mainMenu->getHeight();
-	//3. add option to 
+	m_height = m_mainMenu->getHeight();	
 	return final;
 }
 
-/**
- * checkScope: <describe the responsibilities and behavior of this method>
- *
- * \param int x <argument description>
- * \param int y <argument description>
- * \return int <describe what is returned if appropriate>
- **/
 int MenuManager::checkScope(int x, int y)
 {
 	float xDiv;
@@ -133,18 +111,11 @@ int MenuManager::checkScope(int x, int y)
 		return -1;
 }
 
-
-/**
- * Render: <describe the responsibilities and behavior of this method>
- *
- * \return bool <describe what is returned if appropriate>
- **/
 bool MenuManager::Render()
 {
 	int x,y;
 	x = OGLContext::getInstance()->getWidth() / 2;
 	y = OGLContext::getInstance()->getHeight() / 2;
-	vector<MenuItem*> mi;
 	unsigned int menuCounter = m_mainMenu->getSubMenu().size();
 	int w = menuCounter*32+2;
 	int h = 34;
@@ -153,10 +124,11 @@ bool MenuManager::Render()
 		glEnable(GL_BLEND);
 		glTranslatef(-x,-y,0);
 	
-		glColor4f(0.9f,0.0f,0.0f,0.6f);
+		glColor4f(0.9f,0.0f,0.0f,0.6f); // menu color
 		glRectf(0,0,w,h);
 		//glColor4f(0.5f, 0.5f, 0.5f, 0.5f);
-
+		
+		//draw menu
 		for (unsigned int i = 0; i < menuCounter; i++)
 		{
 			if (i==0) 
@@ -170,8 +142,8 @@ bool MenuManager::Render()
 			 glCallList(m_mainMenu->getSubMenu().at(i)->getTextureID());
 			glPopMatrix();
 		}
-
-		if (m_avtiveButton != -1)
+		// set active button and text for it
+		if (m_avtiveButton != -1) //-1 index is out of scope of menuitems collection 
 		{
 			std::string lab = m_mainMenu->getSubMenu().at(m_avtiveButton)->getLabel();
 			glLoadIdentity();
@@ -194,29 +166,15 @@ bool MenuManager::Render()
 	return true;
 }
 
-
-/**
- * getMainMenu: <describe the responsibilities and behavior of this method>
- *
- * \return const ft::MenuItem * <describe what is returned if appropriate>
- **/
 const MenuItem* MenuManager::getMainMenu() const
 {
 	return m_mainMenu;
 }
 
-//label from pressed button
-/**
- * OnMouseButtonDown: <describe the responsibilities and behavior of this method>
- *
- * \param int button <argument description>
- * \param int x <argument description>
- * \param int y <argument description>
- **/
 void MenuManager::OnMouseButtonDown(int button, int x, int y)
 {
 	int btn;
-	if ((btn=checkScope(x,y))>=0)
+	if ((btn=checkScope(x,y))>=0) //label from pressed button
 	{
 		m_pressedButton = btn;
 		std::cout <<"Button selected "<< btn << endl;
@@ -224,21 +182,13 @@ void MenuManager::OnMouseButtonDown(int button, int x, int y)
 
 }
 
-//enter to pressed button (message from it)
-/**
- * OnMouseButtonUp: <describe the responsibilities and behavior of this method>
- *
- * \param int button <argument description>
- * \param int x <argument description>
- * \param int y <argument description>
- **/
 void MenuManager::OnMouseButtonUp(int button, int x, int y)
 {
 	int btn;
 	if ((btn=checkScope(x,y))>=0)
 	{
 		m_releasedButon = btn;
-		if (m_pressedButton == m_releasedButon)
+		if (m_pressedButton == m_releasedButon) //enter to pressed button (message from it)
 		{
 			m_avtiveButton = m_releasedButon;
 			std::string id = m_mainMenu->getSubMenu().at(m_avtiveButton)->getMenuName();
@@ -248,13 +198,4 @@ void MenuManager::OnMouseButtonUp(int button, int x, int y)
 	}
 
 }
-/**
- * OnMouseMove: <describe the responsibilities and behavior of this method>
- *
- * \param int x <argument description>
- * \param int y <argument description>
- **/
-void MenuManager::OnMouseMove(int x, int y)
-{
 
-}

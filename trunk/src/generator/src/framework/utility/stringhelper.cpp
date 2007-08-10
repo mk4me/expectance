@@ -2,15 +2,15 @@
 
 using namespace ft;
 
-// string tokenize
+
 /**
- * Tokens: <describe the responsibilities and behavior of this method>
+ * Splits the given String into tokens.
  *
- * \param const std::string & str <argument description>
- * \param const std::string & delimiters <argument description>
- * \return std::vector<string> <describe what is returned if appropriate>
+ * \param const std::string & str - String to be split
+ * \param const std::string & delimiters - tokens separators array 
+ * \return std::vector<string> - an array of tokens.
  **/
-vector<string> StringHelper::Tokens(const string& str,const string& delimiters)
+vector<string> StringHelper::Split(const string& str,const string& delimiters)
 {
   vector<string> tokens;
   
@@ -60,14 +60,14 @@ vector<string> StringHelper::Tokens(const string& str,const string& delimiters)
 
 
 /**
- * ClearBrakets: <describe the responsibilities and behavior of this method>
+ * Clears delimiters from string
  *
- * \param const std::string & str <argument description>
- * \param const char start_bracket <argument description>
- * \param const char end_bracket <argument description>
- * \return std::string <describe what is returned if appropriate>
+ * \param const std::string & str - String to be corrected
+ * \param const char start_bracket - First delimiter:  <,{,[ or (
+ * \param const char end_bracket - Second delimiter: >,},] or )
+ * \return std::string - Modified string
  **/
-string StringHelper::ClearBrakets(const string& str, const char start_bracket, const char end_bracket)
+string StringHelper::ClearDelimiters(const string& str, const char start_bracket, const char end_bracket)
 {
 	int start = str.find_first_not_of(start_bracket);
 	int end = str.find_last_of(end_bracket);
@@ -81,11 +81,11 @@ string StringHelper::ClearBrakets(const string& str, const char start_bracket, c
 }
 
 /**
- * RemoveChar: <describe the responsibilities and behavior of this method>
+ * Removes specified character from string
  *
- * \param const std::string & str <argument description>
- * \param const char character <argument description>
- * \return std::string <describe what is returned if appropriate>
+ * \param const std::string & str - String to be corrected
+ * \param const char character - char literal to by removed
+ * \return std::string - Modified string
  **/
 string StringHelper::RemoveChar(const string& str, const char character)
 {

@@ -233,7 +233,7 @@ TAGFILES               =
 GENERATE_TAGFILE       = 
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = YES
-PERL_PATH              = C:/prg/perl/bin
+PERL_PATH              = 
 #---------------------------------------------------------------------------
 # Configuration options related to the dot tool   
 #---------------------------------------------------------------------------

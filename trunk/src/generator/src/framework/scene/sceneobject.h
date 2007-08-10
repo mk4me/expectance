@@ -8,7 +8,7 @@
 #define _GEN_SCENE_OBJECT_H
 
 #include "../core/baseobject.h"
-#include "../utility/Cal3dMathsConversion.h"
+#include "../utility/mathconversions.h"
 
 namespace ft
 {

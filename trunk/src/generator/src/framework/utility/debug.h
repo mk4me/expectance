@@ -2,7 +2,6 @@
  * Copyright (c) 2007, FutureToday. All rights reserved.
  * author: abak
  */
-
 #ifndef _GEN_DEBUG_H
 #define _GEN_DEBUG_H
 
@@ -17,12 +16,14 @@
 
 namespace ft
 {
-	/**
-	 * Class Debug: <describe the behavior and responsibility of this class>
-	 **/
+	//! A Debug class
+	/*!
+	 *	Provides a set of methods and properties that help debug your code. 
+	 */
     class Debug
     {
     public:
+		//! write out information. Used for tracing program.  
         static void out(std::string text);
 
     };
