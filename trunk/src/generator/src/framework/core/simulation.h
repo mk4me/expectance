@@ -11,7 +11,7 @@
 namespace ft
 {
 	/**
-	 * Class Simulation: <describe the behavior and responsibility of this class>
+	 * Class Simulation: class responsible for calculating simulation time 
 	 **/
 	class Simulation
 	{

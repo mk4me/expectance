@@ -10,9 +10,9 @@ using namespace ft;
 InputManager* InputManager::m_instance = NULL;
 
 /**
- * getInstance: <describe the responsibilities and behavior of this method>
+ * Returns the only instance of ft::InputManager (creates it at first call to this method)
  *
- * \return ft::InputManager * <describe what is returned if appropriate>
+ * \return ft::InputManager * - the only instance of InputManager
  **/
 InputManager* InputManager::getInstance()
 {
@@ -26,7 +26,7 @@ InputManager* InputManager::getInstance()
 }
 
 /**
- * DestroyInstance: <describe the responsibilities and behavior of this method>
+ * Releases all resources related to this InputManager
  *
  **/
 void InputManager::DestroyInstance()
@@ -35,13 +35,13 @@ void InputManager::DestroyInstance()
         delete m_instance;
 }
 
-/*----- Handle a key event -----*/
+/*-----  -----*/
 /**
- * OnKey: <describe the responsibilities and behavior of this method>
+ * Handles a key event from keyboard
  *
- * \param unsigned char key <argument description>
- * \param int x <argument description>
- * \param int y <argument description>
+ * \param unsigned char key - pressed key
+ * \param int x - x coordinate on the application window
+ * \param int y - y coordinate on the application window
  **/
 void InputManager::OnKey(unsigned char key, int x, int y)
 {
@@ -98,13 +98,13 @@ void InputManager::OnKey(unsigned char key, int x, int y)
 }
 
 
-/*----- Handle special keys (F1, F2, UP, DOWN, etc.)   -----*/
+/*-----    -----*/
 /**
- * OnSpecial: <describe the responsibilities and behavior of this method>
+ * Handles special keys (F1, F2, UP, DOWN, etc.)
  *
- * \param int key <argument description>
- * \param int x <argument description>
- * \param int y <argument description>
+ * \param int key - pressed key
+ * \param int x - x coordinate on the application window
+ * \param int y - y coordinate on the application window
  **/
 void InputManager::OnSpecial(int key, int x, int y)
 {
@@ -128,13 +128,12 @@ void InputManager::OnSpecial(int key, int x, int y)
   }
 }
 
-/*----- Handle a mouse button down event -----*/
 /**
- * OnMouseButtonDown: <describe the responsibilities and behavior of this method>
+ * Handles a mouse button down event 
  *
- * \param int button <argument description>
- * \param int x <argument description>
- * \param int y <argument description>
+ * \param int button - pressed button
+ * \param int x - x coordinate on the application window
+ * \param int y - y coordinate on the application window
  **/
 void InputManager::OnMouseButtonDown(int button, int x, int y)
 {
@@ -149,13 +148,12 @@ void InputManager::OnMouseButtonDown(int button, int x, int y)
 	}
 }
 
-/*----- Handle a mouse button up event -----*/
 /**
- * OnMouseButtonUp: <describe the responsibilities and behavior of this method>
+ * Handles a mouse button up event
  *
- * \param int button <argument description>
- * \param int x <argument description>
- * \param int y <argument description>
+ * \param int button - pressed button
+ * \param int x - x coordinate on the application window
+ * \param int y - y coordinate on the application window
  **/
 void InputManager::OnMouseButtonUp(int button, int x, int y)
 {
@@ -169,13 +167,11 @@ void InputManager::OnMouseButtonUp(int button, int x, int y)
 	}
 }
 
-
-/*----- Handle a mouse move event -----*/
 /**
- * OnMouseMove: <describe the responsibilities and behavior of this method>
+ * Handles a mouse move event
  *
- * \param int x <argument description>
- * \param int y <argument description>
+ * \param int x - x coordinate on the application window
+ * \param int y - y coordinate on the application window
  **/
 void InputManager::OnMouseMove(int x, int y)
 {

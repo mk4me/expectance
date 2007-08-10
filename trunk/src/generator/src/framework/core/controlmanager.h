@@ -14,13 +14,7 @@
 namespace ft
 {
 	/**
-	 * Class ControlManager: <describe the behavior and responsibility of this class>
-	 **/
-	/**
-	 * Class ControlManager: <describe the behavior and responsibility of this class>
-	 **/
-	/**
-	 * Class ControlManager: <describe the behavior and responsibility of this class>
+	 * Class ControlManager: manages messages flow and updating objects 
 	 **/
     class ControlManager
     {

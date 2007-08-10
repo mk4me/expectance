@@ -18,7 +18,7 @@
 namespace ft
 {
 	/**
-	 * Class Config: <describe the behavior and responsibility of this class>
+	 * Class Config: handles settings loaded from configuration file of Generator application
 	 **/
     class Config
     {

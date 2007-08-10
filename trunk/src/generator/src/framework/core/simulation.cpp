@@ -15,27 +15,24 @@
 using namespace ft;
 
 /**
- * Simulation: <describe the responsibilities and behavior of this method>
+ * Constructor for Simulation: 
  *
  **/
 Simulation::Simulation()
 {
 }
 /**
- * ~Simulation: <describe the responsibilities and behavior of this method>
+ * Destructor for Simulation
  *
  **/
 Simulation::~Simulation()
 {
 }
 
-
-
-/*----- Get the current millisecond tick count -----*/
 /**
- * getTick: <describe the responsibilities and behavior of this method>
+ * Returns the current millisecond tick count
  *
- * \return unsigned int <describe what is returned if appropriate>
+ * \return unsigned int - time in milliseconds
  **/
 unsigned int Simulation::getTick()
 {

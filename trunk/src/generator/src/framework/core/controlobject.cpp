@@ -8,18 +8,18 @@
 using namespace ft;
 
 /**
- * OnMessage: <describe the responsibilities and behavior of this method>
+ * This method is called when message is sent to this object from ft::ControlManager
  *
- * \param ft::Message * msg <argument description>
+ * \param ft::Message * msg - message from ft::ControlManager
  **/
 void ControlObject::OnMessage(Message* msg)
 {
 }
 
 /**
- * OnUpdate: <describe the responsibilities and behavior of this method>
+ * This method is called when new frame is updated from ft::ControlManager
  *
- * \param float elapsedTime <argument description>
+ * \param float elapsedSeconds - time elapsed sice last update
  **/
 void ControlObject::OnUpdate(float elapsedTime)
 {

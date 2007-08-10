@@ -11,6 +11,9 @@
 
 namespace ft
 {
+	/**
+	 * Class ControlObject: base class for objects that can be registered in ControlManager
+	 **/
     class ControlObject : public virtual BaseObject
     {
     public:

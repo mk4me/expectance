@@ -16,9 +16,9 @@ using namespace ft;
 Application* Application::m_instance = NULL;
 
 /**
- * getInstance: <describe the responsibilities and behavior of this method>
+ * Returns the only instance of ft::Application (creates it at first call to this method)
  *
- * \return ft::Application * <describe what is returned if appropriate>
+ * \return ft::Application * - the only instance of Application
  **/
 Application* Application::getInstance()
 {
@@ -32,7 +32,7 @@ Application* Application::getInstance()
 }
 
 /**
- * DestroyInstance: <describe the responsibilities and behavior of this method>
+ * Releases all resources related to this Application
  *
  **/
 void Application::DestroyInstance()
@@ -43,7 +43,7 @@ void Application::DestroyInstance()
 }
 
 /**
- * InitConfig: <describe the responsibilities and behavior of this method>
+ * Loaded configuration file for application
  *
  **/
 void Application::InitConfig()
@@ -54,7 +54,7 @@ void Application::InitConfig()
 }
 
 /**
- * InitModules: <describe the responsibilities and behavior of this method>
+ * Initializes main modules of application
  *
  **/
 void Application::InitModules()
@@ -68,7 +68,7 @@ void Application::InitModules()
 }
 
 /**
- * InitAvatars: <describe the responsibilities and behavior of this method>
+ * Initializes avatars on scene
  *
  **/
 void Application::InitAvatars()
@@ -95,11 +95,11 @@ void Application::InitAvatars()
 
 
 /**
- * CreateAvatarOnScene: <describe the responsibilities and behavior of this method>
+ * Creates single avatar on the scene
  *
- * \param const std::string & calCoreModel <argument description>
- * \param const std::string & name <argument description>
- * \return ft::Avatar * <describe what is returned if appropriate>
+ * \param const std::string & calCoreModel - type of CalModel for avatar that is created
+ * \param const std::string & name - name of avatar
+ * \return ft::Avatar * - created avatar or NULL if creation failed
  **/
 Avatar* Application::CreateAvatarOnScene(const std::string& calCoreModel,const  std::string& name)
 {

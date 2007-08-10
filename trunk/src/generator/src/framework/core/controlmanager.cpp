@@ -13,9 +13,9 @@ using namespace std;
 ControlManager* ControlManager::m_instance = NULL;
 
 /**
- * getInstance: <describe the responsibilities and behavior of this method>
+ * Returns the only instance of ft::ControlManager (creates it at first call to this method)
  *
- * \return ft::ControlManager * <describe what is returned if appropriate>
+ * \return ft::ControlManager * - the only instance of ControlManager
  **/
 ControlManager* ControlManager::getInstance()
 {
@@ -29,7 +29,7 @@ ControlManager* ControlManager::getInstance()
 }
 
 /**
- * Init: <describe the responsibilities and behavior of this method>
+ * Initializes ControlManager
  *
  **/
 void ControlManager::Init()
@@ -47,7 +47,7 @@ void ControlManager::Init()
 }
 
 /**
- * DestroyInstance: <describe the responsibilities and behavior of this method>
+ Releases all resources related to ControlManager
  *
  **/
 void ControlManager::DestroyInstance()
@@ -58,7 +58,7 @@ void ControlManager::DestroyInstance()
 
 
 /**
- * OnUpdate: <describe the responsibilities and behavior of this method>
+ * This method is called when new frame is updated
  *
  **/
 void ControlManager::OnUpdate()
@@ -89,10 +89,10 @@ void ControlManager::OnUpdate()
 }
 
 /**
- * SendMessageA: <describe the responsibilities and behavior of this method>
+ * This method is used to send new message to objectes registered in ControlManager
  *
- * \param ft::Message * msg <argument description>
- * \param bool deleteAfterSent <argument description>
+ * \param ft::Message * msg - message to send
+ * \param bool deleteAfterSent - defines if message object msg should be deleted after sending
  **/
 void ControlManager::SendMessage(Message* msg, bool deleteAfterSent)
 {
@@ -117,10 +117,10 @@ void ControlManager::SendMessage(Message* msg, bool deleteAfterSent)
 }
 
 /**
- * AddControlObject: <describe the responsibilities and behavior of this method>
+ * Register ControlObject in ControlManager
  *
- * \param ft::ControlObject * pObj <argument description>
- * \return bool <describe what is returned if appropriate>
+ * \param ft::ControlObject * pObj - object that will be registered in ControlManager
+ * \return bool - true if registration succeed, false otherwise
  **/
 bool ControlManager::AddControlObject(ControlObject* pObj)
 {
@@ -140,10 +140,10 @@ bool ControlManager::AddControlObject(ControlObject* pObj)
 }
 
 /**
- * RemoveControlObject: <describe the responsibilities and behavior of this method>
+ * Unregisters ControlObject from ControlManager
  *
- * \param ft::ControlObject * pObj <argument description>
- * \return bool <describe what is returned if appropriate>
+ * \param ft::ControlObject * pObj - object that should be unregistered in ControlManager
+ * \return bool - true if object has been unregistered, false otherwise
  **/
 bool ControlManager::RemoveControlObject(ControlObject* pObj)
 {
@@ -164,7 +164,7 @@ bool ControlManager::RemoveControlObject(ControlObject* pObj)
 }
 
 /**
- * Dump: <describe the responsibilities and behavior of this method>
+ * Prints debug information describing ControlManager on output console
  *
  **/
 void ControlManager::Dump()
@@ -180,9 +180,9 @@ void ControlManager::Dump()
 }
 
 /**
- * UpdateObjects: <describe the responsibilities and behavior of this method>
+ * Updates all registered objects for current frame
  *
- * \param float elapsedSeconds <argument description>
+ * \param float elapsedSeconds - time elapsed since last frame (since last update)
  **/
 void ControlManager::UpdateObjects(float elapsedSeconds)
 {

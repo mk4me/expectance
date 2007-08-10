@@ -13,7 +13,7 @@ namespace ft
 {
 
 	/**
-	 * Class BaseObject: <describe the behavior and responsibility of this class>
+	 * Class BaseObject: base class for all objects that can be managed by Generator application
 	 **/
     class BaseObject 
     {

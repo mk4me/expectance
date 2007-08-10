@@ -37,7 +37,7 @@ namespace ft
     ///////////////////////////////
 
 	/**
-	 * Class MessageParam: <describe the behavior and responsibility of this class>
+	 * Class MessageParam: represents specific parameters of message
 	 **/
     class MessageParam
     {
@@ -65,7 +65,7 @@ namespace ft
     /* Base class for message */
           
 	/**
-	 * Class Message: <describe the behavior and responsibility of this class>
+	 * represents messages sent by ft::ControlManager to ft::ControlObject -s
 	 **/
     class Message
     {

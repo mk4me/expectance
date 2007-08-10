@@ -16,9 +16,8 @@
 
 using namespace ft;
 
-/*----- GLUT callback functions  -----*/                                        
 /**
- * DisplayFunc: <describe the responsibilities and behavior of this method>
+ * GLUT callback function
  *
  **/
 void DisplayFunc()
@@ -27,7 +26,7 @@ void DisplayFunc()
 }
 
 /**
- * ExitFunc: <describe the responsibilities and behavior of this method>
+ * GLUT callback function
  *
  **/
 void ExitFunc()
@@ -37,7 +36,7 @@ void ExitFunc()
 }
 
 /**
- * IdleFunc: <describe the responsibilities and behavior of this method>
+ * GLUT callback function
  *
  **/
 void IdleFunc()
@@ -51,11 +50,8 @@ void IdleFunc()
 }
 
 /**
- * KeyboardFunc: <describe the responsibilities and behavior of this method>
+ * GLUT callback function
  *
- * \param unsigned char key <argument description>
- * \param int x <argument description>
- * \param int y <argument description>
  **/
 void KeyboardFunc(unsigned char key, int x, int y)
 {
@@ -63,11 +59,8 @@ void KeyboardFunc(unsigned char key, int x, int y)
 }
 
 /**
- * SpecialFunc: <describe the responsibilities and behavior of this method>
+ * GLUT callback function
  *
- * \param int key <argument description>
- * \param int x <argument description>
- * \param int y <argument description>
  **/
 void SpecialFunc(int key, int x, int y)
 {
@@ -75,10 +68,8 @@ void SpecialFunc(int key, int x, int y)
 }
 
 /**
- * MotionFunc: <describe the responsibilities and behavior of this method>
+ * GLUT callback function
  *
- * \param int x <argument description>
- * \param int y <argument description>
  **/
 void MotionFunc(int x, int y)
 {
@@ -86,12 +77,8 @@ void MotionFunc(int x, int y)
 }
 
 /**
- * MouseFunc: <describe the responsibilities and behavior of this method>
+ * GLUT callback function
  *
- * \param int button <argument description>
- * \param int state <argument description>
- * \param int x <argument description>
- * \param int y <argument description>
  **/
 void MouseFunc(int button, int state, int x, int y)
 {
@@ -106,10 +93,8 @@ void MouseFunc(int button, int state, int x, int y)
 }
 
 /**
- * ReshapeFunc: <describe the responsibilities and behavior of this method>
+ * GLUT callback function
  *
- * \param int width <argument description>
- * \param int height <argument description>
  **/
 void ReshapeFunc(int width, int height)
 {
@@ -118,11 +103,11 @@ void ReshapeFunc(int width, int height)
 
 
 /**
- * main: <describe the responsibilities and behavior of this method>
+ * Main entry to application
  *
- * \param int argc <argument description>
- * \param char *[] argv <argument description>
- * \return int <describe what is returned if appropriate>
+ * \param int argc - number of arguments
+ * \param char *[] argv - list of arguments
+ * \return int - result of application
  **/
 int main(int argc, char *argv[])
 {

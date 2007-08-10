@@ -7,10 +7,10 @@
 using namespace ft;
 
 /**
- * _GET_MSG_NAME: <describe the responsibilities and behavior of this method>
+ * Returns string representation of messages
  *
- * \param int msg <argument description>
- * \return std::string <describe what is returned if appropriate>
+ * \param int msg - identifier of message
+ * \return std::string - string representation of message
  **/
 std::string Message::_GET_MSG_NAME(int msg)
 {

@@ -11,7 +11,7 @@
 namespace ft
 {
 	/**
-	 * Class Application: <describe the behavior and responsibility of this class>
+	 * Class Application: is responsible for lifecycle of Generator application
 	 **/
     class Application
     {

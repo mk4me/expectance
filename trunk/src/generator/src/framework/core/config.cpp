@@ -14,9 +14,9 @@ using namespace ft;
 Config* Config::m_instance = NULL;
 
 /**
- * getInstance: <describe the responsibilities and behavior of this method>
+ * Returns the only instance of ft::Config (creates it at first call to this method)
  *
- * \return ft::Config * <describe what is returned if appropriate>
+ * \return ft::Config * - the only instance of Config
  **/
 Config* Config::getInstance()
 {
@@ -31,7 +31,7 @@ Config* Config::getInstance()
 
 
 /**
- * DestroyInstance: <describe the responsibilities and behavior of this method>
+ * Releases all resources related to this Config
  *
  **/
 void Config::DestroyInstance()
@@ -41,9 +41,9 @@ void Config::DestroyInstance()
 }
 
 /**
- * LoadConfigFile: <describe the responsibilities and behavior of this method>
+ * Loads  settings from configuration file
  *
- * \return bool <describe what is returned if appropriate>
+ * \return bool - true if settings loaded successfuly, false otherwise
  **/
 bool Config::LoadConfigFile()
 {
@@ -120,9 +120,9 @@ bool Config::LoadConfigFile()
 }
 
 /**
- * ReloadConfigFile: <describe the responsibilities and behavior of this method>
+ * Reloads settings from confguration file
  *
- * \return bool <describe what is returned if appropriate>
+ * \return bool - true if settings loaded successfuly, false otherwise
  **/
 bool Config::ReloadConfigFile()
 {
@@ -132,10 +132,10 @@ bool Config::ReloadConfigFile()
 }
 
 /**
- * IsKey: <describe the responsibilities and behavior of this method>
+ * Checks if given key is defined in settings
  *
- * \param const char * key <argument description>
- * \return bool <describe what is returned if appropriate>
+ * \param const char * key - key to check
+ * \return bool - true if key is defined, false otherwise
  **/
 bool Config::IsKey(const char * key)
 {
@@ -148,10 +148,10 @@ bool Config::IsKey(const char * key)
 }
 
 /**
- * GetStrVal: <describe the responsibilities and behavior of this method>
+ * Returns string representation of setting value related to given key
  *
- * \param const char * key <argument description>
- * \return const char * <describe what is returned if appropriate>
+ * \param const char * key - key for setting
+ * \return const char * - string representation of setting value
  **/
 const char* Config::GetStrVal(const char * key)
 {
@@ -166,10 +166,10 @@ const char* Config::GetStrVal(const char * key)
 }
 
 /**
- * GetStrVal: <describe the responsibilities and behavior of this method>
+ * Returns string representation of setting value related to given key
  *
- * \param const std::string & key <argument description>
- * \return const std::string <describe what is returned if appropriate>
+ * \param const char * key - key for setting
+ * \return const char * - string representation of setting value
  **/
 const std::string Config::GetStrVal(const std::string& key)
 {
@@ -184,10 +184,10 @@ const std::string Config::GetStrVal(const std::string& key)
 }
 
 /**
- * GetIntVal: <describe the responsibilities and behavior of this method>
+ * Returns integer representation of setting value related to given key
  *
- * \param const char * key <argument description>
- * \return int <describe what is returned if appropriate>
+ * \param const char * key - key for setting
+ * \return const char * - integer representation of setting value
  **/
 int Config::GetIntVal(const char * key)
 {
@@ -197,10 +197,10 @@ int Config::GetIntVal(const char * key)
 
 
 /**
- * AddEntry: <describe the responsibilities and behavior of this method>
+ * Add setting to Config
  *
- * \param std::string key <argument description>
- * \param std::string val <argument description>
+ * \param std::string key - key for setting
+ * \param std::string val - value for setting
  **/
 void Config::AddEntry(std::string key, std::string val)
 {
@@ -214,7 +214,7 @@ void Config::AddEntry(std::string key, std::string val)
 }
 
 /**
- * ClearEntries: <describe the responsibilities and behavior of this method>
+ * Clear all settings from Config
  *
  **/
 void Config::ClearEntries()
@@ -224,7 +224,7 @@ void Config::ClearEntries()
 }
 
 /**
- * TEST_CONFIG: <describe the responsibilities and behavior of this method>
+ * Method to test Config
  *
  **/
 void Config::TEST_CONFIG()

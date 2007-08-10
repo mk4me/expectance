@@ -18,7 +18,7 @@
 namespace ft
 {
 	/**
-	 * Class InputManager: <describe the behavior and responsibility of this class>
+	 * Class InputManager: handles inputs from keyboard and mouse and passes them to appropriate modules
 	 **/
     class InputManager
     {
