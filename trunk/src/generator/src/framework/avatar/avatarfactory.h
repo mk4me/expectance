@@ -14,7 +14,9 @@
 namespace ft
 {
 	/**
-	 * Class AvatarFactory: <describe the behavior and responsibility of this class>
+	 * Class AvatarFactory: is responsible for creation of avatar. It is also responsible for creation and use of 
+     * CalModel-s and CalCoreModel-s if they are necessary for avatar creation.
+     * 
 	 **/
     class AvatarFactory 
     {

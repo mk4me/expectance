@@ -8,7 +8,7 @@
 using namespace ft;
 
 /**
- * Motion: <describe the responsibilities and behavior of this method>
+ * Constructor for motion
  *
  **/
 Motion::Motion()
@@ -17,10 +17,10 @@ Motion::Motion()
     setAnimID(-1); 
 }
 /**
- * Motion: <describe the responsibilities and behavior of this method>
+ * Constructor for Motion
  *
- * \param const std::string animName <argument description>
- * \param int anim_id <argument description>
+ * \param const std::string animName - name of animation which is referenced by this object
+ * \param int anim_id - id of animation which is referenced by this object
  **/
 Motion::Motion(const std::string animName, int anim_id)
 {

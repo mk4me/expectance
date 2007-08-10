@@ -16,13 +16,13 @@
 namespace ft
 {
 	/**
-	 * Class Avatar: <describe the behavior and responsibility of this class>
+	 * Class Avatar: Base class for all humanoid characters managed by Generator
+     * \param CalModel * calModel -- model in Cal3d which is referenced by this avatar
 	 **/
     class Avatar : public ControlObject, public SceneObject
     {
     public:
-		Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
-		Avatar(CalModel* calModel, CalCoreModel* calCoreModel); 
+		Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
 	    virtual ~Avatar(void);
 		bool CheckHardwareAcceleration();
         void SetCalModel(CalModel* calModel);
@@ -59,7 +59,6 @@ namespace ft
 		unsigned int m_bufferObject[6];
 
     private:
-        std::string m_name;
 		
    	    int m_vertexCount;  //tmp
 		int m_faceCount;    //tmp

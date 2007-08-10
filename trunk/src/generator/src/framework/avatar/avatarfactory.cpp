@@ -12,9 +12,9 @@ AvatarFactory* AvatarFactory::m_instance = NULL;
 
 
 /**
- * getInstance: <describe the responsibilities and behavior of this method>
+ * Returns the only instance of ft::AvatarFactory (creates it at first call to this method)
  *
- * \return ft::AvatarFactory * <describe what is returned if appropriate>
+ * \return ft::AvatarFactory * the only instance of avatar factory
  **/
 AvatarFactory* AvatarFactory::getInstance()
 {
@@ -28,7 +28,7 @@ AvatarFactory* AvatarFactory::getInstance()
 }
 
 /**
- * DestroyInstance: <describe the responsibilities and behavior of this method>
+ * Releases all resources related to this factory
  *
  **/
 void AvatarFactory::DestroyInstance()
@@ -41,11 +41,11 @@ void AvatarFactory::DestroyInstance()
 }
 
 /**
- * CreateAvatar: <describe the responsibilities and behavior of this method>
+ * Creates a new avatar and constructs all related objects in Cal3d
  *
- * \param const std::string modelName <argument description>
- * \param const std::string avatarName <argument description>
- * \return ft::Avatar * <describe what is returned if appropriate>
+ * \param const std::string modelName - unique string which is used for indexing appriopriate CalCoreModel in factory
+ * \param const std::string avatarName - name of avatar
+ * \return ft::Avatar * - new Avatar or NULL if creation failed
  **/
 Avatar* AvatarFactory::CreateAvatar(const std::string modelName, std::string avatarName)
 {
@@ -83,10 +83,10 @@ Avatar* AvatarFactory::CreateAvatar(const std::string modelName, std::string ava
 }
 
 /**
- * LoadCalCoreModel: <describe the responsibilities and behavior of this method>
+ * Loads new core model in Cal3d
  *
- * \param const std::string modelName <argument description>
- * \return CalCoreModel * <describe what is returned if appropriate>
+ * \param const std::string modelName - name of model which responds to appriopriate configuration file
+ * \return CalCoreModel * - loaded core model or NULL if loading failed
  **/
 CalCoreModel* AvatarFactory::LoadCalCoreModel(const std::string modelName)
 {
@@ -111,16 +111,13 @@ CalCoreModel* AvatarFactory::LoadCalCoreModel(const std::string modelName)
     return coreModel;
 }
 
-
-/*----- Parse the configuration file and load the whole model  -----
- * NOTE: Extracted from Form Viewer app.
- */
 /**
- * ParseModelConfiguration: <describe the responsibilities and behavior of this method>
+ * Parses configuration file for core model and initiates properly given CalCoreModel object
+ * NOTE: Extracted from Form Viewer app.
  *
- * \param const std::string & strFilename <argument description>
- * \param CalCoreModel * coreModel <argument description>
- * \return bool <describe what is returned if appropriate>
+ * \param const std::string & strFilename - name of configuration file
+ * \param CalCoreModel * coreModel - core model object to fill with data from configuration file
+ * \return bool - true if parsing succeed, false if parsing failed
  **/
 bool AvatarFactory::ParseModelConfiguration(const std::string& strFilename, CalCoreModel* coreModel)
 {
@@ -246,14 +243,13 @@ bool AvatarFactory::ParseModelConfiguration(const std::string& strFilename, CalC
   return true;
 }
 
-  // make one material thread for each material
-  // NOTE: this is not the right way to do it, but this Viewer can't do the right
-  // mapping without further information on the model etc., so this is the only
-  // thing we can do here.
 /**
- * InitCoreModelMaterials: <describe the responsibilities and behavior of this method>
- *
- * \param CalCoreModel * coreModel <argument description>
+ * Initiates materials for core model 
+ * - make one material thread for each material
+ * NOTE: this is not the right way to do it, but this Viewer can't do the right
+ * mapping without further information on the model etc., so this is the only
+ * thing we can do here.
+ * \param CalCoreModel * coreModel - core model for which materials should be initialized
  **/
 void AvatarFactory::InitCoreModelMaterials(CalCoreModel* coreModel)
 {
@@ -290,10 +286,10 @@ void AvatarFactory::InitCoreModelMaterials(CalCoreModel* coreModel)
 }
 
 /**
- * InitModelMeshes: <describe the responsibilities and behavior of this method>
+ * Initializes meshes for specific CalModel that is instance of given CalCoreModel
  *
- * \param CalCoreModel * coreModel <argument description>
- * \param CalModel * model <argument description>
+ * \param CalCoreModel * coreModel - core model that was used to create given CalModel
+ * \param CalModel * model - model in Cal3d for which materials should be initialized
  **/
 void AvatarFactory::InitModelMeshes(CalCoreModel* coreModel, CalModel* model)
 {
@@ -317,7 +313,7 @@ void AvatarFactory::InitModelMeshes(CalCoreModel* coreModel, CalModel* model)
 
 }
 /**
- * ReleaseCalCoreModels: <describe the responsibilities and behavior of this method>
+ * Releases all CalCoreModel-s created by this factory
  *
  **/
 void AvatarFactory::ReleaseCalCoreModels()
@@ -332,12 +328,11 @@ void AvatarFactory::ReleaseCalCoreModels()
     m_instance->m_coreModels.clear();
 }
 
-/*----- Load and create a texture from a given file -----*/
+
 /**
- * LoadTexture: <describe the responsibilities and behavior of this method>
- *
- * \param const std::string & strFilename <argument description>
- * \return GLuint <describe what is returned if appropriate>
+* Loads and creates a texture from a given file 
+ * \param const std::string & strFilename - name of file with texture
+ * \return GLuint - texture id of loaded texture
  **/
 GLuint AvatarFactory::LoadTexture(const std::string& strFilename)
 {

@@ -9,11 +9,11 @@
 using namespace ft;
 
 /**
- * Avatar: <describe the responsibilities and behavior of this method>
+ * Constructor for avatar
  *
- * \param CalModel * calModel <argument description>
- * \param CalCoreModel * calCoreModel <argument description>
- * \param const std::string modelName <argument description>
+ * \param CalModel * calModel - model in Cal3d which is referenced by this avatar
+ * \param CalCoreModel * calCoreModel - type defined in Cal3d that has been used to create CalModel for this avatar
+ * \param const std::string modelName - name defined in ft::BaseObject which is the base class for Avatar
  **/
 Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName):
 m_renderMethod(0), 
@@ -31,25 +31,7 @@ m_shadow(true)
 }
 
 /**
- * Avatar: <describe the responsibilities and behavior of this method>
- *
- * \param CalModel * calModel <argument description>
- * \param CalCoreModel * calCoreModel <argument description>
- **/
-Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel)
-{
-    m_calModel = calModel;
-    m_calCoreModel = calCoreModel;
-	if (OGLContext::getInstance()->HardwareAcceleration == 1) //try to check Vertex Shader in the hardware
-	{
-		m_hardwareRendering = CheckHardwareAcceleration();
-	}
-	else
-		m_hardwareRendering = false;
-}
-
-/**
- * ~Avatar: <describe the responsibilities and behavior of this method>
+ * Destructor
  *
  **/
 Avatar::~Avatar()
@@ -66,7 +48,7 @@ Avatar::~Avatar()
 }
 
 /**
- * CheckHardwareAcceleration: <describe the responsibilities and behavior of this method>
+ * CheckHardwareAcceleration: //TODO mka o comment// <describe the responsibilities and behavior of this method>
  *
  * \return bool <describe what is returned if appropriate>
  **/
@@ -89,9 +71,9 @@ bool Avatar::CheckHardwareAcceleration()
 }
 
 /**
- * SetCalModel: <describe the responsibilities and behavior of this method>
+ * Sets model in Cal3d which is referenced by this avatar
  *
- * \param CalModel * calModel <argument description>
+ * \param CalModel * calModel - Cal3d object
  **/
 void Avatar::SetCalModel(CalModel* calModel)
 {
@@ -99,9 +81,9 @@ void Avatar::SetCalModel(CalModel* calModel)
 }
 
 /**
- * GetCalModel: <describe the responsibilities and behavior of this method>
+ * Returns model from Cal3d which is referenced by this avatar
  *
- * \return CalModel * <describe what is returned if appropriate>
+ * \return CalModel * Cal3d model
  **/
 CalModel* Avatar::GetCalModel()
 {
@@ -109,9 +91,9 @@ CalModel* Avatar::GetCalModel()
 }
 
 /**
- * SetCalCoreModel: <describe the responsibilities and behavior of this method>
+ * Sets object representing type defined in Cal3d that is used to create CalModel for this avatar
  *
- * \param CalCoreModel * calCoreModel <argument description>
+ * \param CalCoreModel * calCoreModel - object representing type of CalModel
  **/
 void Avatar::SetCalCoreModel(CalCoreModel* calCoreModel)
 {
@@ -119,9 +101,9 @@ void Avatar::SetCalCoreModel(CalCoreModel* calCoreModel)
 }
 
 /**
- * GetCalCoreModel: <describe the responsibilities and behavior of this method>
+ * Returns object representing type defined in Cal3d that is used to create CalModel for this avatar
  *
- * \return CalCoreModel * <describe what is returned if appropriate>
+ * \return CalCoreModel * - object representing type of CalModel
  **/
 CalCoreModel* Avatar::GetCalCoreModel()
 {
@@ -129,9 +111,9 @@ CalCoreModel* Avatar::GetCalCoreModel()
 }
 
 /**
- * OnMessage: <describe the responsibilities and behavior of this method>
+ * This method is called when message is sent to this object from ft::ControlManager
  *
- * \param ft::Message * msg <argument description>
+ * \param ft::Message * msg - message from ft::ControlManager
  **/
 void Avatar::OnMessage(Message* msg)
 {
@@ -154,7 +136,7 @@ void Avatar::OnMessage(Message* msg)
 
 
 /**
- * Render: <describe the responsibilities and behavior of this method>
+ * Render: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
  *
  * \return bool <describe what is returned if appropriate>
  **/
@@ -192,7 +174,7 @@ bool Avatar::Render()
 }
 
 /**
- * ChangeRenderMethod: <describe the responsibilities and behavior of this method>
+ * ChangeRenderMethod: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
  *
  **/
 void Avatar::ChangeRenderMethod()
@@ -201,7 +183,7 @@ void Avatar::ChangeRenderMethod()
 }
 
 /**
- * setRenderMethod: <describe the responsibilities and behavior of this method>
+ * setRenderMethod: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
  *
  * \param const int renderMethod <argument description>
  **/
@@ -211,7 +193,7 @@ void Avatar::setRenderMethod(const int renderMethod)
 }
 
 /**
- * ChangeShadow: <describe the responsibilities and behavior of this method>
+ * Switches shadow on when it is off or switches shadow off when it is on.
  *
  **/
 void Avatar::ChangeShadow()
@@ -220,9 +202,9 @@ void Avatar::ChangeShadow()
 }
 
 /**
- * setShadow: <describe the responsibilities and behavior of this method>
+ * Switches the shadow on or off.
  *
- * \param const bool shadow <argument description>
+ * \param const bool - defines if shadow should be swithced on or off
  **/
 void Avatar::setShadow(const bool shadow)
 {
@@ -230,7 +212,7 @@ void Avatar::setShadow(const bool shadow)
 }
 
 /**
- * RenderAvatar: <describe the responsibilities and behavior of this method>
+ * RenderAvatar: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
  *
  * \param const int renderMethod <argument description>
  * \param const bool shadow <argument description>
@@ -257,7 +239,7 @@ void Avatar::RenderAvatar(const int renderMethod, const bool shadow)
 
 
 /**
- * SoftwareRenderModelMesh: <describe the responsibilities and behavior of this method>
+ * SoftwareRenderModelMesh: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
  *
  * \param const bool shadow <argument description>
  **/
@@ -385,7 +367,7 @@ void Avatar::SoftwareRenderModelMesh(const bool shadow)
 }
 
 /**
- * HardwareRenderModelMesh: <describe the responsibilities and behavior of this method>
+ * HardwareRenderModelMesh: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
  *
  * \param const bool shadow <argument description>
  **/
@@ -499,7 +481,7 @@ void Avatar::HardwareRenderModelMesh(const bool shadow)
 }
 
 /**
- * RenderModelSkeleton: <describe the responsibilities and behavior of this method>
+ * RenderModelSkeleton: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
  *
  * \param const bool shadow <argument description>
  **/
@@ -547,7 +529,7 @@ void Avatar::RenderModelSkeleton(const bool shadow)
 
 }
 /**
- * RenderModelBoundingBox: <describe the responsibilities and behavior of this method>
+ * RenderModelBoundingBox: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
  *
  * \param const bool shadow <argument description>
  **/
@@ -615,9 +597,9 @@ void Avatar::RenderModelBoundingBox(const bool shadow)
 }
 
 /**
- * SetLodLevel: <describe the responsibilities and behavior of this method>
+ * Sets level of details for rendering
  *
- * \param float level <argument description>
+ * \param float level - level of details
  **/
 void Avatar::SetLodLevel(float level)
 {
@@ -704,7 +686,7 @@ char vertexProgramStr[]=
 "END\n";
 
 /**
- * loadBufferObject: <describe the responsibilities and behavior of this method>
+ * loadBufferObject: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
  *
  * \return bool <describe what is returned if appropriate>
  **/
@@ -793,7 +775,7 @@ bool Avatar::loadBufferObject()
 
 
 /**
- * loadVertexProgram: <describe the responsibilities and behavior of this method>
+ * loadVertexProgram: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
  *
  * \return bool <describe what is returned if appropriate>
  **/

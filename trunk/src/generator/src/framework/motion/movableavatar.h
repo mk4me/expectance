@@ -17,6 +17,9 @@
 
 namespace ft
 {
+    /**
+	 * Class MovableAvatar: this class is instantiated by avatars that contain and perform motions (animations)
+	 **/
     class MovableAvatar : public Avatar
     {
     public:

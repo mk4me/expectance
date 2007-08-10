@@ -18,6 +18,12 @@ namespace ft
     static const std::string MOTION_WALK_IDLE = "data\\cally\\cally_walkidle.CAF";  
     static const std::string MOTION_DANCE = "data\\cally\\cally_ballerina.CAF";  
 
+    /**
+	 * Class Motion: is main object represnting motion (animation) of avatar. 
+     * It is constructed when avatar is created and 
+     * is not changed during lifecycle of avatar.
+     * 
+	 **/
     class Motion
     {
     public:
