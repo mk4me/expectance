@@ -13,7 +13,7 @@
 namespace ft
 {
 	/**
-	 * Class LCSModifier: <describe the behavior and responsibility of this class>
+	 * Class LCSModifier: specific TimeLineModifier responsible for global translation of avatar on the scene
 	 **/
     class LCSModifier : public TimeLineModifier
     {

@@ -10,9 +10,9 @@ using namespace ft;
 TimeLineFactory* TimeLineFactory::m_instance = NULL;
 
 /**
- * getInstance: <describe the responsibilities and behavior of this method>
+ * Returns the only instance of ft::TimeLineFactory (creates it at first call to this method)
  *
- * \return ft::TimeLineFactory * <describe what is returned if appropriate>
+ * \return ft::TimeLineFactory * the only instance of TimeLineFactory
  **/
 TimeLineFactory* TimeLineFactory::getInstance()
 {
@@ -26,7 +26,7 @@ TimeLineFactory* TimeLineFactory::getInstance()
 }
 
 /**
- * DestroyInstance: <describe the responsibilities and behavior of this method>
+ * Releases all resources related to this factory
  *
  **/
 void TimeLineFactory::DestroyInstance()
@@ -36,10 +36,10 @@ void TimeLineFactory::DestroyInstance()
 }
 
 /**
- * CreateTimeLine: <describe the responsibilities and behavior of this method>
+ * Creates a new TimeLine
  *
- * \param ft::Motion * motion <argument description>
- * \return ft::TimeLine * <describe what is returned if appropriate>
+ * \param ft::Motion * motion - motion (animation) that will be put on TimeLine
+ * \return ft::TimeLine * - created TimeLine
  **/
 TimeLine* TimeLineFactory::CreateTimeLine(Motion *motion)
 {

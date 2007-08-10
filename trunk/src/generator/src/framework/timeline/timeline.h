@@ -14,7 +14,8 @@
 namespace ft
 {
 	/**
-	 * Class TimeLine: <describe the behavior and responsibility of this class>
+	 * Class TimeLine: represents task to execute by avatar in sense of motion or sequence of motions. 
+     * It is specific time of TimeLineMotion and can be trated in the same way as TimeLineMotion.
 	 **/
     class TimeLine : public TimeLineMotion
     {

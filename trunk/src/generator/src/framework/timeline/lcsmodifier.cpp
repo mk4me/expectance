@@ -7,7 +7,7 @@
 using namespace ft;
 
 /**
- * LCSModifier: <describe the responsibilities and behavior of this method>
+ * Constructor for LCSModifier
  *
  **/
 LCSModifier::LCSModifier()
@@ -29,7 +29,7 @@ LCSModifier::LCSModifier()
 }
 
 /**
- * ~LCSModifier: <describe the responsibilities and behavior of this method>
+ * Destructor for LCSModifier
  *
  **/
 LCSModifier::~LCSModifier(void)
@@ -48,10 +48,10 @@ LCSModifier::~LCSModifier(void)
 }
 
 /**
- * Apply: <describe the responsibilities and behavior of this method>
+ * Applies this modifier at current frame
  *
- * \param float elapsedSeconds <argument description>
- * \param ft::Avatar * avatar <argument description>
+ * \param float elapsedSeconds - - time elapsed from previous frame
+ * \param ft::Avatar * avatar - avatar to which this modifier is assigned
  **/
 void LCSModifier::Apply(float elapsedSeconds,Avatar* avatar)
 {
@@ -120,7 +120,7 @@ void LCSModifier::Apply(float elapsedSeconds,Avatar* avatar)
 }
 
 /**
- * Reset: <describe the responsibilities and behavior of this method>
+ * Resets parameters of this modifier
  *
  **/
 void LCSModifier::Reset()

@@ -11,7 +11,7 @@
 namespace ft
 {
 	/**
-	 * Class TimeLineBlender: <describe the behavior and responsibility of this class>
+	 * Class TimeLineBlender: represents blending between two motions (animations) represented by TimeLineMotion-s
 	 **/
     class TimeLineBlender : public TimeLineObject
     {

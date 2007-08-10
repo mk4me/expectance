@@ -13,7 +13,7 @@
 namespace ft
 {
 	/**
-	 * Class TimeLineFactory: <describe the behavior and responsibility of this class>
+	 * Class TimeLineFactory: responsible for creating objetcs on TimeLine
 	 **/
     class TimeLineFactory
     {

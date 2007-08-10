@@ -15,8 +15,9 @@
 namespace ft
 {
 	/**
-	 * Class TimeLineMotion: <describe the behavior and responsibility of this class>
-	 **/
+	 * Class TimeLineMotion: object that can be put on TimeLine that represents motion (or set of motions) to execute 
+     * by avatar
+     **/
     class TimeLineMotion : public TimeLineObject
     {
     public:

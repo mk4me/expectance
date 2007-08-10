@@ -7,7 +7,7 @@
 using namespace ft;
 
 /**
- * TimeLineMotion: <describe the responsibilities and behavior of this method>
+ * Constructor for TimeLineMotion
  *
  **/
 TimeLineMotion::TimeLineMotion(void)
@@ -25,7 +25,7 @@ TimeLineMotion::TimeLineMotion(void)
 }
 
 /**
- * Destroy: <describe the responsibilities and behavior of this method>
+ * Releases all resources and objects related to this TimeLineMotion
  *
  **/
 void TimeLineMotion::Destroy(void)
@@ -51,7 +51,7 @@ void TimeLineMotion::Destroy(void)
 }
 
 /**
- * ResetParams: <describe the responsibilities and behavior of this method>
+ * Resets parameters of this TimeLineMotion
  *
  **/
 void TimeLineMotion::ResetParams()
@@ -65,10 +65,10 @@ void TimeLineMotion::ResetParams()
 }
 
 /**
- * AddModifier: <describe the responsibilities and behavior of this method>
+ * Adds modifier that can change animation while this TimeLineMotion is executed
  *
- * \param ft::TimeLineModifier * modifier <argument description>
- * \return bool <describe what is returned if appropriate>
+ * \param ft::TimeLineModifier * modifier - modifier to add
+ * \return bool - true if modifier added successfuly
  **/
 bool TimeLineMotion::AddModifier(TimeLineModifier* modifier)
 {
@@ -80,10 +80,10 @@ bool TimeLineMotion::AddModifier(TimeLineModifier* modifier)
 //        TimeLineModifier* TimeLineMotion::GetModifier(int);
 
 /**
- * AddTrack: <describe the responsibilities and behavior of this method>
+ * Adds TimeLineMotion on new track
  *
- * \param ft::TimeLineMotion * trackMotion <argument description>
- * \return bool <describe what is returned if appropriate>
+ * \param ft::TimeLineMotion * - motion to add
+ * \return bool - true if TimeLineMotion added to new track
  **/
 bool TimeLineMotion::AddTrack(TimeLineMotion* trackMotion)
 {
@@ -96,7 +96,7 @@ bool TimeLineMotion::AddTrack(TimeLineMotion* trackMotion)
 
 
 /**
- * Start: <describe the responsibilities and behavior of this method>
+ * Starts execution of this TimeLineMotion
  *
  **/
 void TimeLineMotion::Start()
@@ -118,7 +118,7 @@ void TimeLineMotion::Start()
 
 }
 /**
- * Stop: <describe the responsibilities and behavior of this method>
+ * Stop execution of this TimeLineMotion
  *
  **/
 void TimeLineMotion::Stop()
@@ -128,10 +128,10 @@ void TimeLineMotion::Stop()
 }
 
 /**
- * Execute: <describe the responsibilities and behavior of this method>
+ * Updates this TimeLineMotion at current frame
  *
- * \param float elapsedSeconds <argument description>
- * \param ft::Avatar * avatar <argument description>
+ * \param float elapsedSeconds - time elapsed from previous frame
+ * \param ft::Avatar * avatar - avatar to which this modifier is assigned
  **/
 void TimeLineMotion::Execute(float elapsedSeconds, Avatar* avatar)
 {
@@ -146,10 +146,10 @@ void TimeLineMotion::Execute(float elapsedSeconds, Avatar* avatar)
 }
 
 /**
- * ExecuteTracks: <describe the responsibilities and behavior of this method>
+ * Updates all tracks at current frame 
  *
- * \param float elapsedSeconds <argument description>
- * \param ft::Avatar * avatar <argument description>
+ * \param float elapsedSeconds - time elapsed from previous frame
+ * \param ft::Avatar * avatar - avatar to which this modifier is assigned
  **/
 void TimeLineMotion::ExecuteTracks(float elapsedSeconds, Avatar* avatar)
 {
@@ -164,14 +164,14 @@ void TimeLineMotion::ExecuteTracks(float elapsedSeconds, Avatar* avatar)
    }
 }
 
-// Returns true if any submotion started, false if none submotion is started
+// Returns 
 //
 /**
- * ExecuteSubMotions: <describe the responsibilities and behavior of this method>
+ * Updates all sub-motions at current frame
  *
- * \param float elapsedSeconds <argument description>
- * \param ft::Avatar * avatar <argument description>
- * \return bool <describe what is returned if appropriate>
+ * \param float elapsedSeconds - time elapsed from previous frame
+ * \param ft::Avatar * avatar - avatar to which this modifier is assigned
+ * \return bool - true if any submotion started, false if none submotion is started
  **/
 bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, Avatar* avatar)
 {
@@ -234,10 +234,10 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, Avatar* avatar)
 
 
 /**
- * ExecuteAnim: <describe the responsibilities and behavior of this method>
+ * Updates motion (animation) related to this TimeLineMotion at current frame
  *
- * \param float elapsedSeconds <argument description>
- * \param ft::Avatar * avatar <argument description>
+ * \param float elapsedSeconds - time elapsed from previous frame
+ * \param ft::Avatar * avatar - avatar to which this modifier is assigned
  **/
 void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
 {
@@ -318,10 +318,10 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
 }
 
 /**
- * ExecuteModifiers: <describe the responsibilities and behavior of this method>
+ * Updates modifiers related to this TimeLineMotion at current frame
  *
- * \param float elapsedSeconds <argument description>
- * \param ft::Avatar * avatar <argument description>
+ * \param float elapsedSeconds - time elapsed from previous frame
+ * \param ft::Avatar * avatar - avatar to which this modifier is assigned
  **/
 void TimeLineMotion::ExecuteModifiers(float elapsedSeconds, Avatar* avatar)
 {
@@ -349,12 +349,12 @@ void TimeLineMotion::ExecuteModifiers(float elapsedSeconds, Avatar* avatar)
 }
 
 /**
- * IsBlendingToStart: <describe the responsibilities and behavior of this method>
+ * Determines if blending betwen currMotion and nextMotion should be started at current frame
  *
- * \param ft::TimeLineMotion * currMotion <argument description>
- * \param ft::TimeLineMotion * nextMotion <argument description>
- * \param ft::Avatar * avatar <argument description>
- * \return bool <describe what is returned if appropriate>
+ * \param ft::TimeLineMotion * currMotion - currently being executed TimeLineMotion
+ * \param ft::TimeLineMotion * nextMotion - next TimeLineMotion on TimeLine
+ * \param ft::Avatar * avatar - avatar to which this modifier is assigned
+ * \return bool - true if blending should be started, false otherwise
  **/
 bool TimeLineMotion::IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotion* nextMotion, Avatar* avatar)
 {
@@ -384,10 +384,10 @@ bool TimeLineMotion::IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotio
 }
 
 /**
- * GetMotionDuration: <describe the responsibilities and behavior of this method>
+ * Returns duration of motion (animation) related to this TimeLineMotion
  *
- * \param ft::Avatar * avatar <argument description>
- * \return float <describe what is returned if appropriate>
+ * \param ft::Avatar * avatar - avatar to which this modifier is assigned
+ * \return float - duration of motion (animation)
  **/
 float TimeLineMotion::GetMotionDuration(Avatar* avatar)
 {
@@ -406,7 +406,7 @@ float TimeLineMotion::GetMotionDuration(Avatar* avatar)
 }
 
 /**
- * Reset: <describe the responsibilities and behavior of this method>
+ * Resets all objects related to this TimeLineMotion
  *
  **/
 void TimeLineMotion::Reset()
@@ -424,9 +424,9 @@ void TimeLineMotion::Reset()
 
 
 /**
- * Dump: <describe the responsibilities and behavior of this method>
+ * Prints debug information describing this TimeLineMotion on output console
  *
- * \param int depth <argument description>
+ * \param int depth - indent on output console
  **/
 void TimeLineMotion::Dump(int depth)
 {
@@ -452,9 +452,9 @@ void TimeLineMotion::Dump(int depth)
 }   
 
 /**
- * toString: <describe the responsibilities and behavior of this method>
+ * Returns string representation of this TimeLineMotion
  *
- * \return std::string <describe what is returned if appropriate>
+ * \return std::string - string representation
  **/
 std::string TimeLineMotion::toString()
 {

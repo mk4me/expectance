@@ -12,7 +12,7 @@
 namespace ft
 {
 	/**
-	 * Class TimeLineModifier: <describe the behavior and responsibility of this class>
+	 * Class TimeLineModifier: base class for modifiers that can change animiation at each frame
 	 **/
     class TimeLineModifier : public TimeLineObject
     {

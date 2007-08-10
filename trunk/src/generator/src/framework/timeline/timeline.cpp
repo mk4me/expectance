@@ -7,7 +7,7 @@
 using namespace ft;
 
 /**
- * TimeLine: <describe the responsibilities and behavior of this method>
+ * Constructor for TimeLine
  *
  **/
 TimeLine::TimeLine()
@@ -17,10 +17,10 @@ TimeLine::TimeLine()
 
 
 /**
- * Execute: <describe the responsibilities and behavior of this method>
+ * Executes this timeline at current frame 
  *
- * \param float elapsedSeconds <argument description>
- * \param ft::Avatar * avatar <argument description>
+ * \param float elapsedSeconds - time elapsed from previous frame
+ * \param ft::Avatar * avatar - avatar to which this TimeLine is assigned
  **/
 void TimeLine::Execute(float elapsedSeconds, Avatar* avatar)
 {

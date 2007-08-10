@@ -7,7 +7,7 @@
 using namespace ft;
 
 /**
- * TimeLineObject: <describe the responsibilities and behavior of this method>
+ * Constructor for TimeLineObject
  *
  **/
 TimeLineObject::TimeLineObject()
@@ -19,7 +19,7 @@ TimeLineObject::TimeLineObject()
 }
 
 /**
- * Destroy: <describe the responsibilities and behavior of this method>
+ * * Releases all resources and objects related to this TimeLineObject
  *
  **/
 void TimeLineObject::Destroy(void)
@@ -35,10 +35,10 @@ void TimeLineObject::Destroy(void)
 }
 
 /**
- * AddObject: <describe the responsibilities and behavior of this method>
+ * Adds sub-objects to this TimeLineObject
  *
- * \param ft::TimeLineObject * object <argument description>
- * \return bool <describe what is returned if appropriate>
+ * \param ft::TimeLineObject * object - sub-object to add
+ * \return bool - true if sub-object added
  **/
 bool TimeLineObject::AddObject(TimeLineObject* object)
 {
@@ -76,9 +76,9 @@ Motion* MovableAvatar::GetMotion(std::string motionName)
 */
 
 /**
- * GetCurrentObject: <describe the responsibilities and behavior of this method>
+ * Returns sub-object that is currently executed
  *
- * \return ft::TimeLineObject * <describe what is returned if appropriate>
+ * \return ft::TimeLineObject * - sub-object
  **/
 TimeLineObject* TimeLineObject::GetCurrentObject()
 {
@@ -89,7 +89,7 @@ TimeLineObject* TimeLineObject::GetCurrentObject()
 }
 
 /**
- * Reset: <describe the responsibilities and behavior of this method>
+* Resets all sub-objects 
  *
  **/
 void TimeLineObject::Reset()
@@ -103,10 +103,10 @@ void TimeLineObject::Reset()
 }
 
 /**
- * getDepthStr: <describe the responsibilities and behavior of this method>
+ * Returns indent for dumping debug information on output console
  *
- * \param int depth <argument description>
- * \return std::string <describe what is returned if appropriate>
+ * \param int depth - indent length
+ * \return std::string - string that should be added before debug information for each line describing this TimeLineObject
  **/
 std::string TimeLineObject::getDepthStr(int depth)
 {
@@ -117,9 +117,9 @@ std::string TimeLineObject::getDepthStr(int depth)
 }
 
 /**
- * Dump: <describe the responsibilities and behavior of this method>
+ * Prints debug information describing this TimeLineObject on output console
  *
- * \param int depth <argument description>
+ * \param int depth - indent on output console
  **/
 void TimeLineObject::Dump(int depth)
 {
@@ -133,9 +133,9 @@ void TimeLineObject::Dump(int depth)
 }
 
 /**
- * PrintDebug: <describe the responsibilities and behavior of this method>
+ * Prints debug info for this object
  *
- * \param const std::string & text <argument description>
+ * \param const std::string & text - text to display
  **/
 void TimeLineObject::PrintDebug(const std::string& text)
 {

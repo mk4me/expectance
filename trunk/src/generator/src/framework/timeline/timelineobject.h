@@ -15,7 +15,7 @@ namespace ft
     static const int TIME_UNDEFINED = -1;
 
 	/**
-	 * Class TimeLineObject: <describe the behavior and responsibility of this class>
+	 * Class TimeLineObject: base object for all objects that can be part of TimeLine
 	 **/
     class TimeLineObject : public BaseObject
     {
