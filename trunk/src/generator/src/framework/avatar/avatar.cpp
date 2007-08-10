@@ -9,7 +9,7 @@
 using namespace ft;
 
 /**
- * Constructor for avatar
+ * \brief Constructor for avatar
  *
  * \param CalModel * calModel - model in Cal3d which is referenced by this avatar
  * \param CalCoreModel * calCoreModel - type defined in Cal3d that has been used to create CalModel for this avatar
@@ -31,7 +31,7 @@ m_shadow(true)
 }
 
 /**
- * Destructor
+ * \brief Destructor
  *
  **/
 Avatar::~Avatar()
@@ -48,9 +48,9 @@ Avatar::~Avatar()
 }
 
 /**
- * CheckHardwareAcceleration: //TODO mka o comment// <describe the responsibilities and behavior of this method>
+ * \brief Tries to reserve memory for avatar data in graphics accelerator memory (if graphic accelerator supports vertex shader)
  *
- * \return bool <describe what is returned if appropriate>
+ * \return bool - true if graphics accelerator suports vertex shader otherwise returns false
  **/
 bool Avatar::CheckHardwareAcceleration()
 {
@@ -71,7 +71,7 @@ bool Avatar::CheckHardwareAcceleration()
 }
 
 /**
- * Sets model in Cal3d which is referenced by this avatar
+ * \brief Sets model in Cal3d which is referenced by this avatar
  *
  * \param CalModel * calModel - Cal3d object
  **/
@@ -81,7 +81,7 @@ void Avatar::SetCalModel(CalModel* calModel)
 }
 
 /**
- * Returns model from Cal3d which is referenced by this avatar
+ * \brief Returns model from Cal3d which is referenced by this avatar
  *
  * \return CalModel * Cal3d model
  **/
@@ -91,7 +91,7 @@ CalModel* Avatar::GetCalModel()
 }
 
 /**
- * Sets object representing type defined in Cal3d that is used to create CalModel for this avatar
+ * \brief Sets object representing type defined in Cal3d that is used to create CalModel for this avatar
  *
  * \param CalCoreModel * calCoreModel - object representing type of CalModel
  **/
@@ -101,7 +101,7 @@ void Avatar::SetCalCoreModel(CalCoreModel* calCoreModel)
 }
 
 /**
- * Returns object representing type defined in Cal3d that is used to create CalModel for this avatar
+ * \brief Returns object representing type defined in Cal3d that is used to create CalModel for this avatar
  *
  * \return CalCoreModel * - object representing type of CalModel
  **/
@@ -111,7 +111,7 @@ CalCoreModel* Avatar::GetCalCoreModel()
 }
 
 /**
- * This method is called when message is sent to this object from ft::ControlManager
+ * \brief This method is called when message is sent to this object from ft::ControlManager
  *
  * \param ft::Message * msg - message from ft::ControlManager
  **/
@@ -136,9 +136,7 @@ void Avatar::OnMessage(Message* msg)
 
 
 /**
- * Render: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
- *
- * \return bool <describe what is returned if appropriate>
+ * \brief Main rendering routine for Avatar
  **/
 bool Avatar::Render()
 {
@@ -174,7 +172,7 @@ bool Avatar::Render()
 }
 
 /**
- * ChangeRenderMethod: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
+ * \brief Changes between three rendering methods: Mesh Skeleton and BoundingBox consecutivevely  
  *
  **/
 void Avatar::ChangeRenderMethod()
@@ -183,9 +181,9 @@ void Avatar::ChangeRenderMethod()
 }
 
 /**
- * setRenderMethod: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
+ * \brief Sets between three rendering methods: Mesh Skeleton and BoundingBox
  *
- * \param const int renderMethod <argument description>
+ * \param const int renderMethod: 0 - Mesh, 1 - Skeleton, 2 - BoundingBox
  **/
 void Avatar::setRenderMethod(const int renderMethod)
 {
@@ -193,7 +191,7 @@ void Avatar::setRenderMethod(const int renderMethod)
 }
 
 /**
- * Switches shadow on when it is off or switches shadow off when it is on.
+ * \brief Switches shadow on when it is off or switches shadow off when it is on.
  *
  **/
 void Avatar::ChangeShadow()
@@ -202,7 +200,7 @@ void Avatar::ChangeShadow()
 }
 
 /**
- * Switches the shadow on or off.
+ * \brief Switches the shadow on or off.
  *
  * \param const bool - defines if shadow should be swithced on or off
  **/
@@ -212,10 +210,10 @@ void Avatar::setShadow(const bool shadow)
 }
 
 /**
- * RenderAvatar: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
+ * \brief Renders Avatar taking into consideration specific parameters 
  *
- * \param const int renderMethod <argument description>
- * \param const bool shadow <argument description>
+ * \param const int renderMethod: 0 - Mesh, 1 - Skeleton, 2 - BoundingBox
+ * \param const bool shadow: true - render with shadow, otherwise without shadow
  **/
 void Avatar::RenderAvatar(const int renderMethod, const bool shadow)
 {
@@ -239,9 +237,9 @@ void Avatar::RenderAvatar(const int renderMethod, const bool shadow)
 
 
 /**
- * SoftwareRenderModelMesh: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
+ * \brief Renders Avatar Mesh using software rendering method
  *
- * \param const bool shadow <argument description>
+ * \param const bool shadow: true - render with shadow, otherwise without shadow
  **/
 void Avatar::SoftwareRenderModelMesh(const bool shadow)
 {
@@ -367,9 +365,9 @@ void Avatar::SoftwareRenderModelMesh(const bool shadow)
 }
 
 /**
- * HardwareRenderModelMesh: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
+ * \brief Renders Avatar Mesh using hardware rendering method
  *
- * \param const bool shadow <argument description>
+ * \param const bool shadow: true - render with shadow, otherwise without shadow
  **/
 void Avatar::HardwareRenderModelMesh(const bool shadow)
 {
@@ -481,9 +479,9 @@ void Avatar::HardwareRenderModelMesh(const bool shadow)
 }
 
 /**
- * RenderModelSkeleton: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
+ * \brief Renders Avatar Skeleton using software rendering method
  *
- * \param const bool shadow <argument description>
+ * \param const bool shadow: true - render with shadow, otherwise without shadow
  **/
 void Avatar::RenderModelSkeleton(const bool shadow)
 {
@@ -528,10 +526,11 @@ void Avatar::RenderModelSkeleton(const bool shadow)
 	glDisable(GL_COLOR_MATERIAL);
 
 }
+
 /**
- * RenderModelBoundingBox: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
+ * \brief Renders Avatar BoundingBox using software rendering method
  *
- * \param const bool shadow <argument description>
+ * \param const bool shadow: true - render with shadow, otherwise without shadow
  **/
 void Avatar::RenderModelBoundingBox(const bool shadow)
 {
@@ -597,7 +596,7 @@ void Avatar::RenderModelBoundingBox(const bool shadow)
 }
 
 /**
- * Sets level of details for rendering
+ * \brief Sets level of details for rendering
  *
  * \param float level - level of details
  **/
@@ -686,9 +685,9 @@ char vertexProgramStr[]=
 "END\n";
 
 /**
- * loadBufferObject: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
+ * \brief Allocates memory for vertex shader and load avatar data into accelerator memory
  *
- * \return bool <describe what is returned if appropriate>
+ * \return bool - if allocation problems return false
  **/
 bool Avatar::loadBufferObject()
 {
@@ -740,7 +739,7 @@ bool Avatar::loadBufferObject()
   }
 
   // We use ARB_vertex_buffer_object extension,
-  // it provide better performance
+  // it provides better performance
 
   glGenBuffersARB(6, m_bufferObject);
 
@@ -775,9 +774,9 @@ bool Avatar::loadBufferObject()
 
 
 /**
- * loadVertexProgram: //TODO: mka to comment// <describe the responsibilities and behavior of this method>
+ * \brief Tries to prepare buffer in graphics accelerator for vertex rendering purpose
  *
- * \return bool <describe what is returned if appropriate>
+ * \return bool - if not supported false
  **/
 bool Avatar::loadVertexProgram()
 {

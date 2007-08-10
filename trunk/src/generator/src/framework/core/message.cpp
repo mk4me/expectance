@@ -7,7 +7,7 @@
 using namespace ft;
 
 /**
- * Returns string representation of messages
+ * \brief Returns string representation of messages
  *
  * \param int msg - identifier of message
  * \return std::string - string representation of message

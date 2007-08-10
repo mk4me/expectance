@@ -12,7 +12,7 @@ AvatarFactory* AvatarFactory::m_instance = NULL;
 
 
 /**
- * Returns the only instance of ft::AvatarFactory (creates it at first call to this method)
+ * \brief Returns the only instance of ft::AvatarFactory (creates it at first call to this method)
  *
  * \return ft::AvatarFactory * the only instance of avatar factory
  **/
@@ -27,10 +27,7 @@ AvatarFactory* AvatarFactory::getInstance()
     return m_instance;
 }
 
-/**
- * Releases all resources related to this factory
- *
- **/
+/// \brief Releases all resources related to this factory
 void AvatarFactory::DestroyInstance()
 {
     if (m_instance != NULL)
@@ -41,7 +38,7 @@ void AvatarFactory::DestroyInstance()
 }
 
 /**
- * Creates a new avatar and constructs all related objects in Cal3d
+ * \brief Creates a new avatar and constructs all related objects in Cal3d
  *
  * \param const std::string modelName - unique string which is used for indexing appriopriate CalCoreModel in factory
  * \param const std::string avatarName - name of avatar
@@ -83,7 +80,7 @@ Avatar* AvatarFactory::CreateAvatar(const std::string modelName, std::string ava
 }
 
 /**
- * Loads new core model in Cal3d
+ * \brief Loads new core model in Cal3d
  *
  * \param const std::string modelName - name of model which responds to appriopriate configuration file
  * \return CalCoreModel * - loaded core model or NULL if loading failed
@@ -112,8 +109,8 @@ CalCoreModel* AvatarFactory::LoadCalCoreModel(const std::string modelName)
 }
 
 /**
- * Parses configuration file for core model and initiates properly given CalCoreModel object
- * NOTE: Extracted from Form Viewer app.
+ * \brief Parses configuration file for core model and initiates properly given CalCoreModel object
+ *		  NOTE: Extracted from Form Viewer app.
  *
  * \param const std::string & strFilename - name of configuration file
  * \param CalCoreModel * coreModel - core model object to fill with data from configuration file
@@ -244,11 +241,11 @@ bool AvatarFactory::ParseModelConfiguration(const std::string& strFilename, CalC
 }
 
 /**
- * Initiates materials for core model 
- * - make one material thread for each material
- * NOTE: this is not the right way to do it, but this Viewer can't do the right
- * mapping without further information on the model etc., so this is the only
- * thing we can do here.
+ * \brief Initiates materials for core model 
+ *		  - make one material thread for each material
+ *		  NOTE: this is not the right way to do it, but this Viewer can't do the right
+ *		  mapping without further information on the model etc., so this is the only
+ *		  thing we can do here.
  * \param CalCoreModel * coreModel - core model for which materials should be initialized
  **/
 void AvatarFactory::InitCoreModelMaterials(CalCoreModel* coreModel)
@@ -286,7 +283,7 @@ void AvatarFactory::InitCoreModelMaterials(CalCoreModel* coreModel)
 }
 
 /**
- * Initializes meshes for specific CalModel that is instance of given CalCoreModel
+ * \brief Initializes meshes for specific CalModel that is instance of given CalCoreModel
  *
  * \param CalCoreModel * coreModel - core model that was used to create given CalModel
  * \param CalModel * model - model in Cal3d for which materials should be initialized
@@ -312,10 +309,7 @@ void AvatarFactory::InitModelMeshes(CalCoreModel* coreModel, CalModel* model)
   model->disableInternalData();
 
 }
-/**
- * Releases all CalCoreModel-s created by this factory
- *
- **/
+/// \brief Releases all CalCoreModel-s created by this factory
 void AvatarFactory::ReleaseCalCoreModels()
 {
     //TODO: add releasing models
@@ -329,11 +323,9 @@ void AvatarFactory::ReleaseCalCoreModels()
 }
 
 
-/**
-* Loads and creates a texture from a given file 
- * \param const std::string & strFilename - name of file with texture
- * \return GLuint - texture id of loaded texture
- **/
+/// \brief Loads and creates a texture from a given file 
+/// \param const std::string & strFilename - name of file with texture
+/// \return GLuint - texture id of loaded texture
 GLuint AvatarFactory::LoadTexture(const std::string& strFilename)
 {
   GLuint textureId=0;

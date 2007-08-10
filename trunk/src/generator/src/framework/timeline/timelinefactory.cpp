@@ -10,7 +10,7 @@ using namespace ft;
 TimeLineFactory* TimeLineFactory::m_instance = NULL;
 
 /**
- * Returns the only instance of ft::TimeLineFactory (creates it at first call to this method)
+ * \brief Returns the only instance of ft::TimeLineFactory (creates it at first call to this method)
  *
  * \return ft::TimeLineFactory * the only instance of TimeLineFactory
  **/
@@ -26,7 +26,7 @@ TimeLineFactory* TimeLineFactory::getInstance()
 }
 
 /**
- * Releases all resources related to this factory
+ * \brief Releases all resources related to this factory
  *
  **/
 void TimeLineFactory::DestroyInstance()
@@ -36,7 +36,7 @@ void TimeLineFactory::DestroyInstance()
 }
 
 /**
- * Creates a new TimeLine
+ * \brief Creates a new TimeLine
  *
  * \param ft::Motion * motion - motion (animation) that will be put on TimeLine
  * \return ft::TimeLine * - created TimeLine

@@ -6,10 +6,7 @@
 
 using namespace ft;
 
-/**
- * Constructor for TimeLineMotion
- *
- **/
+/// \brief constructor
 TimeLineMotion::TimeLineMotion(void)
 {
     m_animLoop = false;
@@ -24,10 +21,7 @@ TimeLineMotion::TimeLineMotion(void)
 
 }
 
-/**
- * Releases all resources and objects related to this TimeLineMotion
- *
- **/
+/// \brief Releases all resources and objects related to this TimeLineMotion
 void TimeLineMotion::Destroy(void)
 {
     TimeLineObject::Destroy();
@@ -50,10 +44,7 @@ void TimeLineMotion::Destroy(void)
 
 }
 
-/**
- * Resets parameters of this TimeLineMotion
- *
- **/
+/// \brief Resets parameters of this TimeLineMotion
 void TimeLineMotion::ResetParams()
 {
     // initial paramters here
@@ -65,7 +56,7 @@ void TimeLineMotion::ResetParams()
 }
 
 /**
- * Adds modifier that can change animation while this TimeLineMotion is executed
+ * \brief Adds modifier that can change animation while this TimeLineMotion is executed
  *
  * \param ft::TimeLineModifier * modifier - modifier to add
  * \return bool - true if modifier added successfuly
@@ -80,7 +71,7 @@ bool TimeLineMotion::AddModifier(TimeLineModifier* modifier)
 //        TimeLineModifier* TimeLineMotion::GetModifier(int);
 
 /**
- * Adds TimeLineMotion on new track
+ * \brief Adds TimeLineMotion on new track
  *
  * \param ft::TimeLineMotion * - motion to add
  * \return bool - true if TimeLineMotion added to new track
@@ -95,10 +86,7 @@ bool TimeLineMotion::AddTrack(TimeLineMotion* trackMotion)
 //        TimeLineMotion* TimeLineMotion::GetTrack(int);
 
 
-/**
- * Starts execution of this TimeLineMotion
- *
- **/
+/// \brief Starts execution of this TimeLineMotion
 void TimeLineMotion::Start()
 {
     PrintDebug("Start");
@@ -117,10 +105,7 @@ void TimeLineMotion::Start()
     }
 
 }
-/**
- * Stop execution of this TimeLineMotion
- *
- **/
+///\brief Stops execution of this TimeLineMotion
 void TimeLineMotion::Stop()
 {
     PrintDebug("Stop");
@@ -128,7 +113,7 @@ void TimeLineMotion::Stop()
 }
 
 /**
- * Updates this TimeLineMotion at current frame
+ * \brief Updates this TimeLineMotion at current frame
  *
  * \param float elapsedSeconds - time elapsed from previous frame
  * \param ft::Avatar * avatar - avatar to which this modifier is assigned
@@ -146,7 +131,7 @@ void TimeLineMotion::Execute(float elapsedSeconds, Avatar* avatar)
 }
 
 /**
- * Updates all tracks at current frame 
+ * \brief Updates all tracks at current frame 
  *
  * \param float elapsedSeconds - time elapsed from previous frame
  * \param ft::Avatar * avatar - avatar to which this modifier is assigned
@@ -167,7 +152,7 @@ void TimeLineMotion::ExecuteTracks(float elapsedSeconds, Avatar* avatar)
 // Returns 
 //
 /**
- * Updates all sub-motions at current frame
+ * \brief Updates all sub-motions at current frame
  *
  * \param float elapsedSeconds - time elapsed from previous frame
  * \param ft::Avatar * avatar - avatar to which this modifier is assigned
@@ -234,7 +219,7 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, Avatar* avatar)
 
 
 /**
- * Updates motion (animation) related to this TimeLineMotion at current frame
+ * \brief Updates motion (animation) related to this TimeLineMotion at current frame
  *
  * \param float elapsedSeconds - time elapsed from previous frame
  * \param ft::Avatar * avatar - avatar to which this modifier is assigned
@@ -318,7 +303,7 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
 }
 
 /**
- * Updates modifiers related to this TimeLineMotion at current frame
+ * \brief Updates modifiers related to this TimeLineMotion at current frame
  *
  * \param float elapsedSeconds - time elapsed from previous frame
  * \param ft::Avatar * avatar - avatar to which this modifier is assigned
@@ -349,7 +334,7 @@ void TimeLineMotion::ExecuteModifiers(float elapsedSeconds, Avatar* avatar)
 }
 
 /**
- * Determines if blending betwen currMotion and nextMotion should be started at current frame
+ * \brief Determines if blending betwen currMotion and nextMotion should be started at current frame
  *
  * \param ft::TimeLineMotion * currMotion - currently being executed TimeLineMotion
  * \param ft::TimeLineMotion * nextMotion - next TimeLineMotion on TimeLine
@@ -384,7 +369,7 @@ bool TimeLineMotion::IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotio
 }
 
 /**
- * Returns duration of motion (animation) related to this TimeLineMotion
+ * \brief Returns duration of motion (animation) related to this TimeLineMotion
  *
  * \param ft::Avatar * avatar - avatar to which this modifier is assigned
  * \return float - duration of motion (animation)
@@ -406,7 +391,7 @@ float TimeLineMotion::GetMotionDuration(Avatar* avatar)
 }
 
 /**
- * Resets all objects related to this TimeLineMotion
+ * \brief Resets all objects related to this TimeLineMotion
  *
  **/
 void TimeLineMotion::Reset()
@@ -424,7 +409,7 @@ void TimeLineMotion::Reset()
 
 
 /**
- * Prints debug information describing this TimeLineMotion on output console
+ * \brief Prints debug information describing this TimeLineMotion on output console
  *
  * \param int depth - indent on output console
  **/
@@ -452,7 +437,7 @@ void TimeLineMotion::Dump(int depth)
 }   
 
 /**
- * Returns string representation of this TimeLineMotion
+ * \brief Returns string representation of this TimeLineMotion
  *
  * \return std::string - string representation
  **/

@@ -18,9 +18,10 @@ namespace ft
 {
 	//! A MenuManager class
 	/*!
-	 *	This class is responsible for construction and management of menu and communication with the rest parts of the system. 
-	 *  It creates menu on the base of configuration file. Receives messages from InputManager and sends by ControlManager 
-	 *  messages to interested listeners.  
+	 *	This class is responsible for construction and management of menu and   
+	 *  communication with the other parts of the system in the scope of rendering. 
+	 *  It creates menu on the base of configuration file. Receives messages from 
+	 *  InputManager and sends by ControlManager messages to interested listeners.  
 	 */ 
 	class MenuManager
     {
@@ -34,7 +35,9 @@ namespace ft
 		//! destroy all resources owned by MenuManager
         static void DestroyInstance();
 		//! create menu instance
-		/*! creates menu instance in location (x,y) on the screen and configures it according to parameters defined in Config file (application.cfg) */
+		/*! creates menu instance in location (x,y) on the screen and 
+		  * configures it according to parameters defined in Config 
+		  * file (application.cfg) */
 		bool Init(int x, int y);
 		//! locate button index for given coordinates (x,y), return id or -1 otherwise  
 		int MenuManager::checkScope(int x, int y);	

@@ -6,18 +6,14 @@
 #include "movableavatar.h"
 #include "../timeline/lcsmodifier.h"
 #include "../utility/debug.h"
-//#include "../utility/Cal3dMathsConversion.h"
 
 using namespace ft;
 using namespace std;
 
-/**
- * Constructor for MovableAvatar
- *
- * \param CalModel * calModel - model in Cal3d which is referenced by this avatar
- * \param CalCoreModel * calCoreModel - type defined in Cal3d that has been used to create CalModel for this avatar
- * \param const std::string modelName - name defined in ft::BaseObject which is the base class for Avatar
- **/
+/// \brief Constructor
+/// \param CalModel * calModel - model in Cal3d which is referenced by this avatar
+/// \param CalCoreModel * calCoreModel - type defined in Cal3d that has been used to create CalModel for this avatar
+/// \param const std::string modelName - name defined in ft::BaseObject which is the base class for Avatar
 MovableAvatar::MovableAvatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName)
 :Avatar(calModel, calCoreModel, modelName)
 {
@@ -39,9 +35,7 @@ MovableAvatar::MovableAvatar(CalModel* calModel, CalCoreModel* calCoreModel, con
     }
  }
 
-/**
- * Destructor for MovableAvatar
- **/
+// \brief Destructor
 MovableAvatar::~MovableAvatar()
 {
     if (m_timeLine != NULL)
@@ -55,7 +49,7 @@ MovableAvatar::~MovableAvatar()
 }
 
 /**
- * Adds motion (animation) to avatar
+ * \brief Adds motion (animation) to avatar
  *
  * \param ft::Motion * motion - motion that represents animation 
  * \return bool - true if operation succeed, false if motion with the same name is already added to avatar
@@ -77,7 +71,7 @@ bool MovableAvatar::AddMotion(Motion* motion)
 	return true;
 }
 /**
- * Removes motion (animation) from avatar
+ * \brief Removes motion (animation) from avatar
  *
  * \param ft::Motion * motion - moton to remove
  * \return bool - true if motion removed, false if given motion not found for this avatar
@@ -101,7 +95,7 @@ bool  MovableAvatar::RemoveMotion(Motion* motion)
 }
 
 /**
- * Gets motion with given name
+ * \brief Gets motion with given name
  *
  * \param std::string motionName - name of motion (animation)
  * \return ft::Motion * - requested motion or NULL if the is no motion with this name for this avatar
@@ -117,7 +111,7 @@ Motion* MovableAvatar::GetMotion(std::string motionName)
 }
 
 /**
- * Collects all motions (animations) for ths avatar from CalCoreModel
+ * \brief Collects all motions (animations) for ths avatar from CalCoreModel
  **/
 void MovableAvatar::InitMotions()
 {
@@ -134,7 +128,7 @@ void MovableAvatar::InitMotions()
 }
 
 /**
- * Starts performing TimeLine assigned currently to this avatar 
+ * \brief Starts performing TimeLine assigned currently to this avatar 
  *
  * \param ft::TimeLine * timeLine - TimeLine to start
  **/
@@ -149,7 +143,7 @@ void MovableAvatar::StartTimeLine(TimeLine *timeLine)
 }
 
 /**
- * Stops currently assigned timeline (if any)
+ * \brief Stops currently assigned timeline (if any)
  **/
 void MovableAvatar::StopTimeLine()
 {
@@ -161,7 +155,7 @@ void MovableAvatar::StopTimeLine()
 }
 
 /**
- * Updates currently assigned TimeLine object (if any). 
+ * \brief Updates currently assigned TimeLine object (if any). 
  * It is called for each frame updated from ControlManager.
  *
  * \param float elapsedSeconds - time elapsed sice last update
@@ -182,7 +176,7 @@ void MovableAvatar::UpdateTimeLine(float elapsedSeconds)
 
 
 /**
- * Prints debug information describing this avatar on output console
+ * \brief Prints debug information describing this avatar on output console
  *
  **/
 void MovableAvatar::Dump()
@@ -204,10 +198,8 @@ void MovableAvatar::Dump()
 }   
 
 
-/**
- * Initializes this avatar with regard to motions
- *
- **/
+
+/// \brief Initializes this avatar with regard to motions
 void MovableAvatar::Init()
 {
   InitMotions();
@@ -218,7 +210,7 @@ void MovableAvatar::Init()
 }
 
 /**
- * This method is called when new frame is updated from ft::ControlManager
+ * \brief This method is called when new frame is updated from ft::ControlManager
  *
  * \param float elapsedSeconds - time elapsed sice last update
  **/
@@ -231,7 +223,7 @@ void MovableAvatar::OnUpdate(float elapsedSeconds)
 }
 
 /**
- * Create TimeLine object for testing purpose
+ * \brief Creates TimeLine object for testing purpose
  *
  * \return ft::TimeLine * - TimeLine for testing framework
  **/
@@ -291,7 +283,7 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
 }
 
 /**
- * This method is called when message is sent to this object from ft::ControlManager
+ * \brief This method is called when message is sent to this object from ft::ControlManager
  *
  * \param ft::Message * msg - message from ft::ControlManager
  **/

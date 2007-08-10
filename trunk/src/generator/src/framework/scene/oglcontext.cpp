@@ -8,11 +8,6 @@ using namespace ft;
 
 OGLContext* OGLContext::m_instance = NULL;
 
-/**
- * getInstance: <describe the responsibilities and behavior of this method>
- *
- * \return ft::OGLContext * <describe what is returned if appropriate>
- **/
 OGLContext* OGLContext::getInstance()
 {
     if (m_instance == NULL)
@@ -24,62 +19,32 @@ OGLContext* OGLContext::getInstance()
     return m_instance;
 }
 
-/**
- * DestroyInstance: <describe the responsibilities and behavior of this method>
- *
- **/
 void OGLContext::DestroyInstance()
 {
     if (m_instance != NULL)
         delete m_instance;
 }
 
-
-/**
- * getHeight: <describe the responsibilities and behavior of this method>
- *
- * \return int <describe what is returned if appropriate>
- **/
 int OGLContext::getHeight()
 {
 	return m_height;
 }
 
-/**
- * getWidth: <describe the responsibilities and behavior of this method>
- *
- * \return int <describe what is returned if appropriate>
- **/
 int OGLContext::getWidth()
 {
 	return m_width;
 }
 
-
-/**
- * changeFloorType: <describe the responsibilities and behavior of this method>
- *
- **/
 void OGLContext::changeFloorType()
 {
 	m_floorType = !m_floorType;
 }
 
-/**
- * hideFTLogo: <describe the responsibilities and behavior of this method>
- *
- **/
 void OGLContext::hideFTLogo()
 {
 	m_logoFT = !m_logoFT;
 }
 
-/**
- * setWindowSize: <describe the responsibilities and behavior of this method>
- *
- * \param int width <argument description>
- * \param int height <argument description>
- **/
 void OGLContext::setWindowSize(int width, int height)
 {
 	m_width = width;
@@ -88,11 +53,6 @@ void OGLContext::setWindowSize(int width, int height)
 }
 
 
-/**
- * Init: <describe the responsibilities and behavior of this method>
- *
- * \return bool <describe what is returned if appropriate>
- **/
 bool OGLContext::Init()
 {
 	if(Config::getInstance()->IsKey("hardware_acceleration"))
@@ -173,11 +133,6 @@ bool OGLContext::Init()
 //	glEndList();
 //}
 
-/**
- * InitNormalFloorDL: <describe the responsibilities and behavior of this method>
- *
- * \param int size <argument description>
- **/
 void OGLContext::InitNormalFloorDL(int size)
 {
 	int i,j,k;
@@ -254,12 +209,6 @@ void OGLContext::InitNormalFloorDL(int size)
 
 
 /*----- Prepare textured floor -----*/
-/**
- * InitTexturedFloorDL: <describe the responsibilities and behavior of this method>
- *
- * \param int size <argument description>
- * \return bool <describe what is returned if appropriate>
- **/
 bool  OGLContext::InitTexturedFloorDL(int size)
 {
 	int x, y, kx, ky, j;
@@ -306,11 +255,6 @@ bool  OGLContext::InitTexturedFloorDL(int size)
 	return true;
 }
 
-/**
- * InitLogoDL: <describe the responsibilities and behavior of this method>
- *
- * \return bool <describe what is returned if appropriate>
- **/
 bool OGLContext::InitLogoDL()
 {
 	GLuint logoTexture;
@@ -344,10 +288,6 @@ bool OGLContext::InitLogoDL()
 	return true;
 }
 
-/**
- * RenderScene: <describe the responsibilities and behavior of this method>
- *
- **/
 void OGLContext::RenderScene()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -383,10 +323,6 @@ void OGLContext::RenderScene()
 
 }
 
-/**
- * Render2D: <describe the responsibilities and behavior of this method>
- *
- **/
 void OGLContext::Render2D()
 {
 	// must be accesible in the global scope for 2D stuff
@@ -415,10 +351,6 @@ void OGLContext::Render2D()
 
 }
 
-/**
- * GLOrtho2DCorrection: <describe the responsibilities and behavior of this method>
- *
- **/
 void OGLContext::GLOrtho2DCorrection()
 {
 	int w;
@@ -467,13 +399,6 @@ void OGLContext::GLOrtho2DCorrection()
 // Everything that is drawn after this call is "squashed" down
 // to the plane. Hint: Gray or black color and no lighting 
 // looks good for shadows *g*
-/**
- * GlShadowProjection: <describe the responsibilities and behavior of this method>
- *
- * \param float * l <argument description>
- * \param float * e <argument description>
- * \param float * n <argument description>
- **/
 void OGLContext::GlShadowProjection(float * l, float * e, float * n)
 {
   float d, c;
@@ -511,11 +436,6 @@ void OGLContext::GlShadowProjection(float * l, float * e, float * n)
   glMultMatrixf(mat);
 }
 
-
-/**
- * GlShadowProjection: <describe the responsibilities and behavior of this method>
- *
- **/
 void OGLContext::GlShadowProjection()
 {
     float lightPosition[] ={3000,6000,0}; // Coordinates of the light source
@@ -525,14 +445,6 @@ void OGLContext::GlShadowProjection()
 	GlShadowProjection(lightPosition,point,normal);
 }
 
-/**
- * OGLWriteBitmap: <describe the responsibilities and behavior of this method>
- *
- * \param int font <argument description>
- * \param int x <argument description>
- * \param int y <argument description>
- * \param const char * text <argument description>
- **/
 void OGLContext::OGLWriteBitmap(int font, int x, int y, const char *text)
 {
 	int len, i;
@@ -545,13 +457,6 @@ void OGLContext::OGLWriteBitmap(int font, int x, int y, const char *text)
 	}
 }
 
-/**
- * OGLWriteStroke: <describe the responsibilities and behavior of this method>
- *
- * \param int x <argument description>
- * \param int y <argument description>
- * \param const char * text <argument description>
- **/
 void OGLContext::OGLWriteStroke(int x, int y, const char *text)
 {
 	int i, len;

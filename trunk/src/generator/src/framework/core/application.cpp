@@ -16,7 +16,7 @@ using namespace ft;
 Application* Application::m_instance = NULL;
 
 /**
- * Returns the only instance of ft::Application (creates it at first call to this method)
+ * \brief Returns the only instance of ft::Application (creates it at first call to this method)
  *
  * \return ft::Application * - the only instance of Application
  **/
@@ -32,7 +32,7 @@ Application* Application::getInstance()
 }
 
 /**
- * Releases all resources related to this Application
+ * \brief Releases all resources related to this Application
  *
  **/
 void Application::DestroyInstance()
@@ -43,7 +43,7 @@ void Application::DestroyInstance()
 }
 
 /**
- * Loaded configuration file for application
+ * \brief Loads configuration file for application
  *
  **/
 void Application::InitConfig()
@@ -54,7 +54,7 @@ void Application::InitConfig()
 }
 
 /**
- * Initializes main modules of application
+ * \brief Initializes main modules of application
  *
  **/
 void Application::InitModules()
@@ -68,7 +68,7 @@ void Application::InitModules()
 }
 
 /**
- * Initializes avatars on scene
+ * \brief Initializes avatars on scene
  *
  **/
 void Application::InitAvatars()
@@ -95,7 +95,7 @@ void Application::InitAvatars()
 
 
 /**
- * Creates single avatar on the scene
+ * \brief Creates single avatar on the scene
  *
  * \param const std::string & calCoreModel - type of CalModel for avatar that is created
  * \param const std::string & name - name of avatar

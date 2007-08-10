@@ -12,21 +12,31 @@
 #include "sceneobject.h"
 
 namespace ft {
-	/**
-	 * Class Line: <describe the behavior and responsibility of this class>
-	 **/
+	//! A Line class
+	/*!
+	 *	This class creates line. It is possible to define: start and end of the line, color, length, arrow. 
+	 */
 	class Line : public SceneObject  
 	{
 	public:
+		//! construct line given by name
 		Line(const std::string& name);
+		/// \brief create line given by id and set if arrow is visible
 		Line(const std::string& id, bool arrow);
+		/// \brief create line given by start, end and label
 		Line(const FTVect& start, const FTVect& end, const std::string& name);
+		/// \brief create line given by position, orientation, length and label
 		Line(const FTVect& position, const FTVect& orientation, float length, const std::string& name);
 		virtual ~Line(void);
+		//! render line
 		virtual bool Render();
+		//! set the value of line length
 		Line& setLenght(const float lenght);
+		//! set the value of line start point
 		Line& setStart(const FTVect &start);
+		//! set the value of line end point
 		Line& setEnd(const FTVect &end);
+		//! set Arrow visible or not
 		Line& setArrow(const bool arrow);
 
 	private:

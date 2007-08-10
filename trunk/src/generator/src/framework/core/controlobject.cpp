@@ -8,7 +8,7 @@
 using namespace ft;
 
 /**
- * This method is called when message is sent to this object from ft::ControlManager
+ * \brief This method is called when message is sent to this object from ft::ControlManager
  *
  * \param ft::Message * msg - message from ft::ControlManager
  **/
@@ -17,7 +17,7 @@ void ControlObject::OnMessage(Message* msg)
 }
 
 /**
- * This method is called when new frame is updated from ft::ControlManager
+ * \brief This method is called when new frame is updated from ft::ControlManager
  *
  * \param float elapsedSeconds - time elapsed sice last update
  **/

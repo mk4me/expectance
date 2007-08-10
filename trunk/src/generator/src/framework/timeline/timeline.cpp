@@ -6,10 +6,7 @@
 
 using namespace ft;
 
-/**
- * Constructor for TimeLine
- *
- **/
+/// \brief constructor
 TimeLine::TimeLine()
 {
     m_currTime = TIME_UNDEFINED;
@@ -17,7 +14,7 @@ TimeLine::TimeLine()
 
 
 /**
- * Executes this timeline at current frame 
+ * \brief Executes this timeline at current frame 
  *
  * \param float elapsedSeconds - time elapsed from previous frame
  * \param ft::Avatar * avatar - avatar to which this TimeLine is assigned

@@ -16,29 +16,20 @@
 
 using namespace ft;
 
-/**
- * GLUT callback function
- *
- **/
+/// \brief GLUT callback function
 void DisplayFunc()
 {
 	SceneManager::getInstance()->OnRender(); 
 }
 
-/**
- * GLUT callback function
- *
- **/
+/// \brief GLUT callback function
 void ExitFunc()
 {
    // shut down OGL Content
    SceneManager::getInstance()->CleanUp();
 }
 
-/**
- * GLUT callback function
- *
- **/
+/// \brief GLUT callback function
 void IdleFunc()
 {
   // redirect to the viewer instance
@@ -49,37 +40,25 @@ void IdleFunc()
   glutPostRedisplay();
 }
 
-/**
- * GLUT callback function
- *
- **/
+/// \brief GLUT callback function
 void KeyboardFunc(unsigned char key, int x, int y)
 {
     InputManager::getInstance()->OnKey(key, x,  OGLContext::getInstance()->getHeight() - y - 1);
 }
 
-/**
- * GLUT callback function
- *
- **/
+/// \brief GLUT callback function
 void SpecialFunc(int key, int x, int y)
 {
 	InputManager::getInstance()->OnSpecial(key, x, OGLContext::getInstance()->getHeight() - y - 1);
 }
 
-/**
- * GLUT callback function
- *
- **/
+/// \brief GLUT callback function
 void MotionFunc(int x, int y)
 {
 	InputManager::getInstance()->OnMouseMove(x, OGLContext::getInstance()->getHeight() - y - 1);
 }
 
-/**
- * GLUT callback function
- *
- **/
+/// \brief GLUT callback function
 void MouseFunc(int button, int state, int x, int y)
 {
   if(state == GLUT_DOWN)
@@ -92,10 +71,8 @@ void MouseFunc(int button, int state, int x, int y)
   }
 }
 
-/**
- * GLUT callback function
- *
- **/
+
+/// \brief GLUT callback function
 void ReshapeFunc(int width, int height)
 {
 	OGLContext::getInstance()->setWindowSize(width, height);
@@ -103,7 +80,7 @@ void ReshapeFunc(int width, int height)
 
 
 /**
- * Main entry to application
+ * \brief Main entry to application
  *
  * \param int argc - number of arguments
  * \param char *[] argv - list of arguments

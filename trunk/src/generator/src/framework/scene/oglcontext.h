@@ -30,35 +30,50 @@ namespace ft
       GLUT_BITMAP_HELVETICA_18     
    };
 
-	/**
-	 * Class OGLContext: <describe the behavior and responsibility of this class>
-	 **/
+	//! A OpenGL Context class
+	/*!
+	 *	This class is responsible for all operations typical for OpenGL API. 
+	 */
 	class OGLContext
 	{
 	public:
         OGLContext(void) { /*empty*/}
 	    virtual ~OGLContext(void) { /*empty*/}
-        
+        /// \brief singleton - Returns the only instance of OGLContext
         static OGLContext* getInstance();
+		//! destroy all resources owned by OGLContext
         static void DestroyInstance();
 		
+		//! set Viewport for graphics window
 		void setWindowSize(int width, int height);
+		/// \brief Gets the value of graphics window Height
 		int  getHeight();
+		/// \brief Gets the value of graphics window Width
 		int  getWidth();
+		/// \brief Changes rendered floor between normal and textured floor consecutively
 		void changeFloorType();
+		/// \brief Hides Future Today graphics logo 
 		void hideFTLogo();
-
+		/// \brief Initializes OpenGL context (hardware or software) and sets base parameters for lights and rendering
 		bool Init();
 		//void InitCursorDL();
+		/// \brief Creates display list for normal floor objects
 		void InitNormalFloorDL(int size);
+		/// \brief Creates display list for textured floor objects
 		bool InitTexturedFloorDL(int size);
+		/// \brief Creates display list for logo texture
 		bool InitLogoDL();
+		/// \brief Sets camera and viewports parameters and renders floor
 		void RenderScene();
+		/// \brief Renders elements in 2D orthographics area 
 		void Render2D();
-
+		/// \brief Calculates projection matrix for shadow effect with customized parameters
 		void GlShadowProjection(float * l, float * e, float * n);
+		//! calculate projecton matrix for shadow effect with default parameters
 		void GlShadowProjection();
+		/// \brief Writes bitmap text on the 2D area given by parameters: location (x,y), font type and text to be displayed
 		void OGLWriteBitmap(int font, int x, int y, const char *text);
+		//! write stroked text on the 2D area given by parameters: location (x,y), and text to be displayed
 		void OGLWriteStroke(int x, int y, const char *text);
 		mutable int HardwareAcceleration;
 	private:

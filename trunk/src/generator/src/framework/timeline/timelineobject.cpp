@@ -6,10 +6,7 @@
 
 using namespace ft;
 
-/**
- * Constructor for TimeLineObject
- *
- **/
+/// \brief constructor
 TimeLineObject::TimeLineObject()
 {
     m_startTime = TIME_UNDEFINED;
@@ -19,7 +16,7 @@ TimeLineObject::TimeLineObject()
 }
 
 /**
- * * Releases all resources and objects related to this TimeLineObject
+ * \brief Releases all resources and objects related to this TimeLineObject
  *
  **/
 void TimeLineObject::Destroy(void)
@@ -35,7 +32,7 @@ void TimeLineObject::Destroy(void)
 }
 
 /**
- * Adds sub-objects to this TimeLineObject
+ * \brief Adds sub-objects to this TimeLineObject
  *
  * \param ft::TimeLineObject * object - sub-object to add
  * \return bool - true if sub-object added
@@ -76,7 +73,7 @@ Motion* MovableAvatar::GetMotion(std::string motionName)
 */
 
 /**
- * Returns sub-object that is currently executed
+ * \brief Returns sub-object that is currently executed
  *
  * \return ft::TimeLineObject * - sub-object
  **/
@@ -88,10 +85,7 @@ TimeLineObject* TimeLineObject::GetCurrentObject()
     return result;
 }
 
-/**
-* Resets all sub-objects 
- *
- **/
+/// \brief Resets all sub-objects 
 void TimeLineObject::Reset()
 {
     for (int n=0; n<(int)m_vObjects.size(); n++)
@@ -103,7 +97,7 @@ void TimeLineObject::Reset()
 }
 
 /**
- * Returns indent for dumping debug information on output console
+ * \brief Returns indent for dumping debug information on output console
  *
  * \param int depth - indent length
  * \return std::string - string that should be added before debug information for each line describing this TimeLineObject
@@ -117,7 +111,7 @@ std::string TimeLineObject::getDepthStr(int depth)
 }
 
 /**
- * Prints debug information describing this TimeLineObject on output console
+ * \brief Prints debug information describing this TimeLineObject on output console
  *
  * \param int depth - indent on output console
  **/
@@ -133,7 +127,7 @@ void TimeLineObject::Dump(int depth)
 }
 
 /**
- * Prints debug info for this object
+ * \brief Prints debug info for this object
  *
  * \param const std::string & text - text to display
  **/

@@ -210,7 +210,7 @@ unsigned int TextureManager::LoadTexture(const std::string filename,bool compres
 
 //--------------------------------------------------------------------------
 /// \brief	This function will release the specified texture (as long as 
-///			it's not used elsewhere.
+///			it's not used elsewhere).
 /// \param	the OpenGL texture object
 ///
 void TextureManager::ReleaseTexture(unsigned int idx) {

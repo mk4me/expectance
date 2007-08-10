@@ -7,21 +7,16 @@
 
 using namespace ft;
 
-/**
- * Constructor for motion
- *
- **/
+
+/// \brief Constructor
 Motion::Motion()
 {
     setAnimName("");
     setAnimID(-1); 
 }
-/**
- * Constructor for Motion
- *
- * \param const std::string animName - name of animation which is referenced by this object
- * \param int anim_id - id of animation which is referenced by this object
- **/
+/// \brief Constructor
+/// \param const std::string animName - name of animation which is referenced by this object
+/// \param int anim_id - id of animation which is referenced by this object
 Motion::Motion(const std::string animName, int anim_id)
 {
     setAnimName(animName);

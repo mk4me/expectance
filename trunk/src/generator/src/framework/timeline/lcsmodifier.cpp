@@ -6,10 +6,7 @@
 
 using namespace ft;
 
-/**
- * Constructor for LCSModifier
- *
- **/
+/// \brief constructor
 LCSModifier::LCSModifier()
 {
     m_vTranslation = CalVector(0,0,0);
@@ -28,10 +25,7 @@ LCSModifier::LCSModifier()
     }	
 }
 
-/**
- * Destructor for LCSModifier
- *
- **/
+/// \brief destructor
 LCSModifier::~LCSModifier(void)
 {
     if (tracer_translation != NULL)
@@ -48,7 +42,7 @@ LCSModifier::~LCSModifier(void)
 }
 
 /**
- * Applies this modifier at current frame
+ * \brief Applies this modifier at current frame
  *
  * \param float elapsedSeconds - - time elapsed from previous frame
  * \param ft::Avatar * avatar - avatar to which this modifier is assigned
@@ -119,10 +113,7 @@ void LCSModifier::Apply(float elapsedSeconds,Avatar* avatar)
         bone->calculateState();
 }
 
-/**
- * Resets parameters of this modifier
- *
- **/
+/// \brief Resets parameters of this modifier
 void LCSModifier::Reset()
 {
     TimeLineObject::Reset();

@@ -10,7 +10,7 @@ using namespace ft;
 InputManager* InputManager::m_instance = NULL;
 
 /**
- * Returns the only instance of ft::InputManager (creates it at first call to this method)
+ * \brief Returns the only instance of ft::InputManager (creates it at first call to this method)
  *
  * \return ft::InputManager * - the only instance of InputManager
  **/
@@ -26,7 +26,7 @@ InputManager* InputManager::getInstance()
 }
 
 /**
- * Releases all resources related to this InputManager
+ * \brief Releases all resources related to this InputManager
  *
  **/
 void InputManager::DestroyInstance()
@@ -37,7 +37,7 @@ void InputManager::DestroyInstance()
 
 /*-----  -----*/
 /**
- * Handles a key event from keyboard
+ * \brief Handles a key event from keyboard
  *
  * \param unsigned char key - pressed key
  * \param int x - x coordinate on the application window
@@ -100,7 +100,7 @@ void InputManager::OnKey(unsigned char key, int x, int y)
 
 /*-----    -----*/
 /**
- * Handles special keys (F1, F2, UP, DOWN, etc.)
+ * \brief Handles special keys (F1, F2, UP, DOWN, etc.)
  *
  * \param int key - pressed key
  * \param int x - x coordinate on the application window
@@ -129,7 +129,7 @@ void InputManager::OnSpecial(int key, int x, int y)
 }
 
 /**
- * Handles a mouse button down event 
+ * \brief Handles a mouse button down event 
  *
  * \param int button - pressed button
  * \param int x - x coordinate on the application window
@@ -149,7 +149,7 @@ void InputManager::OnMouseButtonDown(int button, int x, int y)
 }
 
 /**
- * Handles a mouse button up event
+ * \brief Handles a mouse button up event
  *
  * \param int button - pressed button
  * \param int x - x coordinate on the application window
@@ -168,7 +168,7 @@ void InputManager::OnMouseButtonUp(int button, int x, int y)
 }
 
 /**
- * Handles a mouse move event
+ * \brief Handles a mouse move event
  *
  * \param int x - x coordinate on the application window
  * \param int y - y coordinate on the application window

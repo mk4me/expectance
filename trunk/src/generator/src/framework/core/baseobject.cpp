@@ -9,7 +9,7 @@ using namespace ft;
 unsigned long long BaseObject::ID_COUNTER = 0;  // max 18446744073709551600;
 
 /**
- * Constructor BaseObject
+ * \brief Constructor 
  *
  **/
 BaseObject::BaseObject(void)
@@ -21,14 +21,14 @@ BaseObject::BaseObject(void)
 
 }
 /**
- * Destructor for BaseObject
+ * \brief Destructor 
  *
  **/
 BaseObject::~BaseObject(void) { /*empty*/}
 
 
 /**
- * Returns class name for this BaseObject
+ * \brief Returns class name for this BaseObject
  *
  * \return std::string - class name
  **/
@@ -38,7 +38,7 @@ std::string BaseObject::getClassName()
 }
 
 /**
- * Returns unique identifier of BaseObject 
+ * \brief Returns unique identifier of BaseObject 
  *
  * \return const std::string & - identifier
  **/
@@ -48,7 +48,7 @@ const std::string& BaseObject::getID() const
 }
 
 /**
- * Returns string representation of this BaseObject
+ * \brief Returns string representation of this BaseObject
  *
  * \return std::string - string representation of this BaseObject
  **/

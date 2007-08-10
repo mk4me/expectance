@@ -14,23 +14,17 @@
 
 using namespace ft;
 
-/**
- * Constructor for Simulation: 
- *
- **/
+/// \brief Constructor 
 Simulation::Simulation()
 {
 }
-/**
- * Destructor for Simulation
- *
- **/
+/// \brief Destructor
 Simulation::~Simulation()
 {
 }
 
 /**
- * Returns the current millisecond tick count
+ * \brief Returns the current millisecond tick count
  *
  * \return unsigned int - time in milliseconds
  **/

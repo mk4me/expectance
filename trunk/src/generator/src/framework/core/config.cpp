@@ -14,7 +14,7 @@ using namespace ft;
 Config* Config::m_instance = NULL;
 
 /**
- * Returns the only instance of ft::Config (creates it at first call to this method)
+ * \brief Returns the only instance of ft::Config (creates it at first call to this method)
  *
  * \return ft::Config * - the only instance of Config
  **/
@@ -31,7 +31,7 @@ Config* Config::getInstance()
 
 
 /**
- * Releases all resources related to this Config
+ * \brief Releases all resources related to this Config
  *
  **/
 void Config::DestroyInstance()
@@ -41,7 +41,7 @@ void Config::DestroyInstance()
 }
 
 /**
- * Loads  settings from configuration file
+ * \brief Loads  settings from configuration file
  *
  * \return bool - true if settings loaded successfuly, false otherwise
  **/
@@ -120,7 +120,7 @@ bool Config::LoadConfigFile()
 }
 
 /**
- * Reloads settings from confguration file
+ * \brief Reloads settings from confguration file
  *
  * \return bool - true if settings loaded successfuly, false otherwise
  **/
@@ -132,7 +132,7 @@ bool Config::ReloadConfigFile()
 }
 
 /**
- * Checks if given key is defined in settings
+ * \brief Checks if given key is defined in settings
  *
  * \param const char * key - key to check
  * \return bool - true if key is defined, false otherwise
@@ -148,7 +148,7 @@ bool Config::IsKey(const char * key)
 }
 
 /**
- * Returns string representation of setting value related to given key
+ * \brief Returns string representation of setting value related to given key
  *
  * \param const char * key - key for setting
  * \return const char * - string representation of setting value
@@ -166,7 +166,7 @@ const char* Config::GetStrVal(const char * key)
 }
 
 /**
- * Returns string representation of setting value related to given key
+ * \brief Returns string representation of setting value related to given key
  *
  * \param const char * key - key for setting
  * \return const char * - string representation of setting value
@@ -184,7 +184,7 @@ const std::string Config::GetStrVal(const std::string& key)
 }
 
 /**
- * Returns integer representation of setting value related to given key
+ * \brief Returns integer representation of setting value related to given key
  *
  * \param const char * key - key for setting
  * \return const char * - integer representation of setting value
@@ -197,7 +197,7 @@ int Config::GetIntVal(const char * key)
 
 
 /**
- * Add setting to Config
+ * \brief Add setting to Config
  *
  * \param std::string key - key for setting
  * \param std::string val - value for setting
@@ -214,7 +214,7 @@ void Config::AddEntry(std::string key, std::string val)
 }
 
 /**
- * Clear all settings from Config
+ * \brief Clear all settings from Config
  *
  **/
 void Config::ClearEntries()
@@ -224,7 +224,7 @@ void Config::ClearEntries()
 }
 
 /**
- * Method to test Config
+ * \brief Method to test Config
  *
  **/
 void Config::TEST_CONFIG()

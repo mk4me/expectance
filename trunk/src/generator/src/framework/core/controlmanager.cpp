@@ -13,7 +13,7 @@ using namespace std;
 ControlManager* ControlManager::m_instance = NULL;
 
 /**
- * Returns the only instance of ft::ControlManager (creates it at first call to this method)
+ * \brief Returns the only instance of ft::ControlManager (creates it at first call to this method)
  *
  * \return ft::ControlManager * - the only instance of ControlManager
  **/
@@ -29,7 +29,7 @@ ControlManager* ControlManager::getInstance()
 }
 
 /**
- * Initializes ControlManager
+ * \brief Initializes ControlManager
  *
  **/
 void ControlManager::Init()
@@ -47,7 +47,7 @@ void ControlManager::Init()
 }
 
 /**
- Releases all resources related to ControlManager
+ \brief Releases all resources related to ControlManager
  *
  **/
 void ControlManager::DestroyInstance()
@@ -58,7 +58,7 @@ void ControlManager::DestroyInstance()
 
 
 /**
- * This method is called when new frame is updated
+ * \brief This method is called when new frame is updated
  *
  **/
 void ControlManager::OnUpdate()
@@ -89,7 +89,7 @@ void ControlManager::OnUpdate()
 }
 
 /**
- * This method is used to send new message to objectes registered in ControlManager
+ * \brief This method is used to send new message to objectes registered in ControlManager
  *
  * \param ft::Message * msg - message to send
  * \param bool deleteAfterSent - defines if message object msg should be deleted after sending
@@ -117,7 +117,7 @@ void ControlManager::SendMessage(Message* msg, bool deleteAfterSent)
 }
 
 /**
- * Register ControlObject in ControlManager
+ * \brief Register ControlObject in ControlManager
  *
  * \param ft::ControlObject * pObj - object that will be registered in ControlManager
  * \return bool - true if registration succeed, false otherwise
@@ -140,7 +140,7 @@ bool ControlManager::AddControlObject(ControlObject* pObj)
 }
 
 /**
- * Unregisters ControlObject from ControlManager
+ * \brief Unregisters ControlObject from ControlManager
  *
  * \param ft::ControlObject * pObj - object that should be unregistered in ControlManager
  * \return bool - true if object has been unregistered, false otherwise
@@ -164,7 +164,7 @@ bool ControlManager::RemoveControlObject(ControlObject* pObj)
 }
 
 /**
- * Prints debug information describing ControlManager on output console
+ * \brief Prints debug information describing ControlManager on output console
  *
  **/
 void ControlManager::Dump()
@@ -180,7 +180,7 @@ void ControlManager::Dump()
 }
 
 /**
- * Updates all registered objects for current frame
+ * \brief Updates all registered objects for current frame
  *
  * \param float elapsedSeconds - time elapsed since last frame (since last update)
  **/

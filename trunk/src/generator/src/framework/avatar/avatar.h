@@ -15,8 +15,8 @@
 
 namespace ft
 {
-	/**
-	 * Class Avatar: Base class for all humanoid characters managed by Generator
+	/* An Avatar class 
+	/*! Base class for all humanoid characters managed by Generator
      * \param CalModel * calModel -- model in Cal3d which is referenced by this avatar
 	 **/
     class Avatar : public ControlObject, public SceneObject
