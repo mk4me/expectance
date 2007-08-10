@@ -629,22 +629,6 @@
 				Name="motion"
 				>
 				<File
-					RelativePath=".\src\framework\motion\blender.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\motion\blender.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\motion\modifier.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\motion\modifier.h"
-					>
-				</File>
-				<File
 					RelativePath=".\src\framework\motion\motion.cpp"
 					>
 				</File>
