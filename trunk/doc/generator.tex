@@ -1,0 +1,230 @@
+%Autor: Marek Kulbacki
+
+\documentclass[12pt,a4paper]{article}
+%-- header poczatek ------------------------------------------------
+\usepackage[textwidth=16cm, textheight=24cm, centering]{geometry}
+\usepackage[colorlinks=true, linkcolor=blue, hyperindex, bookmarksopen]{hyperref} 
+\usepackage{color} 
+\usepackage{graphicx}	
+
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[cp1250]{inputenc}
+\frenchspacing 
+\sloppy
+%-- header koniec --------------------------------------------------
+
+%-- dokument poczatek ----------------------------------------------
+\begin{document}
+
+\begin{titlepage}
+ 
+\begin{center}
+\vfill
+\vspace*{5 cm}
+\includegraphics[width=0.5\textwidth]{./img/ft_logo.png}\\[1cm]
+\vspace*{2 cm}
+ 
+\textsc{\huge \textbf{Generator}}\\[1.5cm]
+ 
+\textsc{\Large dokumentacja analityczna}\\[0.5cm]
+ 
+ 
+ \vfill
+\end{center}
+% Author and supervisor
+\begin{flushleft} \small
+Wersja: 0.5 \\
+Data modyfikacji: \today \\
+Autorzy: A.\textsc{B¹k} and M.\textsc{Kulbacki}\\
+\end{flushleft}
+
+ 
+% Bottom of the page
+ 
+
+ 
+\end{titlepage}
+
+
+
+\tableofcontents
+
+\vspace*{2ex}
+\hrule
+
+
+\section{Avatar'y}
+Podstawow¹ klas¹ reprezentuj¹c¹ animowan¹ postaæ jest Avatar. Mo¿na go dodawaæ do sceny oraz wykonywaæ na nim animacje. Obiekty typu Avatar bazuj¹ na modelach postaci z API Cal3d i mo¿na je traktowaæ jako odpowiedniki takich modeli z rozszerzona funkcjonalnoœci¹ na potrzeby Generatora.
+\subsection{Powi¹zania Avatar'ów z modelami w enginie Cal3d}
+Podstawowym bytem reprezentuj¹cym animowan¹ postaæ w API Cal3d jest obiekt CalModel. Obiekt CalModel mo¿e byæ utworzony na podstawie odpowiedniego typu. Definicj¹ takiego typu w Cal3d jest  obiekt CalCoreModel. 
+
+Ró¿nica pomiêdzy CalCoreModelem i CalModelem jest taka, ze CalCoreModel zawiera definicje mesh'y, animacji, materia³ów oraz szkieletu postaci. CalModel jest natomiast specyficzna instancj¹ CalCoreModelu i mo¿na go ustawiaæ na scenie oraz wykonywaæ na nim animacje. Dla ka¿dego takiego typu mo¿e istnieæ dowolna iloœæ obiektów klasy CalModel.
+
+Dla ka¿dego utworzonego obiektu klasy Avatar utworzony zostaje osobny obiekt  klasy CalModel w enginie Cal3d.   Ponadto obiekt Avatar zawiera referencjê do odpowiedniego obiektu CalCoreModel, na którego podstawie zosta³ utworzony jego CalModel. Dziêki temu z poziomu Avatar'a mo¿na odwo³ywaæ siê do definicji postaci.
+
+Na rysunku \ref{rys_1} znajduje siê ilustracja przyk³adowej struktury modeli.
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{./img/modelCal3D.png}
+  \end{center}
+  \caption{Ilustracja przyk³adowej struktury modeli opartych na Cal3D}
+  \label{rys_1}
+\end{figure}
+
+\subsection{Tworzenie avatarów}
+Aby utworzyæ obiekt Avatar nale¿y wczeœniej utworzyæ dla niego odpowiedni obiekt CalModel w Cal3d oraz u¿yæ do tego odpowiedniego typu, czyli obiektu CalCoreModel.  Obiekt CalCoreModel tworzony jest na podstawie pliku konfiguracyjnego w formacie Cal3d (.cfg).  Nalezy przy tym pamiêtaæ, ¿e ten dany typ reprezentowany przez obiekt CalCoreModel wystarczy utworzyæ (wczytaæ z pliku .cfg) tylko jeden raz.  Nastêpnie mo¿na go u¿ywaæ do tworzenia dowolnej iloœci obiektów klasy CalModel.
+
+Po utworzeniu danego obiektu CalCoreModel na podstawie pliku .cfg nale¿y dla niego zainicjowaæ materia³y. Z kolei po utworzeniu obiektu CalModel nale¿y odpowiednio zainicjowaæ meshe na podstawie CalCoreModelu. Powy¿sze operacje nale¿y wykonaæ w odpowiedniej kolejnoœci.
+
+Aby uproœciæ tworzenie obiektu Avatar oraz jego relacji z modelami Cal3d zosta³a utworzona klasa   AvatarFactory.  Wystarczy wywo³aæ metodê  AvatarFactory.CreateAvatar() oraz zadaæ nazwê dla CalCoreModel'u (która odpowiada nazwie pliku .cfg) oraz dowoln¹ nazwê dla Avatar.  Ca³a operacja tworzenia Avatara odbywa siê wewn¹trz tej metody.
+
+Dodatkowo  klasa AvatarFactory zapewnia zarz¹dzanie CalCoreModel'ami, tak aby ka¿dy osobny typ nie zosta³ utworzony wiêcej ni¿ jeden raz, nawet gdy odwo³amy siê do niego wiele razy
+
+\subsection{Przechowywanie ruchów (animacji) dla Avatarów}
+Animacje dla avatarów s¹ reprezentowane przez obiekty klasy \textit{Motion}. S¹ one kolekcjonowane w klasie \textit{MovableAvatar}, która jest pochodn¹ klasy \textit{Avatar}. Jeden obiekt klasy \textit{Motion} powi¹zany jest z dok³adnie jednym obiektem klasy \textit{CalCoreAnimation} w enginie Cal3d.  Animacja CalCoreAnimation jest w Cal3d sk³adow¹ CalCoreModel'u i jest wykonywana przez odpowiednie CalModel'e. 
+
+Ilustracja struktury powi¹zañ dotycz¹cych animacji znajduje sie na rysunku \ref{rys_2}.
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{./img/coreModelAvatar.png}
+  \end{center}
+  \caption{Powi¹zania struktur dotycz¹cych animacji w Cal3D i Generatorze}
+  \label{rys_2}
+\end{figure}
+
+
+\section{Modu³ ControlManager}
+Modu³ ControlManager jest jednym z bazowych modu³ów Generatora.  Do jego g³ównych zadañ nale¿y odœwie¿anie obiektów w ka¿dej klatce symulacji (frame) oraz rozsy³anie wiadomoœci do zainteresowanych obiektów.
+
+G³ówn¹ klas¹ modu³u jest \textit{ControlManager}, która posiada tylko jedn¹ instancjê (Singleton).  
+
+Aby obiekty mog³y byæ odœwie¿anie przez \textit{ControlManagera} lub odbieraæ wiadomoœci musz¹ byæ pochodnymi klasy \textit{ControlObject} oraz byæ zarejestrowanie w ControlManager'ze.
+
+\subsection{Odœwie¿anie obiektów}
+Aby dany obiekt  móg³ reagowaæ na odœwie¿enie w ka¿dej klatce animacji powinien pokryæ metodê \textit{OnUpdate (float elapsedTime)} z klasy bazowej ControlObject.  Parametr \textit{elapsedTime} okreœla ile czasu minê³o od poprzedniego odœwie¿enia. ControlManager bêdzie wywo³ywa³ metodê \textit{elapsedTime} na wszystkich zarejestrowanych obiektach zgodnie z parametrami okreœlonymi dla aktualnej symulacji (klasa \textit{ft::Simulation}).
+\subsection{Rozsy³anie wiadomoœci}
+ControlManager rozsy³a wiadomoœci do zarejestrowanych obiektów za pomoc¹ obiektów klasy \textit{ft::Message}.  Wywo³uje w tym celu na obiektach funkcje \textit{OnMessage(Message* msg)}, która jest zdefiniowana w klasie \textit{ControlObject}. Aby obiekt móg³ zareagowaæ na wiadomoœæ powinien on pokryæ metodê \textit{OnMessage} i zaimplementowaæ w niej rozpoznanie typu wiadomoœci oraz odpowiednie akcje.
+
+Ka¿dy obiekt w systemie mo¿e wys³aæ wiadomoœæ przez ControlManager'a u¿ywaj¹c metody \textit{SendMessage(Message* msg, bool deleteAfterSent)}.  Jako parametr \textit{msg} nale¿y podstawiæ w³aœciwy obiekt typu \textit{Message}, natomiast \textit{deleteAfterSend} okreœla czy ControlManager ma zwolniæ pamiêæ dla obiektu \textit{msg} po rozes³aniu go do zarejestrowanych obiektów.
+
+Ilustracja przep³ywu sterowania podczas rozsy³ania wiadomoœci znajduje siê na rysunku \ref{rys_3}.
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{./img/controlManager.png}
+  \end{center}
+  \caption{Przesy³anie wiadomoœci miêdzy obiektami implementuj¹cymi interfejs wiadomoœci ControlManagera}
+  \label{rys_3}
+\end{figure}
+
+
+\section{Sterowanie ruchem – Timeline'y}
+Idea sterowania ruchem bazuje na pojêciu TimeLine'ow. TimeLine mo¿na traktowaæ jako œcie¿kê animacji, któr¹ avatar ma za zadanie wykonaæ. TimeLine reprezentowany jest przez obiekty typu \textit{ft::TimeLine}.
+
+Zadany do wykonania TimeLine jest wype³niony obiektami typu \textit{ft::TimeLineMotion}. Obiekty typu TimeLineMotion maj¹ wskazania na animacje, które s¹ wykonywane przez avatar'a w trakcie wykonywania danego TimeLineMotion'a na œcie¿ce animacji.
+
+Pomiêdzy kolejnymi obiektami TimeLineMotion mog¹ byæ zdefiniowane regu³y ³¹czenia. Regu³y ³¹czenia s¹ reprezentowane przez obiekty typu \textit{ft::TimeLineBlender}.
+
+Podczas wykonywania TimeLineMotion'a, ruch avatara mo¿e byæ modyfikowany w dowolny sposób przez jeden lub kilka modyfikatorów ruchu. Ka¿dy modyfikator jest opisany w obiekcie typu \textit{ft::TimeLineModifier}.
+
+
+Rozpoczêcie wykonywania TimeLine'a rozpoczyna siê w momencie wykonania na nim metody Start(). Wykonanie TimeLine'a polega na wykonaniu po kolei wszystkich jego sk³adowych TimeLineMotion'ow.   
+
+Obiekty typu TimeLine s¹ pochodnymi klasy TimeLineMotion, co oznacza ze ca³e TimeLine'y mog¹ byæ u¿yte jako sk³adowe innych TimeLine'ów, co zapewnia du¿¹ elastycznoœæ w definiowaniu i sterowaniu ruchem.
+
+
+\subsection{Struktura TimeLine'a oraz relacje pomiêdzy jego sk³adowymi elementami}
+Schemat przyk³adowego TimeLine'a znajduje siê na rysunku \ref{rys_4}. 
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{./img/timeLine.png}
+  \end{center}
+  \caption{Przep³yw informacji w obrêbie zdefiniowanego timeline-a}
+  \label{rys_4}
+\end{figure}
+
+
+Schemat z rysunku \ref{rys_4} ilustruje przyk³ad gdzie TimeLine sk³ada siê z trzech obiektów sk³adowych: \textit{TimeLineMotion\_1}, \textit{TimeLineMotion\_2} oraz \textit{TimeLineMotion\_3}.  Pomiêdzy wszystkimi sk³adowymi obiektami zdefiniowane s¹ regu³y ³¹czenia:  \textit{TimeLineBlender\_1} oraz  \textit{TimeLineBlender\_2}.   Poza tym zdefiniowane s¹ dwa modyfikatory: \textit{TimeLineMotdifier\_1} (który modyfikuje ruch postaci jedynie w czasie wykonywania \textit{TimeLineMotion\_1}) oraz \textit{TimeLineModifier\_2} (który modyfikuje ruch podczas wykonywania ca³ego TimeLine'a).
+
+Wykonywanie TimeLine'a z przyk³adu polega na sekwencyjnym wykonaniu kolejno trzech zdefiniowanych TimeLineMotion'ów.   
+
+Regu³y ³¹czenia definiuje siê dla konkretnego obiektu  TimeLineMotion i zostaje on zastosowany pomiêdzy tym obiektem a jego nastêpnikiem (jeœli nastêpnik wystêpuje).
+
+Modyfikatory równie¿ definiuje siê dla obiektów typu  TimeLineMotion. W powy¿szym przyk³adzie \textit{TimeLineMotdifier\_1} jest zdefiniowany dla \textit{TimeLineMotion\_1}, natomiast \textit{TimeLineMotdifier\_2} dla \textit{TimeLine} (takie powi¹zanie jest mo¿liwe, poniewa¿ TimeLine jest specyficzn¹ odmian¹ TimeLineMotion'a).
+
+Ka¿dy TimeLineMotion mo¿e byæ zaznaczony jako obiekt cykliczny, co powoduje, ¿e bêdzie on wykonywany w pêtli, dopóki nie zostanie jawnie przerwany. Dopiero po jego przerwaniu zacznie byæ wykonywany jego nastêpnik. Istnieje równie¿ mo¿liwoœæ zdefiniowania liczby cyklów, po których wykonaniu ruch cykliczny zostanie przerwany automatycznie.
+
+\subsection{Struktura obiektów TimeLineMotion}
+\section{Organizacja obiektow graficznych}
+\subsection{Motywacja}
+Wizualizacja nie jest g³ównym celem ca³ego systemu, i przez to nie jest wykonana w sposób kompleksowy i ca³kowicie uniwersalny. Jednak¿e mechanizmy do wizualizacji elementów systemu bazuj¹ na pewnych za³o¿eniach pozwalaj¹cych zaimplementowaæ je  ³atwo w innych systemach wizualizacji (np. OSG) lub przy pomocy dowolnego API (np. DirectX). Za³o¿ono niezale¿noœæ od standardów korporacyjnych (MS) i wybrano OpenGL API. Aby zminimalizowaæ wp³yw strumienia graficznego na ca³kowit¹ wydajnoœæ systemu,  przerzucono czêœæ operacji graficznych na procesor akceleratora graficznego przez u¿ycie sprzêtowego wspomagania (vertex shader).
+
+\subsection{Wizualizacja}
+Wizualizacja obiektów stanowi niezale¿ny mechanizm generatora i poprzez œciœle okreœlone regu³y i interfejsy dzia³a w sposób niezale¿ny od reszty implementacji. Generaln¹ ideê relacji pomiêdzy podstawowymi obiektami wizualizacji w systemie przedstawiono na rysunku \ref{rys_5}.
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{./img/collab.png}
+  \end{center}
+  \caption{Wzajemne relacje wspó³pracy obiektów wizualizacji}
+  \label{rys_5}
+\end{figure}
+
+
+\textbf{Zasady renderowania obiektów graficznych w systemie}
+1.Ka¿dy obiekt który ma byæ w³¹czony do potoku renderuj¹cego musi implementowaæ interfejs (pokrywa metodê \textit{Render}) obiektu \textit{ft::SceneObject}.
+2. Ka¿dy obiekt, który ma byæ w³¹czony do potoku renderuj¹cego jest musi byæ zarejestrowany przez obiekt \textit{ft::SceneManager} przy pomocy metody \textit{ft::SceneManager::AddObject} 
+3.Obiekt \textit{ft::SceneManager} wywo³uje cyklicznie metodê \textit{ft::SceneManager::OnRender}, zsynchronizowan¹ z mechanizmem GLUT, i przetwarza wszystkie zarejestrowane obiekty wywo³uj¹c metodê Render ka¿dego z nich.
+  
+\subsubsection{ft::SceneObject}
+Podstawowy obiekt graficzny. Realizuje bazowy interfejs obiektu sceny (kolor, po³o¿enie, nazwa obiektu, aktywnoœæ) i udostêpnia interfejs renderowania obiektu - metoda \textit{Render}.
+
+\subsubsection{ft::MenuItem}
+Podstawowy element menu graficznego, korzysta z bazowych w³asnoœci typu \textit{ft::SceneObject}
+Jego kszta³t i w³aœciwoœci mog¹ byæ dostosowane do specyficznych wymagañ poprzez w³asn¹ implementacjê metody \textit{Render}. MenuItem implementuje najprostsz¹ postaæ wzorca composite dziêki czemu mo¿e funkcjonowaæ jako struktura drzewiasta co pokazano na rysunku \ref{rys_6}.
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{./img/menuItem.png}
+  \end{center}
+  \caption{Przyk³adowa implementacja wielopoziomowego menu przy pomocy obiektu \textit{ft::MenuItem}}
+  \label{rys_6}
+\end{figure}
+
+\subsubsection{ft::Line}
+Pozwala realizowaæ ró¿ne warianty linii lub strza³kê w trzech wymiarach. Obiekt mo¿na definiowaæ zadaj¹c mu pocz¹tek, koniec, d³ugoœæ, orientacjê i kolor. G³ówn¹ motywacj¹ by³o zastosowanie go w charakterze markera. W obszarze renderowania implementuje w³asn¹ metodê \textit{Render}.
+
+\subsubsection{ft::TraceLine}
+Pozwala realizowaæ liniê wielosegmentow¹ po³¹czon¹ markerami w trzech wymiarach poprzez zadawanie punktu w przestrzeni metod¹  \textit{ft::TraceLine::AddPoint}. Obiekt mo¿e wyœwietlaæ i ukrywaæ markery, ustawiaæ kolor ka¿dego segmentu. Doskonale nadaje siê do wizualizacji miejsc, w których trzeba œledziæ po³o¿enie przesuwaj¹cego siê obiektu. W obszarze renderowania implementuje w³asn¹ metodê \textit{Render}.
+
+\subsubsection{ft:Avatar}
+W kontekœcie wizualizacji jest to obiekt graficzny z najbardziej rozbudowan¹ struktur¹ renderowania. Obiekt \textit{ft::Avatar} posiada trzy mo¿liwoœci renderowania: renderowanie szkieletu, renderowanie ograniczeñ ka¿dej koœci lub renderowanie siatki modelu (mesha). Dodatkowo ze wzglêdu na z³o¿onoœæ siatki modelu wprowadzono mo¿liwoœæ renderowania modelu przy u¿yciu vertex shadera. Po wyborze metody renderowania Avatara dochodzi jeszcze renderowanie cienia obiektu, które docelowo powinno byæ realizowane jako globalna metoda renderowania cienia (np. przez \textit{ft::SceneManager})
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{./img/avatarPipeline.png}
+  \end{center}
+  \caption{Potok renderowania dla typu \textit{ft::Avatar}}
+  \label{rys_7}
+\end{figure}
+
+
+\subsubsection{ft::TextureManager}
+£aduje, przechowuje i udostêpnia  innym obiektom tektury wczytywane z plików. Pozwala przetwarzaæ pliki graficzne w formatach PCX, BMP i TGA (wy³¹cznie 24 bitowe). Manager tekstur jest ³atwo rozszerzalny i pozwala skorzystaæ z plików graficznych w innych formatach przez prost¹ modyfikacjê jednej metody  \textit{ft::TextureManager::LoadTexture}. Poprzez globaln¹ mapê tekstur eliminuje potrzebê wielokrotnego wczytywania tych samych plików teksturami. Aby korzystaæ z w³aœciwoœci tego obiektu musi byæ aktywny kontekst OpenGL do przetwarzania tekstur (glEnable(GL\_TEXTURE)).  
+
+\subsubsection{ft::MenuManager}
+Zarz¹dza kolekcj¹ obiektów typu \textit{ft::MenuItem}. Tworzy menu graficzne na podstawie definicji w pliku konfiguracyjnym. Obs³uguje komunikaty z zewn¹trz od obiektu \textit{ft::ControlManager} i z lokalnych obiektów \textit{ft::MenuItem} oraz generuje komunikat do systemu o wciœniêciu konkretnego przycisku w menu (MSG\_MENU\_ITEM\_SELECTED) dla wszystkich zarejestrowanych obiektów nas³uchuj¹cych. Ze wzglêdu na interakcjê przy pomocy klawiatury i myszy, korzysta z \textit{ft::InputManagera} przy obs³udze komunikatów z tych urz¹dzeñ.
+
+\subsubsection{ft::SceneManager}
+Centralny element zarz¹dzania elementami graficznymi sceny. Realizuje komunikacjê z pozosta³ymi niegraficznymi elementami systemu. Obiekt \textit{ft::SceneManager} jest odpowiedzialny za renderowanie wszystkich obiektów graficznych typu \textit{ft:SceneObject}, przy pomocy metody \textit{Render}. Wszystkie obiekty, które maj¹ byæ automatycznie renderowane musz¹ byæ uprzednio zarejestrowane do renderowania metod¹ \textit{ft::SceneManager::AddObject}. 	
+
+\subsubsection{ft::OGLContext}
+Tworzy zawartoœæ renderowania (prymitywy graficzne) przy pomocy API OpenGL. Buduje wizualne, trwa³e elementy sceny (pod³oga, logo), korzysta z tekstur obiektu \textit{ft::TextureManager}.
+
+\subsubsection{ft::Camera}
+Obecnie realizuje bardzo prymitywne operacje widoku sceny (przesuwanie sceny, obracanie sceny). Ze wzglêdu na interakcjê przy pomocy klawiatury i myszy, korzysta z \textit{ft::InputManagera} przy obs³udze komunikatów z tych urz¹dzeñ.
+
+
+\flushright
+
+\end{document}
+

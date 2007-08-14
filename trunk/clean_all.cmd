@@ -13,6 +13,11 @@ rmdir /S /Q "src/generator/FT Full Release Max 6"
 rmdir /S /Q _ReSharper.Generator
 rmdir /S /Q "_doc"
 
+del /F doc\generator.log
+del /F doc\generator.aux
+del /F doc\generator.out
+del /F doc\generator.toc
+
 del /F bin\release\*.exp
 del /F bin\release\*.ilk 
 del /F bin\release\*.exe
