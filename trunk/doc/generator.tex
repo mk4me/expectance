@@ -38,12 +38,8 @@ Wersja: 0.6 \\
 Data modyfikacji: \today \\
 Autorzy: A.\textsc{B¹k} and M.\textsc{Kulbacki}\\
 \end{flushleft}
-
- 
 % Bottom of the page
- 
 
- 
 \end{titlepage}
 
 
@@ -65,7 +61,7 @@ Do szybkiego ustawiania parametrów aplikacji oraz jej sk³adowych modu³ów s³u¿y p
 Modele avatarów oraz animacje dla nich opisane s¹ w standardowym formacie modeli Cal3d (pliki xsf/xaf/xmf/xrf  lub csf/caf/cmf/crf opisane skryptami \textit{*.cfg)}.
 \\
 
-Ogólna ilustracja struktury aplikacji Generator'a zosta³a przedstawiona na poni¿szym rysunku \ref{rys_0}.
+Ogólna ilustracja struktury aplikacji Generator'a zosta³a przedstawiona na rysunku \ref{rys_0}.
 
 \begin{figure}[!h]
   \begin{center}
@@ -77,8 +73,8 @@ Ogólna ilustracja struktury aplikacji Generator'a zosta³a przedstawiona na poni¿
 
 \section{Avatar'y}
 Podstawow¹ klas¹ reprezentuj¹c¹ animowan¹ postaæ jest Avatar. Mo¿na go dodawaæ do sceny oraz wykonywaæ na nim animacje. Obiekty typu Avatar bazuj¹ na modelach postaci z API Cal3d i mo¿na je traktowaæ jako odpowiedniki takich modeli z rozszerzona funkcjonalnoœci¹ na potrzeby Generatora.
-\subsection{Powi¹zania Avatar'ów z modelami w enginie Cal3d}
-Podstawowym bytem reprezentuj¹cym animowan¹ postaæ w API Cal3d jest obiekt CalModel. Obiekt CalModel mo¿e byæ utworzony na podstawie odpowiedniego typu. Definicj¹ takiego typu w Cal3d jest  obiekt CalCoreModel. 
+\subsection{Powi¹zania Avatar'ów z modelami w API Cal3D}
+Podstawowym bytem reprezentuj¹cym animowan¹ postaæ w API Cal3Dd jest obiekt CalModel. Obiekt CalModel mo¿e byæ utworzony na podstawie odpowiedniego typu. Definicj¹ takiego typu w Cal3d jest  obiekt CalCoreModel. 
 
 Ró¿nica pomiêdzy CalCoreModelem i CalModelem jest taka, ze CalCoreModel zawiera definicje mesh'y, animacji, materia³ów oraz szkieletu postaci. CalModel jest natomiast specyficzna instancj¹ CalCoreModelu i mo¿na go ustawiaæ na scenie oraz wykonywaæ na nim animacje. Dla ka¿dego takiego typu mo¿e istnieæ dowolna iloœæ obiektów klasy CalModel.
 
@@ -108,7 +104,7 @@ Animacje dla avatarów s¹ reprezentowane przez obiekty klasy \textit{Motion}. S¹ 
 Ilustracja struktury powi¹zañ dotycz¹cych animacji znajduje sie na rysunku \ref{rys_2}.
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=1\textwidth]{./img/coreModelAvatar.png}
+    \includegraphics[width=0.8\textwidth]{./img/coreModelAvatar.png}
   \end{center}
   \caption{Powi¹zania struktur dotycz¹cych animacji w Cal3D i Generatorze}
   \label{rys_2}
@@ -139,7 +135,7 @@ Ilustracja przep³ywu sterowania podczas rozsy³ania wiadomoœci znajduje siê na ry
 \end{figure}
 
 
-\section{Sterowanie ruchem – Timeline'y}
+\section{Sterowanie ruchem – TimeLine'y}
 Idea sterowania ruchem bazuje na pojêciu TimeLine'ow. TimeLine mo¿na traktowaæ jako œcie¿kê animacji, któr¹ avatar ma za zadanie wykonaæ. TimeLine reprezentowany jest przez obiekty typu \textit{ft::TimeLine}.
 
 Zadany do wykonania TimeLine jest wype³niony obiektami typu \textit{ft::TimeLineMotion}. Obiekty typu TimeLineMotion maj¹ wskazania na animacje, które s¹ wykonywane przez avatar'a w trakcie wykonywania danego TimeLineMotion'a na œcie¿ce animacji.
@@ -155,7 +151,7 @@ Obiekty typu TimeLine s¹ pochodnymi klasy TimeLineMotion, co oznacza ze ca³e Tim
 
 
 \subsection{Struktura TimeLine'a oraz relacje pomiêdzy jego sk³adowymi elementami}
-Schemat przyk³adowego TimeLine'a znajduje siê na rysunku \ref{rys_4}. 
+ 
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=1\textwidth]{./img/timeLine.png}
@@ -165,7 +161,7 @@ Schemat przyk³adowego TimeLine'a znajduje siê na rysunku \ref{rys_4}.
 \end{figure}
 
 
-Schemat z rysunku \ref{rys_4} ilustruje przyk³ad gdzie TimeLine sk³ada siê z trzech obiektów sk³adowych: \textit{TimeLineMotion\_1}, \textit{TimeLineMotion\_2} oraz \textit{TimeLineMotion\_3}.  Pomiêdzy wszystkimi sk³adowymi obiektami zdefiniowane s¹ regu³y ³¹czenia:  \textit{TimeLineBlender\_1} oraz  \textit{TimeLineBlender\_2}.   Poza tym zdefiniowane s¹ dwa modyfikatory: \textit{TimeLineMotdifier\_1} (który modyfikuje ruch postaci jedynie w czasie wykonywania \textit{TimeLineMotion\_1}) oraz \textit{TimeLineModifier\_2} (który modyfikuje ruch podczas wykonywania ca³ego TimeLine'a).
+Schemat przyk³adowego TimeLine'a znajduje siê na rysunku \ref{rys_4}.Ilustruje on TimeLine-a sk³adaj¹cego siê z trzech obiektów sk³adowych: \textit{TimeLineMotion\_1}, \textit{TimeLineMotion\_2} oraz \textit{TimeLineMotion\_3}.  Pomiêdzy wszystkimi sk³adowymi obiektami zdefiniowane s¹ regu³y ³¹czenia:  \textit{TimeLineBlender\_1} oraz  \textit{TimeLineBlender\_2}.   Poza tym zdefiniowane s¹ dwa modyfikatory: \textit{TimeLineMotdifier\_1} (który modyfikuje ruch postaci jedynie w czasie wykonywania \textit{TimeLineMotion\_1}) oraz \textit{TimeLineModifier\_2} (który modyfikuje ruch podczas wykonywania ca³ego TimeLine'a).
 
 Wykonywanie TimeLine'a z przyk³adu polega na sekwencyjnym wykonaniu kolejno trzech zdefiniowanych TimeLineMotion'ów.   
 
@@ -180,10 +176,10 @@ Elementy sk³adowe obiektu TimeLineMotion przedstawione zosta³y na rysunku \ref{r
   \begin{center}
     \includegraphics[width=1\textwidth]{./img/timeLineMotion.png}
   \end{center}
-  \caption{Wzajemne relacje wspó³pracy obiektów wizualizacji}
+  \caption{Elementy sk³adowe typu \textit{ft::TimeLineMotion}}
   \label{rys_5}
 \end{figure}
-W sk³ad obiektu ft::TimeLineMotion wchodz¹ nastêpuj¹ce elementy sk³adowe:
+W sk³ad obiektu \textit{ft::TimeLineMotion} wchodz¹ nastêpuj¹ce elementy sk³adowe:
 
 a) \textit{Motion (animacja)} – referencja do animacji, która ma byæ wykonana przez avatara w czasie wykonywania danego TimeLineMotion'a. Referencja do animacji mo¿e byæ pusta. W tym przypadku dany TimeLineMotion sam w sobie nie powoduje ¿adnego ruchu avatar'a, natomiast mog¹ go powodowaæ jego elementy sk³adowe z \textit{tracks} i \textit{submotions}.
 
