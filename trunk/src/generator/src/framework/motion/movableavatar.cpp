@@ -149,7 +149,7 @@ void MovableAvatar::StopTimeLine()
 {
     if (m_timeLine != NULL)
     {
-        m_timeLine->Reset();
+        m_timeLine->Reset(this);
     }
 
 }
@@ -231,15 +231,17 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
 {
     TimeLine* timeLine = new TimeLine();
 
-    Motion *mot = GetMotion(MOTION_WALK_START);
+     Motion *mot = GetMotion(MOTION_WALK_START);
     if (mot != NULL)
     {
         TimeLineMotion* timeLineMotion = new TimeLineMotion();
         timeLineMotion->setMotion(mot);
+        timeLineMotion->setBlender(new TimeLineBlender(0.3f));
         timeLine->AddObject(timeLineMotion);
 
     }
-    
+ 
+ 
     mot = GetMotion(MOTION_WALK_LOOP);
     if (mot != NULL)
     {
@@ -255,7 +257,7 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
     {
         TimeLineMotion* timeLineMotion = new TimeLineMotion();
         timeLineMotion->setMotion(mot);
-        timeLineMotion->setBlender(new TimeLineBlender(0.3f));
+        timeLineMotion->setBlender(new TimeLineBlender(1.0f));
         timeLine->AddObject(timeLineMotion);
     }
 
@@ -270,11 +272,11 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
 
 
      //last motion to achive IDLE position
-    //TimeLineMotion *idleMotion = new TimeLineMotion();
-    //idleMotion->setAnimLoop(true);
-    ////idleMotion->setInterupting(true);
-    //idleMotion->setMotion(new Motion());
-    //timeLine->AddObject(idleMotion);
+  //  TimeLineMotion *idleMotion = new TimeLineMotion();
+//    idleMotion->setAnimLoop(true);
+    //idleMotion->setInterupting(true);
+//    idleMotion->setMotion(new Motion());
+//    timeLine->AddObject(idleMotion);
        
 
     timeLine->AddModifier(new LCSModifier());

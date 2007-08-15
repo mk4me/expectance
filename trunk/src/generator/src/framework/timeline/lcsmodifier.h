@@ -25,7 +25,7 @@ namespace ft
 
         void Apply(float elapsedSeconds, Avatar* avatar);
 
-        virtual void Reset(); // resets current object and its children
+        virtual void Reset(Avatar* avatar); // resets current object and its children
 
     private:
         bool m_translationInited;

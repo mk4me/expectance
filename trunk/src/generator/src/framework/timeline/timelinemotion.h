@@ -66,7 +66,7 @@ namespace ft
         float GetMotionDuration(Avatar* avatar);
 
 
-        virtual void Reset(); // resets current object and its children
+        virtual void Reset(Avatar* avatar); // resets current object and its children
 
         void Start();
         void Stop();

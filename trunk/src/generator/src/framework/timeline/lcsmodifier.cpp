@@ -114,9 +114,9 @@ void LCSModifier::Apply(float elapsedSeconds,Avatar* avatar)
 }
 
 /// \brief Resets parameters of this modifier
-void LCSModifier::Reset()
+void LCSModifier::Reset(Avatar* avatar)
 {
-    TimeLineObject::Reset();
+    TimeLineObject::Reset(avatar);
 
     m_translationInited = false;
 

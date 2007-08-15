@@ -394,15 +394,20 @@ float TimeLineMotion::GetMotionDuration(Avatar* avatar)
  * \brief Resets all objects related to this TimeLineMotion
  *
  **/
-void TimeLineMotion::Reset()
+void TimeLineMotion::Reset(Avatar* avatar)
 {
-    TimeLineObject::Reset();
+    TimeLineObject::Reset(avatar);
+
+    if (m_motionRef != NULL && this->isAnimStarted() && this->isAnimLoop())
+    {
+        avatar->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
+    }
 
     if (m_vModifiers.size() > 0)
     {
         for (int m=0; m<(int)m_vModifiers.size(); m++)
         {
-            m_vModifiers[m]->Reset();
+            m_vModifiers[m]->Reset(avatar);
         }
     }
 }
