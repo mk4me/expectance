@@ -75,23 +75,6 @@ Ogólna ilustracja struktury aplikacji Generator'a zosta³a przedstawiona na poni¿
   \label{rys_0}
 \end{figure}
 
-\subsection{Powi¹zania Avatar'ów z modelami w enginie Cal3d}
-Podstawowym bytem reprezentuj¹cym animowan¹ postaæ w API Cal3d jest obiekt CalModel. Obiekt CalModel mo¿e byæ utworzony na podstawie odpowiedniego typu. Definicj¹ takiego typu w Cal3d jest  obiekt CalCoreModel. 
-
-Ró¿nica pomiêdzy CalCoreModelem i CalModelem jest taka, ze CalCoreModel zawiera definicje mesh'y, animacji, materia³ów oraz szkieletu postaci. CalModel jest natomiast specyficzna instancj¹ CalCoreModelu i mo¿na go ustawiaæ na scenie oraz wykonywaæ na nim animacje. Dla ka¿dego takiego typu mo¿e istnieæ dowolna iloœæ obiektów klasy CalModel.
-
-Dla ka¿dego utworzonego obiektu klasy Avatar utworzony zostaje osobny obiekt  klasy CalModel w enginie Cal3d.   Ponadto obiekt Avatar zawiera referencjê do odpowiedniego obiektu CalCoreModel, na którego podstawie zosta³ utworzony jego CalModel. Dziêki temu z poziomu Avatar'a mo¿na odwo³ywaæ siê do definicji postaci.
-
-Na rysunku \ref{rys_1} znajduje siê ilustracja przyk³adowej struktury modeli.
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[width=1\textwidth]{./img/modelCal3D.png}
-  \end{center}
-  \caption{Ilustracja przyk³adowej struktury modeli opartych na Cal3D}
-  \label{rys_1}
-\end{figure}
-
-
 \section{Avatar'y}
 Podstawow¹ klas¹ reprezentuj¹c¹ animowan¹ postaæ jest Avatar. Mo¿na go dodawaæ do sceny oraz wykonywaæ na nim animacje. Obiekty typu Avatar bazuj¹ na modelach postaci z API Cal3d i mo¿na je traktowaæ jako odpowiedniki takich modeli z rozszerzona funkcjonalnoœci¹ na potrzeby Generatora.
 \subsection{Powi¹zania Avatar'ów z modelami w enginie Cal3d}
