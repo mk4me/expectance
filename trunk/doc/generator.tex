@@ -1,4 +1,4 @@
-%Autor: Marek Kulbacki
+%Autor: Marek Kulbacki, Artur Bak
 
 \documentclass[12pt,a4paper]{article}
 %-- header poczatek ------------------------------------------------
@@ -34,7 +34,7 @@
 \end{center}
 % Author and supervisor
 \begin{flushleft} \small
-Wersja: 0.5 \\
+Wersja: 0.6 \\
 Data modyfikacji: \today \\
 Autorzy: A.\textsc{B¹k} and M.\textsc{Kulbacki}\\
 \end{flushleft}
@@ -52,6 +52,44 @@ Autorzy: A.\textsc{B¹k} and M.\textsc{Kulbacki}\\
 
 \vspace*{2ex}
 \hrule
+
+\section{Model aplikacji Generator'a}
+Aplikacja Generator'a bazuje na dwóch g³ównych bibliotekach: 
+\\
+- GLUT – u¿ywana do zarz¹dzania aplikacj¹ okienkow¹ oraz podstawowych operacji graficznych
+\\
+- Cal3d – u¿ywana do reprezentacji modeli avatarów oraz zarz¹dzanie animacjami dla nich
+\\
+
+Do szybkiego ustawiania parametrów aplikacji oraz jej sk³adowych modu³ów s³u¿y plik \textit{/data/application.cfg}.
+Modele avatarów oraz animacje dla nich opisane s¹ w standardowym formacie modeli Cal3d (pliki xsf/xaf/xmf/xrf  lub csf/caf/cmf/crf opisane skryptami \textit{*.cfg)}.
+\\
+
+Ogólna ilustracja struktury aplikacji Generator'a zosta³a przedstawiona na poni¿szym rysunku \ref{rys_0}.
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{./img/generator_app.png}
+  \end{center}
+  \caption{Struktura aplikacji Generator'a}
+  \label{rys_0}
+\end{figure}
+
+\subsection{Powi¹zania Avatar'ów z modelami w enginie Cal3d}
+Podstawowym bytem reprezentuj¹cym animowan¹ postaæ w API Cal3d jest obiekt CalModel. Obiekt CalModel mo¿e byæ utworzony na podstawie odpowiedniego typu. Definicj¹ takiego typu w Cal3d jest  obiekt CalCoreModel. 
+
+Ró¿nica pomiêdzy CalCoreModelem i CalModelem jest taka, ze CalCoreModel zawiera definicje mesh'y, animacji, materia³ów oraz szkieletu postaci. CalModel jest natomiast specyficzna instancj¹ CalCoreModelu i mo¿na go ustawiaæ na scenie oraz wykonywaæ na nim animacje. Dla ka¿dego takiego typu mo¿e istnieæ dowolna iloœæ obiektów klasy CalModel.
+
+Dla ka¿dego utworzonego obiektu klasy Avatar utworzony zostaje osobny obiekt  klasy CalModel w enginie Cal3d.   Ponadto obiekt Avatar zawiera referencjê do odpowiedniego obiektu CalCoreModel, na którego podstawie zosta³ utworzony jego CalModel. Dziêki temu z poziomu Avatar'a mo¿na odwo³ywaæ siê do definicji postaci.
+
+Na rysunku \ref{rys_1} znajduje siê ilustracja przyk³adowej struktury modeli.
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{./img/modelCal3D.png}
+  \end{center}
+  \caption{Ilustracja przyk³adowej struktury modeli opartych na Cal3D}
+  \label{rys_1}
+\end{figure}
 
 
 \section{Avatar'y}
@@ -153,20 +191,40 @@ Regu³y ³¹czenia definiuje siê dla konkretnego obiektu  TimeLineMotion i zostaje 
 Modyfikatory równie¿ definiuje siê dla obiektów typu  TimeLineMotion. W powy¿szym przyk³adzie \textit{TimeLineMotdifier\_1} jest zdefiniowany dla \textit{TimeLineMotion\_1}, natomiast \textit{TimeLineMotdifier\_2} dla \textit{TimeLine} (takie powi¹zanie jest mo¿liwe, poniewa¿ TimeLine jest specyficzn¹ odmian¹ TimeLineMotion'a).
 
 Ka¿dy TimeLineMotion mo¿e byæ zaznaczony jako obiekt cykliczny, co powoduje, ¿e bêdzie on wykonywany w pêtli, dopóki nie zostanie jawnie przerwany. Dopiero po jego przerwaniu zacznie byæ wykonywany jego nastêpnik. Istnieje równie¿ mo¿liwoœæ zdefiniowania liczby cyklów, po których wykonaniu ruch cykliczny zostanie przerwany automatycznie.
-
 \subsection{Struktura obiektów TimeLineMotion}
+Elementy sk³adowe obiektu TimeLineMotion przedstawione zosta³y na rysunku \ref{rys_5}.
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{./img/timeLineMotion.png}
+  \end{center}
+  \caption{Wzajemne relacje wspó³pracy obiektów wizualizacji}
+  \label{rys_5}
+\end{figure}
+W sk³ad obiektu ft::TimeLineMotion wchodz¹ nastêpuj¹ce elementy sk³adowe:
+
+a) \textit{Motion (animacja)} – referencja do animacji, która ma byæ wykonana przez avatara w czasie wykonywania danego TimeLineMotion'a. Referencja do animacji mo¿e byæ pusta. W tym przypadku dany TimeLineMotion sam w sobie nie powoduje ¿adnego ruchu avatar'a, natomiast mog¹ go powodowaæ jego elementy sk³adowe z \textit{tracks} i \textit{submotions}.
+
+b) \textit{TimeLineBlender} – definicja ³¹czenia danego TimeLineMotion'a z jego nastêpnikiem. W najprostszym przypadku deiniuje on na ile przed koñcem wykonyania animacji aktualnego TimeLineMotion'a ma byæ wystartowana animacja z nastêpnego TimeLineMotion'a. Sama operacja \textit{blendowania} realizowana jest automatycznie przez engine Cal3d.
+
+c) \textit{Tracks} – mo¿e zawieraæ dodatkowe œcie¿ki ruchów, które bêd¹ wykonywane równolegle do TimeLineMotion'a. Ka¿da œcie¿ka ma postaæ obiektu TimeLineMotion.  Œcie¿ki mog¹ byæ wykorzystane do realizacji ruchów dla poszczególnych partii cia³a avatar'a. Zbiór œcie¿ek mo¿e byæ pusty – wtedy nie ma ¿adnego wp³ywu na ruch avatar'a.
+
+d) \textit{Submotions} – mo¿e zawieraæ sekwencje obiektów typu TimeLineMotion, które s¹ wykonywane podczas wykonywania danego TimeLineMotion'a (równoczeœnie z wykonywaniem jego animacji). Zbiór \textit{submotions} jest wykorzystywany do podzia³u danego TimeLineMotion'a na „krótsze” obiekty typu TimeLineMotion. Zbiór ten mo¿e byæ pusty – wtedy nie ma ¿adnego wp³ywu na ruch avatar'a.
+ 
+e) \textit{Modifiers} – zawiera zbiór modyfikatorów, które s¹ wykonywane w czasie wykonywania danego TimeLineMotion'a (od pocz¹tku jego wykonywania do zakoñczenia wykonywania). Ka¿dy modyfikator mo¿e byæ podzielony dodatkowo na sekwencje „krótszych” modyfikatorów na tej samej zasadzie, zgodnie z któr¹ mo¿na podzieliæ obiekt TimeLineMotion na zbiór submotions. Zbiór \textit{modifiers} mo¿e byæ pusty – wtedy nie ma ¿adnego wp³ywu na ruch avatar'a.
+
+
 \section{Organizacja obiektow graficznych}
 \subsection{Motywacja}
 Wizualizacja nie jest g³ównym celem ca³ego systemu, i przez to nie jest wykonana w sposób kompleksowy i ca³kowicie uniwersalny. Jednak¿e mechanizmy do wizualizacji elementów systemu bazuj¹ na pewnych za³o¿eniach pozwalaj¹cych zaimplementowaæ je  ³atwo w innych systemach wizualizacji (np. OSG) lub przy pomocy dowolnego API (np. DirectX). Za³o¿ono niezale¿noœæ od standardów korporacyjnych (MS) i wybrano OpenGL API. Aby zminimalizowaæ wp³yw strumienia graficznego na ca³kowit¹ wydajnoœæ systemu,  przerzucono czêœæ operacji graficznych na procesor akceleratora graficznego przez u¿ycie sprzêtowego wspomagania (vertex shader).
 
 \subsection{Wizualizacja}
-Wizualizacja obiektów stanowi niezale¿ny mechanizm generatora i poprzez œciœle okreœlone regu³y i interfejsy dzia³a w sposób niezale¿ny od reszty implementacji. Generaln¹ ideê relacji pomiêdzy podstawowymi obiektami wizualizacji w systemie przedstawiono na rysunku \ref{rys_5}.
+Wizualizacja obiektów stanowi niezale¿ny mechanizm generatora i poprzez œciœle okreœlone regu³y i interfejsy dzia³a w sposób niezale¿ny od reszty implementacji. Generaln¹ ideê relacji pomiêdzy podstawowymi obiektami wizualizacji w systemie przedstawiono na rysunku \ref{rys_6}.
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=1\textwidth]{./img/collab.png}
   \end{center}
   \caption{Wzajemne relacje wspó³pracy obiektów wizualizacji}
-  \label{rys_5}
+  \label{rys_6}
 \end{figure}
 
 
@@ -180,14 +238,14 @@ Podstawowy obiekt graficzny. Realizuje bazowy interfejs obiektu sceny (kolor, po
 
 \subsubsection{ft::MenuItem}
 Podstawowy element menu graficznego, korzysta z bazowych w³asnoœci typu \textit{ft::SceneObject}
-Jego kszta³t i w³aœciwoœci mog¹ byæ dostosowane do specyficznych wymagañ poprzez w³asn¹ implementacjê metody \textit{Render}. MenuItem implementuje najprostsz¹ postaæ wzorca composite dziêki czemu mo¿e funkcjonowaæ jako struktura drzewiasta co pokazano na rysunku \ref{rys_6}.
+Jego kszta³t i w³aœciwoœci mog¹ byæ dostosowane do specyficznych wymagañ poprzez w³asn¹ implementacjê metody \textit{Render}. MenuItem implementuje najprostsz¹ postaæ wzorca composite dziêki czemu mo¿e funkcjonowaæ jako struktura drzewiasta co pokazano na rysunku \ref{rys_7}.
 
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=1\textwidth]{./img/menuItem.png}
   \end{center}
   \caption{Przyk³adowa implementacja wielopoziomowego menu przy pomocy obiektu \textit{ft::MenuItem}}
-  \label{rys_6}
+  \label{rys_7}
 \end{figure}
 
 \subsubsection{ft::Line}
@@ -204,7 +262,7 @@ W kontekœcie wizualizacji jest to obiekt graficzny z najbardziej rozbudowan¹ str
     \includegraphics[width=1\textwidth]{./img/avatarPipeline.png}
   \end{center}
   \caption{Potok renderowania dla typu \textit{ft::Avatar}}
-  \label{rys_7}
+  \label{rys_8}
 \end{figure}
 
 
