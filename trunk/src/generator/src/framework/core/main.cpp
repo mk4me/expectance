@@ -11,7 +11,7 @@
 #include "application.h"
 #include "config.h"
 #include "inputmanager.h"
-#include "../scene/scenemanager.h"
+#include "../scene/visualizationmanager.h"
 
 
 using namespace ft;
@@ -19,14 +19,14 @@ using namespace ft;
 /// \brief GLUT callback function
 void DisplayFunc()
 {
-	SceneManager::getInstance()->OnRender(); 
+	VisualizationManager::getInstance()->OnRender(); 
 }
 
 /// \brief GLUT callback function
 void ExitFunc()
 {
    // shut down OGL Content
-   SceneManager::getInstance()->CleanUp();
+   VisualizationManager::getInstance()->CleanUp();
 }
 
 /// \brief GLUT callback function
@@ -114,9 +114,9 @@ int main(int argc, char *argv[])
 
     Application::getInstance()->InitModules();
 
-	SceneManager::getInstance()->AddObject(new TraceLine("TL1")); //lines for tracing
-	SceneManager::getInstance()->AddObject(new TraceLine("TL2"));
-	SceneManager::getInstance()->AddObject(new TraceLine("TL3"));	
+	VisualizationManager::getInstance()->AddObject(new TraceLine("TL1")); //lines for tracing
+	VisualizationManager::getInstance()->AddObject(new TraceLine("TL2"));
+	VisualizationManager::getInstance()->AddObject(new TraceLine("TL3"));	
 
     Application::getInstance()->InitAvatars();
 	
@@ -147,23 +147,23 @@ int main(int argc, char *argv[])
 //    tn->AddPoint(FTVect(100,400,100));
 //	//tn->HideMarker();
 //	//tn->ClearTrace();
-//	ft::SceneManager::getInstance()->AddObject(tn);
+//	ft::VisualizationManager::getInstance()->AddObject(tn);
 //
-//	ft::SceneManager::getInstance()->AddObject(ln);
-//	ft::SceneManager::getInstance()->AddObject(ln1);
+//	ft::VisualizationManager::getInstance()->AddObject(ln);
+//	ft::VisualizationManager::getInstance()->AddObject(ln1);
 //    ln2 = new Line(FTVect(100,100,100), FTVect(30,40,10), 100, "LiniaII");
 //
 //
-//	ft::SceneManager::getInstance()->AddObject(ln2);
+//	ft::VisualizationManager::getInstance()->AddObject(ln2);
 //    
 //    ln3 = new Line("LiniaIII");
-//	ft::SceneManager::getInstance()->AddObject(ln3);
+//	ft::VisualizationManager::getInstance()->AddObject(ln3);
 //	
 //	ln1->setColor(FTVect(1,1,0));
 //	ln->setStart(FTVect(100,0,0)).setEnd(FTVect(400,0,0)).setColor(FTVect(0,0,1));
-////	ln2 = dynamic_cast<Line*>(SceneManager::getInstance()->getObject("LiniaII"));
+////	ln2 = dynamic_cast<Line*>(VisualizationManager::getInstance()->getObject("LiniaII"));
 //	ln2->setColor(FTVect(0,1,0));
-////	ln3 = dynamic_cast<Line*>(SceneManager::getInstance()->getObject("LiniaIII"));
+////	ln3 = dynamic_cast<Line*>(VisualizationManager::getInstance()->getObject("LiniaIII"));
 //	ln3->setStart(FTVect(0,100,0)).setEnd(FTVect(200,100,0)).setColor(FTVect(1,1,0));
 //	ln1->Hide();
 //	ln1->setColor(FTVect(0,1,1));

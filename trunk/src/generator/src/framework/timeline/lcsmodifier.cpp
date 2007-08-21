@@ -20,8 +20,8 @@ LCSModifier::LCSModifier()
     {
         tracer_translation = new TraceLine(toString() + "Translation");
         tracer_curr_pos = new TraceLine(toString() + "AnimPosition");
-        SceneManager::getInstance()->AddObject(tracer_translation);
-        SceneManager::getInstance()->AddObject(tracer_curr_pos);
+        VisualizationManager::getInstance()->AddObject(tracer_translation);
+        VisualizationManager::getInstance()->AddObject(tracer_curr_pos);
     }	
 }
 
@@ -31,12 +31,12 @@ LCSModifier::~LCSModifier(void)
     if (tracer_translation != NULL)
     {
         tracer_translation->ClearTrace();
-        SceneManager::getInstance()->RemoveObject(tracer_translation);
+        VisualizationManager::getInstance()->RemoveObject(tracer_translation);
     }
     if (tracer_curr_pos != NULL)
     {
         tracer_curr_pos->ClearTrace();
-        SceneManager::getInstance()->RemoveObject(tracer_curr_pos);
+        VisualizationManager::getInstance()->RemoveObject(tracer_curr_pos);
     }
 
 }

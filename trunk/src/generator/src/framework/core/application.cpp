@@ -7,7 +7,7 @@
 #include "config.h"
 #include "controlmanager.h"
 #include "../avatar/avatarfactory.h"
-#include "../scene/scenemanager.h"
+#include "../scene/visualizationmanager.h"
 #include "../timeline/timelinefactory.h"
 #include "../utility/debug.h"
 
@@ -63,7 +63,7 @@ void Application::InitModules()
 
     ControlManager::getInstance()->Init();  //enforced creation of singleton
     AvatarFactory::getInstance();   //enforced creation of singleton
-    SceneManager::getInstance()->Init();    //enforced creation of singleton
+    VisualizationManager::getInstance()->Init();    //enforced creation of singleton
     TimeLineFactory::getInstance(); //enforced creation of singleton
 }
 
@@ -106,7 +106,7 @@ Avatar* Application::CreateAvatarOnScene(const std::string& calCoreModel,const  
   Avatar* avatar = ft::AvatarFactory::getInstance()->CreateAvatar(calCoreModel, name);
   if (avatar != NULL)
   {
-	  SceneManager::getInstance()->AddObject(avatar); 
+	  VisualizationManager::getInstance()->AddObject(avatar); 
       ControlManager::getInstance()->AddControlObject(avatar);
   }
 

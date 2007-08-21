@@ -533,14 +533,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\scene\scenemanager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\scenemanager.h"
-					>
-				</File>
-				<File
 					RelativePath=".\src\framework\scene\sceneobject.cpp"
 					>
 				</File>
@@ -562,6 +554,14 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\scene\traceline.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\visualizationmanager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\visualizationmanager.h"
 					>
 				</File>
 				<Filter

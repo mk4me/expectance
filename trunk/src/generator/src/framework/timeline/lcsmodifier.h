@@ -8,7 +8,7 @@
 
 #include "timelinemodifier.h"
 
-#include "../scene/scenemanager.h"
+#include "../scene/visualizationmanager.h"
 
 namespace ft
 {

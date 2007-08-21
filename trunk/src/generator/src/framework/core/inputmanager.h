@@ -10,7 +10,7 @@
 #include "../utility/debug.h"
 #include "../scene/camera.h"
 #include "../ui/menumanager.h"
-#include "../scene/scenemanager.h"
+#include "../scene/visualizationmanager.h"
 #include "../scene/oglcontext.h"
 #include "controlmanager.h"
 #include "message.h"

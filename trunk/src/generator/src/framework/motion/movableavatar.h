@@ -10,7 +10,7 @@
 #include "../avatar/avatar.h"
 #include "../utility/Quat.h"
 #include "../timeline/timelinefactory.h"
-#include "../scene/scenemanager.h"
+#include "../scene/visualizationmanager.h"
 
 #include "motion.h"
 #include <map>

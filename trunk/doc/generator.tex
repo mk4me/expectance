@@ -209,8 +209,8 @@ Wizualizacja obiektów stanowi niezale¿ny mechanizm generatora i poprzez œciœle o
 
 \textbf{Zasady renderowania obiektów graficznych w systemie}
 1.Ka¿dy obiekt który ma byæ w³¹czony do potoku renderuj¹cego musi implementowaæ interfejs (pokrywa metodê \textit{Render}) obiektu \textit{ft::SceneObject}.
-2. Ka¿dy obiekt, który ma byæ w³¹czony do potoku renderuj¹cego jest musi byæ zarejestrowany przez obiekt \textit{ft::SceneManager} przy pomocy metody \textit{ft::SceneManager::AddObject} 
-3.Obiekt \textit{ft::SceneManager} wywo³uje cyklicznie metodê \textit{ft::SceneManager::OnRender}, zsynchronizowan¹ z mechanizmem GLUT, i przetwarza wszystkie zarejestrowane obiekty wywo³uj¹c metodê Render ka¿dego z nich.
+2. Ka¿dy obiekt, który ma byæ w³¹czony do potoku renderuj¹cego jest musi byæ zarejestrowany przez obiekt \textit{ft::VisualizationManager} przy pomocy metody \textit{ft::VisualizationManager::AddObject} 
+3.Obiekt \textit{ft::VisualizationManager} wywo³uje cyklicznie metodê \textit{ft::VisualizationManager::OnRender}, zsynchronizowan¹ z mechanizmem GLUT, i przetwarza wszystkie zarejestrowane obiekty wywo³uj¹c metodê Render ka¿dego z nich.
   
 \subsubsection{ft::SceneObject}
 Podstawowy obiekt graficzny. Realizuje bazowy interfejs obiektu sceny (kolor, po³o¿enie, nazwa obiektu, aktywnoœæ) i udostêpnia interfejs renderowania obiektu - metoda \textit{Render}.
@@ -234,7 +234,7 @@ Pozwala realizowaæ ró¿ne warianty linii lub strza³kê w trzech wymiarach. Obiekt 
 Pozwala realizowaæ liniê wielosegmentow¹ po³¹czon¹ markerami w trzech wymiarach poprzez zadawanie punktu w przestrzeni metod¹  \textit{ft::TraceLine::AddPoint}. Obiekt mo¿e wyœwietlaæ i ukrywaæ markery, ustawiaæ kolor ka¿dego segmentu. Doskonale nadaje siê do wizualizacji miejsc, w których trzeba œledziæ po³o¿enie przesuwaj¹cego siê obiektu. W obszarze renderowania implementuje w³asn¹ metodê \textit{Render}.
 
 \subsubsection{ft:Avatar}
-W kontekœcie wizualizacji jest to obiekt graficzny z najbardziej rozbudowan¹ struktur¹ renderowania. Obiekt \textit{ft::Avatar} posiada trzy mo¿liwoœci renderowania: renderowanie szkieletu, renderowanie ograniczeñ ka¿dej koœci lub renderowanie siatki modelu (mesha). Dodatkowo ze wzglêdu na z³o¿onoœæ siatki modelu wprowadzono mo¿liwoœæ renderowania modelu przy u¿yciu vertex shadera. Po wyborze metody renderowania Avatara dochodzi jeszcze renderowanie cienia obiektu, które docelowo powinno byæ realizowane jako globalna metoda renderowania cienia (np. przez \textit{ft::SceneManager})
+W kontekœcie wizualizacji jest to obiekt graficzny z najbardziej rozbudowan¹ struktur¹ renderowania. Obiekt \textit{ft::Avatar} posiada trzy mo¿liwoœci renderowania: renderowanie szkieletu, renderowanie ograniczeñ ka¿dej koœci lub renderowanie siatki modelu (mesha). Dodatkowo ze wzglêdu na z³o¿onoœæ siatki modelu wprowadzono mo¿liwoœæ renderowania modelu przy u¿yciu vertex shadera. Po wyborze metody renderowania Avatara dochodzi jeszcze renderowanie cienia obiektu, które docelowo powinno byæ realizowane jako globalna metoda renderowania cienia (np. przez \textit{ft::VisualizationManager})
 
 \begin{figure}[!h]
   \begin{center}
@@ -251,8 +251,8 @@ W kontekœcie wizualizacji jest to obiekt graficzny z najbardziej rozbudowan¹ str
 \subsubsection{ft::MenuManager}
 Zarz¹dza kolekcj¹ obiektów typu \textit{ft::MenuItem}. Tworzy menu graficzne na podstawie definicji w pliku konfiguracyjnym. Obs³uguje komunikaty z zewn¹trz od obiektu \textit{ft::ControlManager} i z lokalnych obiektów \textit{ft::MenuItem} oraz generuje komunikat do systemu o wciœniêciu konkretnego przycisku w menu (MSG\_MENU\_ITEM\_SELECTED) dla wszystkich zarejestrowanych obiektów nas³uchuj¹cych. Ze wzglêdu na interakcjê przy pomocy klawiatury i myszy, korzysta z \textit{ft::InputManagera} przy obs³udze komunikatów z tych urz¹dzeñ.
 
-\subsubsection{ft::SceneManager}
-Centralny element zarz¹dzania elementami graficznymi sceny. Realizuje komunikacjê z pozosta³ymi niegraficznymi elementami systemu. Obiekt \textit{ft::SceneManager} jest odpowiedzialny za renderowanie wszystkich obiektów graficznych typu \textit{ft:SceneObject}, przy pomocy metody \textit{Render}. Wszystkie obiekty, które maj¹ byæ automatycznie renderowane musz¹ byæ uprzednio zarejestrowane do renderowania metod¹ \textit{ft::SceneManager::AddObject}. 	
+\subsubsection{ft::VisualizationManager}
+Centralny element zarz¹dzania elementami graficznymi sceny. Realizuje komunikacjê z pozosta³ymi niegraficznymi elementami systemu. Obiekt \textit{ft::VisualizationManager} jest odpowiedzialny za renderowanie wszystkich obiektów graficznych typu \textit{ft:SceneObject}, przy pomocy metody \textit{Render}. Wszystkie obiekty, które maj¹ byæ automatycznie renderowane musz¹ byæ uprzednio zarejestrowane do renderowania metod¹ \textit{ft::VisualizationManager::AddObject}. 	
 
 \subsubsection{ft::OGLContext}
 Tworzy zawartoœæ renderowania (prymitywy graficzne) przy pomocy API OpenGL. Buduje wizualne, trwa³e elementy sceny (pod³oga, logo), korzysta z tekstur obiektu \textit{ft::TextureManager}.

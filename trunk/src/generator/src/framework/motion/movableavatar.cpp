@@ -27,7 +27,7 @@ MovableAvatar::MovableAvatar(CalModel* calModel, CalCoreModel* calCoreModel, con
     if (TRACE)
     {
         tracer_start_pos = new TraceLine("start_pos" + toString());
-        SceneManager::getInstance()->AddObject(tracer_start_pos);
+        VisualizationManager::getInstance()->AddObject(tracer_start_pos);
 
         tracer_start_pos->AddPoint(getStartPosition());
         tracer_start_pos->AddPoint(CalVector(0,70,0));
@@ -44,7 +44,7 @@ MovableAvatar::~MovableAvatar()
     if (tracer_start_pos != NULL)
     {
         tracer_start_pos->ClearTrace();
-        SceneManager::getInstance()->RemoveObject(tracer_start_pos);
+        VisualizationManager::getInstance()->RemoveObject(tracer_start_pos);
     }
 }
 
