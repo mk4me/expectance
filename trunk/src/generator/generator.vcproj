@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="windows-1250"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
@@ -70,7 +70,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d_d.lib"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d_d.lib glew32d.lib"
 				OutputFile="../../bin/Debug/generator.exe"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
@@ -162,7 +162,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d.lib"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d.lib glew32.lib"
 				OutputFile="../../bin/Release/generator.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -513,10 +513,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\scene\glew.c"
-					>
-				</File>
-				<File
 					RelativePath=".\src\framework\scene\line.cpp"
 					>
 				</File>
@@ -564,22 +560,6 @@
 					RelativePath=".\src\framework\scene\traceline.h"
 					>
 				</File>
-				<Filter
-					Name="GL"
-					>
-					<File
-						RelativePath=".\src\framework\scene\GL\glew.h"
-						>
-					</File>
-					<File
-						RelativePath=".\src\framework\scene\GL\glxew.h"
-						>
-					</File>
-					<File
-						RelativePath=".\src\framework\scene\GL\wglew.h"
-						>
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="utility"

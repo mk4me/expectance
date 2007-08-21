@@ -18,7 +18,7 @@
 #include <vector>
 //#include <GL/gl.h>
 //#include <GL/glu.h>
-#include "../scene/GL/glew.h"
+#include "glew/include/GL/glew.h"
 #include <GL/glut.h>
 
 #include "cal3d/cal3d.h"
