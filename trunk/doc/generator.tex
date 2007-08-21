@@ -111,26 +111,26 @@ Ilustracja struktury powi¹zañ dotycz¹cych animacji znajduje sie na rysunku \ref{
 \end{figure}
 
 
-\section{Modu³ ControlManager}
-Modu³ ControlManager jest jednym z bazowych modu³ów Generatora.  Do jego g³ównych zadañ nale¿y odœwie¿anie obiektów w ka¿dej klatce symulacji (frame) oraz rozsy³anie wiadomoœci do zainteresowanych obiektów.
+\section{Modu³ UpdateManager}
+Modu³ UpdateManager jest jednym z bazowych modu³ów Generatora.  Do jego g³ównych zadañ nale¿y odœwie¿anie obiektów w ka¿dej klatce symulacji (frame) oraz rozsy³anie wiadomoœci do zainteresowanych obiektów.
 
-G³ówn¹ klas¹ modu³u jest \textit{ControlManager}, która posiada tylko jedn¹ instancjê (Singleton).  
+G³ówn¹ klas¹ modu³u jest \textit{UpdateManager}, która posiada tylko jedn¹ instancjê (Singleton).  
 
-Aby obiekty mog³y byæ odœwie¿anie przez \textit{ControlManagera} lub odbieraæ wiadomoœci musz¹ byæ pochodnymi klasy \textit{ControlObject} oraz byæ zarejestrowanie w ControlManager'ze.
+Aby obiekty mog³y byæ odœwie¿anie przez \textit{UpdateManagera} lub odbieraæ wiadomoœci musz¹ byæ pochodnymi klasy \textit{UpdateObject} oraz byæ zarejestrowanie w UpdateManager'ze.
 
 \subsection{Odœwie¿anie obiektów}
-Aby dany obiekt  móg³ reagowaæ na odœwie¿enie w ka¿dej klatce animacji powinien pokryæ metodê \textit{OnUpdate (float elapsedTime)} z klasy bazowej ControlObject.  Parametr \textit{elapsedTime} okreœla ile czasu minê³o od poprzedniego odœwie¿enia. ControlManager bêdzie wywo³ywa³ metodê \textit{elapsedTime} na wszystkich zarejestrowanych obiektach zgodnie z parametrami okreœlonymi dla aktualnej symulacji (klasa \textit{ft::Simulation}).
+Aby dany obiekt  móg³ reagowaæ na odœwie¿enie w ka¿dej klatce animacji powinien pokryæ metodê \textit{OnUpdate (float elapsedTime)} z klasy bazowej UpdateObject.  Parametr \textit{elapsedTime} okreœla ile czasu minê³o od poprzedniego odœwie¿enia. UpdateManager bêdzie wywo³ywa³ metodê \textit{elapsedTime} na wszystkich zarejestrowanych obiektach zgodnie z parametrami okreœlonymi dla aktualnej symulacji (klasa \textit{ft::Simulation}).
 \subsection{Rozsy³anie wiadomoœci}
-ControlManager rozsy³a wiadomoœci do zarejestrowanych obiektów za pomoc¹ obiektów klasy \textit{ft::Message}.  Wywo³uje w tym celu na obiektach funkcje \textit{OnMessage(Message* msg)}, która jest zdefiniowana w klasie \textit{ControlObject}. Aby obiekt móg³ zareagowaæ na wiadomoœæ powinien on pokryæ metodê \textit{OnMessage} i zaimplementowaæ w niej rozpoznanie typu wiadomoœci oraz odpowiednie akcje.
+UpdateManager rozsy³a wiadomoœci do zarejestrowanych obiektów za pomoc¹ obiektów klasy \textit{ft::Message}.  Wywo³uje w tym celu na obiektach funkcje \textit{OnMessage(Message* msg)}, która jest zdefiniowana w klasie \textit{UpdateObject}. Aby obiekt móg³ zareagowaæ na wiadomoœæ powinien on pokryæ metodê \textit{OnMessage} i zaimplementowaæ w niej rozpoznanie typu wiadomoœci oraz odpowiednie akcje.
 
-Ka¿dy obiekt w systemie mo¿e wys³aæ wiadomoœæ przez ControlManager'a u¿ywaj¹c metody \textit{SendMessage(Message* msg, bool deleteAfterSent)}.  Jako parametr \textit{msg} nale¿y podstawiæ w³aœciwy obiekt typu \textit{Message}, natomiast \textit{deleteAfterSend} okreœla czy ControlManager ma zwolniæ pamiêæ dla obiektu \textit{msg} po rozes³aniu go do zarejestrowanych obiektów.
+Ka¿dy obiekt w systemie mo¿e wys³aæ wiadomoœæ przez UpdateManager'a u¿ywaj¹c metody \textit{SendMessage(Message* msg, bool deleteAfterSent)}.  Jako parametr \textit{msg} nale¿y podstawiæ w³aœciwy obiekt typu \textit{Message}, natomiast \textit{deleteAfterSend} okreœla czy UpdateManager ma zwolniæ pamiêæ dla obiektu \textit{msg} po rozes³aniu go do zarejestrowanych obiektów.
 
 Ilustracja przep³ywu sterowania podczas rozsy³ania wiadomoœci znajduje siê na rysunku \ref{rys_3}.
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=1\textwidth]{./img/controlManager.png}
   \end{center}
-  \caption{Przesy³anie wiadomoœci miêdzy obiektami implementuj¹cymi interfejs wiadomoœci ControlManagera}
+  \caption{Przesy³anie wiadomoœci miêdzy obiektami implementuj¹cymi interfejs wiadomoœci UpdateManagera}
   \label{rys_3}
 \end{figure}
 
@@ -249,7 +249,7 @@ W kontekœcie wizualizacji jest to obiekt graficzny z najbardziej rozbudowan¹ str
 £aduje, przechowuje i udostêpnia  innym obiektom tektury wczytywane z plików. Pozwala przetwarzaæ pliki graficzne w formatach PCX, BMP i TGA (wy³¹cznie 24 bitowe). Manager tekstur jest ³atwo rozszerzalny i pozwala skorzystaæ z plików graficznych w innych formatach przez prost¹ modyfikacjê jednej metody  \textit{ft::TextureManager::LoadTexture}. Poprzez globaln¹ mapê tekstur eliminuje potrzebê wielokrotnego wczytywania tych samych plików teksturami. Aby korzystaæ z w³aœciwoœci tego obiektu musi byæ aktywny kontekst OpenGL do przetwarzania tekstur (glEnable(GL\_TEXTURE)).  
 
 \subsubsection{ft::MenuManager}
-Zarz¹dza kolekcj¹ obiektów typu \textit{ft::MenuItem}. Tworzy menu graficzne na podstawie definicji w pliku konfiguracyjnym. Obs³uguje komunikaty z zewn¹trz od obiektu \textit{ft::ControlManager} i z lokalnych obiektów \textit{ft::MenuItem} oraz generuje komunikat do systemu o wciœniêciu konkretnego przycisku w menu (MSG\_MENU\_ITEM\_SELECTED) dla wszystkich zarejestrowanych obiektów nas³uchuj¹cych. Ze wzglêdu na interakcjê przy pomocy klawiatury i myszy, korzysta z \textit{ft::InputManagera} przy obs³udze komunikatów z tych urz¹dzeñ.
+Zarz¹dza kolekcj¹ obiektów typu \textit{ft::MenuItem}. Tworzy menu graficzne na podstawie definicji w pliku konfiguracyjnym. Obs³uguje komunikaty z zewn¹trz od obiektu \textit{ft::UpdateManager} i z lokalnych obiektów \textit{ft::MenuItem} oraz generuje komunikat do systemu o wciœniêciu konkretnego przycisku w menu (MSG\_MENU\_ITEM\_SELECTED) dla wszystkich zarejestrowanych obiektów nas³uchuj¹cych. Ze wzglêdu na interakcjê przy pomocy klawiatury i myszy, korzysta z \textit{ft::InputManagera} przy obs³udze komunikatów z tych urz¹dzeñ.
 
 \subsubsection{ft::VisualizationManager}
 Centralny element zarz¹dzania elementami graficznymi sceny. Realizuje komunikacjê z pozosta³ymi niegraficznymi elementami systemu. Obiekt \textit{ft::VisualizationManager} jest odpowiedzialny za renderowanie wszystkich obiektów graficznych typu \textit{ft:SceneObject}, przy pomocy metody \textit{Render}. Wszystkie obiekty, które maj¹ byæ automatycznie renderowane musz¹ byæ uprzednio zarejestrowane do renderowania metod¹ \textit{ft::VisualizationManager::AddObject}. 	
