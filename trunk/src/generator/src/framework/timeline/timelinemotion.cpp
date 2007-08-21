@@ -293,7 +293,10 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
         {
             if (! m_motionRef->isNullAnim() )
             {
-                avatar->GetCalModel()->getMixer()->executeAction(m_motionRef->getAnimID(), 0.0f, 0.0f);
+                float fade_out = 0;
+//                if (this->getBlender() != NULL)
+//                    fade_out = this->getBlender()->getOverlap();
+                avatar->GetCalModel()->getMixer()->executeAction(m_motionRef->getAnimID(), 0.0f, fade_out);
             }
         }
         setAnimStarted(true);

@@ -236,7 +236,7 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
     {
         TimeLineMotion* timeLineMotion = new TimeLineMotion();
         timeLineMotion->setMotion(mot);
-        timeLineMotion->setBlender(new TimeLineBlender(0.3f));
+//        timeLineMotion->setBlender(new TimeLineBlender(1.0f));
         timeLine->AddObject(timeLineMotion);
 
     }
@@ -246,9 +246,10 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
     if (mot != NULL)
     {
         TimeLineMotion* timeLineMotion = new TimeLineMotion();
-        timeLineMotion->setLoopNumber(3);
+        timeLineMotion->setLoopNumber(2);
         timeLineMotion->setAnimLoop(true);
         timeLineMotion->setMotion(mot);
+//        timeLineMotion->setBlender(new TimeLineBlender(1.0f));
         timeLine->AddObject(timeLineMotion);
     }
 
