@@ -4,7 +4,7 @@ o----------------------------------------------------------------o
 o----------------------------------------------------------------o
 
 
-------------------------------
+----------------------------------------
 1. How To Use  SVN repository
 
 a) when you want to introduce your modifications to SVN:
@@ -21,7 +21,7 @@ a) when you want to introduce your modifications to SVN:
 	on your PC (then check if compilation succeed and application runs properly)
  
 ----------------------------------------
-Documentation 
+2. Documentation 
 
 Prerequisities
 1. download the newest version of software: 
@@ -31,3 +31,13 @@ c) HTML Workshop (default location C:\Program Files\HTML Help Workshop\ in MS Wi
 d) eventually mscgen (for sequence diagrams) from http://www.mcternan.me.uk/mscgen/index.html and copy it under Graphviz\bin directory
 2. check localization of your installed tools and correct values of HHC_LOCATION, MSCGEN_PATH, DOT_PATH from Generator.doxy file
 
+
+----------------------------------------
+3. How To Use Mantis
+
+Mantis is used for bugtracking.
+
+Assigned issue to person means that this person has plan of working on this bug (immediately 
+or in the near future). But it doesn't mean that this person is working on this issue 
+at the moment. To mark issue as being cuurently worked on the assigned person should change 
+its status to 'ASSIGNED'. 
