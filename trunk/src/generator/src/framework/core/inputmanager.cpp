@@ -49,7 +49,7 @@ void InputManager::OnKey(unsigned char key, int x, int y)
   switch(key)
   {
     case 't':
-      ControlManager::getInstance()->SendMessage(new Message(MSG_TEST), true);
+      UpdateManager::getInstance()->SendMessage(new Message(MSG_TEST), true);
        break;     
     // test for quit event
     case 27:
@@ -58,21 +58,21 @@ void InputManager::OnKey(unsigned char key, int x, int y)
       exit(0);
       break;
     case ' ':
-      ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_PAUSE), true);
+      UpdateManager::getInstance()->SendMessage(new Message(MSG_CONTROL_PAUSE), true);
       break;
     case '*':
-      ControlManager::getInstance()->setTimeScale(  ControlManager::getInstance()->getTimeScale() * 1.1f);
+      UpdateManager::getInstance()->setTimeScale(  UpdateManager::getInstance()->getTimeScale() * 1.1f);
       break;
     case '/':
-      ControlManager::getInstance()->setTimeScale(  ControlManager::getInstance()->getTimeScale() / 1.1f);
+      UpdateManager::getInstance()->setTimeScale(  UpdateManager::getInstance()->getTimeScale() / 1.1f);
       break;
     case 'r':
     case 'R':
-      ControlManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_RENDER_METHOD), true);  
+      UpdateManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_RENDER_METHOD), true);  
       break;
 	case 's':
 	case 'S':
-      ControlManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_SHADOW), true);  
+      UpdateManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_SHADOW), true);  
   	  break;
     case 'f':
 	case 'F':
@@ -90,7 +90,7 @@ void InputManager::OnKey(unsigned char key, int x, int y)
       if((key >= '0') && (key <= '9'))
       {
         float lod = (key == '0') ? 1.0f : (key - '0') * 0.1f;
-        ControlManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_LOD, new MessageParam(lod)), true);
+        UpdateManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_LOD, new MessageParam(lod)), true);
       }
 	  Camera::getInstance()->OnKey(key, x, y);
       break;
@@ -111,16 +111,16 @@ void InputManager::OnSpecial(int key, int x, int y)
   switch(key) 
   {
     case GLUT_KEY_UP:
-      ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_START, new MessageParam("FirstAvatar")), true);
+      UpdateManager::getInstance()->SendMessage(new Message(MSG_CONTROL_START, new MessageParam("FirstAvatar")), true);
       break;
     case GLUT_KEY_DOWN:
-       ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_STOP, new MessageParam("FirstAvatar")), true);
+       UpdateManager::getInstance()->SendMessage(new Message(MSG_CONTROL_STOP, new MessageParam("FirstAvatar")), true);
        break;
     case GLUT_KEY_RIGHT:
-      ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_TURN_RIGHT, new MessageParam("FirstAvatar")), true);
+      UpdateManager::getInstance()->SendMessage(new Message(MSG_CONTROL_TURN_RIGHT, new MessageParam("FirstAvatar")), true);
       break;
     case GLUT_KEY_LEFT:
-      ControlManager::getInstance()->SendMessage(new Message(MSG_CONTROL_TURN_LEFT, new MessageParam("FirstAvatar")), true);
+      UpdateManager::getInstance()->SendMessage(new Message(MSG_CONTROL_TURN_LEFT, new MessageParam("FirstAvatar")), true);
       break;
     default:
 		Camera::getInstance()->OnSpecial(key, x, y);

@@ -156,7 +156,7 @@ void MovableAvatar::StopTimeLine()
 
 /**
  * \brief Updates currently assigned TimeLine object (if any). 
- * It is called for each frame updated from ControlManager.
+ * It is called for each frame updated from UpdateManager.
  *
  * \param float elapsedSeconds - time elapsed sice last update
  **/
@@ -210,7 +210,7 @@ void MovableAvatar::Init()
 }
 
 /**
- * \brief This method is called when new frame is updated from ft::ControlManager
+ * \brief This method is called when new frame is updated from ft::UpdateManager
  *
  * \param float elapsedSeconds - time elapsed sice last update
  **/
@@ -285,9 +285,9 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
 }
 
 /**
- * \brief This method is called when message is sent to this object from ft::ControlManager
+ * \brief This method is called when message is sent to this object from ft::UpdateManager
  *
- * \param ft::Message * msg - message from ft::ControlManager
+ * \param ft::Message * msg - message from ft::UpdateManager
  **/
 void MovableAvatar::OnMessage(Message* msg)
 {

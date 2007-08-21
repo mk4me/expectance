@@ -35,8 +35,8 @@ void IdleFunc()
   // redirect to the viewer instance
   //theViewer.OnIdle(); //sman or contr man
   
-  //update ControlManager
-  ControlManager::getInstance()->OnUpdate();
+  //update UpdateManager
+  UpdateManager::getInstance()->OnUpdate();
   glutPostRedisplay();
 }
 

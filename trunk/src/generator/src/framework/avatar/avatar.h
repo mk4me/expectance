@@ -7,7 +7,7 @@
 #define _GEN_AVATAR_H
 
 #include "cal3d/cal3d.h"
-#include "../core/controlobject.h"
+#include "../core/UpdateObject.h"
 #include "../scene/sceneobject.h"
 #include "../scene/OGLContext.h"
 
@@ -19,7 +19,7 @@ namespace ft
 	/*! Base class for all humanoid characters managed by Generator
      * \param CalModel * calModel -- model in Cal3d which is referenced by this avatar
 	 **/
-    class Avatar : public ControlObject, public SceneObject
+    class Avatar : public UpdateObject, public SceneObject
     {
     public:
 		Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
@@ -32,7 +32,7 @@ namespace ft
         CalCoreModel* GetCalCoreModel();
 
 
-        void OnMessage(Message* msg);  // OVERRIDEN, receives a message from ControlManager
+        void OnMessage(Message* msg);  // OVERRIDEN, receives a message from UpdateManager
 		virtual bool Render();
 
         void ChangeRenderMethod();

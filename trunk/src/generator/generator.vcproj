@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="windows-1250"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
@@ -433,22 +433,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\core\controlmanager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\controlmanager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\controlobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\controlobject.h"
-					>
-				</File>
-				<File
 					RelativePath=".\src\framework\core\global.h"
 					>
 				</File>
@@ -478,6 +462,22 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\core\simulation.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\core\updatemanager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\core\updatemanager.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\core\updateobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\core\updateobject.h"
 					>
 				</File>
 			</Filter>

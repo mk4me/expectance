@@ -12,7 +12,7 @@
 #include "../ui/menumanager.h"
 #include "../scene/visualizationmanager.h"
 #include "../scene/oglcontext.h"
-#include "controlmanager.h"
+#include "UpdateManager.h"
 #include "message.h"
 
 namespace ft

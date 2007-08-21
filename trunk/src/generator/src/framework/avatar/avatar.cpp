@@ -111,9 +111,9 @@ CalCoreModel* Avatar::GetCalCoreModel()
 }
 
 /**
- * \brief This method is called when message is sent to this object from ft::ControlManager
+ * \brief This method is called when message is sent to this object from ft::UpdateManager
  *
- * \param ft::Message * msg - message from ft::ControlManager
+ * \param ft::Message * msg - message from ft::UpdateManager
  **/
 void Avatar::OnMessage(Message* msg)
 {

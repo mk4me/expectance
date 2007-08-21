@@ -65,7 +65,7 @@ namespace ft
     /* Base class for message */
           
 	/**
-	 * represents messages sent by ft::ControlManager to ft::ControlObject -s
+	 * represents messages sent by ft::UpdateManager to ft::UpdateObject -s
 	 **/
     class Message
     {

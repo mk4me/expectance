@@ -30,8 +30,8 @@ namespace ft
 
         void Init();
 
-        virtual void OnUpdate(float elapsedSeconds);  // OVERRIDEN, updates by ControlManager 
-        void OnMessage(Message* msg);  // OVERRIDEN, receives a message from ControlManager
+        virtual void OnUpdate(float elapsedSeconds);  // OVERRIDEN, updates by UpdateManager 
+        void OnMessage(Message* msg);  // OVERRIDEN, receives a message from UpdateManager
 
         bool AddMotion(Motion* motion);
         bool  RemoveMotion(Motion* motion);

@@ -7,22 +7,22 @@
 #define _GEN_CONTROL_MANAGER_H
 
 #include "message.h"
-#include "controlobject.h" 
+#include "UpdateObject.h" 
 #include "simulation.h"
 #include <map>
 
 namespace ft
 {
 	/**
-	 * Class ControlManager: manages messages flow and updating objects 
+	 * Class UpdateManager: manages messages flow and updating objects 
 	 **/
-    class ControlManager
+    class UpdateManager
     {
     public:
-        ControlManager(void) { /*empty*/}
-	    virtual ~ControlManager(void) { /*empty*/}
+        UpdateManager(void) { /*empty*/}
+	    virtual ~UpdateManager(void) { /*empty*/}
         
-        static ControlManager* getInstance();
+        static UpdateManager* getInstance();
         static void DestroyInstance();
 
         void Init();
@@ -31,8 +31,8 @@ namespace ft
 
         void SendMessage(Message* msg, bool deleteAfterSent);  //request to send a message to registered objects
 
-        bool AddControlObject(ControlObject* pObj);
-        bool  RemoveControlObject(ControlObject* pObj);
+        bool AddUpdateObject(UpdateObject* pObj);
+        bool  RemoveUpdateObject(UpdateObject* pObj);
 
         void setTimeScale(float timeScale) { m_timeScale = timeScale; }
         float getTimeScale() { return m_timeScale; }
@@ -44,7 +44,7 @@ namespace ft
 
     private:
         
-        static ControlManager* m_instance;
+        static UpdateManager* m_instance;
 
         unsigned int m_lastTick;
 
@@ -53,7 +53,7 @@ namespace ft
         int m_fps;
         float m_timeScale;
 
-        std::map<std::string,ControlObject*> m_objects;
+        std::map<std::string,UpdateObject*> m_objects;
 
         // focused object 
 

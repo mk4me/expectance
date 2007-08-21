@@ -84,7 +84,7 @@ void VisualizationManager::OnRender()
 	glutSwapBuffers();
 
 	// increase frame counter
-	ft::ControlManager::getInstance()->increraseFramesCounter();
+	ft::UpdateManager::getInstance()->increraseFramesCounter();
 }
 
 void VisualizationManager::CleanUp()

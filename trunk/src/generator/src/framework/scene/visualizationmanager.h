@@ -16,7 +16,7 @@
 #include "texturemanager.h"
 #include "../ui/menumanager.h"
 #include "../core/application.h"
-#include "../core/controlmanager.h"
+#include "../core/UpdateManager.h"
 
 
 
@@ -25,7 +25,7 @@ namespace ft
 	//! A VisualizationManager class
 	/*!
 	 *	This class is responsible for registering, rendering and communication with the rest parts of the system in the scope of rendering. 
-	 *  It creates visual scene. Registers all requiring object to rendering pipeline from messages from InputManager and sends by ControlManager 
+	 *  It creates visual scene. Registers all requiring object to rendering pipeline from messages from InputManager and sends by UpdateManager 
 	 *  messages to interested listeners.  
 	 */ 
 	class VisualizationManager

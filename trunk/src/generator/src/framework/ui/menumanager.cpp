@@ -192,7 +192,7 @@ void MenuManager::OnMouseButtonUp(int button, int x, int y)
 		{
 			m_avtiveButton = m_releasedButon;
 			std::string id = m_mainMenu->getSubMenu().at(m_avtiveButton)->getMenuName();
-			ControlManager::getInstance()->SendMessage(new Message(MSG_MENU_ITEM_SELECTED, new MessageParam(id)), true);
+			UpdateManager::getInstance()->SendMessage(new Message(MSG_MENU_ITEM_SELECTED, new MessageParam(id)), true);
 		}
 		std::cout <<"Button released "<< btn << endl;
 	}

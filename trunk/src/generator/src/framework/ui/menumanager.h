@@ -6,7 +6,7 @@
 #ifndef _GEN_MENU_MANAGER_H
 #define _GEN_MENU_MANAGER_H
 
-#include "../core/controlmanager.h"
+#include "../core/UpdateManager.h"
 #include "../core/config.h"
 #include "../utility/stringhelper.h"
 #include "../scene/oglcontext.h"
@@ -21,7 +21,7 @@ namespace ft
 	 *	This class is responsible for construction and management of menu and   
 	 *  communication with the other parts of the system in the scope of rendering. 
 	 *  It creates menu on the base of configuration file. Receives messages from 
-	 *  InputManager and sends by ControlManager messages to interested listeners.  
+	 *  InputManager and sends by UpdateManager messages to interested listeners.  
 	 */ 
 	class MenuManager
     {
@@ -49,7 +49,7 @@ namespace ft
 		void OnMouseButtonDown(int button, int x, int y);
 		//! check and activate selected MenuItem
 		/*! checks if MenuItem is selected and set permanently information about it (for rendering purposes) 
-		 * ControlManager informs all interested listeners about it
+		 * UpdateManager informs all interested listeners about it
 		 */
         void OnMouseButtonUp(int button, int x, int y);
 

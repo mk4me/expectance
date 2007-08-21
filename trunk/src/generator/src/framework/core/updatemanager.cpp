@@ -3,36 +3,36 @@
  * author: abak
  */
 
-#include "controlmanager.h"
+#include "UpdateManager.h"
 #include "../utility/debug.h"
 
 using namespace ft;
 using namespace std;
 
 
-ControlManager* ControlManager::m_instance = NULL;
+UpdateManager* UpdateManager::m_instance = NULL;
 
 /**
- * \brief Returns the only instance of ft::ControlManager (creates it at first call to this method)
+ * \brief Returns the only instance of ft::UpdateManager (creates it at first call to this method)
  *
- * \return ft::ControlManager * - the only instance of ControlManager
+ * \return ft::UpdateManager * - the only instance of UpdateManager
  **/
-ControlManager* ControlManager::getInstance()
+UpdateManager* UpdateManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        DBG("ControlManager::getInstace(): instance of ControlManager created ");
-        m_instance = new ControlManager();
+        DBG("UpdateManager::getInstace(): instance of UpdateManager created ");
+        m_instance = new UpdateManager();
     }
 
     return m_instance;
 }
 
 /**
- * \brief Initializes ControlManager
+ * \brief Initializes UpdateManager
  *
  **/
-void ControlManager::Init()
+void UpdateManager::Init()
 {
   m_lastTick = 0;
 
@@ -47,10 +47,10 @@ void ControlManager::Init()
 }
 
 /**
- \brief Releases all resources related to ControlManager
+ \brief Releases all resources related to UpdateManager
  *
  **/
-void ControlManager::DestroyInstance()
+void UpdateManager::DestroyInstance()
 {
     if (m_instance != NULL)
         delete m_instance;
@@ -61,7 +61,7 @@ void ControlManager::DestroyInstance()
  * \brief This method is called when new frame is updated
  *
  **/
-void ControlManager::OnUpdate()
+void UpdateManager::OnUpdate()
 {
       // get the current tick value
   unsigned int tick = ft::Simulation::getTick();
@@ -89,19 +89,19 @@ void ControlManager::OnUpdate()
 }
 
 /**
- * \brief This method is used to send new message to objectes registered in ControlManager
+ * \brief This method is used to send new message to objectes registered in UpdateManager
  *
  * \param ft::Message * msg - message to send
  * \param bool deleteAfterSent - defines if message object msg should be deleted after sending
  **/
-void ControlManager::SendMessage(Message* msg, bool deleteAfterSent)
+void UpdateManager::SendMessage(Message* msg, bool deleteAfterSent)
 {
     if (DEBUG_MESSAGES)
-        std::cout << "ControlManager::SendMessage: "<< Message::_GET_MSG_NAME(msg->getType())  << std::endl;
+        std::cout << "UpdateManager::SendMessage: "<< Message::_GET_MSG_NAME(msg->getType())  << std::endl;
 
-    //TODO: abak:  this update should be synchronized with adding and removing ControlObjects
+    //TODO: abak:  this update should be synchronized with adding and removing UpdateObjects
 
-   	std::map<std::string,ControlObject*>::iterator it=m_objects.begin();
+   	std::map<std::string,UpdateObject*>::iterator it=m_objects.begin();
 	for( ; it != m_objects.end(); ++it )
     {
         it->second->OnMessage(msg);
@@ -117,62 +117,62 @@ void ControlManager::SendMessage(Message* msg, bool deleteAfterSent)
 }
 
 /**
- * \brief Register ControlObject in ControlManager
+ * \brief Register UpdateObject in UpdateManager
  *
- * \param ft::ControlObject * pObj - object that will be registered in ControlManager
+ * \param ft::UpdateObject * pObj - object that will be registered in UpdateManager
  * \return bool - true if registration succeed, false otherwise
  **/
-bool ControlManager::AddControlObject(ControlObject* pObj)
+bool UpdateManager::AddUpdateObject(UpdateObject* pObj)
 {
 	std::string _id = pObj->getID();
 	if (!_id.empty())
 	{
-	 	std::map<std::string,ControlObject*>::iterator it = m_objects.find(_id);
+	 	std::map<std::string,UpdateObject*>::iterator it = m_objects.find(_id);
 
 		if ( it!=m_objects.end()) { 
-            cout << "ERR: ControlManager::AddControlObject object " << _id << " already added to ControlManager " << std::endl;
+            cout << "ERR: UpdateManager::AddUpdateObject object " << _id << " already added to UpdateManager " << std::endl;
 			return false;
 		}
 	    m_objects.insert( std::make_pair( std::string(_id), pObj) );
 	}
-    cout << " ControlManager::AddControlObject object " << _id << " added to ControlManager " << std::endl;
+    cout << " UpdateManager::AddUpdateObject object " << _id << " added to UpdateManager " << std::endl;
 	return true;
 }
 
 /**
- * \brief Unregisters ControlObject from ControlManager
+ * \brief Unregisters UpdateObject from UpdateManager
  *
- * \param ft::ControlObject * pObj - object that should be unregistered in ControlManager
+ * \param ft::UpdateObject * pObj - object that should be unregistered in UpdateManager
  * \return bool - true if object has been unregistered, false otherwise
  **/
-bool ControlManager::RemoveControlObject(ControlObject* pObj)
+bool UpdateManager::RemoveUpdateObject(UpdateObject* pObj)
 {
 	std::string _id = pObj->getID();
 
     if (!_id.empty())
 	{
-	 	std::map<std::string,ControlObject*>::iterator it = m_objects.find(_id);
+	 	std::map<std::string,UpdateObject*>::iterator it = m_objects.find(_id);
 		if ( it!=m_objects.end()) { 
             m_objects.erase(it);
-            cout << "ControlManager::RemoveControlObject object " << _id << " removed form ControlManager " << std::endl;
+            cout << "UpdateManager::RemoveUpdateObject object " << _id << " removed form UpdateManager " << std::endl;
 			return true;
 		}
 	    m_objects.insert( std::make_pair( std::string(_id), pObj) );
 	}
-    cout << "ERR: ControlManager::RemoveControlObject object " << _id << " not found in Control Manager " << std::endl;
+    cout << "ERR: UpdateManager::RemoveUpdateObject object " << _id << " not found in Control Manager " << std::endl;
 	return false;
 }
 
 /**
- * \brief Prints debug information describing ControlManager on output console
+ * \brief Prints debug information describing UpdateManager on output console
  *
  **/
-void ControlManager::Dump()
+void UpdateManager::Dump()
 {
-    cout << "Dump ControlManager content: " << std::endl;
+    cout << "Dump UpdateManager content: " << std::endl;
     cout << "- objects: " << std::endl;
 
-	std::map<std::string,ControlObject*>::iterator it=m_objects.begin();
+	std::map<std::string,UpdateObject*>::iterator it=m_objects.begin();
 	for( ; it != m_objects.end(); ++it ) 
     {
         cout << " - - id " << it->first << std::endl;
@@ -184,11 +184,11 @@ void ControlManager::Dump()
  *
  * \param float elapsedSeconds - time elapsed since last frame (since last update)
  **/
-void ControlManager::UpdateObjects(float elapsedSeconds)
+void UpdateManager::UpdateObjects(float elapsedSeconds)
 {
-    //TODO: abak:  this update should be synchronized with adding and removing ControlObjects
+    //TODO: abak:  this update should be synchronized with adding and removing UpdateObjects
 
-   	std::map<std::string,ControlObject*>::iterator it=m_objects.begin();
+   	std::map<std::string,UpdateObject*>::iterator it=m_objects.begin();
 	for( ; it != m_objects.end(); ++it )
     {
         it->second->OnUpdate(elapsedSeconds);
