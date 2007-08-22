@@ -17,12 +17,12 @@ TimeLine::TimeLine()
  * \brief Executes this timeline at current frame 
  *
  * \param float elapsedSeconds - time elapsed from previous frame
- * \param ft::Avatar * avatar - avatar to which this TimeLine is assigned
+ * \param ft::TimeLineContext * timeLineContext - TimeLineContext of avatar to which this TimeLine is assigned
  **/
-void TimeLine::Execute(float elapsedSeconds, Avatar* avatar)
+void TimeLine::Execute(float elapsedSeconds, TimeLineContext* timeLineContext)
 {
     m_currTime += elapsedSeconds;
 
     // TODO:  must be passed m_currTime to deeper motions
-    TimeLineMotion::Execute(elapsedSeconds, avatar);
+    TimeLineMotion::Execute(elapsedSeconds, timeLineContext);
 }

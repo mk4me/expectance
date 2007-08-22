@@ -116,13 +116,13 @@ void TimeLineMotion::Stop()
  * \brief Updates this TimeLineMotion at current frame
  *
  * \param float elapsedSeconds - time elapsed from previous frame
- * \param ft::Avatar * avatar - avatar to which this modifier is assigned
+* \param ft::TimeLineContext * timeLineContext - TimeLineContext of avatar to which this TimeLineMotion is assigned
  **/
-void TimeLineMotion::Execute(float elapsedSeconds, Avatar* avatar)
+void TimeLineMotion::Execute(float elapsedSeconds, TimeLineContext* timeLineContext)
 {
-    ExecuteTracks(elapsedSeconds, avatar);
-    bool anyStarted = ExecuteSubMotions(elapsedSeconds, avatar);
-    ExecuteAnim(elapsedSeconds, avatar);
+    ExecuteTracks(elapsedSeconds, timeLineContext);
+    bool anyStarted = ExecuteSubMotions(elapsedSeconds, timeLineContext);
+    ExecuteAnim(elapsedSeconds, timeLineContext);
 
     if (!anyStarted && !isAnimStarted())
     {
@@ -134,9 +134,9 @@ void TimeLineMotion::Execute(float elapsedSeconds, Avatar* avatar)
  * \brief Updates all tracks at current frame 
  *
  * \param float elapsedSeconds - time elapsed from previous frame
- * \param ft::Avatar * avatar - avatar to which this modifier is assigned
+* \param ft::TimeLineContext * timeLineContext - TimeLineContext of avatar to which this TimeLineMotion is assigned
  **/
-void TimeLineMotion::ExecuteTracks(float elapsedSeconds, Avatar* avatar)
+void TimeLineMotion::ExecuteTracks(float elapsedSeconds, TimeLineContext* timeLineContext)
 {
         //handle all tracks
    if (m_vTracks.size() > 0)
@@ -144,7 +144,7 @@ void TimeLineMotion::ExecuteTracks(float elapsedSeconds, Avatar* avatar)
        //execute every track
        for (int t=0; t<(int)m_vTracks.size(); t++)
        {
-           m_vTracks[t]->Execute(elapsedSeconds, avatar);
+           m_vTracks[t]->Execute(elapsedSeconds, timeLineContext);
        }
    }
 }
@@ -155,10 +155,10 @@ void TimeLineMotion::ExecuteTracks(float elapsedSeconds, Avatar* avatar)
  * \brief Updates all sub-motions at current frame
  *
  * \param float elapsedSeconds - time elapsed from previous frame
- * \param ft::Avatar * avatar - avatar to which this modifier is assigned
+* \param ft::TimeLineContext * timeLineContext - TimeLineContext of avatar to which this TimeLineMotion is assigned
  * \return bool - true if any submotion started, false if none submotion is started
  **/
-bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, Avatar* avatar)
+bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, TimeLineContext* timeLineContext)
 {
     bool anyStarted = false;
  
@@ -186,13 +186,13 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, Avatar* avatar)
             {
                 currMotion->setToFinish(true);
             }
-            currMotion->Execute(elapsedSeconds, avatar);
+            currMotion->Execute(elapsedSeconds, timeLineContext);
             anyStarted = true;
             
             
             bool nextMotionToStart = false;
 
-            if (!currMotion->isStarted() || IsBlendingToStart(currMotion, nextMotion, avatar))
+            if (!currMotion->isStarted() || IsBlendingToStart(currMotion, nextMotion, timeLineContext))
             {
                 nextMotionToStart = true;
             }
@@ -201,7 +201,7 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, Avatar* avatar)
             {
                 m_currSubMotion++;
                 nextMotion->Start();
-                nextMotion->Execute(elapsedSeconds, avatar);
+                nextMotion->Execute(elapsedSeconds, timeLineContext);
                 anyStarted = true; 
             }
             else
@@ -222,9 +222,9 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, Avatar* avatar)
  * \brief Updates motion (animation) related to this TimeLineMotion at current frame
  *
  * \param float elapsedSeconds - time elapsed from previous frame
- * \param ft::Avatar * avatar - avatar to which this modifier is assigned
+ * \param ft::TimeLineContext * timeLineContext - TimeLineContext of avatar to which this TimeLineMotion is assigned
  **/
-void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
+void TimeLineMotion::ExecuteAnim(float elapsedSeconds, TimeLineContext* timeLineContext)
 {
     if (m_motionRef == NULL)
         return;
@@ -232,11 +232,11 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
     if (isAnimStarted())
     {
                 int animId = m_motionRef->getAnimID();
-                CalCoreAnimation* anim = avatar->GetCalCoreModel()->getCoreAnimation(animId);
+                CalCoreAnimation* anim = timeLineContext->getAvatar()->GetCalCoreModel()->getCoreAnimation(animId);
 
                 m_animTime += elapsedSeconds;  //TODO: ABAK: consider other animation time detection (maybe by cla3d function)
 
-                float animTime = avatar->GetCalModel()->getMixer()->getAnimationTime();
+                float animTime = timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationTime();
                 float animDuration;
                 
                 if (m_motionRef->isNullAnim())
@@ -257,7 +257,7 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
                         //if m_loopNumber is -1 this means that this motion is infinitive
                         if ( isToFinish() || (  m_loopNumber>=0   &&    (m_currLoop >= (m_loopNumber-1)) ) )
                         {
-                            avatar->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
+                            timeLineContext->getAvatar()->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
                             std::cout << " anim stopped (cycled)" << std::endl;
                             setAnimStarted(false);
                         }
@@ -285,7 +285,7 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
         {
             if (! m_motionRef->isNullAnim() )
             {
-                avatar->GetCalModel()->getMixer()->blendCycle(m_motionRef->getAnimID(), 1.0f, 0.0f);
+                timeLineContext->getAvatar()->GetCalModel()->getMixer()->blendCycle(m_motionRef->getAnimID(), 1.0f, 0.0f);
             }
             m_currLoop = 0;
         }
@@ -296,7 +296,7 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
                 float fade_out = 0;
 //                if (this->getBlender() != NULL)
 //                    fade_out = this->getBlender()->getOverlap();
-                avatar->GetCalModel()->getMixer()->executeAction(m_motionRef->getAnimID(), 0.0f, fade_out);
+                    timeLineContext->getAvatar()->GetCalModel()->getMixer()->executeAction(m_motionRef->getAnimID(), 0.0f, fade_out);
             }
         }
         setAnimStarted(true);
@@ -309,9 +309,9 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, Avatar* avatar)
  * \brief Updates modifiers related to this TimeLineMotion at current frame
  *
  * \param float elapsedSeconds - time elapsed from previous frame
- * \param ft::Avatar * avatar - avatar to which this modifier is assigned
+ * \param ft::TimeLineContext * timeLineContext - TimeLineContext of avatar to which this TimeLineMotion is assigned
  **/
-void TimeLineMotion::ExecuteModifiers(float elapsedSeconds, Avatar* avatar)
+void TimeLineMotion::ExecuteModifiers(float elapsedSeconds, TimeLineContext* timeLineContext)
 {
     //execute modifiers for track 
         // - TODO : in the future
@@ -323,7 +323,7 @@ void TimeLineMotion::ExecuteModifiers(float elapsedSeconds, Avatar* avatar)
         currMotion = (TimeLineMotion*)m_vObjects[m_currSubMotion];
 
     if (currMotion != NULL)
-        currMotion->ExecuteModifiers(elapsedSeconds, avatar);
+        currMotion->ExecuteModifiers(elapsedSeconds, timeLineContext);
 
     
     //Execute modfiers of this object
@@ -331,7 +331,7 @@ void TimeLineMotion::ExecuteModifiers(float elapsedSeconds, Avatar* avatar)
     {
         for (int m=0; m<(int)m_vModifiers.size(); m++)
         {
-            m_vModifiers[m]->Apply(elapsedSeconds, avatar);
+            m_vModifiers[m]->Apply(elapsedSeconds, timeLineContext);
         }
     }
 }
@@ -341,10 +341,10 @@ void TimeLineMotion::ExecuteModifiers(float elapsedSeconds, Avatar* avatar)
  *
  * \param ft::TimeLineMotion * currMotion - currently being executed TimeLineMotion
  * \param ft::TimeLineMotion * nextMotion - next TimeLineMotion on TimeLine
- * \param ft::Avatar * avatar - avatar to which this modifier is assigned
+ * \param ft::TimeLineContext * timeLineContext - TimeLineContext of avatar to which this TimeLineMotion is assigned
  * \return bool - true if blending should be started, false otherwise
  **/
-bool TimeLineMotion::IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotion* nextMotion, Avatar* avatar)
+bool TimeLineMotion::IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotion* nextMotion, TimeLineContext* timeLineContext)
 {
     bool result = false;
     TimeLineBlender* blender = currMotion->getBlender();
@@ -352,7 +352,7 @@ bool TimeLineMotion::IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotio
     {
         if (!currMotion->isAnimLoop() || currMotion->isToFinish())
         {
-            float animDuration = currMotion->GetMotionDuration(avatar);
+            float animDuration = currMotion->GetMotionDuration(timeLineContext);
             float animTime = currMotion->getAnimTime();
             
 
@@ -374,16 +374,16 @@ bool TimeLineMotion::IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotio
 /**
  * \brief Returns duration of motion (animation) related to this TimeLineMotion
  *
- * \param ft::Avatar * avatar - avatar to which this modifier is assigned
+ * \param ft::TimeLineContext * timeLineContext - TimeLineContext of avatar to which this TimeLineMotion is assigned
  * \return float - duration of motion (animation)
  **/
-float TimeLineMotion::GetMotionDuration(Avatar* avatar)
+float TimeLineMotion::GetMotionDuration(TimeLineContext* timeLineContext)
 {
     float duration = -1;
     if (m_motionRef != NULL)
     {
         int animId = m_motionRef->getAnimID();
-        CalCoreAnimation* anim = avatar->GetCalCoreModel()->getCoreAnimation(animId);
+        CalCoreAnimation* anim = timeLineContext->getAvatar()->GetCalCoreModel()->getCoreAnimation(animId);
         if (anim != NULL)
         {
             duration = anim->getDuration();
@@ -397,22 +397,31 @@ float TimeLineMotion::GetMotionDuration(Avatar* avatar)
  * \brief Resets all objects related to this TimeLineMotion
  *
  **/
-void TimeLineMotion::Reset(Avatar* avatar)
+void TimeLineMotion::Reset(TimeLineContext* timeLineContext)
 {
-    TimeLineObject::Reset(avatar);
+    TimeLineObject::Reset(timeLineContext);
 
-    if (m_motionRef != NULL && this->isAnimStarted() && this->isAnimLoop())
+    if (m_motionRef != NULL && this->isAnimStarted())
     {
-        avatar->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
+        if (this->isAnimLoop())
+        {
+            timeLineContext->getAvatar()->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
+        }
+        else
+        {
+            timeLineContext->getAvatar()->GetCalModel()->getMixer()->removeAction(m_motionRef->getAnimID());
+        }
     }
 
     if (m_vModifiers.size() > 0)
     {
         for (int m=0; m<(int)m_vModifiers.size(); m++)
         {
-            m_vModifiers[m]->Reset(avatar);
+            m_vModifiers[m]->Reset(timeLineContext);
         }
     }
+
+    ResetParams();
 }
 
 

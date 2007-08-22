@@ -86,11 +86,11 @@ TimeLineObject* TimeLineObject::GetCurrentObject()
 }
 
 /// \brief Resets all sub-objects 
-void TimeLineObject::Reset(Avatar* avatar)
+void TimeLineObject::Reset(TimeLineContext* timeLineContext)
 {
     for (int n=0; n<(int)m_vObjects.size(); n++)
     {
-        m_vObjects[n]->Reset(avatar);
+        m_vObjects[n]->Reset(timeLineContext);
     }
 
     //here is place to reset this object

@@ -9,7 +9,6 @@
 #include "timelinemodifier.h"
 #include "timelineblender.h"
 #include "../motion/motion.h"
-#include "../avatar/avatar.h"
 #include <vector>
 
 namespace ft
@@ -42,11 +41,11 @@ namespace ft
         void setAnimLoop(bool set) { m_animLoop = set; }
         bool isAnimLoop() { return m_animLoop; }
 
-        virtual void Execute(float elapsedSeconds, Avatar* avatar);
-        void ExecuteTracks(float elapsedSeconds, Avatar* avatar);
-        bool ExecuteSubMotions(float elapsedSeconds, Avatar* avatar);
-        void ExecuteAnim(float elapsedSeconds,Avatar* avatar);
-        void ExecuteModifiers(float elapsedSeconds, Avatar* avatar);
+        virtual void Execute(float elapsedSeconds, TimeLineContext* timeLineContext);
+        void ExecuteTracks(float elapsedSeconds, TimeLineContext* timeLineContext);
+        bool ExecuteSubMotions(float elapsedSeconds, TimeLineContext* timeLineContext);
+        void ExecuteAnim(float elapsedSeconds, TimeLineContext* timeLineContext);
+        void ExecuteModifiers(float elapsedSeconds, TimeLineContext* timeLineContext);
      
 
         void setLoopNumber(int number) { m_loopNumber = number; }
@@ -63,14 +62,13 @@ namespace ft
 
         float getAnimTime() { return m_animTime; }
 
-        float GetMotionDuration(Avatar* avatar);
+        float GetMotionDuration(TimeLineContext* timeLineContext);
 
 
-        virtual void Reset(Avatar* avatar); // resets current object and its children
+        virtual void Reset(TimeLineContext* timeLineContext); // resets current object and its children
 
         void Start();
         void Stop();
-
 
         void Dump(int depth);   //OVERRIDEN
         std::string toString(); //OVERRIDEN
@@ -96,7 +94,7 @@ namespace ft
         std::vector<TimeLineModifier*> m_vModifiers;
 
         void ResetParams();
-        bool IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotion* nextMotion, Avatar* avatar);
+        bool IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotion* nextMotion, TimeLineContext* timeLineContext);
         
     };
 };

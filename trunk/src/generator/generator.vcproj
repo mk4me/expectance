@@ -709,6 +709,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\framework\timeline\timelinecontext.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\timeline\timelinecontext.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\timeline\timelinefactory.cpp"
 					>
 				</File>

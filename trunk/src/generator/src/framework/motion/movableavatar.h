@@ -27,6 +27,7 @@ namespace ft
 
 		MovableAvatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName); 
 	    virtual ~MovableAvatar(void);
+        virtual void Destroy(void);
 
         void Init();
 
@@ -37,9 +38,22 @@ namespace ft
         bool  RemoveMotion(Motion* motion);
         Motion* GetMotion(std::string motionName);
 
-        void StartTimeLine(TimeLine *timeLine);
-        void StopTimeLine();
 
+        //////////////////
+        // TimeLine
+
+        bool setTimeLine(TimeLine* timeLine);
+        TimeLine* getTimeLine();
+
+        void setTimeLineContext(TimeLineContext* timeLineContext) { m_timeLineContext = timeLineContext; }
+        TimeLineContext* getTimeLineContext() { return m_timeLineContext; }
+
+
+        void StartTimeLine();
+        void StopTimeLine();
+        bool AddTimeLineMotion(TimeLineMotion *timeLineMotion);
+
+        ////////////////////////////
 
         void Dump();
 
@@ -54,6 +68,7 @@ namespace ft
         std::map<std::string,Motion*> m_motions;
 
         TimeLine* m_timeLine;
+        TimeLineContext* m_timeLineContext;
         
         void InitMotions();
 

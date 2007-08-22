@@ -45,18 +45,18 @@ LCSModifier::~LCSModifier(void)
  * \brief Applies this modifier at current frame
  *
  * \param float elapsedSeconds - - time elapsed from previous frame
- * \param ft::Avatar * avatar - avatar to which this modifier is assigned
+ * \param ft::TimeLineContext * timeLineContext - TimeLineContext of avatar to which this modifier is assigned
  **/
-void LCSModifier::Apply(float elapsedSeconds,Avatar* avatar)
+void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
-    TimeLineModifier::Apply(elapsedSeconds, avatar);
+    TimeLineModifier::Apply(elapsedSeconds, timeLineContext);
 
     // Here apply this modifier
-       CalSkeleton *skel = avatar->GetCalModel()->getSkeleton();
+    CalSkeleton *skel = timeLineContext->getAvatar()->GetCalModel()->getSkeleton();
         CalBone *bone = skel->getBone(0);
 
         CalQuaternion currRotatation = bone->getRotation();
-		currRotatation *= avatar->m_vRotation;
+		currRotatation *= timeLineContext->getAvatar()->m_vRotation;
         bone->setRotation(currRotatation);
 
         
@@ -72,7 +72,7 @@ void LCSModifier::Apply(float elapsedSeconds,Avatar* avatar)
                 tracer_curr_pos->ClearTrace();
             }
 
-            m_vTranslation = avatar->getStartPosition(); // - currPos;
+            m_vTranslation = timeLineContext->getAvatar()->getStartPosition(); // - currPos;
             
             m_vTranslation.y = currPos.y;
             m_vLastPos = currPos;
@@ -91,7 +91,7 @@ void LCSModifier::Apply(float elapsedSeconds,Avatar* avatar)
 
         CalVector diff = currPos - m_vLastPos;
 
-        diff *=avatar->m_vRotation;
+        diff *= timeLineContext->getAvatar()->m_vRotation;
 
         float diff_lenght = diff.length();
 
@@ -114,9 +114,9 @@ void LCSModifier::Apply(float elapsedSeconds,Avatar* avatar)
 }
 
 /// \brief Resets parameters of this modifier
-void LCSModifier::Reset(Avatar* avatar)
+void LCSModifier::Reset(TimeLineContext * timeLineContext)
 {
-    TimeLineObject::Reset(avatar);
+    TimeLineObject::Reset(timeLineContext);
 
     m_translationInited = false;
 

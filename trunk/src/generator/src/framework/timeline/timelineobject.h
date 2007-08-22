@@ -7,7 +7,7 @@
 #define _GEN_TIMELINE_OBJECT_H
 
 #include "../core/baseobject.h"
-#include "../avatar/avatar.h"
+#include "timelinecontext.h"
 #include <string>
 #include <vector>
 
@@ -40,7 +40,7 @@ namespace ft
 
         TimeLineObject* GetCurrentObject();
 
-        virtual void Reset(Avatar* avatar); // resets current object and its children
+        virtual void Reset(TimeLineContext* timeLineContext); // resets current object and its children
 
 
         std::string getDepthStr(int depth);

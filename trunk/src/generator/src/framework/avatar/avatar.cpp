@@ -47,6 +47,12 @@ Avatar::~Avatar()
 	}
 }
 
+/// \brief Releases all resources and objects related to this Avatar
+void Avatar::Destroy(void)
+{
+    
+}
+
 /**
  * \brief Tries to reserve memory for avatar data in graphics accelerator memory (if graphic accelerator supports vertex shader)
  *

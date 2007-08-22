@@ -24,6 +24,8 @@ namespace ft
     public:
 		Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
 	    virtual ~Avatar(void);
+        virtual void Destroy(void);
+
 		bool CheckHardwareAcceleration();
         void SetCalModel(CalModel* calModel);
         CalModel* GetCalModel();

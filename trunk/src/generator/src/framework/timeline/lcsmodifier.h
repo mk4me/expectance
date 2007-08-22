@@ -23,9 +23,9 @@ namespace ft
         LCSModifier();
         virtual ~LCSModifier(void);
 
-        void Apply(float elapsedSeconds, Avatar* avatar);
+        void Apply(float elapsedSeconds, TimeLineContext * timeLineContext);
 
-        virtual void Reset(Avatar* avatar); // resets current object and its children
+        virtual void Reset(TimeLineContext * timeLineContext); // resets current object and its children
 
     private:
         bool m_translationInited;

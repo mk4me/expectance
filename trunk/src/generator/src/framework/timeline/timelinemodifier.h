@@ -7,7 +7,7 @@
 #define _GEN_TIMELINE_MODIFIER_H
 
 #include "timelineobject.h"
-#include "../avatar/avatar.h"
+#include "timelinecontext.h"
 
 namespace ft
 {
@@ -20,7 +20,7 @@ namespace ft
         TimeLineModifier() { /* empty */ } 
         virtual ~TimeLineModifier(void) { /* empty */ }
 
-        virtual void Apply(float elapsedSeconds, Avatar* avatar);
+        virtual void Apply(float elapsedSeconds, TimeLineContext* timeLineContext);
     };
 };
 
