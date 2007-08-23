@@ -51,7 +51,7 @@ TimeLine* TimeLineFactory::CreateTimeLine(Motion *motion)
 //    timeLineMotion->setAnimLoop(true);
 //    timeLineMotion->AddModifier(new LCSModifier());
 //    timeLineTrack->AddObject(timeLineMotion);
-    timeLine->AddObject(timeLineMotion);
+//    timeLine->AddObject(timeLineMotion);
     
     return timeLine;
 }

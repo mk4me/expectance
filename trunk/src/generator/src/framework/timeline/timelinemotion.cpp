@@ -26,14 +26,6 @@ void TimeLineMotion::Destroy(void)
 {
     TimeLineObject::Destroy();
     
-    //clear tracks
-    for (int n=0; n<(int)m_vTracks.size(); n++)
-    {
-        m_vTracks[n]->Destroy();
-        delete m_vTracks[n];
-    }
-    m_vTracks.clear();
-
     //clear modifiers
     for (int m=0; m<(int)m_vModifiers.size(); m++)
     {
@@ -48,8 +40,9 @@ void TimeLineMotion::Destroy(void)
 void TimeLineMotion::ResetParams()
 {
     // initial paramters here
-    m_currSubMotion = -1;  // no any motion
-    setToFinish(false);
+    setCurrentObject(NULL);
+    setAnimToFinish(false);
+    SetTerminated(false);
     m_currLoop = -1;  // not started yet
     setAnimStarted(false);
     m_animTime = -1;
@@ -70,24 +63,9 @@ bool TimeLineMotion::AddModifier(TimeLineModifier* modifier)
 //        bool  TimeLineMotion::RemoveMdofier(TimeLineModifier* modfier);
 //        TimeLineModifier* TimeLineMotion::GetModifier(int);
 
-/**
- * \brief Adds TimeLineMotion on new track
- *
- * \param ft::TimeLineMotion * - motion to add
- * \return bool - true if TimeLineMotion added to new track
- **/
-bool TimeLineMotion::AddTrack(TimeLineMotion* trackMotion)
-{
-    std::cout << " AddOTrack " << trackMotion->toString() << " to " << toString() << std::endl;
-    m_vTracks.push_back(trackMotion);
-	return true;
-}
-//        bool  TimeLineMotion::RemoveTrack(TimeLineMotion* trackMotion);
-//        TimeLineMotion* TimeLineMotion::GetTrack(int);
-
 
 /// \brief Starts execution of this TimeLineMotion
-void TimeLineMotion::Start()
+void TimeLineMotion::Start(TimeLineContext* timeLineContext)
 {
     PrintDebug("Start");
 
@@ -96,19 +74,19 @@ void TimeLineMotion::Start()
     if (m_motionRef!=NULL)
         m_animTime = 0;
 
-    if (m_vObjects.size()>0)
+    if (m_first != NULL)
     {
         //start first sub-motion if any
-        m_currSubMotion = 0;
-        TimeLineMotion* timeLineMotion = dynamic_cast<TimeLineMotion*>(m_vObjects[0]);
-        timeLineMotion->Start();
+        setCurrentObject(m_first);
+        TimeLineMotion* timeLineMotion = dynamic_cast<TimeLineMotion*>(m_first);
+        timeLineMotion->Start(timeLineContext);
     }
 
 }
 ///\brief Stops execution of this TimeLineMotion
-void TimeLineMotion::Stop()
+void TimeLineMotion::Stop(TimeLineContext* timeLineContext)
 {
-    PrintDebug("Stop");
+    std::cout << " TimeLineMotion::Stop " << toString() << std::endl;
     setStarted(false);
 }
 
@@ -120,37 +98,39 @@ void TimeLineMotion::Stop()
  **/
 void TimeLineMotion::Execute(float elapsedSeconds, TimeLineContext* timeLineContext)
 {
-    ExecuteTracks(elapsedSeconds, timeLineContext);
-    bool anyStarted = ExecuteSubMotions(elapsedSeconds, timeLineContext);
+    bool anyStarted = false;
+    
+    anyStarted = ExecuteSubMotions(elapsedSeconds, timeLineContext);
+
     ExecuteAnim(elapsedSeconds, timeLineContext);
 
-    if (!anyStarted && !isAnimStarted())
+    if (isStarted() && !anyStarted && !isAnimStarted())
     {
-        Stop();
+        Stop(timeLineContext);
+    }
+
+    //if already execute motion should be removed?
+    if (m_first!= NULL && timeLineContext->remove_after_execution &&   getCurrentObject()!=m_first)
+    {
+        RemoveExecutedMotions();
     }
 }
 
-/**
- * \brief Updates all tracks at current frame 
- *
- * \param float elapsedSeconds - time elapsed from previous frame
-* \param ft::TimeLineContext * timeLineContext - TimeLineContext of avatar to which this TimeLineMotion is assigned
- **/
-void TimeLineMotion::ExecuteTracks(float elapsedSeconds, TimeLineContext* timeLineContext)
+void TimeLineMotion::RemoveExecutedMotions()
 {
-        //handle all tracks
-   if (m_vTracks.size() > 0)
-   {
-       //execute every track
-       for (int t=0; t<(int)m_vTracks.size(); t++)
-       {
-           m_vTracks[t]->Execute(elapsedSeconds, timeLineContext);
-       }
-   }
+    if (m_first != NULL)
+    {
+        TimeLineObject* obj = m_first;
+        
+        while (obj != getCurrentObject())
+        {
+            TimeLineObject* obj_to_delete = obj;
+            obj = obj->getNextObject();
+            RemoveSubObject(obj_to_delete);
+        }
+    }
 }
 
-// Returns 
-//
 /**
  * \brief Updates all sub-motions at current frame
  *
@@ -166,15 +146,11 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, TimeLineContext* ti
     TimeLineMotion* nextMotion = NULL;
 
     //only if current indicator is valid (note that <m_currSubMotion==-1> means that there is no motions to execute)
-    if (m_currSubMotion >= 0)
+    if (getCurrentObject() !=NULL)
     {
-        currMotion = (TimeLineMotion*)m_vObjects[m_currSubMotion];
+        currMotion = (TimeLineMotion*)getCurrentObject();
 
-        int size = m_vObjects.size();
-        if (m_currSubMotion < size - 1)  //if there is next sub-motion
-        {
-            nextMotion = (TimeLineMotion*)m_vObjects[m_currSubMotion + 1];
-        }
+        nextMotion = (TimeLineMotion*)currMotion->m_next;
     }
 
     if (currMotion != NULL)
@@ -184,30 +160,32 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, TimeLineContext* ti
         {
             if (nextMotion!= NULL && nextMotion->isInterupting())
             {
-                currMotion->setToFinish(true);
+                currMotion->setAnimToFinish(true);
             }
             currMotion->Execute(elapsedSeconds, timeLineContext);
             anyStarted = true;
             
-            
-            bool nextMotionToStart = false;
+            if (!isTerminated())
+            {
+                bool nextMotionToStart = false;
 
-            if (!currMotion->isStarted() || IsBlendingToStart(currMotion, nextMotion, timeLineContext))
-            {
-                nextMotionToStart = true;
-            }
+                if (!currMotion->isStarted() || IsBlendingToStart(currMotion, nextMotion, timeLineContext))
+                {
+                    nextMotionToStart = true;
+                }
 
-            if (nextMotionToStart && nextMotion !=NULL)
-            {
-                m_currSubMotion++;
-                nextMotion->Start();
-                nextMotion->Execute(elapsedSeconds, timeLineContext);
-                anyStarted = true; 
-            }
-            else
-            {
-                if (!currMotion->isStarted())
-                    m_currSubMotion = -1;  // no more submotions to execute
+                if (nextMotionToStart && nextMotion !=NULL)
+                {
+                    setCurrentObject(nextMotion);
+                    nextMotion->Start(timeLineContext);
+                    nextMotion->Execute(elapsedSeconds, timeLineContext);
+                    anyStarted = true; 
+                }
+                else
+                {
+                    if (!currMotion->isStarted())
+                        m_current = NULL;  // no more submotions to execute
+                }
             }
         }
     }
@@ -231,6 +209,20 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, TimeLineContext* timeLine
 
     if (isAnimStarted())
     {
+                if (isTerminated())
+                {
+                    if (timeLineContext->stop_immediate)
+                    {
+                        StopAnimImmediate(timeLineContext);
+                        setAnimStarted(false);
+                        return;
+                    }
+                    else
+                    {
+                        setAnimToFinish(true);
+                    }
+                }
+
                 int animId = m_motionRef->getAnimID();
                 CalCoreAnimation* anim = timeLineContext->getAvatar()->GetCalCoreModel()->getCoreAnimation(animId);
 
@@ -255,7 +247,7 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, TimeLineContext* timeLine
                     if ( m_animTime >= animDuration)
                     {
                         //if m_loopNumber is -1 this means that this motion is infinitive
-                        if ( isToFinish() || (  m_loopNumber>=0   &&    (m_currLoop >= (m_loopNumber-1)) ) )
+                        if ( isAnimToFinish() || (  m_loopNumber>=0   &&    (m_currLoop >= (m_loopNumber-1)) ) )
                         {
                             timeLineContext->getAvatar()->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
                             std::cout << " anim stopped (cycled)" << std::endl;
@@ -281,25 +273,28 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, TimeLineContext* timeLine
     }
     else // anim not started 
     {
-        if (this->isAnimLoop())
+        if (!isTerminated() && !isAnimToFinish())
         {
-            if (! m_motionRef->isNullAnim() )
+            if (this->isAnimLoop())
             {
-                timeLineContext->getAvatar()->GetCalModel()->getMixer()->blendCycle(m_motionRef->getAnimID(), 1.0f, 0.0f);
+                if (! m_motionRef->isNullAnim() )
+                {
+                    timeLineContext->getAvatar()->GetCalModel()->getMixer()->blendCycle(m_motionRef->getAnimID(), 1.0f, 0.0f);
+                }
+                m_currLoop = 0;
             }
-            m_currLoop = 0;
-        }
-        else
-        {
-            if (! m_motionRef->isNullAnim() )
+            else
             {
-                float fade_out = 0;
-//                if (this->getBlender() != NULL)
-//                    fade_out = this->getBlender()->getOverlap();
-                    timeLineContext->getAvatar()->GetCalModel()->getMixer()->executeAction(m_motionRef->getAnimID(), 0.0f, fade_out);
+                if (! m_motionRef->isNullAnim() )
+                {
+                    float fade_out = 0;
+    //                if (this->getBlender() != NULL)
+    //                    fade_out = this->getBlender()->getOverlap();
+                        timeLineContext->getAvatar()->GetCalModel()->getMixer()->executeAction(m_motionRef->getAnimID(), 0.0f, fade_out);
+                }
             }
+            setAnimStarted(true);
         }
-        setAnimStarted(true);
     }
 
     return;
@@ -317,10 +312,7 @@ void TimeLineMotion::ExecuteModifiers(float elapsedSeconds, TimeLineContext* tim
         // - TODO : in the future
 
     //execute modifiers for current submotion
-    TimeLineMotion* currMotion = NULL;
-
-    if (m_currSubMotion >= 0)
-        currMotion = (TimeLineMotion*)m_vObjects[m_currSubMotion];
+    TimeLineMotion* currMotion = (TimeLineMotion*)getCurrentObject();;
 
     if (currMotion != NULL)
         currMotion->ExecuteModifiers(elapsedSeconds, timeLineContext);
@@ -332,6 +324,21 @@ void TimeLineMotion::ExecuteModifiers(float elapsedSeconds, TimeLineContext* tim
         for (int m=0; m<(int)m_vModifiers.size(); m++)
         {
             m_vModifiers[m]->Apply(elapsedSeconds, timeLineContext);
+        }
+    }
+}
+
+void TimeLineMotion::StopAnimImmediate(TimeLineContext* timeLineContext)
+{
+    if (m_motionRef != NULL && this->isAnimStarted())
+    {
+        if (this->isAnimLoop())
+        {
+            timeLineContext->getAvatar()->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
+        }
+        else
+        {
+            timeLineContext->getAvatar()->GetCalModel()->getMixer()->removeAction(m_motionRef->getAnimID());
         }
     }
 }
@@ -350,7 +357,7 @@ bool TimeLineMotion::IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotio
     TimeLineBlender* blender = currMotion->getBlender();
     if (blender != NULL)
     {
-        if (!currMotion->isAnimLoop() || currMotion->isToFinish())
+        if (!currMotion->isAnimLoop() || currMotion->isAnimToFinish())
         {
             float animDuration = currMotion->GetMotionDuration(timeLineContext);
             float animTime = currMotion->getAnimTime();
@@ -393,6 +400,18 @@ float TimeLineMotion::GetMotionDuration(TimeLineContext* timeLineContext)
     return duration;
 }
 
+void TimeLineMotion::SetTerminated(bool set)
+{
+    m_isTerminated = set; 
+
+    //all submotions
+    if (getCurrentObject() != NULL)
+    {
+        TimeLineMotion* timeLineMotion = dynamic_cast<TimeLineMotion*>(getCurrentObject());
+        timeLineMotion->SetTerminated(true);
+    }
+}
+
 /**
  * \brief Resets all objects related to this TimeLineMotion
  *
@@ -401,17 +420,7 @@ void TimeLineMotion::Reset(TimeLineContext* timeLineContext)
 {
     TimeLineObject::Reset(timeLineContext);
 
-    if (m_motionRef != NULL && this->isAnimStarted())
-    {
-        if (this->isAnimLoop())
-        {
-            timeLineContext->getAvatar()->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
-        }
-        else
-        {
-            timeLineContext->getAvatar()->GetCalModel()->getMixer()->removeAction(m_motionRef->getAnimID());
-        }
-    }
+    StopAnimImmediate(timeLineContext);
 
     if (m_vModifiers.size() > 0)
     {

@@ -15,6 +15,9 @@ namespace ft
 {
     static const int TIME_UNDEFINED = -1;
 
+    static const int ADD_OBJECT_AS_NEXT = 0;
+    static const int ADD_OBJECT_AS_LAST = 1;
+
 	/**
 	 * Class TimeLineObject: base object for all objects that can be part of TimeLine
 	 **/
@@ -25,10 +28,13 @@ namespace ft
         virtual ~TimeLineObject(void) { /* empty */ }
         virtual void Destroy(void);
 
-        bool AddObject(TimeLineObject* object);
-//        bool  RemoveObject(TimeLineObject* object);
-//        TimeLineObject* GetObject(int);
-        
+        bool AddSubObject(TimeLineObject* object, int where_to_add = ADD_OBJECT_AS_LAST);
+        void RemoveSubObject(TimeLineObject* obj_to_delete);
+        TimeLineObject* GetCurrSubObject();
+        TimeLineObject* GetLastSubObject();
+        void ClearSubObjects();
+        void DumpSubObjects(int depth);
+
         void setStartTime(float startTime) { m_startTime = startTime; }
         float getStartTime() { return m_startTime; }
 
@@ -38,21 +44,30 @@ namespace ft
         void setStarted(bool set) { m_started = set; }
         bool isStarted() { return m_started; }
 
-        TimeLineObject* GetCurrentObject();
+        TimeLineObject* getCurrentObject() { return m_current; }
+        void setCurrentObject(TimeLineObject* obj) { m_current = obj; }
+
+        TimeLineObject* getNextObject() { return m_next; }
+        void setNextObject(TimeLineObject* obj) { m_next = obj; }
+
 
         virtual void Reset(TimeLineContext* timeLineContext); // resets current object and its children
 
 
         std::string getDepthStr(int depth);
         virtual void Dump(int depth);
- 
+
     protected:
         float m_startTime;
         float m_endTime;
 
         bool m_started;
 
-        std::vector<TimeLineObject*> m_vObjects;
+        //list
+        TimeLineObject* m_first;
+        TimeLineObject* m_current;
+
+        TimeLineObject* m_next;
 
         void PrintDebug(const std::string& text);
     };

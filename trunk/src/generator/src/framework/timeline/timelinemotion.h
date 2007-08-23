@@ -34,15 +34,10 @@ namespace ft
 //        bool  RemoveMdofier(TimeLineModifier* modfier);
 //        TimeLineModifier* GetModifier(int);
 
-        bool AddTrack(TimeLineMotion* trackMotion);
-//        bool  RemoveTrack(TimeLineMotion* trackMotion);
-//        TimeLineMotion* GetTrack(int);
-
         void setAnimLoop(bool set) { m_animLoop = set; }
         bool isAnimLoop() { return m_animLoop; }
 
         virtual void Execute(float elapsedSeconds, TimeLineContext* timeLineContext);
-        void ExecuteTracks(float elapsedSeconds, TimeLineContext* timeLineContext);
         bool ExecuteSubMotions(float elapsedSeconds, TimeLineContext* timeLineContext);
         void ExecuteAnim(float elapsedSeconds, TimeLineContext* timeLineContext);
         void ExecuteModifiers(float elapsedSeconds, TimeLineContext* timeLineContext);
@@ -54,8 +49,11 @@ namespace ft
         void setInterupting(bool set) { m_interrupting = set; }
         bool isInterupting() { return m_interrupting; }
 
-        void setToFinish(bool set) { m_isToFinish = set; }
-        bool isToFinish() { return m_isToFinish; }
+        void setAnimToFinish(bool set) { m_isAnimToFinish = set; }
+        bool isAnimToFinish() { return m_isAnimToFinish; }
+
+        void SetTerminated(bool set);
+        bool isTerminated() { return m_isTerminated; }
 
         void setAnimStarted(bool set) { m_animStarted = set; }
         bool isAnimStarted() { return m_animStarted; }
@@ -67,11 +65,13 @@ namespace ft
 
         virtual void Reset(TimeLineContext* timeLineContext); // resets current object and its children
 
-        void Start();
-        void Stop();
+        virtual void Start(TimeLineContext* timeLineContext);
+        virtual void Stop(TimeLineContext* timeLineContext);
 
         void Dump(int depth);   //OVERRIDEN
         std::string toString(); //OVERRIDEN
+    protected:
+        void RemoveExecutedMotions();
 
     private:
         Motion* m_motionRef; //reference to motion which is represented by this object
@@ -85,16 +85,15 @@ namespace ft
         float m_animTime;
 
         bool m_interrupting;  // indicates if this motion should immediately interuppt the previous motion
-        bool m_isToFinish;  //marker if this motion should be finished as soobn as possible
+        bool m_isAnimToFinish;  //marker if this motion should be finished as soobn as possible
 
-        int m_currSubMotion; // current submotion to execute - if not any submotion to execute it shoild be -1
+        bool m_isTerminated;
 
-
-        std::vector<TimeLineMotion*> m_vTracks;
         std::vector<TimeLineModifier*> m_vModifiers;
 
         void ResetParams();
         bool IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotion* nextMotion, TimeLineContext* timeLineContext);
+        void StopAnimImmediate(TimeLineContext* timeLineContext);
         
     };
 };

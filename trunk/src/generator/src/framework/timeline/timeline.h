@@ -26,6 +26,7 @@ namespace ft
         void Destroy(void) { /* TODO: abak: to implement */ }
 
         virtual void Execute(float elapsedSeconds, TimeLineContext* timeLineContext);
+        void StopTimeLine(TimeLineContext* timeLineContext);
 
 
     private:

@@ -10,11 +10,8 @@
 
 namespace ft
 {
-    static const int ADD_COPY                      = 0x00000001; 
-    static const int ADD_AS_LAST                   = 0x00000002; 
     static const int ADD_AS_NEXT                   = 0x00000004; 
     static const int REMOVE_AFTER_EXECUTION        = 0x00000008; 
-    static const int DELETE_OBJECTS_AFTER_REMOVING = 0x0000000F; 
     static const int STOP_IMMEDIATE                = 0x00000010; 
 
 	/**
@@ -36,12 +33,8 @@ namespace ft
 
         Avatar *m_avatar;
 
-        bool add_as_last;
-        bool add_ad_next;
-        bool add_copy;
         int where_to_add;
         bool remove_after_execution;
-        bool delete_objects_after_remove_from_list;
         bool stop_immediate;
     };
 };

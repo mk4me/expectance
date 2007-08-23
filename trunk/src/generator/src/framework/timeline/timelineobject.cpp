@@ -13,6 +13,10 @@ TimeLineObject::TimeLineObject()
     m_endTime = TIME_UNDEFINED;
 
     m_started = false;
+
+    m_first = NULL;
+    m_current = NULL;
+    m_next = NULL;
 }
 
 /**
@@ -23,76 +27,119 @@ void TimeLineObject::Destroy(void)
 {
     std::cout << toString() << " Destroy() " << std::endl;
     
-    for (int n=0; n<(int)m_vObjects.size(); n++)
+    TimeLineObject* obj = m_first;
+    while(obj != NULL)
     {
-        m_vObjects[n]->Destroy();
-        delete m_vObjects[n];
+        TimeLineObject* obj_to_delete = obj; 
+        obj = obj->m_next;
+        obj_to_delete->Destroy();
+        delete obj_to_delete;
     }
-    m_vObjects.clear();
+    m_first = NULL;
+    m_current = NULL;
+    m_next=NULL;
 }
 
-/**
- * \brief Adds sub-objects to this TimeLineObject
- *
- * \param ft::TimeLineObject * object - sub-object to add
- * \return bool - true if sub-object added
- **/
-bool TimeLineObject::AddObject(TimeLineObject* object)
+bool TimeLineObject::AddSubObject(TimeLineObject* object, int where_to_add)
 {
-    std::cout << " AddObject " << object->toString() << " to " << toString() << std::endl;
-    m_vObjects.push_back(object);
-	return true;
-}
-/*bool  TimeLineObject::RemoveMotion(Motion* motion)
-{
-    std::string _id = motion->getAnimName();
-
-    if (!_id.empty())
-	{
-	 	std::map<std::string,Motion*>::iterator it = m_motions.find(_id);
-		if ( it!=m_motions.end()) { 
-            m_motions.erase(it);
-            cout << "MovableAvatar::AddMotion motion " << _id << " removed form avatar " << std::endl;
-			return true;
-		}
-	    m_motions.insert( std::make_pair( std::string(_id), motion) );
-	}
-    cout << "ERR: MovableAvatar::AddMotion motion " << _id << " not found in Avatar " << std::endl;
-	return false;
-}
-
-Motion* MovableAvatar::GetMotion(std::string motionName)
-{
-    Motion * motion = NULL;
- 	std::map<std::string,Motion*>::iterator it = m_motions.find(motionName);
-	if ( it!=m_motions.end()) { 
-        motion = dynamic_cast<Motion*>(it->second);
+    bool result = false;
+    if (m_first== NULL)
+    {
+        m_first = object;
+        m_first->m_next = NULL;
+        result = true;
     }
-    return motion;
-}
-*/
-
-/**
- * \brief Returns sub-object that is currently executed
- *
- * \return ft::TimeLineObject * - sub-object
- **/
-TimeLineObject* TimeLineObject::GetCurrentObject()
-{
-    TimeLineObject* result = NULL;
-    if (m_vObjects.size() > 0)
-        result = m_vObjects[0];
+    else
+    {
+        if (where_to_add == ADD_OBJECT_AS_LAST)
+        {
+            GetLastSubObject()->m_next = object;
+            object->m_next = NULL;
+            result = true;
+        } 
+        else if (where_to_add == ADD_OBJECT_AS_NEXT) 
+        {
+          if (m_current != NULL)
+          {
+              object->m_next = m_current->m_next;
+              m_current->m_next = object;
+              result = true;
+          }
+        }
+    }
     return result;
+}
+
+TimeLineObject* TimeLineObject::GetLastSubObject()
+{
+    TimeLineObject* obj = m_first;
+    if (obj !=NULL)
+    {
+        while(obj->m_next != NULL)
+            obj = obj->m_next;
+    }
+    return obj;
+}
+
+void TimeLineObject::RemoveSubObject(TimeLineObject* obj_to_delete)
+{
+
+    if (obj_to_delete == m_first)
+    {
+        m_first = obj_to_delete->m_next;
+    }
+    else
+    {
+        TimeLineObject* prevObj = m_first;
+
+        while(prevObj!=NULL && prevObj->m_next!=obj_to_delete )
+        {
+            prevObj = prevObj->m_next;
+        }
+
+        if (prevObj!=NULL)
+        {
+            prevObj->m_next = obj_to_delete->m_next;
+        }
+    }
+
+    obj_to_delete->Destroy();
+    delete obj_to_delete;
+}
+
+void TimeLineObject::ClearSubObjects()
+{
+    TimeLineObject* obj = m_first;
+    TimeLineObject* obj_to_delete;
+    while(obj != NULL)
+    {
+        obj_to_delete = obj;
+        obj = obj->m_next;
+        obj_to_delete->Destroy();
+        delete obj_to_delete;
+    }
+    m_first = NULL;
+}
+
+void TimeLineObject::DumpSubObjects(int depth)
+{
+    TimeLineObject* obj = m_first;
+    while(obj != NULL)
+    {
+        obj->Dump(depth+1);
+        obj = obj->m_next;
+    }
 }
 
 /// \brief Resets all sub-objects 
 void TimeLineObject::Reset(TimeLineContext* timeLineContext)
 {
-    for (int n=0; n<(int)m_vObjects.size(); n++)
+    TimeLineObject* obj = m_first;
+    while(obj != NULL)
     {
-        m_vObjects[n]->Reset(timeLineContext);
+        obj->Reset(timeLineContext);
+        obj = obj->m_next;
     }
-
     //here is place to reset this object
 }
 
@@ -119,11 +166,7 @@ void TimeLineObject::Dump(int depth)
 {
 
     std::cout << getDepthStr(depth) << toString() << std::endl;
-
-    for (int n=0; n<(int)m_vObjects.size(); n++)
-    {
-        m_vObjects[n]->Dump(depth+1);
-    }
+    DumpSubObjects(depth);
 }
 
 /**

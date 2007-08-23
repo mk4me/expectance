@@ -26,3 +26,10 @@ void TimeLine::Execute(float elapsedSeconds, TimeLineContext* timeLineContext)
     // TODO:  must be passed m_currTime to deeper motions
     TimeLineMotion::Execute(elapsedSeconds, timeLineContext);
 }
+
+///\brief Stops execution of this TimeLineMotion
+void TimeLine::StopTimeLine(TimeLineContext* timeLineContext)
+{
+    std::cout << " TimeLine::StopTimeLine - submotions will be terminated " << std::endl;
+    SetTerminated(true);
+}

@@ -196,7 +196,7 @@ void MovableAvatar::StartTimeLine()
     cout << toString() << "StartTimeLine()" << endl;
     if (m_timeLine != NULL)
     {
-        m_timeLine->Start();
+        m_timeLine->Start(m_timeLineContext);
     }
 }
 
@@ -207,6 +207,8 @@ void MovableAvatar::StopTimeLine()
 {
     if (m_timeLine != NULL)
     {
+        //m_timeLine->Reset(m_timeLineContext);
+//        m_timeLine->StopTimeLine(m_timeLineContext);
         m_timeLine->Reset(m_timeLineContext);
     }
 
@@ -263,13 +265,16 @@ void MovableAvatar::Init()
   InitMotions();
   setTimeLine(new TimeLine());
   TimeLineContext* ctx = new TimeLineContext();
+  //ctx->stop_immediate = true;
+
+  //ctx->remove_after_execution = true;
+
   ctx->setAvatar(this);
   setTimeLineContext(ctx);
   CreateTestTimeLine();
 
   m_bPaused = false;
   m_blendTime = 0.3f;
-
 }
 
 /**
@@ -298,7 +303,7 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
         TimeLineMotion* timeLineMotion = new TimeLineMotion();
         timeLineMotion->setMotion(mot);
         timeLineMotion->setBlender(new TimeLineBlender(0.1f));
-        getTimeLine()->AddObject(timeLineMotion);
+        getTimeLine()->AddSubObject(timeLineMotion, ADD_OBJECT_AS_LAST);
 
     }
  
@@ -311,7 +316,7 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
         timeLineMotion->setAnimLoop(true);
         timeLineMotion->setMotion(mot);
 //        timeLineMotion->setBlender(new TimeLineBlender(1.0f));
-        getTimeLine()->AddObject(timeLineMotion);
+        getTimeLine()->AddSubObject(timeLineMotion);
     }
 
     mot = GetMotion(MOTION_WALK_STOP);
@@ -320,7 +325,7 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
         TimeLineMotion* timeLineMotion = new TimeLineMotion();
         timeLineMotion->setMotion(mot);
         timeLineMotion->setBlender(new TimeLineBlender(1.0f));
-        getTimeLine()->AddObject(timeLineMotion);
+        getTimeLine()->AddSubObject(timeLineMotion);
     }
 
     mot = GetMotion(MOTION_WALK_IDLE);
@@ -329,7 +334,7 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
         TimeLineMotion* timeLineMotion = new TimeLineMotion();
         timeLineMotion->setMotion(mot);
 		timeLineMotion->setAnimLoop(true);
-        getTimeLine()->AddObject(timeLineMotion);
+        getTimeLine()->AddSubObject(timeLineMotion);
     }
 
 
@@ -357,7 +362,8 @@ void MovableAvatar::OnMessage(Message* msg)
     if (msg->getType() == MSG_TEST) 
     {
 
-            CalSkeleton *skel = m_calModel->getSkeleton();
+        Dump();
+/*            CalSkeleton *skel = m_calModel->getSkeleton();
 
             CalBone *bone = skel->getBone(0);
 
@@ -367,6 +373,7 @@ void MovableAvatar::OnMessage(Message* msg)
             bone->setRotation(currRotation);
 
             bone->calculateState();
+*/
     } 
     else if (msg->getType() == MSG_CONTROL_PAUSE)
     {
