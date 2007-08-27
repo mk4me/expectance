@@ -53,7 +53,7 @@ bool VisualizationManager::Init()
 
 	MenuManager::getInstance()->Init(0,0); 
 
-	m_menuOGL = true; //show OGL menu by default
+	m_menuOGL = Config::getInstance()->GetIntVal("main_menu_visible"); //show OGL menu by default
 
 	return true;
 }
