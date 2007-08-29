@@ -22,9 +22,9 @@ m_shadow(true)
     m_calModel = calModel;
     m_calCoreModel = calCoreModel;
 	setName(modelName);
-	if (OGLContext::getInstance()->HardwareAcceleration == 1) //try to check Vertex Shader in the hardware
+	if (OGLContext::getInstance()->HardwareAcceleration == 1) //check Vertex Shader and load shaders
 	{
-		m_hardwareRendering = CheckHardwareAcceleration();
+		m_hardwareRendering = InitHardwareAcceleration();
 	}
 	else
 		m_hardwareRendering = false;
@@ -54,11 +54,11 @@ void Avatar::Destroy(void)
 }
 
 /**
- * \brief Tries to reserve memory for avatar data in graphics accelerator memory (if graphic accelerator supports vertex shader)
+ * \brief Tries to reserve memory for avatar data in GPU memory and loads vertex and fragment program of shader from file
  *
  * \return bool - true if graphics accelerator suports vertex shader otherwise returns false
  **/
-bool Avatar::CheckHardwareAcceleration()
+bool Avatar::InitHardwareAcceleration()
 {
 
 	if(!loadBufferObject())
@@ -67,10 +67,14 @@ bool Avatar::CheckHardwareAcceleration()
 	  return false;
 	}
 
-	if(!loadVertexProgram())
+	if ((m_vertexProgramId = OGLContext::getInstance()->loadVertexProgram(FT_SHADERPATH + Config::getInstance()->GetStrVal("avatar_vertex_program"))) == 0)
 	{
 	  std::cerr << "Error loading vertex program." << std::endl;
 	  return false;
+	}
+	if ((m_fragmentProgramId = OGLContext::getInstance()->loadFragmentProgram(FT_SHADERPATH + Config::getInstance()->GetStrVal("avatar_fragment_program"))) == 0)
+	{
+	  std::cerr << "Error loading fragment program." << std::endl;
 	}
 
 	return true;
@@ -378,6 +382,7 @@ void Avatar::SoftwareRenderModelMesh(const bool shadow)
 void Avatar::HardwareRenderModelMesh(const bool shadow)
 {
 	glBindProgramARB( GL_VERTEX_PROGRAM_ARB, m_vertexProgramId );
+    glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, m_fragmentProgramId ); // mka 2007-08-29
 
 	glEnableVertexAttribArrayARB(0);
 	glEnableVertexAttribArrayARB(1);
@@ -385,7 +390,9 @@ void Avatar::HardwareRenderModelMesh(const bool shadow)
 	glEnableVertexAttribArrayARB(3);
     glEnableVertexAttribArrayARB(8);
 
-	glEnable(GL_VERTEX_PROGRAM_ARB);	
+	glEnable(GL_VERTEX_PROGRAM_ARB);
+    if (m_fragmentProgramId) glEnable(GL_FRAGMENT_PROGRAM_ARB);
+
 
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_bufferObject[0]);
 	glVertexAttribPointerARB(0, 3 , GL_FLOAT, false, 0, NULL);
@@ -480,7 +487,9 @@ void Avatar::HardwareRenderModelMesh(const bool shadow)
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
 	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
 
+	glDisable(GL_FRAGMENT_PROGRAM_ARB);
 	glDisable(GL_VERTEX_PROGRAM_ARB);
+	glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, 0 );
 	glBindProgramARB( GL_VERTEX_PROGRAM_ARB, 0 );
 }
 
@@ -616,89 +625,6 @@ void Avatar::SetLodLevel(float level)
 }
 
 
-char vertexProgramStr[]= 
-"!!ARBvp1.0\n"\
-"PARAM constant = { 1, 3, 0, 0 };\n"\
-"TEMP R0, R1, R2, R3, R4, R5;\n"\
-"ADDRESS A0;\n"\
-"ATTRIB texCoord = vertex.attrib[8];\n"\
-"ATTRIB normal = vertex.attrib[2];\n"\
-"ATTRIB index = vertex.attrib[3];\n"\
-"ATTRIB weight = vertex.attrib[1];\n"\
-"ATTRIB position = vertex.attrib[0];\n"\
-"PARAM worldViewProjMatrix[4] = { state.matrix.mvp };\n"\
-"PARAM diffuse = state.material.diffuse;\n"\
-"PARAM ambient = state.material.ambient;\n"\
-"PARAM lightDir = state.light[0].position;\n"\
-"PARAM matrix[87] = { program.local[0..86] };\n"\
-"\n"\
-"MOV result.texcoord[0].xy, texCoord.xyxx;	\n"\
-"\n"\
-"MUL R4, index, constant.y;	\n"\
-"\n"\
-"ARL A0.x, R4.y;\n"\
-"DP3 R0.x, matrix[A0.x].xyzx, normal.xyzx;\n"\
-"DP3 R0.y, matrix[A0.x + 1].xyzx, normal.xyzx;\n"\
-"DP3 R0.z, matrix[A0.x + 2].xyzx, normal.xyzx;\n"\
-"MUL R1.yzw, R0.xxyz, weight.y;\n"\
-"\n"\
-"ARL A0.x, R4.x;\n"\
-"DP3 R0.x, matrix[A0.x].xyzx, normal.xyzx;\n"\
-"DP3 R0.y, matrix[A0.x + 1].xyzx, normal.xyzx;\n"\
-"DP3 R0.z, matrix[A0.x + 2].xyzx, normal.xyzx;\n"\
-"MAD R1.yzw, R0.xxyz, weight.x, R1.yyzw;\n"\
-"\n"\
-"DP3 R0.x, R1.yzwy, R1.yzwy;\n"\
-"RSQ R0.x, R0.x;\n"\
-"MUL R0.xyz, R0.x, R1.yzwy;\n"\
-"DP3 R1.x, lightDir.xyzx, lightDir.xyzx;\n"\
-"RSQ R1.x, R1.x;\n"\
-"MUL R2.xyz, R1.x, lightDir.xyzx;\n"\
-"DP3 R0.x, R0.xyzx, R2.xyzx;\n"\
-"MAX R0.x, R0.x, constant.z;\n"\
-"ADD R0, R0.x, ambient;\n"\
-"MUL result.color.front.primary, R0, diffuse;\n"\
-"\n"\
-"ARL A0.x, R4.w;\n"\
-"DPH R0.x, position.xyzx, matrix[A0.x];\n"\
-"DPH R0.y, position.xyzx, matrix[A0.x + 1];\n"\
-"DPH R0.z, position.xyzx, matrix[A0.x + 2];\n"\
-"\n"\
-"ARL A0.x, R4.z;\n"\
-"DPH R3.x, position.xyzx, matrix[A0.x];\n"\
-"DPH R3.y, position.xyzx, matrix[A0.x + 1];\n"\
-"DPH R3.z, position.xyzx, matrix[A0.x + 2];\n"\
-"\n"\
-"ARL A0.x, R4.y;\n"\
-"DPH R1.y, position.xyzx, matrix[A0.x];\n"\
-"DPH R1.z, position.xyzx, matrix[A0.x + 1];\n"\
-"DPH R1.w, position.xyzx, matrix[A0.x + 2];\n"\
-"MUL R2.xyz, R1.yzwy, weight.y;\n"\
-"\n"\
-"ARL A0.x, R4.x;\n"\
-"DPH R1.x, position.xyzx, matrix[A0.x];\n"\
-"DPH R1.y, position.xyzx, matrix[A0.x + 1];\n"\
-"DPH R1.z, position.xyzx, matrix[A0.x + 2];\n"\
-"\n"\
-"MAD R1.xyz, R1.xyzx, weight.x, R2.xyzx;\n"\
-"MAD R1.xyz, R3.xyzx, weight.z, R1.xyzx;\n"\
-"MAD R0.xyz, R0.xyzx, weight.w, R1.xyzx;\n"\
-"\n"\
-"DPH result.position.x, R0.xyzx, worldViewProjMatrix[0];\n"\
-"DPH result.position.y, R0.xyzx, worldViewProjMatrix[1];\n"\
-"DPH result.position.z, R0.xyzx, worldViewProjMatrix[2];\n"\
-"DPH result.position.w, R0.xyzx, worldViewProjMatrix[3];\n"\
-"END\n";
-
-
-
-
-
-
-
-
-
-
 /**
  * \brief Allocates memory for vertex shader and load avatar data into accelerator memory
  *
@@ -786,193 +712,3 @@ bool Avatar::loadBufferObject()
   return true;
 
 }
-
-
-/**
- * \brief Tries to prepare buffer in graphics accelerator for vertex rendering purpose
- *
- * \return bool - if not supported false
- **/
-bool Avatar::loadVertexProgram()
-{
-	glGenProgramsARB( 1, &m_vertexProgramId );
-	
-	glBindProgramARB( GL_VERTEX_PROGRAM_ARB, m_vertexProgramId );
-	
-	glProgramStringARB( GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-		strlen(vertexProgramStr), vertexProgramStr );
-	
-	if ( GL_INVALID_OPERATION == glGetError() )
-	{
-		// Find the error position
-		GLint errPos;
-		glGetIntegerv( GL_PROGRAM_ERROR_POSITION_ARB,
-			&errPos );
-		// Print implementation-dependent program
-		// errors and warnings string.
-		const unsigned char *errString = glGetString( GL_PROGRAM_ERROR_STRING_ARB);
-		fprintf( stderr, "error at position: %d\n%s\n",
-			errPos, errString );
-		return false;
-	}
-	
-	
-	glBindProgramARB( GL_VERTEX_PROGRAM_ARB, 0 );
-
-	return true;	
-}
-
-
-
-
-
-
-
-///experiments
-//static char VERTEX_PROGRAM_STR[]= 
-//"!!ARBvp1.0\n"\
-//"PARAM constant = { 1, 3, 0, 0 };\n"\
-//"TEMP R0, R1, R2, R3, R4, R5, tmp;\n"\
-//"ADDRESS A0;\n"\
-//"ATTRIB texCoord = vertex.texcoord[0];\n"\
-//
-//"ATTRIB normal = vertex.normal;\n"\
-//"ATTRIB index = vertex.attrib[6];\n"\
-//"ATTRIB weight = vertex.attrib[1];\n"\
-//"ATTRIB position = vertex.position;\n"\
-//"# PARAM worldViewProjMatrix[4] = { state.matrix.mvp };\n"\
-//"PARAM mViewInverse[4] = { state.matrix.modelview.invtrans };\n"\
-//"PARAM mView[4] = { state.matrix.modelview };\n"\
-//"PARAM mProj[4] = { state.matrix.projection };\n"\
-//"PARAM mTex[4] = { state.matrix.texture[0] };\n"\
-//"PARAM globalAmbient = state.lightmodel.ambient;\n"\
-// 
-//"PARAM emission = state.material.emission;\n"\
-//"PARAM ambient = state.material.ambient;\n"\
-//"# its a position light;\n"\
-//"PARAM lightDir = state.light[0].position;\n"\
-//
-//"PARAM diffuse = state.lightprod[0].diffuse;\n"\
-//
-//"PARAM fogalpha = program.local[72];\n" \
-//
-//#ifdef OSGCAL_USE_MAX_VP_LOCAL
-//"PARAM matrix[OSGCAL_VP_MAX_LOCAL_STR] = { program.local[0..OSGCAL_VP_MAX_LOCAL_MINUS_ONE_STR] };\n"
-//#else
-//"PARAM matrix[72] = { program.local[0..71] };\n"
-//#endif
-//
-//"# multiply UV by texture matrix;\n"\
-//
-//"DPH result.texcoord[0].x, texCoord.xyzw, mTex[0]; \n"\
-//"DPH result.texcoord[0].y, texCoord.xyzw, mTex[1]; \n"\
-//"DPH result.texcoord[0].z, texCoord.xyzw, mTex[2]; \n"\
-//"DPH result.texcoord[0].w, texCoord.xyzw, mTex[3]; \n"\
-//"MOV result.texcoord[1], vertex.texcoord[1];\n"\
-//
-//"MUL R4, index, constant.y; \n"\
-//
-//"ARL A0.x, R4.y;\n"\
-//"DP3 R0.x, matrix[A0.x].xyzx, normal.xyzx;\n"\
-//"DP3 R0.y, matrix[A0.x + 1].xyzx, normal.xyzx;\n"\
-//"DP3 R0.z, matrix[A0.x + 2].xyzx, normal.xyzx;\n"\
-//"MUL R1.yzw, R0.xxyz, weight.y;\n"\
-//
-//"ARL A0.x, R4.x;\n"\
-//"DP3 R0.x, matrix[A0.x].xyzx, normal.xyzx;\n"\
-//"DP3 R0.y, matrix[A0.x + 1].xyzx, normal.xyzx;\n"\
-//"DP3 R0.z, matrix[A0.x + 2].xyzx, normal.xyzx;\n"\
-//"MAD R1.yzw, R0.xxyz, weight.x, R1.yyzw;\n"\
-//
-//"# compute normal with m and weight 3 add the result to R1\n"\
-//"#ARL A0.x, R4.z;\n"\
-//"#DP3 R0.x, matrix[A0.x], normal;\n"\
-//"#DP3 R0.y, matrix[A0.x + 1], normal;\n"\
-//"#DP3 R0.z, matrix[A0.x + 2], normal;\n"\
-//"#MAD R1, R0, weight.z, R1;\n"\
-//
-//"# compute normal with m and weight 4 add the result to R1\n"\
-//"#ARL A0.x, R4.w;\n"\
-//"#DP3 R0.x, matrix[A0.x], normal;\n"\
-//"#DP3 R0.y, matrix[A0.x + 1], normal;\n"\
-//"#DP3 R0.z, matrix[A0.x + 2], normal;\n"\
-//"#MAD R1, R0, weight.w, R1;\n"\
-//
-//"DP3 R0.x, R1.yzwy, R1.yzwy;\n"\
-//"RSQ R0.x, R0.x;\n"\
-//"MUL R0.xyz, R0.x, R1.yzwy;\n"\
-//
-//"# rotate the normal in modelview result in R2\n"\
-//"DP3 R5.x, R0, mViewInverse[0];\n"\
-//"DP3 R5.y, R0, mViewInverse[1];\n"\
-//"DP3 R5.z, R0, mViewInverse[2];\n"\
-//"#MOV R5, R0 ;\n"\
-//
-//"# MOV R0, R5;\n"\
-//"# MUL R0, R0, constant.z;\n"\
-//
-//"ARL A0.x, R4.w;\n"\
-//"DPH R0.x, position.xyzx, matrix[A0.x];\n"\
-//"DPH R0.y, position.xyzx, matrix[A0.x + 1];\n"\
-//"DPH R0.z, position.xyzx, matrix[A0.x + 2];\n"\
-//
-//"ARL A0.x, R4.z;\n"\
-//"DPH R3.x, position.xyzx, matrix[A0.x];\n"\
-//"DPH R3.y, position.xyzx, matrix[A0.x + 1];\n"\
-//"DPH R3.z, position.xyzx, matrix[A0.x + 2];\n"\
-//
-//"ARL A0.x, R4.y;\n"\
-//"DPH R1.y, position.xyzx, matrix[A0.x];\n"\
-//"DPH R1.z, position.xyzx, matrix[A0.x + 1];\n"\
-//"DPH R1.w, position.xyzx, matrix[A0.x + 2];\n"\
-//"MUL R2.xyz, R1.yzwy, weight.y;\n"\
-//
-//"ARL A0.x, R4.x;\n"\
-//"DPH R1.x, position.xyzx, matrix[A0.x];\n"\
-//"DPH R1.y, position.xyzx, matrix[A0.x + 1];\n"\
-//"DPH R1.z, position.xyzx, matrix[A0.x + 2];\n"\
-//
-//"MAD R1.xyz, R1.xyzx, weight.x, R2.xyzx;\n"\
-//"MAD R1.xyz, R3.xyzx, weight.z, R1.xyzx;\n"\
-//"MAD R0.xyz, R0.xyzx, weight.w, R1.xyzx;\n"\
-//
-//"DPH R3.x, R0.xyzx, mView[0];\n"\
-//"DPH R3.y, R0.xyzx, mView[1];\n"\
-//"DPH R3.z, R0.xyzx, mView[2];\n"\
-//"DPH R3.w, R0.xyzx, mView[3];\n"\
-//
-//"SUB R2, lightDir,R3 ;\n" \
-//"DPH result.position.x, R3.xyzx, mProj[0];\n"\
-//"DPH result.position.y, R3.xyzx, mProj[1];\n"\
-//"DPH result.position.z, R3.xyzx, mProj[2];\n"\
-//"DPH result.position.w, R3.xyzx, mProj[3];\n"\
-//
-///*
-//"DP3 vtx.w, R3, R3;\n"\
-//"RSQ vtx.w, vtx.w;\n"\
-//"RCP vtx.w, vtx.w;\n"\
-//"SUB vtx.w, vtx.w, fogalpha.x;\n"\
-//"MUL vtx.w, vtx.w, fogalpha.y;\n"\
-//"MIN vtx.w, 1, vtx.w;\n"\
-//*/
-//"MOV R0,R5;\n"\
-//"MOV R3,R2;\n"\
-//
-//"# DP3 R1.x, lightDir.xyzx, lightDir.xyzx;\n"\
-//"DP3 R1.x, R3.xyzx, R3.xyzx;\n"\
-//"RSQ R1.x, R1.x;\n"\
-//"# MUL R2.xyz, R1.x, lightDir.xyzx;\n"\
-//"MUL R2.xyz, R1.x, R3.xyzx;\n"\
-//"DP3 R0.x, R0.xyzx, R2.xyzx;\n"\
-//"MAX R0.x, R0.x, constant.z;\n"\
-//
-//"MAD tmp, R0.x, diffuse, emission;\n"\
-//"MAD tmp, globalAmbient, ambient, tmp;\n"\
-//
-//"MOV tmp.w, diffuse.w;\n"\
-//
-///*
-//"MUL tmp.w, vtx.w, diffuse.w;\n"\
-//*/
-//"MOV result.color.front.primary, tmp;\n"\
-//"END\n\0";

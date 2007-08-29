@@ -8,6 +8,11 @@
 #ifndef _GEN_OGL_CONTEXT_H
 #define _GEN_OGL_CONTEXT_H
 
+#ifndef _CRT_SECURE_NO_WARNINGS    //against fopen ms warnings
+#define _CRT_SECURE_NO_WARNINGS 1
+#endif
+
+
 #include "../core/global.h"
 #include "../core/config.h"
 #include "texturemanager.h"
@@ -79,6 +84,12 @@ namespace ft
 		void OGLWriteStroke(int x, int y, const char *text);
 		//! inform about FT logo visibility
 		bool IsLogoFTActive();
+
+		//! load vertex program from file
+		GLuint loadVertexProgram(const std::string fn);
+		//! load fragment program from file
+		GLuint loadFragmentProgram(const std::string fn);
+
 		mutable int HardwareAcceleration;
 	private:
 

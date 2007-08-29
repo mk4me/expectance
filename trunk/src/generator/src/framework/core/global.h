@@ -24,7 +24,7 @@
 #include "cal3d/cal3d.h"
 #include "../scene/textureManager.h"
 
-
+static const std::string FT_SHADERPATH = "data\\shaders\\";
 static const std::string FT_TEXTUREPATH = "data\\textures\\";
 static const std::string FT_MODELPATH = "data\\cally\\";
 

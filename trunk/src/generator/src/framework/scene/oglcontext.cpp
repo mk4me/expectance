@@ -84,9 +84,11 @@ bool OGLContext::Init()
 	m_floorType = 0;
 	m_logoFT = 0;
 
-	GLfloat light_ambient[]  = { 0.8f, 0.8f, 0.8f, 1.0f };
+	GLfloat light_ambient[]  = { 0.5f, 0.5f, 0.5f, 1.0f };
 	GLfloat light_diffuse[]  = { 0.5f, 0.5f, 0.5f, 1.0f };
 	GLfloat light_specular[] = { 0.1f, 0.1f, 0.1f, 1.0f };
+
+    GLfloat	LightPos[] = {1.0f, 100.0f, 1.0f, 1.0f};	// Light Position mka 2007-08-29
 
 	glEnable(GL_NORMALIZE);
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
@@ -96,11 +98,14 @@ bool OGLContext::Init()
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 
 	// Enable light 
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
+
+
 	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glLightfv(GL_LIGHT0, GL_POSITION, LightPos);				// Set The Position For Light0
+	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHTING);
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
@@ -473,4 +478,103 @@ void OGLContext::OGLWriteStroke(int x, int y, const char *text)
 bool OGLContext::IsLogoFTActive()
 {
 	return m_logoFT;
+}
+
+GLuint OGLContext::loadVertexProgram(const std::string fn)
+{
+   FILE *fp;
+   GLubyte *buf;
+   int length;
+   bool ret = true;
+   GLuint vp;
+
+   if (!(fp = fopen(fn.c_str(),"rb")))
+   {
+      return false;
+   }
+
+   printf("\nLoading vertex program: '%s'\n", fn);
+
+   fseek(fp, 0, SEEK_END);
+   length = ftell(fp);
+   fseek(fp, 0, SEEK_SET);
+
+   buf = new GLubyte[length+1];
+
+   fread( buf, 1, length, fp);
+   buf[length] = '\0'; // make it a regular C string so str* functions work
+
+   glGenProgramsARB( 1, &vp);
+   glBindProgramARB( GL_VERTEX_PROGRAM_ARB, vp);
+
+   glProgramStringARB( GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB, length, buf);
+
+   if (glGetError() != 0)
+   {
+      int lineno;
+      printf("%s\n", glGetString(GL_PROGRAM_ERROR_STRING_ARB));
+      glGetIntegerv( GL_PROGRAM_ERROR_POSITION_ARB, &lineno);
+      printf(" @%d\n", lineno);
+      ret = false;
+   }
+   else
+   {
+      printf(" Vertex Program - Load succeeded\n");
+	  glBindProgramARB( GL_VERTEX_PROGRAM_ARB, 0 );
+   }
+
+   fclose(fp);
+
+   delete []buf;
+   return ret ? vp :0;
+}
+
+
+GLuint OGLContext::loadFragmentProgram(const std::string fn)
+{
+   FILE *fp;
+   GLubyte *buf;
+   int length;
+   bool ret = true;
+   GLuint rp;
+
+   if (!(fp = fopen(fn.c_str(),"rb")))
+   {
+      return false;
+   }
+
+   printf("\nLoading fragment program: '%s'\n", fn);
+
+   fseek(fp, 0, SEEK_END);
+   length = ftell(fp);
+   fseek(fp, 0, SEEK_SET);
+
+   buf = new GLubyte[length+1];
+
+   fread( buf, 1, length, fp);
+   buf[length] = '\0'; // make it a regular C string so str* functions work
+
+   glGenProgramsARB( 1, &rp);
+   glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, rp);
+
+   glProgramStringARB( GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB, length, buf);
+
+   if (glGetError() != 0)
+   {
+      int position;
+      printf("%s\n", glGetString(GL_PROGRAM_ERROR_STRING_ARB));
+      glGetIntegerv( GL_PROGRAM_ERROR_POSITION_ARB, &position);
+      printf(" @%d\n", position);
+      ret = false;
+   }
+   else
+   {
+      printf(" Fragment Program - Load succeeded\n");
+	  glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, 0 );
+   }
+
+   fclose(fp);
+
+   delete []buf;
+   return ret ? rp : 0;
 }
