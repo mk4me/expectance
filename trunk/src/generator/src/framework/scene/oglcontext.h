@@ -65,19 +65,23 @@ namespace ft
 		bool InitLogoDL();
 		/// \brief Sets camera and viewports parameters and renders floor
 		void RenderScene();
-		/// \brief Renders elements in 2D orthographics area 
-		void Render2D();
+		/// \brief Renders FT logo 
+		void RenderLogo();
 		/// \brief Calculates projection matrix for shadow effect with customized parameters
 		void GlShadowProjection(float * l, float * e, float * n);
 		//! calculate projecton matrix for shadow effect with default parameters
 		void GlShadowProjection();
+		//! calculate correct ortho2D surface
+		void GLOrtho2DCorrection();
 		/// \brief Writes bitmap text on the 2D area given by parameters: location (x,y), font type and text to be displayed
 		void OGLWriteBitmap(int font, int x, int y, const char *text);
 		//! write stroked text on the 2D area given by parameters: location (x,y), and text to be displayed
 		void OGLWriteStroke(int x, int y, const char *text);
+		//! inform about FT logo visibility
+		bool IsLogoFTActive();
 		mutable int HardwareAcceleration;
 	private:
-		void GLOrtho2DCorrection();
+
 		static OGLContext* m_instance;
 		bool m_floorType, m_logoFT;
 		int m_width, m_height;

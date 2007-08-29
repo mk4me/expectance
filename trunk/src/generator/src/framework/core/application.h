@@ -20,7 +20,7 @@ namespace ft
         static void DestroyInstance();
 
         void InitConfig();
-        void InitModules();
+        bool InitModules();
         void InitAvatars();
 
         Avatar* CreateAvatarOnScene(const std::string& calCoreModel,const std::string& name);

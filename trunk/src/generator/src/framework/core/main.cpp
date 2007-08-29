@@ -112,7 +112,11 @@ int main(int argc, char *argv[])
 	glutKeyboardFunc(KeyboardFunc);
 	glutSpecialFunc(SpecialFunc);
 
-    Application::getInstance()->InitModules();
+    if (!Application::getInstance()->InitModules())
+	{
+		DBG("Application::InitModules error");
+		return 0;
+	}
 
 	VisualizationManager::getInstance()->AddObject(new TraceLine("TL1")); //lines for tracing
 	VisualizationManager::getInstance()->AddObject(new TraceLine("TL2"));

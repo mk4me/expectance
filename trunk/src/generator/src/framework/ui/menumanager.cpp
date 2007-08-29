@@ -28,6 +28,8 @@ void MenuManager::DestroyInstance()
 
 bool MenuManager::Init(int x, int y)
 {
+	m_menuOGL = Config::getInstance()->GetIntVal("main_menu_visible"); //set if menu is visible from configuration
+
 	bool final = true;
 	static unsigned int listID = 1000; // hope that system textures wont be so much
 	vector<string> tokens;
@@ -113,56 +115,58 @@ int MenuManager::checkScope(int x, int y)
 
 bool MenuManager::Render()
 {
-	int x,y;
-	x = OGLContext::getInstance()->getWidth() / 2;
-	y = OGLContext::getInstance()->getHeight() / 2;
-	unsigned int menuCounter = m_mainMenu->getSubMenu().size();
-	int w = menuCounter*32+2;
-	int h = 34;
-	glPushMatrix();
-		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_BLEND);
-		glTranslatef(-x,-y,0);
-	
-		glColor4f(0.9f,0.0f,0.0f,0.6f); // menu color
-		glRectf(0,0,w,h);
-		//glColor4f(0.5f, 0.5f, 0.5f, 0.5f);
-		
-		//draw menu
-		for (unsigned int i = 0; i < menuCounter; i++)
-		{
-			if (i==0) 
-				glTranslatef(0,0,0);
-			else
-				glTranslatef(32,0,0);
-			
-			glColor4f(0.5f, 0.5f, 0.5f, 0.3f);
-			glRectf(2,2,32,32);
-			glPushMatrix();
-			 glCallList(m_mainMenu->getSubMenu().at(i)->getTextureID());
-			glPopMatrix();
-		}
-		// set active button and text for it
-		if (m_avtiveButton != -1) //-1 index is out of scope of menuitems collection 
-		{
-			std::string lab = m_mainMenu->getSubMenu().at(m_avtiveButton)->getLabel();
-			glLoadIdentity();
+	if (m_menuOGL)
+	{
+		int x,y;
+		x = OGLContext::getInstance()->getWidth() / 2;
+		y = OGLContext::getInstance()->getHeight() / 2;
+		unsigned int menuCounter = m_mainMenu->getSubMenu().size();
+		int w = menuCounter*32+2;
+		int h = 34;
+		glPushMatrix();
+			glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_BLEND);
 			glTranslatef(-x,-y,0);
-			glColor4f(0.7f, 0.7f, 0.7f, 0.3f);
-			glRectf(m_avtiveButton*32+2,2,(m_avtiveButton+1)*32,32);
-			glLoadIdentity();
-			glTranslatef(-x,-y-10,0);
-			//get apropriate text
-			glEnable(GL_LINE_SMOOTH);
-				glColor4f(1,1,1,0.5f);
-				OGLContext::getInstance()->OGLWriteBitmap(5,5, 50, lab.c_str());
-			glDisable(GL_LINE_SMOOTH);
-		}
+		
+			glColor4f(0.9f,0.0f,0.0f,0.6f); // menu color
+			glRectf(0,0,w,h);
+			//glColor4f(0.5f, 0.5f, 0.5f, 0.5f);
+			
+			//draw menu
+			for (unsigned int i = 0; i < menuCounter; i++)
+			{
+				if (i==0) 
+					glTranslatef(0,0,0);
+				else
+					glTranslatef(32,0,0);
+				
+				glColor4f(0.5f, 0.5f, 0.5f, 0.3f);
+				glRectf(2,2,32,32);
+				glPushMatrix();
+				 glCallList(m_mainMenu->getSubMenu().at(i)->getTextureID());
+				glPopMatrix();
+			}
+			// set active button and text for it
+			if (m_avtiveButton != -1) //-1 index is out of scope of menuitems collection 
+			{
+				std::string lab = m_mainMenu->getSubMenu().at(m_avtiveButton)->getLabel();
+				glLoadIdentity();
+				glTranslatef(-x,-y,0);
+				glColor4f(0.7f, 0.7f, 0.7f, 0.3f);
+				glRectf(m_avtiveButton*32+2,2,(m_avtiveButton+1)*32,32);
+				glLoadIdentity();
+				glTranslatef(-x,-y-10,0);
+				//get apropriate text
+				glEnable(GL_LINE_SMOOTH);
+					glColor4f(1,1,1,0.5f);
+					OGLContext::getInstance()->OGLWriteBitmap(5,5, 50, lab.c_str());
+				glDisable(GL_LINE_SMOOTH);
+			}
 
 
-		glDisable(GL_BLEND);
-	glPopMatrix();
-
+			glDisable(GL_BLEND);
+		glPopMatrix();
+	}
 	return true;
 }
 
@@ -199,3 +203,12 @@ void MenuManager::OnMouseButtonUp(int button, int x, int y)
 
 }
 
+void MenuManager::hideMenu()
+{
+	m_menuOGL = !m_menuOGL;
+}
+
+bool MenuManager::IsMenuVisible()
+{
+	return m_menuOGL;
+}

@@ -690,6 +690,15 @@ char vertexProgramStr[]=
 "DPH result.position.w, R0.xyzx, worldViewProjMatrix[3];\n"\
 "END\n";
 
+
+
+
+
+
+
+
+
+
 /**
  * \brief Allocates memory for vertex shader and load avatar data into accelerator memory
  *
@@ -812,3 +821,158 @@ bool Avatar::loadVertexProgram()
 
 	return true;	
 }
+
+
+
+
+
+
+
+///experiments
+//static char VERTEX_PROGRAM_STR[]= 
+//"!!ARBvp1.0\n"\
+//"PARAM constant = { 1, 3, 0, 0 };\n"\
+//"TEMP R0, R1, R2, R3, R4, R5, tmp;\n"\
+//"ADDRESS A0;\n"\
+//"ATTRIB texCoord = vertex.texcoord[0];\n"\
+//
+//"ATTRIB normal = vertex.normal;\n"\
+//"ATTRIB index = vertex.attrib[6];\n"\
+//"ATTRIB weight = vertex.attrib[1];\n"\
+//"ATTRIB position = vertex.position;\n"\
+//"# PARAM worldViewProjMatrix[4] = { state.matrix.mvp };\n"\
+//"PARAM mViewInverse[4] = { state.matrix.modelview.invtrans };\n"\
+//"PARAM mView[4] = { state.matrix.modelview };\n"\
+//"PARAM mProj[4] = { state.matrix.projection };\n"\
+//"PARAM mTex[4] = { state.matrix.texture[0] };\n"\
+//"PARAM globalAmbient = state.lightmodel.ambient;\n"\
+// 
+//"PARAM emission = state.material.emission;\n"\
+//"PARAM ambient = state.material.ambient;\n"\
+//"# its a position light;\n"\
+//"PARAM lightDir = state.light[0].position;\n"\
+//
+//"PARAM diffuse = state.lightprod[0].diffuse;\n"\
+//
+//"PARAM fogalpha = program.local[72];\n" \
+//
+//#ifdef OSGCAL_USE_MAX_VP_LOCAL
+//"PARAM matrix[OSGCAL_VP_MAX_LOCAL_STR] = { program.local[0..OSGCAL_VP_MAX_LOCAL_MINUS_ONE_STR] };\n"
+//#else
+//"PARAM matrix[72] = { program.local[0..71] };\n"
+//#endif
+//
+//"# multiply UV by texture matrix;\n"\
+//
+//"DPH result.texcoord[0].x, texCoord.xyzw, mTex[0]; \n"\
+//"DPH result.texcoord[0].y, texCoord.xyzw, mTex[1]; \n"\
+//"DPH result.texcoord[0].z, texCoord.xyzw, mTex[2]; \n"\
+//"DPH result.texcoord[0].w, texCoord.xyzw, mTex[3]; \n"\
+//"MOV result.texcoord[1], vertex.texcoord[1];\n"\
+//
+//"MUL R4, index, constant.y; \n"\
+//
+//"ARL A0.x, R4.y;\n"\
+//"DP3 R0.x, matrix[A0.x].xyzx, normal.xyzx;\n"\
+//"DP3 R0.y, matrix[A0.x + 1].xyzx, normal.xyzx;\n"\
+//"DP3 R0.z, matrix[A0.x + 2].xyzx, normal.xyzx;\n"\
+//"MUL R1.yzw, R0.xxyz, weight.y;\n"\
+//
+//"ARL A0.x, R4.x;\n"\
+//"DP3 R0.x, matrix[A0.x].xyzx, normal.xyzx;\n"\
+//"DP3 R0.y, matrix[A0.x + 1].xyzx, normal.xyzx;\n"\
+//"DP3 R0.z, matrix[A0.x + 2].xyzx, normal.xyzx;\n"\
+//"MAD R1.yzw, R0.xxyz, weight.x, R1.yyzw;\n"\
+//
+//"# compute normal with m and weight 3 add the result to R1\n"\
+//"#ARL A0.x, R4.z;\n"\
+//"#DP3 R0.x, matrix[A0.x], normal;\n"\
+//"#DP3 R0.y, matrix[A0.x + 1], normal;\n"\
+//"#DP3 R0.z, matrix[A0.x + 2], normal;\n"\
+//"#MAD R1, R0, weight.z, R1;\n"\
+//
+//"# compute normal with m and weight 4 add the result to R1\n"\
+//"#ARL A0.x, R4.w;\n"\
+//"#DP3 R0.x, matrix[A0.x], normal;\n"\
+//"#DP3 R0.y, matrix[A0.x + 1], normal;\n"\
+//"#DP3 R0.z, matrix[A0.x + 2], normal;\n"\
+//"#MAD R1, R0, weight.w, R1;\n"\
+//
+//"DP3 R0.x, R1.yzwy, R1.yzwy;\n"\
+//"RSQ R0.x, R0.x;\n"\
+//"MUL R0.xyz, R0.x, R1.yzwy;\n"\
+//
+//"# rotate the normal in modelview result in R2\n"\
+//"DP3 R5.x, R0, mViewInverse[0];\n"\
+//"DP3 R5.y, R0, mViewInverse[1];\n"\
+//"DP3 R5.z, R0, mViewInverse[2];\n"\
+//"#MOV R5, R0 ;\n"\
+//
+//"# MOV R0, R5;\n"\
+//"# MUL R0, R0, constant.z;\n"\
+//
+//"ARL A0.x, R4.w;\n"\
+//"DPH R0.x, position.xyzx, matrix[A0.x];\n"\
+//"DPH R0.y, position.xyzx, matrix[A0.x + 1];\n"\
+//"DPH R0.z, position.xyzx, matrix[A0.x + 2];\n"\
+//
+//"ARL A0.x, R4.z;\n"\
+//"DPH R3.x, position.xyzx, matrix[A0.x];\n"\
+//"DPH R3.y, position.xyzx, matrix[A0.x + 1];\n"\
+//"DPH R3.z, position.xyzx, matrix[A0.x + 2];\n"\
+//
+//"ARL A0.x, R4.y;\n"\
+//"DPH R1.y, position.xyzx, matrix[A0.x];\n"\
+//"DPH R1.z, position.xyzx, matrix[A0.x + 1];\n"\
+//"DPH R1.w, position.xyzx, matrix[A0.x + 2];\n"\
+//"MUL R2.xyz, R1.yzwy, weight.y;\n"\
+//
+//"ARL A0.x, R4.x;\n"\
+//"DPH R1.x, position.xyzx, matrix[A0.x];\n"\
+//"DPH R1.y, position.xyzx, matrix[A0.x + 1];\n"\
+//"DPH R1.z, position.xyzx, matrix[A0.x + 2];\n"\
+//
+//"MAD R1.xyz, R1.xyzx, weight.x, R2.xyzx;\n"\
+//"MAD R1.xyz, R3.xyzx, weight.z, R1.xyzx;\n"\
+//"MAD R0.xyz, R0.xyzx, weight.w, R1.xyzx;\n"\
+//
+//"DPH R3.x, R0.xyzx, mView[0];\n"\
+//"DPH R3.y, R0.xyzx, mView[1];\n"\
+//"DPH R3.z, R0.xyzx, mView[2];\n"\
+//"DPH R3.w, R0.xyzx, mView[3];\n"\
+//
+//"SUB R2, lightDir,R3 ;\n" \
+//"DPH result.position.x, R3.xyzx, mProj[0];\n"\
+//"DPH result.position.y, R3.xyzx, mProj[1];\n"\
+//"DPH result.position.z, R3.xyzx, mProj[2];\n"\
+//"DPH result.position.w, R3.xyzx, mProj[3];\n"\
+//
+///*
+//"DP3 vtx.w, R3, R3;\n"\
+//"RSQ vtx.w, vtx.w;\n"\
+//"RCP vtx.w, vtx.w;\n"\
+//"SUB vtx.w, vtx.w, fogalpha.x;\n"\
+//"MUL vtx.w, vtx.w, fogalpha.y;\n"\
+//"MIN vtx.w, 1, vtx.w;\n"\
+//*/
+//"MOV R0,R5;\n"\
+//"MOV R3,R2;\n"\
+//
+//"# DP3 R1.x, lightDir.xyzx, lightDir.xyzx;\n"\
+//"DP3 R1.x, R3.xyzx, R3.xyzx;\n"\
+//"RSQ R1.x, R1.x;\n"\
+//"# MUL R2.xyz, R1.x, lightDir.xyzx;\n"\
+//"MUL R2.xyz, R1.x, R3.xyzx;\n"\
+//"DP3 R0.x, R0.xyzx, R2.xyzx;\n"\
+//"MAX R0.x, R0.x, constant.z;\n"\
+//
+//"MAD tmp, R0.x, diffuse, emission;\n"\
+//"MAD tmp, globalAmbient, ambient, tmp;\n"\
+//
+//"MOV tmp.w, diffuse.w;\n"\
+//
+///*
+//"MUL tmp.w, vtx.w, diffuse.w;\n"\
+//*/
+//"MOV result.color.front.primary, tmp;\n"\
+//"END\n\0";

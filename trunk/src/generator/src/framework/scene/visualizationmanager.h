@@ -64,14 +64,14 @@ namespace ft
 		bool RemoveObject(std::string id);
 		//! main rendering queue for SceneObject type obejcts 
 		/*! Calls all registered SceneObject type objects for rendering */
-		void RenderObjects();
-		//! throw out graphics menu from rendering pipeline
-		void hideMenu();
+		void Render3DObjects();
+		/*! Calls all 2D objects for rendering */
+		void Render2DObjects();
     private:
 		
         static VisualizationManager* m_instance;
 		std::map<std::string,SceneObject*> g_SceneObjects;
-		bool m_menuOGL;
+
     };
 };
 

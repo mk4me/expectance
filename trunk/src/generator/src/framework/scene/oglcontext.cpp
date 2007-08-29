@@ -239,7 +239,8 @@ bool  OGLContext::InitTexturedFloorDL(int size)
 				for(y = -j; y <= j; y++)   // for every column
 				{
 					ky = tileSize*y;
-					glBindTexture(GL_TEXTURE_2D, floorTexture);            
+					glBindTexture(GL_TEXTURE_2D, floorTexture);
+					glColor3f(1.0f, 1.0f, 1.0f);
 					glBegin(GL_QUADS);
 					glNormal3f( 0.0f, 1.0f, 0.0f );
 					glTexCoord2f(0.0f, 0.0f); glVertex3f(kx,  0, ky);
@@ -299,6 +300,7 @@ void OGLContext::RenderScene()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+	//usun to stad lub zrob jak we francuskim kodzie w draw (Camera.Update, Camera.LookAt)
 	// set camera position
 	glTranslatef(0.0f, Camera::getInstance()->getCamUpDown(), -Camera::getInstance()->getDistance());
 	glRotatef(Camera::getInstance()->getPitchAngle(), 1.0f, 0.0f, 0.0f);
@@ -313,8 +315,8 @@ void OGLContext::RenderScene()
 
 		if (m_floorType == 1)
 		{
+			glDisable(GL_BLEND);
 			glCallList(OGL_DL_TEXTURED_FLOOR);
-			glDisable(GL_TEXTURE_2D);
 		}
 	glPopMatrix();
 
@@ -323,12 +325,9 @@ void OGLContext::RenderScene()
 
 }
 
-void OGLContext::Render2D()
+void OGLContext::RenderLogo()
 {
-	// must be accesible in the global scope for 2D stuff
-
-	GLOrtho2DCorrection();
-
+	// use GLOrtho2DCorrection before calling this
 	if (m_logoFT) 
 	{
 		glPushMatrix();
@@ -471,4 +470,7 @@ void OGLContext::OGLWriteStroke(int x, int y, const char *text)
     glPopMatrix();
 }
 
-
+bool OGLContext::IsLogoFTActive()
+{
+	return m_logoFT;
+}

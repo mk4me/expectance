@@ -56,6 +56,10 @@ namespace ft
 		//! get the pointer value of MenuItem indicating on MainMenu (first element in collection) 
 		const MenuItem * getMainMenu() const;
 
+		//! throw out graphics menu from rendering pipeline
+		void hideMenu();
+		//! inform about Menu visibility
+		bool IsMenuVisible();
 
     private:
         static MenuManager* m_instance;
@@ -63,7 +67,8 @@ namespace ft
 		int m_width, m_height;
 		int m_x, m_y;
 		int m_avtiveButton,m_pressedButton, m_releasedButon;
-		int level; //how deep we are base level = 0
+		bool m_menuOGL;
+		int level; //how deep we are base level = 0 - for future use
     };
 };
 

@@ -84,7 +84,7 @@ void InputManager::OnKey(unsigned char key, int x, int y)
       break;
 	case 'm':
 	case 'M':
-		VisualizationManager::getInstance()->hideMenu();
+		MenuManager::getInstance()->hideMenu();
       break;
     default:
       if((key >= '0') && (key <= '9'))

@@ -51,9 +51,10 @@ bool VisualizationManager::Init()
 		return false;
 	}
 
-	MenuManager::getInstance()->Init(0,0); 
-
-	m_menuOGL = Config::getInstance()->GetIntVal("main_menu_visible"); //show OGL menu by default
+	if (!MenuManager::getInstance()->Init(0,0))
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -65,21 +66,16 @@ bool VisualizationManager::InitSceneObjects()
 	OGLContext::getInstance()->InitNormalFloorDL(20);
 	if (!OGLContext::getInstance()->InitTexturedFloorDL(20)) return false;
 	if (!OGLContext::getInstance()->InitLogoDL()) return false;
-
 	return true;
 }
 
 
 void VisualizationManager::OnRender()
 {
-	OGLContext::getInstance()->RenderScene();
-	RenderObjects();
-	//render 2D
-	OGLContext::getInstance()->Render2D();
-	if (m_menuOGL)
-		MenuManager::getInstance()->Render();
-
-	///	RenderCursor();
+	//camera.update();
+	OGLContext::getInstance()->RenderScene(); //camera.lookAt(); TODO
+	Render3DObjects();
+	Render2DObjects();
 	// swap the front- and back-buffer
 	glutSwapBuffers();
 
@@ -151,7 +147,7 @@ bool VisualizationManager::RemoveObject(std::string id)
 }
 
 
-void VisualizationManager::RenderObjects()
+void VisualizationManager::Render3DObjects()
 {
 	SceneObject *pObj;
 	// iterate through the objects to find object needs rendering
@@ -165,8 +161,18 @@ void VisualizationManager::RenderObjects()
 	}
 }
 
-
-void VisualizationManager::hideMenu()
+void VisualizationManager::Render2DObjects()
 {
-	m_menuOGL = !m_menuOGL;
+	if ((OGLContext::getInstance()->IsLogoFTActive())||(MenuManager::getInstance()->IsMenuVisible()))
+	{
+		OGLContext::getInstance()->GLOrtho2DCorrection();
+
+		//2D context for rendering
+		MenuManager::getInstance()->Render();
+		OGLContext::getInstance()->RenderLogo();
+
+	}
+
 }
+
+

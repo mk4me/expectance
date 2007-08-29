@@ -57,14 +57,20 @@ void Application::InitConfig()
  * \brief Initializes main modules of application
  *
  **/
-void Application::InitModules()
+bool Application::InitModules()
 {
     DBG("Application::InitModules().");
 
     UpdateManager::getInstance()->Init();  //enforced creation of singleton
     AvatarFactory::getInstance();   //enforced creation of singleton
-    VisualizationManager::getInstance()->Init();    //enforced creation of singleton
+    if (!VisualizationManager::getInstance()->Init()) //enforced creation of singleton
+	{
+		DBG("VisualizationManager::Init error");
+		return 0;
+	}
     TimeLineFactory::getInstance(); //enforced creation of singleton
+
+	return true;
 }
 
 /**
