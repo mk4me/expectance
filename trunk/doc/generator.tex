@@ -260,6 +260,14 @@ Tworzy zawartoœæ renderowania (prymitywy graficzne) przy pomocy API OpenGL. Budu
 \subsubsection{ft::Camera}
 Obecnie realizuje bardzo prymitywne operacje widoku sceny (przesuwanie sceny, obracanie sceny). Ze wzglêdu na interakcjê przy pomocy klawiatury i myszy, korzysta z \textit{ft::InputManagera} przy obs³udze komunikatów z tych urz¹dzeñ.
 
+\subsection{Renderowanie Sprzêtowe}
+Ka¿dy obiekt typu \textit{ft::SceneObject} mo¿e implementowaæ w³asne sprzêtowe renderowanie przy u¿yciu jêzyka GLSL w postaci assemblera \textit{ARB vertex program} oraz/lub \textit{ARB fragment program}. Aby zrealizowaæ sprzêtowe renderowanie wybranego obiektu nale¿y:
+\begin{enumerate}
+\item Utworzyæ pliki z kodem vertex shaderów dla fragmentów lub ca³ego obiektu graficznego w katalogu \textbf{shaders}. Shadery dla fragmentów powinny mieæ rozszerzenie \textit{.frag} natomiast dla ca³ego obiektu \textit{.vert}.
+\item Utworzyæ w kodzie obiektu graficznego metody do inicjalizacji i wczytywania shaderów oraz rezerwacji pamiêci, analogicznie do metod \textit{Avatar::InitHardwareAcceleration} i \textit{Avatar::loadBufferObject}.
+\item Utworzyæ w kodzie obiektu graficznego metodê renderuj¹c¹ obiekt przy pomocy sprzêtu analogiczn¹ do \textit{Avatar::HardwareRenderModelMesh}
+\end{enumerate}
+
 
 \flushright
 
