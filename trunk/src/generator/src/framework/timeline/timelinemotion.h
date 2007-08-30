@@ -71,7 +71,7 @@ namespace ft
         void Dump(int depth);   //OVERRIDEN
         std::string toString(); //OVERRIDEN
     protected:
-        void RemoveExecutedMotions();
+//        void RemoveExecutedMotions();
 
     private:
         Motion* m_motionRef; //reference to motion which is represented by this object

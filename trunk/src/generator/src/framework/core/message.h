@@ -31,6 +31,9 @@ namespace ft
 	//static const int MSG_INPUT_BUTTON_RELEASED = 11;
 	//static const int MSG_INPUT_MOUSE_MOVED = 12;
 
+      static const int MSG_START_SIMULATION = 20;
+      static const int MSG_RESTART_SIMULATION = 21;
+
 
 
 

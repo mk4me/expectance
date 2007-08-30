@@ -749,6 +749,58 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="control"
+				>
+				<File
+					RelativePath=".\src\framework\control\controlavatar.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\control\controlavatar.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\control\controlmanager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\control\controlmanager.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\control\controlstate.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\control\controlstate.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\control\idlestate.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\control\idlestate.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\control\runstate.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\control\runstate.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\control\walkstate.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\control\walkstate.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

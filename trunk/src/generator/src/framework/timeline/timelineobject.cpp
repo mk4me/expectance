@@ -81,9 +81,8 @@ TimeLineObject* TimeLineObject::GetLastSubObject()
     return obj;
 }
 
-void TimeLineObject::RemoveSubObject(TimeLineObject* obj_to_delete)
+void TimeLineObject::RemoveSubObject(TimeLineObject* obj_to_delete, bool deleteFromMemory)
 {
-
     if (obj_to_delete == m_first)
     {
         m_first = obj_to_delete->m_next;
@@ -103,8 +102,11 @@ void TimeLineObject::RemoveSubObject(TimeLineObject* obj_to_delete)
         }
     }
 
-    obj_to_delete->Destroy();
-    delete obj_to_delete;
+    if (deleteFromMemory)
+    {
+        obj_to_delete->Destroy();
+        delete obj_to_delete;
+    }
 }
 
 void TimeLineObject::ClearSubObjects()

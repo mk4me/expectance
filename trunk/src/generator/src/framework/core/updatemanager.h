@@ -3,8 +3,8 @@
  * author: abak
  */
 
-#ifndef _GEN_CONTROL_MANAGER_H
-#define _GEN_CONTROL_MANAGER_H
+#ifndef _GEN_UPDATE_MANAGER_H
+#define _GEN_UPDATE_MANAGER_H
 
 #include "message.h"
 #include "UpdateObject.h" 
@@ -65,4 +65,4 @@ namespace ft
  
 };
 
-#endif //_GEN_CONTROL_MANAGER_H
+#endif //_GEN_UPDATE_MANAGER_H

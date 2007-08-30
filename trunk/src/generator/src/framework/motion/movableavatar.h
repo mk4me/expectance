@@ -29,7 +29,7 @@ namespace ft
 	    virtual ~MovableAvatar(void);
         virtual void Destroy(void);
 
-        void Init();
+        virtual void Init();
 
         virtual void OnUpdate(float elapsedSeconds);  // OVERRIDEN, updates by UpdateManager 
         void OnMessage(Message* msg);  // OVERRIDEN, receives a message from UpdateManager
@@ -52,6 +52,8 @@ namespace ft
         void StartTimeLine();
         void StopTimeLine();
         bool AddTimeLineMotion(TimeLineMotion *timeLineMotion);
+
+        virtual void Reset();
 
         ////////////////////////////
 

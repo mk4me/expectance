@@ -10,7 +10,6 @@
 
 namespace ft
 {
-    static const int ADD_AS_NEXT                   = 0x00000004; 
     static const int REMOVE_AFTER_EXECUTION        = 0x00000008; 
     static const int STOP_IMMEDIATE                = 0x00000010; 
 

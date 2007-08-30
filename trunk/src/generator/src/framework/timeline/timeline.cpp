@@ -10,8 +10,8 @@ using namespace ft;
 TimeLine::TimeLine()
 {
     m_currTime = TIME_UNDEFINED;
+    setWaitingState(false);
 }
-
 
 /**
  * \brief Executes this timeline at current frame 
@@ -21,13 +21,58 @@ TimeLine::TimeLine()
  **/
 void TimeLine::Execute(float elapsedSeconds, TimeLineContext* timeLineContext)
 {
-    m_currTime += elapsedSeconds;
+    m_currTime += elapsedSeconds;    
 
-    // TODO:  must be passed m_currTime to deeper motions
-    TimeLineMotion::Execute(elapsedSeconds, timeLineContext);
+    if (isWaitingState())
+    {
+        if (!isEmpty())
+        {
+            Start(timeLineContext);
+        }
+    }
+    else
+    {
+        // TODO:  must be passed m_currTime to deeper motions
+        TimeLineMotion::Execute(elapsedSeconds, timeLineContext);
+        //if already execute motion should be removed?
+        if (m_first!= NULL && timeLineContext->remove_after_execution &&   getCurrentObject()!=m_first)
+        {
+            RemoveExecutedMotions(timeLineContext);
+        }
+    }
 }
 
+void TimeLine::RemoveExecutedMotions(TimeLineContext* timeLineContext)
+{
+    if (m_first != NULL)
+    {
+        TimeLineObject* obj = m_first;
+        
+        while (obj != getCurrentObject())
+        {
+            TimeLineObject* obj_to_delete = obj;
+            obj = obj->getNextObject();
+            RemoveSubObject(obj_to_delete);
+        }
+    }
+}
+
+void TimeLine::Start(TimeLineContext* timeLineContext)
+{
+   std::cout << " TimeLine::Start - waitingState from " << isWaitingState() << " to false " << std::endl;
+   setWaitingState(false);
+   TimeLineMotion::Start(timeLineContext);
+}
+
+
 ///\brief Stops execution of this TimeLineMotion
+void TimeLine::Stop(TimeLineContext* timeLineContext)
+{
+   std::cout << " TimeLine::Stop - waitingState from " << isWaitingState() << " to true " << std::endl;
+   setWaitingState(true);
+}
+
+///\brief Terminates TimeLine
 void TimeLine::StopTimeLine(TimeLineContext* timeLineContext)
 {
     std::cout << " TimeLine::StopTimeLine - submotions will be terminated " << std::endl;

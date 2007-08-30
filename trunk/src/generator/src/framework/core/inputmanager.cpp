@@ -4,6 +4,7 @@
  */
 
 #include "inputmanager.h"
+#include "../control/controlmanager.h"
 
 using namespace ft;
 
@@ -48,6 +49,13 @@ void InputManager::OnKey(unsigned char key, int x, int y)
  
   switch(key)
   {
+    case 13: //enter
+      UpdateManager::getInstance()->SendMessage(new Message(MSG_START_SIMULATION), true);
+      break;
+    case 'z':
+    case 'Z': 
+      UpdateManager::getInstance()->SendMessage(new Message(MSG_RESTART_SIMULATION), true);
+      break;
     case 't':
       UpdateManager::getInstance()->SendMessage(new Message(MSG_TEST), true);
        break;     
@@ -108,24 +116,27 @@ void InputManager::OnKey(unsigned char key, int x, int y)
  **/
 void InputManager::OnSpecial(int key, int x, int y)
 {
-  switch(key) 
+ /* switch(key) 
   {
     case GLUT_KEY_UP:
-      UpdateManager::getInstance()->SendMessage(new Message(MSG_CONTROL_START, new MessageParam("FirstAvatar")), true);
+      //nothing
       break;
     case GLUT_KEY_DOWN:
-       UpdateManager::getInstance()->SendMessage(new Message(MSG_CONTROL_STOP, new MessageParam("FirstAvatar")), true);
+       //nothing
        break;
     case GLUT_KEY_RIGHT:
-      UpdateManager::getInstance()->SendMessage(new Message(MSG_CONTROL_TURN_RIGHT, new MessageParam("FirstAvatar")), true);
+      //nothing
       break;
     case GLUT_KEY_LEFT:
-      UpdateManager::getInstance()->SendMessage(new Message(MSG_CONTROL_TURN_LEFT, new MessageParam("FirstAvatar")), true);
+      //nothing
       break;
     default:
-		Camera::getInstance()->OnSpecial(key, x, y);
       break;	
   }
+  */
+ ControlManager::getInstance()->OnSpecial(key, x, y);
+ Camera::getInstance()->OnSpecial(key, x, y);
+  
 }
 
 /**

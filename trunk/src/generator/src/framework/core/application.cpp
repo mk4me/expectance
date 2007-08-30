@@ -6,6 +6,7 @@
 #include "application.h"
 #include "config.h"
 #include "UpdateManager.h"
+#include "../control/controlmanager.h"
 #include "../avatar/avatarfactory.h"
 #include "../scene/visualizationmanager.h"
 #include "../timeline/timelinefactory.h"
@@ -70,6 +71,8 @@ bool Application::InitModules()
 	}
     TimeLineFactory::getInstance(); //enforced creation of singleton
 
+    ControlManager::getInstance()->Init(); //enforced creation of singleton
+
 	return true;
 }
 
@@ -81,11 +84,12 @@ void Application::InitAvatars()
 {
     DBG("Application::InitSceneObjects().");
 
-    MovableAvatar* av = dynamic_cast<MovableAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally.cfg", "FirstAvatar"));
+    ControlAvatar* av = dynamic_cast<ControlAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally.cfg", "FirstAvatar"));
     if (av != NULL)  
     {
         av->Init();
         av->Dump();
+        ControlManager::getInstance()->setActiveAvatar(av);
     }
     //MovableAvatar* av2 = dynamic_cast<MovableAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally.cfg", "SecondAvatar"));
     //if (av != NULL)  

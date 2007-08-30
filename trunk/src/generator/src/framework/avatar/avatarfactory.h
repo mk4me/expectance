@@ -8,8 +8,8 @@
 
 
 #include "../core/global.h"
+#include "avatar.h"
 #include <map>
-#include "../motion/movableavatar.h"
 
 namespace ft
 {

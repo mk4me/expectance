@@ -110,26 +110,26 @@ void TimeLineMotion::Execute(float elapsedSeconds, TimeLineContext* timeLineCont
     }
 
     //if already execute motion should be removed?
-    if (m_first!= NULL && timeLineContext->remove_after_execution &&   getCurrentObject()!=m_first)
-    {
-        RemoveExecutedMotions();
-    }
+    //if (m_first!= NULL && timeLineContext->remove_after_execution &&   getCurrentObject()!=m_first)
+    //{
+    //    RemoveExecutedMotions();
+    //}
 }
 
-void TimeLineMotion::RemoveExecutedMotions()
-{
-    if (m_first != NULL)
-    {
-        TimeLineObject* obj = m_first;
-        
-        while (obj != getCurrentObject())
-        {
-            TimeLineObject* obj_to_delete = obj;
-            obj = obj->getNextObject();
-            RemoveSubObject(obj_to_delete);
-        }
-    }
-}
+//void TimeLineMotion::RemoveExecutedMotions()
+//{
+//    if (m_first != NULL)
+//    {
+//        TimeLineObject* obj = m_first;
+//        
+//        while (obj != getCurrentObject())
+//        {
+//            TimeLineObject* obj_to_delete = obj;
+//            obj = obj->getNextObject();
+//            RemoveSubObject(obj_to_delete);
+//        }
+//    }
+//}
 
 /**
  * \brief Updates all sub-motions at current frame
