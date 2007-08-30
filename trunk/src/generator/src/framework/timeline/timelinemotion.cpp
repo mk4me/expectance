@@ -108,28 +108,7 @@ void TimeLineMotion::Execute(float elapsedSeconds, TimeLineContext* timeLineCont
     {
         Stop(timeLineContext);
     }
-
-    //if already execute motion should be removed?
-    //if (m_first!= NULL && timeLineContext->remove_after_execution &&   getCurrentObject()!=m_first)
-    //{
-    //    RemoveExecutedMotions();
-    //}
 }
-
-//void TimeLineMotion::RemoveExecutedMotions()
-//{
-//    if (m_first != NULL)
-//    {
-//        TimeLineObject* obj = m_first;
-//        
-//        while (obj != getCurrentObject())
-//        {
-//            TimeLineObject* obj_to_delete = obj;
-//            obj = obj->getNextObject();
-//            RemoveSubObject(obj_to_delete);
-//        }
-//    }
-//}
 
 /**
  * \brief Updates all sub-motions at current frame
@@ -193,8 +172,9 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, TimeLineContext* ti
                         if (blendMotion != NULL)
                         {
                             std::cout << toString() << " clearCycle " << blendMotion->toString() << " for blending " << std::endl;
-                            timeLineContext->getAvatar()->GetCalModel()->getMixer()->clearCycle(blendMotion->getMotion()->getAnimID(),
-                                currMotion->getBlender()->getOverlap());
+                            blendMotion->StopLoopAnim(timeLineContext, currMotion->getBlender()->getOverlap());
+//                            timeLineContext->getAvatar()->GetCalModel()->getMixer()->clearCycle(blendMotion->getMotion()->getAnimID(),
+//                                currMotion->getBlender()->getOverlap());
                         }
                     }
 
@@ -272,8 +252,9 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, TimeLineContext* timeLine
                         if ( isAnimToFinish() || (  m_loopNumber>=0   &&    (m_currLoop >= (m_loopNumber-1)) ) )
                         {
                             std::cout << " anim stop: m_animTime " << m_animTime << " anim duration " <<  animDuration << std::endl;      
-                            timeLineContext->getAvatar()->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
-                            std::cout << " anim stopped (cycled)" << std::endl;
+                            StopLoopAnim(timeLineContext, 0);
+//                            timeLineContext->getAvatar()->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
+//                            std::cout << " anim stopped (cycled)" << std::endl;
                             setAnimStarted(false);
                         }
                         else
@@ -351,13 +332,22 @@ void TimeLineMotion::ExecuteModifiers(float elapsedSeconds, TimeLineContext* tim
     }
 }
 
+void TimeLineMotion::StopLoopAnim(TimeLineContext* timeLineContext, float fade_out)
+{
+    if (m_motionRef != NULL)
+    {
+        std::cout << toString() << " StopLoopAnim with fade out " << fade_out << std::endl;
+        timeLineContext->getAvatar()->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), fade_out);
+    }
+}
+
 void TimeLineMotion::StopAnimImmediate(TimeLineContext* timeLineContext)
 {
     if (m_motionRef != NULL && this->isAnimStarted())
     {
         if (this->isAnimLoop())
         {
-            timeLineContext->getAvatar()->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
+            StopLoopAnim(timeLineContext, 0);
         }
         else
         {

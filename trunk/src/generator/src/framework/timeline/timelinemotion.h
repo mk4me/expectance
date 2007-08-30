@@ -42,6 +42,8 @@ namespace ft
         void ExecuteAnim(float elapsedSeconds, TimeLineContext* timeLineContext);
         void ExecuteModifiers(float elapsedSeconds, TimeLineContext* timeLineContext);
 
+        void StopLoopAnim(TimeLineContext* timeLineContext, float fade_out);
+
         TimeLineMotion* GetSubMotionWithAnim(TimeLineMotion* motion);
 
         void setLoopNumber(int number) { m_loopNumber = number; }
