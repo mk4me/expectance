@@ -41,7 +41,8 @@ namespace ft
         bool ExecuteSubMotions(float elapsedSeconds, TimeLineContext* timeLineContext);
         void ExecuteAnim(float elapsedSeconds, TimeLineContext* timeLineContext);
         void ExecuteModifiers(float elapsedSeconds, TimeLineContext* timeLineContext);
-     
+
+        TimeLineMotion* GetSubMotionWithAnim(TimeLineMotion* motion);
 
         void setLoopNumber(int number) { m_loopNumber = number; }
         int getLoopNumber() { return m_loopNumber; } 

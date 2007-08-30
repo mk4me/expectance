@@ -169,13 +169,35 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, TimeLineContext* ti
             {
                 bool nextMotionToStart = false;
 
-                if (!currMotion->isStarted() || IsBlendingToStart(currMotion, nextMotion, timeLineContext))
+                if (nextMotion !=NULL)
                 {
-                    nextMotionToStart = true;
+                    if (!currMotion->isStarted() || IsBlendingToStart(currMotion, nextMotion, timeLineContext))
+                    {
+                        nextMotionToStart = true;
+                    }
                 }
 
-                if (nextMotionToStart && nextMotion !=NULL)
+                if (nextMotionToStart)
                 {
+                    //start clearCycle if loop anim for blending
+                    if (currMotion->isStarted() )
+                    {
+
+                        TimeLineMotion* blendMotion;
+                        // find any of current sub-motions with anim
+                        if (currMotion->getMotion() != NULL)
+                            blendMotion = currMotion;
+                        else
+                            blendMotion = GetSubMotionWithAnim(currMotion);
+
+                        if (blendMotion != NULL)
+                        {
+                            std::cout << toString() << " clearCycle " << blendMotion->toString() << " for blending " << std::endl;
+                            timeLineContext->getAvatar()->GetCalModel()->getMixer()->clearCycle(blendMotion->getMotion()->getAnimID(),
+                                currMotion->getBlender()->getOverlap());
+                        }
+                    }
+
                     setCurrentObject(nextMotion);
                     nextMotion->Start(timeLineContext);
                     nextMotion->Execute(elapsedSeconds, timeLineContext);
@@ -249,6 +271,7 @@ void TimeLineMotion::ExecuteAnim(float elapsedSeconds, TimeLineContext* timeLine
                         //if m_loopNumber is -1 this means that this motion is infinitive
                         if ( isAnimToFinish() || (  m_loopNumber>=0   &&    (m_currLoop >= (m_loopNumber-1)) ) )
                         {
+                            std::cout << " anim stop: m_animTime " << m_animTime << " anim duration " <<  animDuration << std::endl;      
                             timeLineContext->getAvatar()->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
                             std::cout << " anim stopped (cycled)" << std::endl;
                             setAnimStarted(false);
@@ -344,6 +367,34 @@ void TimeLineMotion::StopAnimImmediate(TimeLineContext* timeLineContext)
 }
 
 /**
+ * \brief Finds any current submotion with non-NULL animation for given TimeLineMotion.
+ * Additional constraint is that found sub-motion should last submotion of its parent
+ *
+ * \param ft::TimeLineMotion* motion - currently being executed TimeLineMotion
+ * \return ft::TimeLineMotion* - submotion with non-NULL anim
+ **/
+TimeLineMotion* TimeLineMotion::GetSubMotionWithAnim(TimeLineMotion* motion)
+{
+    TimeLineMotion* result = NULL;
+    
+    TimeLineMotion* currSubObject = (TimeLineMotion* )motion->getCurrentObject();
+
+    //if there is current subobject and it is last subobject
+    if (currSubObject != NULL && currSubObject->getNextObject() == NULL)
+    {
+        if (currSubObject->getMotion() != NULL && currSubObject->isStarted())
+        {
+            result = currSubObject;
+        }
+        else
+        {
+            result = GetSubMotionWithAnim(currSubObject);
+        }
+    }
+    return result;
+}
+
+/**
  * \brief Determines if blending betwen currMotion and nextMotion should be started at current frame
  *
  * \param ft::TimeLineMotion * currMotion - currently being executed TimeLineMotion
@@ -359,16 +410,34 @@ bool TimeLineMotion::IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotio
     {
         if (!currMotion->isAnimLoop() || currMotion->isAnimToFinish())
         {
-            float animDuration = currMotion->GetMotionDuration(timeLineContext);
-            float animTime = currMotion->getAnimTime();
+            float animDuration = -1; 
+            float animTime = -1; 
+            TimeLineMotion* blendMotion;
             
+            // find any of current sub-motions with anim
+            if (currMotion->getMotion() != NULL)
+            {
+                blendMotion = currMotion;
+            }
+            else
+            {
+                blendMotion = GetSubMotionWithAnim(currMotion);
+            }
+
+            //if there is any sub-motion with anim
+            if (blendMotion != NULL)
+            {
+                animDuration = blendMotion->GetMotionDuration(timeLineContext);
+                animTime = blendMotion->getAnimTime();
+            }
 
             if (animDuration>=0)
             {
                 float animLeftTime = animDuration - animTime;
                 if (animLeftTime <= blender->getOverlap())
                 {
-                    std::cout << toString() << " blending started for animLeftTime " << animLeftTime  << std::endl;
+                    std::cout << toString() << " blending started for animLeftTime " << animLeftTime
+                        << " between " << blendMotion->toString() << " and " << nextMotion->toString() << std::endl;
                     result = true;
                 }
             }
