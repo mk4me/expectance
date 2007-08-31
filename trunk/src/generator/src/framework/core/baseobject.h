@@ -17,8 +17,9 @@ namespace ft
 	 **/
     class BaseObject 
     {
-
     public:
+        static bool SHORT_DESC;
+
 		BaseObject(void); 
 	    virtual ~BaseObject(void);
 		const std::string& getID() const;

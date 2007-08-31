@@ -10,7 +10,7 @@
 
 #define DBG(x) Debug::out(x)
 
-#define DEBUG_MESSAGES true
+#define DEBUG_MESSAGES false
 
 #define FT_PREFIX "<FT>"
 

@@ -195,7 +195,7 @@ void MovableAvatar::StartTimeLine()
     cout << toString() << "StartTimeLine()" << endl;
     if (m_timeLine != NULL)
     {
-        m_timeLine->Start(m_timeLineContext);
+        m_timeLine->Start(m_timeLineContext, 0, 0);
     }
 }
 

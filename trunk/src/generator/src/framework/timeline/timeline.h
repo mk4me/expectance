@@ -29,7 +29,7 @@ namespace ft
 
         void StopTimeLine(TimeLineContext* timeLineContext);
 
-        virtual void Start(TimeLineContext* timeLineContext);
+        virtual void Start(TimeLineContext* timeLineContext, float fade_in, float fade_out);
         virtual void Stop(TimeLineContext* timeLineContext);
 
         void setWaitingState(bool set) { m_waitingState = set; }

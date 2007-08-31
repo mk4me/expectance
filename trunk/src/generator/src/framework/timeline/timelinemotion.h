@@ -40,11 +40,14 @@ namespace ft
         virtual void Execute(float elapsedSeconds, TimeLineContext* timeLineContext);
         bool ExecuteSubMotions(float elapsedSeconds, TimeLineContext* timeLineContext);
         void ExecuteAnim(float elapsedSeconds, TimeLineContext* timeLineContext);
+        void CheckAnimToStop(float elapsedSeconds, TimeLineContext* timeLineContext);
         void ExecuteModifiers(float elapsedSeconds, TimeLineContext* timeLineContext);
 
+        void StartAnim(TimeLineContext* timeLineContext, float fade_in, float fade_out);
         void StopLoopAnim(TimeLineContext* timeLineContext, float fade_out);
 
         TimeLineMotion* GetSubMotionWithAnim(TimeLineMotion* motion);
+        TimeLineMotion* GetFirstSubMotionWithAnim(TimeLineMotion* motion);
 
         void setLoopNumber(int number) { m_loopNumber = number; }
         int getLoopNumber() { return m_loopNumber; } 
@@ -63,12 +66,14 @@ namespace ft
 
         float getAnimTime() { return m_animTime; }
 
+        bool IsAnimInLastLoop();
+
         float GetMotionDuration(TimeLineContext* timeLineContext);
 
 
         virtual void Reset(TimeLineContext* timeLineContext); // resets current object and its children
 
-        virtual void Start(TimeLineContext* timeLineContext);
+        virtual void Start(TimeLineContext* timeLineContext, float fade_in, float fade_out);
         virtual void Stop(TimeLineContext* timeLineContext);
 
         void Dump(int depth);   //OVERRIDEN

@@ -27,7 +27,7 @@ void TimeLine::Execute(float elapsedSeconds, TimeLineContext* timeLineContext)
     {
         if (!isEmpty())
         {
-            Start(timeLineContext);
+            Start(timeLineContext, 0, 0);
         }
     }
     else
@@ -57,11 +57,11 @@ void TimeLine::RemoveExecutedMotions(TimeLineContext* timeLineContext)
     }
 }
 
-void TimeLine::Start(TimeLineContext* timeLineContext)
+void TimeLine::Start(TimeLineContext* timeLineContext, float fade_in, float fade_out)
 {
    std::cout << " TimeLine::Start - waitingState from " << isWaitingState() << " to false " << std::endl;
    setWaitingState(false);
-   TimeLineMotion::Start(timeLineContext);
+   TimeLineMotion::Start(timeLineContext, fade_in, fade_out);
 }
 
 

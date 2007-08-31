@@ -7,6 +7,7 @@
 using namespace ft;
 
 unsigned long long BaseObject::ID_COUNTER = 0;  // max 18446744073709551600;
+bool BaseObject::SHORT_DESC = TRUE;
 
 /**
  * \brief Constructor 
@@ -54,7 +55,14 @@ const std::string& BaseObject::getID() const
  **/
 std::string BaseObject::toString()
 {
-    std::string brace("<");
-    return brace + getClassName() + "-" + getID() +">";
+    if (BaseObject::SHORT_DESC)
+    {
+        return "<" + m_id + ">";
+    }
+    else
+    {
+        std::string brace("<");
+        return brace + getClassName() + "-" + getID() +">";
+    }
 }
 
