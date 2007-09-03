@@ -28,13 +28,14 @@ void MenuManager::DestroyInstance()
 
 bool MenuManager::Init(int x, int y)
 {
-	m_menuOGL = Config::getInstance()->GetIntVal("main_menu_visible"); //set if menu is visible from configuration
-
 	bool final = true;
 	static unsigned int listID = 1000; // hope that system textures wont be so much
 	vector<string> tokens;
 	std::string menuOptions;
 	GLuint logoTexture;
+	
+	m_menuOGL = (Config::getInstance()->GetIntVal("main_menu_visible")==0)? false : true; //set if menu is visible from configuration
+
 	m_avtiveButton = -1;
 	m_x = x;
 	m_y = y;
