@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include "../utility/debug.h"
-#include "../scene/camera.h"
+#include "../scene/cameramanager.h"
 #include "../ui/menumanager.h"
 #include "../scene/visualizationmanager.h"
 #include "../scene/oglcontext.h"

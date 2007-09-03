@@ -17,7 +17,7 @@ VisualizationManager* VisualizationManager::getInstance()
         m_instance = new VisualizationManager();
 		
 		TextureManager::getInstance();  // enforced creation of singleton
-		Camera::getInstance();			// enforced creation of singleton
+		CameraManager::getInstance();			// enforced creation of singleton
     }
 
     return m_instance;
@@ -27,11 +27,11 @@ void VisualizationManager::DestroyInstance()
 {
     if (m_instance != NULL)
     {
-    	std::map<std::string,SceneObject*>::iterator it = m_instance->g_SceneObjects.begin();
-		for( ; it != m_instance->g_SceneObjects.end(); ++it ) {
+    	std::map<std::string,SceneObject*>::iterator it = m_instance->m_SceneObjects.begin();
+		for( ; it != m_instance->m_SceneObjects.end(); ++it ) {
 			delete it->second;
 	    }
-	    m_instance->g_SceneObjects.clear();
+	    m_instance->m_SceneObjects.clear();
 
         delete m_instance;
     }
@@ -40,7 +40,7 @@ void VisualizationManager::DestroyInstance()
 
 bool VisualizationManager::Init()
 {
-	Camera::getInstance()->Init();
+	CameraManager::getInstance()->Init();
 	if (!OGLContext::getInstance()->Init())
 	{
 		return false;
@@ -73,6 +73,7 @@ bool VisualizationManager::InitSceneObjects()
 void VisualizationManager::OnRender()
 {
 	//camera.update();
+	CameraManager::getInstance()->Update(); //update current camera information
 	OGLContext::getInstance()->RenderScene(); //camera.lookAt(); TODO
 	Render3DObjects();
 	Render2DObjects();
@@ -94,29 +95,29 @@ bool VisualizationManager::AddObject(SceneObject* pObj)
 	std::string _id = pObj->getID();
 	if (!_id.empty())
 	{
-	 	std::map<std::string,SceneObject*>::iterator it = g_SceneObjects.find(_id);
-		if ( it!=g_SceneObjects.end()) { 
+	 	std::map<std::string,SceneObject*>::iterator it = m_SceneObjects.find(_id);
+		if ( it!=m_SceneObjects.end()) { 
 			return false;
 		}
-	    g_SceneObjects.insert( std::make_pair( std::string(_id), pObj ) );
+	    m_SceneObjects.insert( std::make_pair( std::string(_id), pObj ) );
 	}
 	return true;
 }  
 
 
-SceneObject * VisualizationManager::getObject(std::string id)
+SceneObject* VisualizationManager::getObject(std::string id)
 {
- 	std::map<std::string,SceneObject*>::iterator it = g_SceneObjects.find(id);
-	if ( it!=g_SceneObjects.end()) { 
+ 	std::map<std::string,SceneObject*>::iterator it = m_SceneObjects.find(id);
+	if ( it!=m_SceneObjects.end()) { 
 		return it->second;
 	}
 	return NULL;
 }
 
-SceneObject * VisualizationManager::getObjectByName(std::string name)
+SceneObject* VisualizationManager::getObjectByName(std::string name)
 {
-	std::map<std::string,SceneObject*>::iterator it = m_instance->g_SceneObjects.begin();
-	for( ; it != m_instance->g_SceneObjects.end(); ++it ) {
+	std::map<std::string,SceneObject*>::iterator it = m_instance->m_SceneObjects.begin();
+	for( ; it != m_instance->m_SceneObjects.end(); ++it ) {
 		if (name.compare(it->second->getName()) == 0)
 			return it->second;
     }
@@ -135,11 +136,11 @@ bool VisualizationManager::RemoveObject(std::string id)
 {
 	if (!id.empty())
 	{
-	 	std::map<std::string,SceneObject*>::iterator it = g_SceneObjects.find(id);
-		if ( it!=g_SceneObjects.end()) 
+	 	std::map<std::string,SceneObject*>::iterator it = m_SceneObjects.find(id);
+		if ( it!=m_SceneObjects.end()) 
 		{ 
 			delete it->second;
-			g_SceneObjects.erase(it);
+			m_SceneObjects.erase(it);
 			return true;
 		}
 	}
@@ -151,8 +152,8 @@ void VisualizationManager::Render3DObjects()
 {
 	SceneObject *pObj;
 	// iterate through the objects to find object needs rendering
-	std::map<std::string,SceneObject*>::iterator it=g_SceneObjects.begin();
-	for( ; it != g_SceneObjects.end(); ++it ) {
+	std::map<std::string,SceneObject*>::iterator it=m_SceneObjects.begin();
+	for( ; it != m_SceneObjects.end(); ++it ) {
 		if ((pObj = dynamic_cast<SceneObject*>(it->second))!=NULL)
 		{
 			if (pObj->isVisible()) 

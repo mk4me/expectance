@@ -11,7 +11,7 @@
 #include "line.h"
 #include "traceline.h"
 #include "sceneobject.h"
-#include "camera.h"
+#include "cameramanager.h"
 #include "oglcontext.h"
 #include "texturemanager.h"
 #include "../ui/menumanager.h"
@@ -70,7 +70,7 @@ namespace ft
     private:
 		
         static VisualizationManager* m_instance;
-		std::map<std::string,SceneObject*> g_SceneObjects;
+		std::map<std::string,SceneObject*> m_SceneObjects;
 
     };
 };

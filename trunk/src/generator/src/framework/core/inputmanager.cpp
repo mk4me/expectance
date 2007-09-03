@@ -100,7 +100,7 @@ void InputManager::OnKey(unsigned char key, int x, int y)
         float lod = (key == '0') ? 1.0f : (key - '0') * 0.1f;
         UpdateManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_LOD, new MessageParam(lod)), true);
       }
-	  Camera::getInstance()->OnKey(key, x, y);
+	  CameraManager::getInstance()->OnKey(key, x, y);
       break;
   }
 }
@@ -135,7 +135,7 @@ void InputManager::OnSpecial(int key, int x, int y)
   }
   */
  ControlManager::getInstance()->OnSpecial(key, x, y);
- Camera::getInstance()->OnSpecial(key, x, y);
+ CameraManager::getInstance()->OnSpecial(key, x, y);
   
 }
 
@@ -155,7 +155,7 @@ void InputManager::OnMouseButtonDown(int button, int x, int y)
 	}
 	else	//the rest
 	{
-		Camera::getInstance()->OnMouseButtonDown(button, x, y);
+		CameraManager::getInstance()->OnMouseButtonDown(button, x, y);
 	}
 }
 
@@ -174,7 +174,7 @@ void InputManager::OnMouseButtonUp(int button, int x, int y)
 	}
 	else	//the rest
 	{
-		Camera::getInstance()->OnMouseButtonUp(button, x, y);
+		CameraManager::getInstance()->OnMouseButtonUp(button, x, y);
 	}
 }
 
@@ -186,5 +186,5 @@ void InputManager::OnMouseButtonUp(int button, int x, int y)
  **/
 void InputManager::OnMouseMove(int x, int y)
 {
-    Camera::getInstance()->OnMouseMove(x, y);
+    CameraManager::getInstance()->OnMouseMove(x, y);
 }

@@ -21,24 +21,23 @@ namespace ft
     {
     public:
         Camera(void) { /*empty*/}
-	    virtual ~Camera(void) { /*empty*/}
-        /// \brief singleton - Returns the only instance of Camera
-        static Camera* getInstance();
-		//! destroy all resources owned by Camera
-        static void DestroyInstance();
-		
-		/// \brief Inits basic camera parameters
+	    ~Camera(void) { /*empty*/}
+
+		//! get unique ID of camera object
+		const std::string& getID() const;
+		//! set unique ID from sceneobject instance that owns this camera
+		void setID(const std::string name);
+
+		/// \brief Initializes basic camera parameters
 		void Init();
-		/// \brief Handles a key event
-        void OnKey(unsigned char key, int x, int y);
-		/// \brief Handles special keys (F1, F2, UP, DOWN, etc.)
-		void OnSpecial(int key, int x, int y);
-		/// \brief Handles a mouse button down event 
-        void OnMouseButtonDown(int button, int x, int y);
-        /// \brief Handles a mouse button up event
-		void OnMouseButtonUp(int button, int x, int y);
-        /// \brief Handles a mouse move event 
-		void OnMouseMove(int x, int y);
+		
+		void setPitchAngle(float angle);
+		void setYawAngle(float angle);
+		void setRollAngle(float angle);
+		void setDistance(float distance);
+		void setCamUpDown(float updown);
+		void setCamLeftRight(float leftright);
+		
 		//! get the value of distance camera from middle of the scene
 		float getDistance();
 		//! get the value of Pitch Angle
@@ -50,17 +49,36 @@ namespace ft
 		//! get the value of Camera Up-Down factor
 		float getCamUpDown();
 		//float c_debug;
+
+		void ChangeVelocity(GLfloat vel);
+		void ChangeHeading(GLfloat degrees);
+		void ChangePitch(GLfloat degrees);
+		void SetPrespective(void);
+
     private:
-        static Camera* m_instance;
+		
+		std::string m_id;
+		
+		GLfloat m_MaxPitchRate;         // max OX
+		GLfloat m_MaxHeadingRate;       // max OY
+		GLfloat m_HeadingDegrees;       // OY
+		GLfloat m_PitchDegrees;         // OX
+		GLfloat m_MaxForwardVelocity;	// max Vel
+		GLfloat m_ForwardVelocity;
+		//glQuaternion m_qHeading;
+		//glQuaternion m_qPitch;
+		//glPoint m_Position;
+		//glVector m_DirectionVector;
+
+
+
+
 
 		float m_pitchAngle; // OX
 		float m_yawAngle;   // OY
 		float m_rollAngle;  // OZ
 		float m_distance;
 		float m_camLeftRight, m_camUpDown;
-		int m_mouseX, m_mouseY;
-		bool m_bLeftMouseButtonDown, m_bRightMouseButtonDown, m_bMiddleMouseButtonDown;
-
     };
 };
 

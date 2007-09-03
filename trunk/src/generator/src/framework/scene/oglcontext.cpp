@@ -307,9 +307,9 @@ void OGLContext::RenderScene()
 
 	//usun to stad lub zrob jak we francuskim kodzie w draw (Camera.Update, Camera.LookAt)
 	// set camera position
-	glTranslatef(0.0f, Camera::getInstance()->getCamUpDown(), -Camera::getInstance()->getDistance());
-	glRotatef(Camera::getInstance()->getPitchAngle(), 1.0f, 0.0f, 0.0f);
-	glRotatef(Camera::getInstance()->getYawAngle(), 0.0f, 1.0f, 0.0f);
+	glTranslatef(0.0f, CameraManager::getInstance()->getCamUpDown(), -CameraManager::getInstance()->getDistance());
+	glRotatef(CameraManager::getInstance()->getPitchAngle(), 1.0f, 0.0f, 0.0f);
+	glRotatef(CameraManager::getInstance()->getYawAngle(), 0.0f, 1.0f, 0.0f);
 
 
 

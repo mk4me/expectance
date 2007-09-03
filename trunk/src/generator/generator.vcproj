@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="windows-1250"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
@@ -510,6 +510,14 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\scene\camera.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\cameramanager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\cameramanager.h"
 					>
 				</File>
 				<File

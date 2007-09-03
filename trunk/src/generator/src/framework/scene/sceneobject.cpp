@@ -40,6 +40,27 @@ SceneObject& SceneObject::setColor(const FTVect& col)
 	return *this;
 }
 
+SceneObject& SceneObject::ActivateCamera()
+{
+	if( m_cam == NULL )
+	{
+		m_cam = new Camera();
+		m_cam->setID(this->getID()); // take id from current object
+		CameraManager::getInstance()->AddCamera(m_cam); //let camera manager use it
+	}
+	return *this;
+}
+
+SceneObject& SceneObject::DeactivateCamera()
+{
+	if (m_cam != NULL)
+	{
+		CameraManager::getInstance()->RemoveCamera(m_cam);
+		//delete m_cam;
+	}
+	return *this;
+}
+
 const FTVect& SceneObject::getPosition() const
 {
 	return m_position;

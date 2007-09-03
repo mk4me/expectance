@@ -16,7 +16,7 @@
 #include "../core/global.h"
 #include "../core/config.h"
 #include "texturemanager.h"
-#include "camera.h"
+#include "cameramanager.h"
 
 namespace ft
 {
