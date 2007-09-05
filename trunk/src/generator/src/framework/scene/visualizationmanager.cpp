@@ -72,6 +72,7 @@ bool VisualizationManager::InitSceneObjects()
 
 void VisualizationManager::OnRender()
 {
+	OGLContext::getInstance()->InitRendering();
 	//camera.update();
 	CameraManager::getInstance()->Update(); //update current camera information
 	OGLContext::getInstance()->RenderScene(); //camera.lookAt(); TODO

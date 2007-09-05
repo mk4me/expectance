@@ -294,7 +294,7 @@ bool OGLContext::InitLogoDL()
 	return true;
 }
 
-void OGLContext::RenderScene()
+void OGLContext::InitRendering()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -305,14 +305,10 @@ void OGLContext::RenderScene()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	//usun to stad lub zrob jak we francuskim kodzie w draw (Camera.Update, Camera.LookAt)
-	// set camera position
-	glTranslatef(0.0f, CameraManager::getInstance()->getCamUpDown(), -CameraManager::getInstance()->getDistance());
-	glRotatef(CameraManager::getInstance()->getPitchAngle(), 1.0f, 0.0f, 0.0f);
-	glRotatef(CameraManager::getInstance()->getYawAngle(), 0.0f, 1.0f, 0.0f);
+}
 
-
-
+void OGLContext::RenderScene()
+{
 	//render floor
 	glPushMatrix();
 		if (m_floorType == 0)
@@ -326,8 +322,6 @@ void OGLContext::RenderScene()
 	glPopMatrix();
 
 	glEnable(GL_CULL_FACE);
-
-
 }
 
 void OGLContext::RenderLogo()

@@ -65,7 +65,7 @@ void CameraManager::Init()
 
 void CameraManager::Update()
 {
-	//TODO
+	m_currentCamera->Update();
 }
 
 bool CameraManager::AddCamera(ft::Camera *pObj)
@@ -224,28 +224,3 @@ void CameraManager::OnMouseMove(int x, int y)
 
 
 
-/*----- Camera properties -----*/
-float CameraManager::getDistance()
-{
-	return m_distance;
-}
-
-float CameraManager::getPitchAngle()
-{
-	return m_pitchAngle;
-}
-
-float CameraManager::getYawAngle()
-{
-	return m_yawAngle;
-}
-
-float CameraManager::getRollAngle()
-{
-	return m_rollAngle;
-}
-
-float CameraManager::getCamUpDown()
-{
-	return m_camUpDown;
-}

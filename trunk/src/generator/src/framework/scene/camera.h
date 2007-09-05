@@ -30,7 +30,7 @@ namespace ft
 
 		/// \brief Initializes basic camera parameters
 		void Init();
-		
+		void Update();
 		void setPitchAngle(float angle);
 		void setYawAngle(float angle);
 		void setRollAngle(float angle);

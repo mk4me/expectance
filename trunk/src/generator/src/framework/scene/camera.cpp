@@ -19,7 +19,15 @@ void Camera::Init()
 	m_camUpDown = 0.0f;
 }
 
+void Camera::Update()
+{
+		//usun to stad lub zrob jak we francuskim kodzie w draw (Camera.Update, Camera.LookAt)
+	// set camera position
+	glTranslatef(0.0f, m_camUpDown, -m_distance);
+	glRotatef(m_pitchAngle, 1.0f, 0.0f, 0.0f);
+	glRotatef(m_yawAngle, 0.0f, 1.0f, 0.0f);
 
+}
 const std::string& Camera::getID() const
 {
 	return m_id;

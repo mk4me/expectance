@@ -56,17 +56,7 @@ namespace ft
 		void OnMouseButtonUp(int button, int x, int y);
         /// \brief Handles a mouse move event 
 		void OnMouseMove(int x, int y);
-		//! get the value of distance camera from middle of the scene
-		float getDistance();
-		//! get the value of Pitch Angle
-		float getPitchAngle();
-		//! get the value of Yaw Angle
-		float getYawAngle();
-		//! get the value of Roll Angle
-		float getRollAngle();
-		//! get the value of Camera Up-Down factor
-		float getCamUpDown();
-		//float c_debug;
+
     private:
         static CameraManager* m_instance;
 		Camera* m_currentCamera;
