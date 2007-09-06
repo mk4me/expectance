@@ -19,6 +19,7 @@ namespace ft
     {
     public:
         bool TRACE;
+        bool LOCAL_DEBUG;
 
         LCSModifier();
         virtual ~LCSModifier(void);

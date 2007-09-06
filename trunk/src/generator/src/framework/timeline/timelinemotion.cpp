@@ -40,6 +40,7 @@ void TimeLineMotion::Destroy(void)
 void TimeLineMotion::ResetParams()
 {
     // initial paramters here
+    
     setCurrentObject(NULL);
     setAnimToFinish(false);
     SetTerminated(false);
@@ -222,7 +223,7 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, TimeLineContext* ti
 
 
                     //start clearCycle if loop anim for blending
-                    if (currMotion->isStarted() && currMotion->isAnimLoop())
+                    if (currMotion->isStarted())
                     {
 
                         TimeLineMotion* blendMotion;
@@ -232,7 +233,7 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, TimeLineContext* ti
                         else
                             blendMotion = GetSubMotionWithAnim(currMotion);
 
-                        if (blendMotion != NULL)
+                        if (blendMotion != NULL && blendMotion->isAnimLoop())
                         {
 //                            std::cout << toString() << " clearCycle " << blendMotion->toString() << " for blending " << std::endl;
                             blendMotion->StopLoopAnim(timeLineContext, fade_in);
@@ -270,6 +271,9 @@ void TimeLineMotion::StartAnim(TimeLineContext* timeLineContext, float fade_in, 
                 {
                     std::cout << toString() << " StartAnim-blendCycle with fade_in " << fade_in << std::endl;
                     timeLineContext->getAvatar()->GetCalModel()->getMixer()->blendCycle(m_motionRef->getAnimID(), 1.0f, fade_in);
+                    timeLineContext->setCurrAnimID(m_motionRef->getAnimID());
+                    timeLineContext->setCurrAnimTime(0);
+                    timeLineContext->setCurrAnimLoop(true);
                 }
                 m_currLoop = 0;
             }
@@ -279,6 +283,9 @@ void TimeLineMotion::StartAnim(TimeLineContext* timeLineContext, float fade_in, 
                 {
                     std::cout << toString() << " StartAnim-executeAction with fade_in " << fade_in << " fade_out " << fade_out << std::endl;
                     timeLineContext->getAvatar()->GetCalModel()->getMixer()->executeAction(m_motionRef->getAnimID(), fade_in, fade_out);
+                    timeLineContext->setCurrAnimID(m_motionRef->getAnimID());
+                    timeLineContext->setCurrAnimTime(0);
+                    timeLineContext->setCurrAnimLoop(false);
                 }
             }
             setAnimStarted(true);
@@ -302,6 +309,7 @@ void TimeLineMotion::CheckAnimToStop(float elapsedSeconds, TimeLineContext* time
             {
                 StopAnimImmediate(timeLineContext);
                 setAnimStarted(false);
+                timeLineContext->setCurrAnimID(-1);
                 return;
             }
             else
@@ -314,8 +322,9 @@ void TimeLineMotion::CheckAnimToStop(float elapsedSeconds, TimeLineContext* time
         CalCoreAnimation* anim = timeLineContext->getAvatar()->GetCalCoreModel()->getCoreAnimation(animId);
 
         m_animTime += elapsedSeconds;  //TODO: ABAK: consider other animation time detection (maybe by cla3d function)
+        timeLineContext->setCurrAnimTime(m_animTime);
 
-        float animTime = timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationTime();
+//        float animTime = timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationTime();
         float animDuration;
         
         if (m_motionRef->isNullAnim())
@@ -340,6 +349,8 @@ void TimeLineMotion::CheckAnimToStop(float elapsedSeconds, TimeLineContext* time
 //                            timeLineContext->getAvatar()->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
 //                            std::cout << " anim stopped (cycled)" << std::endl;
                     setAnimStarted(false);
+                    timeLineContext->setCurrAnimID(-1);
+                    timeLineContext->setCurrAnimTime(-1);
                 }
                 else
                 {
@@ -356,6 +367,8 @@ void TimeLineMotion::CheckAnimToStop(float elapsedSeconds, TimeLineContext* time
             {
                 std::cout << " action anim stopped (action)" << std::endl;
                 setAnimStarted(false);
+                timeLineContext->setCurrAnimID(-1);
+                timeLineContext->setCurrAnimTime(-1);
             }
         }
     }

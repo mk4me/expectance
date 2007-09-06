@@ -30,11 +30,28 @@ namespace ft
         void setAvatar(Avatar* avatar) { m_avatar = avatar; }
         Avatar* getAvatar() { return m_avatar; }
 
+        void setCurrAnimID(int anim_id) { m_currAnimID = anim_id; }
+        int getCurrAnimID() { return m_currAnimID; }
+
+        void setCurrAnimTime(float time) { m_currAnimTime = time; }
+        float getCurrAnimTime() { return m_currAnimTime; }
+
+        void setCurrAnimLoop(bool set) { m_currAnimLoop = set; }
+        bool isCurrAnimLoop() { return m_currAnimLoop; }
+
+        
+
         Avatar *m_avatar;
 
         int where_to_add;
         bool remove_after_execution;
         bool stop_immediate;
+
+        int m_currAnimID;
+        float m_currAnimTime;
+        bool m_currAnimLoop;
+
+        
     };
 };
 

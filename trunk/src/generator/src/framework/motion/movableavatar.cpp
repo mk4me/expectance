@@ -209,6 +209,11 @@ void MovableAvatar::StopTimeLine()
         //m_timeLine->Reset(m_timeLineContext);
 //        m_timeLine->StopTimeLine(m_timeLineContext);
         m_timeLine->Reset(m_timeLineContext);
+        if (m_timeLineContext != NULL)
+        {
+            m_timeLineContext->setCurrAnimID(-1);
+            m_timeLineContext->setCurrAnimTime(-1);
+        }
     }
 
 }
@@ -305,7 +310,8 @@ void MovableAvatar::Reset()
  **/
 TimeLine* MovableAvatar::CreateTestTimeLine()
 {
-    getTimeLine()->AddModifier(new LCSModifier());
+    setLCSModifier(new LCSModifier());
+    getTimeLine()->AddModifier(getLCSModifier());
     
     return m_timeLine;
 }

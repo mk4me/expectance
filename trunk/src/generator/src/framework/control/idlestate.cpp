@@ -20,7 +20,7 @@ void IdleState::Init(MovableAvatar* avatar)
         timeLineMotion->setMotion(mot);
 		timeLineMotion->setAnimLoop(true);
         m_tlIdle->AddSubObject(timeLineMotion);
-//        m_tlIdle->setBlender(new TimeLineBlender(0.1f));
+        m_tlIdle->setBlender(new TimeLineBlender(0.05f));
     }
 }
 

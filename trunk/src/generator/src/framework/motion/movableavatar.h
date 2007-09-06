@@ -10,6 +10,7 @@
 #include "../avatar/avatar.h"
 #include "../utility/Quat.h"
 #include "../timeline/timelinefactory.h"
+#include "../timeline/lcsmodifier.h"
 #include "../scene/visualizationmanager.h"
 
 #include "motion.h"
@@ -59,6 +60,9 @@ namespace ft
 
         void Dump();
 
+        void setLCSModifier(LCSModifier* modifier) { m_lcsModifier = modifier; }
+        LCSModifier* getLCSModifier() { return m_lcsModifier; }
+
 
     private:
         //// ANIMATIONS
@@ -79,6 +83,8 @@ namespace ft
         TimeLine* CreateTestTimeLine();
 
         TraceLine *tracer_start_pos;
+
+        LCSModifier* m_lcsModifier; //TODO: only temporarily here
 
     };
 };

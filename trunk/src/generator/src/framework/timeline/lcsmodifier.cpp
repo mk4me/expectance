@@ -3,6 +3,8 @@
  * author: abak
  */
 #include "lcsmodifier.h"
+//#include "cal3d/coreanimation.h"
+#include "cal3d/coretrack.h"
 
 using namespace ft;
 
@@ -15,6 +17,7 @@ LCSModifier::LCSModifier()
     //m_vRotation = CalQuaternion();
 
     TRACE = false;
+    LOCAL_DEBUG = false;
 
     if (TRACE)
     {
@@ -53,64 +56,161 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 
     // Here apply this modifier
     CalSkeleton *skel = timeLineContext->getAvatar()->GetCalModel()->getSkeleton();
-        CalBone *bone = skel->getBone(0);
+    CalBone *bone = skel->getBone(0);
 
-        CalQuaternion currRotatation = bone->getRotation();
-		currRotatation *= timeLineContext->getAvatar()->m_vRotation;
-        bone->setRotation(currRotatation);
+    //SET ROTATION ////////////////////
+    CalQuaternion currRotatation = bone->getRotation();
+	currRotatation *= timeLineContext->getAvatar()->m_vRotation;
+    bone->setRotation(currRotatation);
 
         
-        CalVector currPos = bone->getTranslation();
+    //SET TRANSLATION //////////////////////
+    CalVector currPos;
+    int currAnimID_from_context = timeLineContext->getCurrAnimID();
+//    float currAnimTime = timeLineContext->getCurrAnimTime();
 
-        //std::cout << " z : " << currPos.z << std::endl;
+    static int counter = 0;
+    static int currAnimID = -1;
+    static float currAnimTime = 0;
+    float currAnimDuration = -1;
 
-        if (!m_translationInited)
+    if (currAnimID == -1 && currAnimID_from_context != -1)
+    {
+        currAnimID = currAnimID_from_context;
+        currAnimTime = 0;
+    }
+
+    CalCoreAnimation *pCoreAnimation;
+
+    if (currAnimID != -1)
+    {
+        pCoreAnimation = timeLineContext->getAvatar()->GetCalCoreModel()->getCoreAnimation(currAnimID);
+        currAnimDuration = pCoreAnimation->getDuration();
+    }
+
+    currAnimTime += elapsedSeconds;
+
+    bool wasAnimChange = false;
+
+    if ( currAnimDuration!=-1 &&  currAnimDuration<currAnimTime  )
+    {
+        if (LOCAL_DEBUG)
         {
-            if (TRACE)
-            {
-                tracer_translation->ClearTrace();
-                tracer_curr_pos->ClearTrace();
-            }
+            cout << "--------NEW ANIM -------- loop: " <<  timeLineContext->isCurrAnimLoop()
+                << " anim duration " << currAnimDuration << " animTime " << currAnimTime << endl;
 
-            m_vTranslation = timeLineContext->getAvatar()->getStartPosition(); // - currPos;
-            
-            m_vTranslation.y = currPos.y;
+        }
+
+        currAnimID = currAnimID_from_context;
+        if (timeLineContext->isCurrAnimLoop())
+        {
+            if (LOCAL_DEBUG)
+                cout << "- cycle size " << timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationCycle().size();
+
+            if (timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationCycle().size() > 0)
+            {
+                //currAnimTime = timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationCycle().front()->getTime();
+                currAnimTime = timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationTime();
+                if (LOCAL_DEBUG)
+                    cout << "- currAnimTime " << currAnimTime << endl;
+            }
+            else
+                currAnimTime = 0;
+        }
+        else
+        {
+            if (LOCAL_DEBUG)
+                cout << "- action list size " << timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationActionList().size();
+
+            if (timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationActionList().size() > 0)
+                currAnimTime = timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationActionList().front()->getTime();
+            else
+                currAnimTime = 0;
+        }
+        wasAnimChange = true;
+        if (LOCAL_DEBUG)
+            cout << " new anim time " << currAnimTime << endl;
+    }
+
+
+    if (currAnimID != -1 && currAnimTime != -1)
+    {
+        pCoreAnimation = timeLineContext->getAvatar()->GetCalCoreModel()->getCoreAnimation(currAnimID);
+        currAnimDuration = pCoreAnimation->getDuration();
+        CalCoreTrack* track = pCoreAnimation->getCoreTrack(0);
+        CalVector translation;
+        CalQuaternion rotation;
+        track->getState(currAnimTime, currPos, rotation);
+        if (wasAnimChange)
             m_vLastPos = currPos;
 
-            m_translationInited = true;
-
-            if (TRACE)
-            {
-                tracer_translation->AddPoint(m_vTranslation + CalVector(0,70,0));
-                tracer_translation->AddPoint(m_vTranslation + CalVector(0,80,0));
-
-                tracer_curr_pos->AddPoint(currPos + CalVector(0,70,0));
-                tracer_curr_pos->AddPoint(currPos + CalVector(0,80,0));
-            }
-        }
-
-        CalVector diff = currPos - m_vLastPos;
-
-        diff *= timeLineContext->getAvatar()->m_vRotation;
-
-        float diff_lenght = diff.length();
-
-        if ( diff_lenght < 50)
+        if (LOCAL_DEBUG)
         {
-            m_vTranslation += diff;
-            m_vTranslation.y = currPos.y;
-
-            if (TRACE)
-            {
-                tracer_translation->AddPoint(m_vTranslation);
-                tracer_curr_pos->AddPoint(currPos + CalVector(0,50,0));
-            }
+            if (counter == 0)
+                cout << "anim_id: " << currAnimID << " trans: my x "<< currPos.x << " z " << currPos.z << " cal x " << bone->getTranslation().x 
+                            << " z " << bone->getTranslation().z << 
+                            " anims " <<  timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationActionList().size() << endl;
+            counter = (counter+1)%100;
         }
+    }
+    else
+    {
+        if (LOCAL_DEBUG)
+            cout << "********** original trans " << endl;
+        currPos = bone->getTranslation();
+    }
+    
+        //std::cout << " z : " << currPos.z << std::endl;
 
+    if (!m_translationInited)
+    {
+                    if (TRACE)
+                    {
+                        tracer_translation->ClearTrace();
+                        tracer_curr_pos->ClearTrace();
+                    }
+
+        m_vTranslation = timeLineContext->getAvatar()->getStartPosition(); // - currPos;
+        
+        m_vTranslation.y = currPos.y;
         m_vLastPos = currPos;
-        bone->setTranslation(m_vTranslation);
 
-        bone->calculateState();
+        m_translationInited = true;
+
+                    if (TRACE)
+                    {
+                        tracer_translation->AddPoint(m_vTranslation + CalVector(0,70,0));
+                        tracer_translation->AddPoint(m_vTranslation + CalVector(0,80,0));
+
+                        tracer_curr_pos->AddPoint(currPos + CalVector(0,70,0));
+                        tracer_curr_pos->AddPoint(currPos + CalVector(0,80,0));
+                    }
+    }
+
+    CalVector diff = currPos - m_vLastPos;
+
+    diff *= timeLineContext->getAvatar()->m_vRotation;
+
+    float diff_lenght = diff.length();
+
+    if ( diff_lenght < 50)
+    {
+        m_vTranslation += diff;
+        m_vTranslation.y = currPos.y;   //TODO:abak:  it should be applied also for diff_length>=50
+
+                        if (TRACE)
+                        {
+                            tracer_translation->AddPoint(m_vTranslation);
+                            tracer_curr_pos->AddPoint(currPos + CalVector(0,50,0));
+                        }
+        
+    }
+
+
+    m_vLastPos = currPos;
+    bone->setTranslation(m_vTranslation);
+
+    bone->calculateState();
 }
 
 /// \brief Resets parameters of this modifier

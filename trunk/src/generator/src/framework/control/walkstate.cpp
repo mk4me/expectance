@@ -18,8 +18,8 @@ void WalkState::Init(MovableAvatar* avatar)
         TimeLineMotion* timeLineMotion = new TimeLineMotion();
         timeLineMotion->setMotion(mot);
         timeLineMotion->setLoopNumber(1);
-        timeLineMotion->setAnimLoop(true);
-        timeLineMotion->setBlender(new TimeLineBlender(0.2f));
+//        timeLineMotion->setAnimLoop(true);
+        timeLineMotion->setBlender(new TimeLineBlender(0.1f));
         m_tlWalk->AddSubObject(timeLineMotion, ADD_OBJECT_AS_LAST);
     }
  
@@ -31,7 +31,7 @@ void WalkState::Init(MovableAvatar* avatar)
 //        timeLineMotion->setLoopNumber(1);
         timeLineMotion->setAnimLoop(true);
         timeLineMotion->setMotion(mot);
-//        timeLineMotion->setBlender(new TimeLineBlender(0.1f));
+        timeLineMotion->setBlender(new TimeLineBlender(0.2f));
         m_tlWalk->AddSubObject(timeLineMotion);
     }
 
@@ -50,7 +50,7 @@ void WalkState::Init(MovableAvatar* avatar)
         m_tlStopWalk = timeLineMotion; 
     }
 
-    //m_tlWalk->setBlender(new TimeLineBlender(0.1f));
+    m_tlWalk->setBlender(new TimeLineBlender(0.1f));
 }
 
 void WalkState::Entry(MovableAvatar* avatar)
