@@ -9,7 +9,7 @@
 #include <iostream>
 #include "../utility/debug.h"
 #include "../core/global.h"
-
+#include "sceneobject.h"
 
 namespace ft
 {
@@ -21,15 +21,15 @@ namespace ft
     {
     public:
         Camera(void) { /*empty*/}
-	    ~Camera(void) { /*empty*/}
+		Camera(SceneObject *pScObj);
+		Camera(std::string id);
+		~Camera(void) { /*empty*/}
 
 		//! get unique ID of camera object
 		const std::string& getID() const;
-		//! set unique ID from sceneobject instance that owns this camera
-		void setID(const std::string name);
 
 		/// \brief Initializes basic camera parameters
-		void Init();
+	    void Init(float pitch=20.0f, float yaw=0.0f, float roll=0.0f, float dist=800.0f, float leftRight=0.0f, float upDown=0.0f);
 		void Update();
 		void setPitchAngle(float angle);
 		void setYawAngle(float angle);
@@ -48,7 +48,8 @@ namespace ft
 		float getRollAngle();
 		//! get the value of Camera Up-Down factor
 		float getCamUpDown();
-		//float c_debug;
+		//! get the value of Camera Left-Right factor
+		float getCamLeftRight();
 
 		void ChangeVelocity(GLfloat vel);
 		void ChangeHeading(GLfloat degrees);
@@ -56,9 +57,12 @@ namespace ft
 		void SetPrespective(void);
 
     private:
+		//! set unique ID from sceneobject instance that owns this camera
+		void setID(const std::string name);
 		
 		std::string m_id;
-		
+		SceneObject *m_scObj; // camera for scene object
+
 		GLfloat m_MaxPitchRate;         // max OX
 		GLfloat m_MaxHeadingRate;       // max OY
 		GLfloat m_HeadingDegrees;       // OY

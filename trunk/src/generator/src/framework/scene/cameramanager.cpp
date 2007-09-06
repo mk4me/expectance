@@ -42,44 +42,57 @@ void CameraManager::Init()
 	m_bRightMouseButtonDown = false;
 	m_bMiddleMouseButtonDown = false;
 
-	//scene Camera initialization
-	m_pitchAngle = 20.0f;
-	m_yawAngle = 0.0f;
-	m_distance = 800.0f;
-	m_camUpDown = 0.0f;
-	m_camLeftRight = 0.0f;
-	m_sceneCamera = new Camera();
-	m_sceneCamera->setPitchAngle(m_pitchAngle);
-	m_sceneCamera->setYawAngle(m_yawAngle);
-	m_sceneCamera->setDistance(m_distance);
-	m_sceneCamera->setCamUpDown(m_camUpDown);
-	m_sceneCamera->setCamLeftRight(m_camLeftRight);
-
-	m_sceneCamera->setID("mainSceneCamera");
-	AddCamera(m_sceneCamera);
-	
-	m_currentCamera = getCamera("mainSceneCamera"); // set scene camera as active camera
-	
+	AddCamera(new Camera("mainCamera"));	
+	setCurrentCamera("mainCamera");
 }
 
 
 void CameraManager::Update()
 {
-	m_currentCamera->Update();
+	if(m_currentCamera!=NULL)
+		m_currentCamera->Update();
 }
 
-bool CameraManager::AddCamera(ft::Camera *pObj)
+bool CameraManager::AddCamera(SceneObject *pScObj)
 {
-	std::string _id = pObj->getID();
+	std::string _id = pScObj->getID();
 	if (!_id.empty())
 	{
 	 	std::map<std::string,Camera*>::iterator it = m_CameraContainer.find(_id);
 		if ( it!=m_CameraContainer.end()) { 
 			return false;
 		}
-	    m_CameraContainer.insert( std::make_pair( std::string(_id), pObj ) );
+		else
+		{
+			Camera *_pCamObj = new Camera(pScObj);
+			m_CameraContainer.insert( std::make_pair( std::string(_id), _pCamObj ) );
+		}
 	}
 	return true;
+}
+
+bool CameraManager::AddCamera(Camera *pCamObj)
+{
+	std::string _id = pCamObj->getID();
+	if (!_id.empty())
+	{
+	 	std::map<std::string,Camera*>::iterator it = m_CameraContainer.find(_id);
+		if ( it!=m_CameraContainer.end()) { 
+			return false;
+		}
+		else
+		{
+			m_CameraContainer.insert( std::make_pair( std::string(_id), pCamObj ) );
+		}
+	}
+	return true;
+}
+
+bool CameraManager::AddCamera(std::string camName, float pitch, float yaw, float roll, float dist, float leftRight, float upDown)
+{
+	Camera *cam = new Camera(camName);
+	cam->Init(pitch,yaw,roll,dist,leftRight,upDown);
+	return AddCamera(cam);
 }
 
 Camera* CameraManager::getCamera(std::string id)
@@ -89,6 +102,31 @@ Camera* CameraManager::getCamera(std::string id)
 		return it->second;
 	}
 	return NULL;
+}
+
+void CameraManager::setCurrentCamera(std::string id)
+{
+	Camera *cam = getCamera(id);
+	if (cam!=NULL)
+	{
+		m_pitchAngle = cam->getPitchAngle();
+		m_yawAngle = cam->getYawAngle();
+		m_distance = cam->getDistance();
+		m_camUpDown = cam->getCamUpDown();
+		m_camLeftRight = cam->getCamLeftRight();
+
+		m_currentCamera = cam;
+	}
+	else
+	{
+		m_pitchAngle = 20.0f;
+		m_yawAngle = 0.0f;
+		m_rollAngle = 0.0f;
+		m_distance = 800.0f;
+		m_camUpDown = 0.0f;
+		m_camLeftRight = 0.0f;
+		m_currentCamera = new Camera("mainCamera");
+	}
 }
 
 
@@ -119,20 +157,23 @@ bool CameraManager::RemoveCamera(std::string id)
 /*----- Handle a keys and mouse events -----*/
 void CameraManager::OnKey(unsigned char key, int x, int y)
 {
-  //switch(key)
-  //{
-  //  // test for .... everything
-  // //// case 'o':
-  // ////   c_debug+=0.1;if (c_debug>1.0) c_debug=0.0;
-	 // ////std::cout << "info -> "<<c_debug<< std::endl;
-  // ////   break;
-  // //// case 'p':
-  // ////   c_debug-=0.1;if (c_debug<0.0) c_debug=1.0;
-	 // ////std::cout << "blending -> "<<c_debug<< std::endl;
-  // ////   break;
-  //  default:
-  //    break;
-  //}
+	switch(key)
+	{
+	  case 'X':
+		  setCurrentCamera("frontLeft");
+	    break;
+	  case 'C':
+		  setCurrentCamera("backLeft");
+	    break;
+	  case 'V':
+		  setCurrentCamera("backRight");
+	    break;
+	  case 'B':
+		  setCurrentCamera("frontRight");
+	    break;
+	  default:
+	    break;
+	}
 }
 
 
@@ -211,12 +252,14 @@ void CameraManager::OnMouseMove(int x, int y)
 		//calculate new Y position
 		m_camUpDown +=(float)(y-m_mouseY);	
 	}
-
+	
+	if (m_currentCamera!=NULL)
+	{
 	m_currentCamera->setYawAngle(m_yawAngle);
 	m_currentCamera->setPitchAngle(m_pitchAngle);
 	m_currentCamera->setDistance(m_distance);
 	m_currentCamera->setCamUpDown(m_camUpDown);
-
+	}
 	// update internal mouse position
 	m_mouseX = x;
 	m_mouseY = y;

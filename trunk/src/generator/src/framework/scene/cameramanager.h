@@ -31,11 +31,19 @@ namespace ft
 		
 		/// \brief Initializes basic Camera Manager parameters
 		void Init();
+
+		/*! Add camera and register object to be tracked by camera */
+		bool AddCamera(SceneObject *pScObj);   
+		/*! Add independent camera with id */
+		bool AddCamera(Camera *pCamObj);   
 		
-		/*! Registers object to be tracked by camera */
-		bool AddCamera(ft::Camera* pObj);   
+		/*! Add independent camera with id */
+		bool AddCamera(std::string camName, float pitch=20.0f, float yaw=0.0f, float roll=0.0f, float dist=800.0f, float leftRight=0.0f, float upDown=0.0f);   
+
 		//! get the pointer value of Camera object by unique id
 		Camera* getCamera(std::string id);
+		//! set indicated camera as current camera
+		void setCurrentCamera(std::string id);
 		//! remove CameraObject
 		/*! Unregisters Camera object from m_CameraContainer list and deactivate it in object */
 		bool RemoveCamera(Camera*);
@@ -60,7 +68,6 @@ namespace ft
     private:
         static CameraManager* m_instance;
 		Camera* m_currentCamera;
-		Camera* m_sceneCamera;
 		std::map<std::string,Camera*> m_CameraContainer;
 
 		float m_pitchAngle; // OX

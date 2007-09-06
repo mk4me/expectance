@@ -66,6 +66,13 @@ bool VisualizationManager::InitSceneObjects()
 	OGLContext::getInstance()->InitNormalFloorDL(20);
 	if (!OGLContext::getInstance()->InitTexturedFloorDL(20)) return false;
 	if (!OGLContext::getInstance()->InitLogoDL()) return false;
+
+	//init 4 scene cameras
+	CameraManager::getInstance()->AddCamera("frontLeft",20,45,0.0,1000);
+	CameraManager::getInstance()->AddCamera("backLeft",20,135,0.0,1000);
+	CameraManager::getInstance()->AddCamera("backRight",20,225,0.0,1000);
+	CameraManager::getInstance()->AddCamera("frontRight",20,315,0.0,1000);
+
 	return true;
 }
 

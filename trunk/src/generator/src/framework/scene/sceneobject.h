@@ -9,8 +9,6 @@
 
 #include "../core/baseobject.h"
 #include "../utility/mathconversions.h"
-#include "camera.h"
-#include "cameramanager.h"
 
 namespace ft
 {
@@ -34,10 +32,6 @@ namespace ft
 		SceneObject& setOrientation(const FTVect &orientation);
 		/// \brief Sets object color by vector of RGB values 
 		SceneObject& setColor(const FTVect &color);
-		///\brief Activate camera for that object
-		SceneObject& ActivateCamera();
-		///\brief Deactivate camera from that object
-		SceneObject& DeactivateCamera();
 		//! get the value of object position 
 		const FTVect& getPosition() const;
 		//! get the value of object orientation
@@ -59,8 +53,6 @@ namespace ft
 		FTVect m_position, m_orientation;
 		FTVect m_color;
 		float m_alpha;
-		Camera* m_cam; // camera for scene object
-
 	};
 };
 
