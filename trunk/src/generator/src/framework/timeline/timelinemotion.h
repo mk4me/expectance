@@ -39,7 +39,6 @@ namespace ft
 
         virtual void Execute(float elapsedSeconds, TimeLineContext* timeLineContext);
         bool ExecuteSubMotions(float elapsedSeconds, TimeLineContext* timeLineContext);
-        void ExecuteAnim(float elapsedSeconds, TimeLineContext* timeLineContext);
         void CheckAnimToStop(float elapsedSeconds, TimeLineContext* timeLineContext);
         void ExecuteModifiers(float elapsedSeconds, TimeLineContext* timeLineContext);
 

@@ -130,21 +130,14 @@ void ControlAvatar::OnMessage(Message* msg)
 
     if (msg->getType() == MSG_CONTROL_START)
     {
-        std::string myName = getName();
-        std::string requestedId = msg->getParam()->getStrValue();
-        if (getName().compare(msg->getParam()->getStrValue()) == 0   )
+        if (msg->getParam() == NULL || (getName().compare(msg->getParam()->getStrValue()) == 0))
         {
-//            StartTimeLine(CreateTestTimeLine());
-//              StartTimeLine();
-//            cout << "MovableAvatar : blendCycle -> " << MOTION_WALK_LOOP << std::endl;
-//            int animId = GetMotion(MOTION_WALK_LOOP)->getAnimID();
-//            m_calModel->getMixer()->blendCycle(animId, 1.0f, 0.0f);
             SetState(WALK_STATE);
         }
     }
     else if (msg->getType() == MSG_CONTROL_STOP)
     {
-        if (  getName().compare(msg->getParam()->getStrValue()) == 0   )
+        if (msg->getParam() == NULL || (getName().compare(msg->getParam()->getStrValue()) == 0))
         {
             //cout << "MovableAvatar : will stop TimeLine "<< std::endl;
             //StopTimeLine();
@@ -153,7 +146,7 @@ void ControlAvatar::OnMessage(Message* msg)
     }
     else if (msg->getType() == MSG_CONTROL_TURN_LEFT)
     {
-        if (  getName().compare(msg->getParam()->getStrValue()) == 0   )
+        if (msg->getParam() == NULL || (getName().compare(msg->getParam()->getStrValue()) == 0))
         {
 //            cout << "MovableAvatar : turn left " << std::endl;
             Quat addRot = Quat(degToRad(-3.0f), Vec(0,1,0));
@@ -162,7 +155,7 @@ void ControlAvatar::OnMessage(Message* msg)
     }
     else if (msg->getType() == MSG_CONTROL_TURN_RIGHT)
     {
-        if (  getName().compare(msg->getParam()->getStrValue()) == 0   )
+        if (msg->getParam() == NULL || (getName().compare(msg->getParam()->getStrValue()) == 0))
         {
 //            cout << "MovableAvatar : turn left " << std::endl;
             Quat addRot = Quat(degToRad(3.0f), Vec(0,1,0));

@@ -9,9 +9,6 @@ using namespace ft;
 /// \brief constructor
 TimeLineObject::TimeLineObject()
 {
-    m_startTime = TIME_UNDEFINED;
-    m_endTime = TIME_UNDEFINED;
-
     m_started = false;
 
     m_first = NULL;

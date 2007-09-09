@@ -9,7 +9,6 @@ using namespace ft;
 /// \brief constructor
 TimeLine::TimeLine()
 {
-    m_currTime = TIME_UNDEFINED;
     setWaitingState(false);
 }
 
@@ -21,8 +20,6 @@ TimeLine::TimeLine()
  **/
 void TimeLine::Execute(float elapsedSeconds, TimeLineContext* timeLineContext)
 {
-    m_currTime += elapsedSeconds;    
-
     if (isWaitingState())
     {
         if (!isEmpty())

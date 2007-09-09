@@ -10,6 +10,21 @@ using namespace std;
 
 ControlManager* ControlManager::m_instance = NULL;
 
+ControlManager::ControlManager(void)
+{
+    tracer_active_avatar = NULL;
+}
+
+ControlManager::~ControlManager(void) 
+{ 
+    if (tracer_active_avatar != NULL)
+    {
+        tracer_active_avatar->ClearTrace();
+        VisualizationManager::getInstance()->RemoveObject(tracer_active_avatar);
+        tracer_active_avatar = NULL;
+    }
+}
+
 /**
  * \brief Returns the only instance of ft::ControlManager (creates it at first call to this method)
  *
@@ -43,7 +58,78 @@ void ControlManager::DestroyInstance()
 void ControlManager::Init()
 {
     setActiveAvatar(NULL);
+    m_activeAvatarInd = -1;
+
+    TRACE = true;
+
+    if (TRACE)
+    {
+        tracer_active_avatar = new TraceLine(toString() + "_active_avatar");
+        VisualizationManager::getInstance()->AddObject(tracer_active_avatar);
+    }
+
 }
+
+void ControlManager::OnUpdate(float elapsedSeconds)
+{
+    UpdateActiveAvatarMarker();
+}
+
+void ControlManager::UpdateActiveAvatarMarker()
+{
+    if (TRACE && tracer_active_avatar != NULL)
+    {
+        tracer_active_avatar->ClearTrace();
+        ControlAvatar* av = getActiveAvatar();
+        if (av != NULL)
+        {
+            CalSkeleton *skel = av->GetCalModel()->getSkeleton();
+            CalBone *bone = skel->getBone(0);
+            CalVector currPos = bone->getTranslation();
+            currPos.y += 120;
+            tracer_active_avatar->AddPoint(currPos);
+            currPos.y += 10;
+            tracer_active_avatar->AddPoint(currPos);
+        }
+    }
+}
+
+/**
+ * \brief Adds avatar to list of controlled avatars
+ *
+ * \param ft::ControlAvatar* av - avatar to add
+ * \return bool - true if modifier added successfuly
+ **/
+bool ControlManager::AddControlAvatar(ControlAvatar* av)
+{
+    std::cout << " AddControlAvatar " << av->toString() << " to ControlManager " << std::endl;
+    m_vControlAvatars.push_back(av);
+	return true;
+}
+
+void ControlManager::setActiveAvatar(int ind)
+{ 
+    m_activeAvatarInd  = ind; 
+    std::cout << "ControlManager.setActiveAvatar(" << ind << ")" << std::endl;
+}
+
+ControlAvatar* ControlManager::getActiveAvatar()
+{
+    ControlAvatar*  activeAv = NULL;
+
+    int size = (int)m_vControlAvatars.size();
+    if (m_activeAvatarInd >=0 && m_activeAvatarInd < size)
+    {
+        activeAv = m_vControlAvatars[m_activeAvatarInd];
+    }
+    return activeAv;
+}
+
+
+  
+//TODO: implement RemoveControlAvatar
+//bool  ControlManager::RemoveControlAvatar(ControlAvatar* av);
+
 
 /**
  * \brief Called from InputManager when special keys pressed (F1, F2, UP, DOWN, etc.)
@@ -69,13 +155,36 @@ void ControlManager::OnSpecial(int key, int x, int y)
     case GLUT_KEY_LEFT:
         controlMessage = MSG_CONTROL_TURN_LEFT;
         break;
+    case GLUT_KEY_F1:
+        if (m_activeAvatarInd >=0)
+        {
+            int newAvtiveInd = (m_activeAvatarInd+1) % (int)m_vControlAvatars.size();
+            setActiveAvatar(newAvtiveInd);
+        }
+        else
+        {
+            setActiveAvatar(0);
+        }
+        UpdateActiveAvatarMarker();
+        break;
+    case GLUT_KEY_F2:
+        setActiveAvatar(-1);
+        UpdateActiveAvatarMarker();
+        break;
     default:
         break;	
   }
 
-  if (controlMessage != -1 && getActiveAvatar() != NULL)
+  if (controlMessage != -1)
   {
-      UpdateManager::getInstance()->SendMessage(new Message(controlMessage, new MessageParam(getActiveAvatar()->getName())), true);
+      if (m_activeAvatarInd >= 0 && getActiveAvatar() != NULL)
+      {
+        UpdateManager::getInstance()->SendMessage(new Message(controlMessage, new MessageParam(getActiveAvatar()->getName())), true);
+      }
+      else
+      {
+        UpdateManager::getInstance()->SendMessage(new Message(controlMessage, NULL), true);
+      }
   }
 }
 

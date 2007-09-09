@@ -10,6 +10,7 @@
 #include "../avatar/avatar.h"
 #include "../utility/Quat.h"
 #include "../timeline/timelinefactory.h"
+#include "../timeline/timelineexecutor.h"
 #include "../timeline/lcsmodifier.h"
 #include "../scene/visualizationmanager.h"
 
@@ -63,6 +64,8 @@ namespace ft
         void setLCSModifier(LCSModifier* modifier) { m_lcsModifier = modifier; }
         LCSModifier* getLCSModifier() { return m_lcsModifier; }
 
+        void setTLExecutor(TimeLineExecutor* executor) { m_tlExecutor = executor; }
+        TimeLineExecutor* getTLExecutor() { return m_tlExecutor; }
 
     private:
         //// ANIMATIONS
@@ -75,6 +78,7 @@ namespace ft
 
         TimeLine* m_timeLine;
         TimeLineContext* m_timeLineContext;
+        TimeLineExecutor* m_tlExecutor;
         
         void InitMotions();
 

@@ -50,7 +50,7 @@ void InputManager::OnKey(unsigned char key, int x, int y)
   switch(key)
   {
     case 13: //enter
-      UpdateManager::getInstance()->SendMessage(new Message(MSG_START_SIMULATION), true);
+//      UpdateManager::getInstance()->SendMessage(new Message(MSG_START_SIMULATION), true);
       break;
     case 'z':
     case 'Z': 

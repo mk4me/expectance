@@ -20,9 +20,8 @@ MovableAvatar::MovableAvatar(CalModel* calModel, CalCoreModel* calCoreModel, con
     TRACE = false;
 
     m_timeLine = NULL;
+    m_tlExecutor = NULL;
     setName(modelName);
-
-    setStartPosition(CalVector(0,0,0));
 
     if (TRACE)
     {
@@ -55,6 +54,13 @@ void MovableAvatar::Destroy(void)
         m_timeLine->Destroy();
         delete m_timeLine;
         m_timeLine = NULL;
+    }
+
+    if (m_tlExecutor != NULL)
+    {
+        m_tlExecutor->Destroy();
+        delete m_tlExecutor;
+        m_tlExecutor = NULL;
     }
 
     if (m_timeLineContext != NULL)
@@ -196,6 +202,12 @@ void MovableAvatar::StartTimeLine()
     if (m_timeLine != NULL)
     {
         m_timeLine->Start(m_timeLineContext, 0, 0);
+
+        if (m_tlExecutor != NULL)
+        {
+            m_tlExecutor->Initiate(m_timeLine, m_timeLineContext);
+            m_tlExecutor->Start(); 
+        }
     }
 }
 
@@ -204,6 +216,9 @@ void MovableAvatar::StartTimeLine()
  **/
 void MovableAvatar::StopTimeLine()
 {
+    if (m_tlExecutor != NULL)
+        m_tlExecutor->StopRequest();
+
     if (m_timeLine != NULL)
     {
         //m_timeLine->Reset(m_timeLineContext);
@@ -214,6 +229,7 @@ void MovableAvatar::StopTimeLine()
             m_timeLineContext->setCurrAnimID(-1);
             m_timeLineContext->setCurrAnimTime(-1);
         }
+
     }
 
 }
@@ -232,10 +248,17 @@ void MovableAvatar::UpdateTimeLine(float elapsedSeconds)
     if (timeLineStarted)
         m_timeLine->Execute(elapsedSeconds, m_timeLineContext);
 
+    if (m_tlExecutor != NULL)
+        m_tlExecutor->UpdateMotions(elapsedSeconds);
+
     m_calModel->update(elapsedSeconds);
 
     if (timeLineStarted)
         m_timeLine->ExecuteModifiers(elapsedSeconds, m_timeLineContext);
+
+    if (m_tlExecutor != NULL)
+        m_tlExecutor->UpdateModifiers(elapsedSeconds);
+
 }
 
 
@@ -275,10 +298,15 @@ void MovableAvatar::Init()
 
   ctx->setAvatar(this);
   setTimeLineContext(ctx);
+
+  m_tlExecutor = new TimeLineExecutor();
+  setTLExecutor(m_tlExecutor);
+
   CreateTestTimeLine();
 
   m_bPaused = false;
   m_blendTime = 0.3f;
+
 }
 
 /**
@@ -301,6 +329,9 @@ void MovableAvatar::Reset()
     {
         getTimeLine()->Reset(getTimeLineContext());
     }
+
+    if (getTLExecutor() != NULL)
+        getTLExecutor()->Reset();
 }
 
 /**
@@ -310,9 +341,13 @@ void MovableAvatar::Reset()
  **/
 TimeLine* MovableAvatar::CreateTestTimeLine()
 {
-    setLCSModifier(new LCSModifier());
-    getTimeLine()->AddModifier(getLCSModifier());
+//    if (getName().compare("FirstAvatar") == 0   )
+    {
+        setLCSModifier(new LCSModifier());
+        getTimeLine()->AddModifier(getLCSModifier());
     
+    }
+
     return m_timeLine;
 }
 

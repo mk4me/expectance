@@ -36,6 +36,12 @@ namespace ft
 		TraceLine *tracer_translation;
         TraceLine *tracer_curr_pos;
 
+        //temp variables
+        int counter;
+        int currAnimID;
+        float currAnimTime;
+
+
     };
 };
 

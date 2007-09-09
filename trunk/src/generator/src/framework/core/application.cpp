@@ -72,6 +72,7 @@ bool Application::InitModules()
     TimeLineFactory::getInstance(); //enforced creation of singleton
 
     ControlManager::getInstance()->Init(); //enforced creation of singleton
+    UpdateManager::getInstance()->AddUpdateObject(ControlManager::getInstance());
 
 	return true;
 }
@@ -84,23 +85,48 @@ void Application::InitAvatars()
 {
     DBG("Application::InitSceneObjects().");
 
-    ControlAvatar* av = dynamic_cast<ControlAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally.cfg", "FirstAvatar"));
-    if (av != NULL)  
+    int avatar_number = -1;
+    if (Config::getInstance()->IsKey("avatars_number"))
     {
-        av->Init();
-        av->Dump();
-        ControlManager::getInstance()->setActiveAvatar(av);
+        avatar_number = Config::getInstance()->GetIntVal("avatars_number");
     }
-    //MovableAvatar* av2 = dynamic_cast<MovableAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally.cfg", "SecondAvatar"));
-    //if (av != NULL)  
-    //{
-    //    av2->Init();
-    //    av2->Dump();
-    //}
+    else
+    {
+        avatar_number = 1;
+    }
 
-  
+    ControlAvatar* av;
+    CalVector vStartPos(0,0,0);
+    float x_off = -150, z_off = 0;
+
+    std::string avNamePostfix;
+    for (int i=0; i<avatar_number; i++)
+    {
+        avNamePostfix = i;
+        av = dynamic_cast<ControlAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally.cfg", "Avatar" + avNamePostfix));
+        if (av != NULL)  
+        {
+            av->Init();
+            //av->Dump();
+
+            if (i>0)
+            {
+                vStartPos.x += x_off;
+                vStartPos.z += z_off;
+            }
+
+            av->setStartPosition(vStartPos);
+            ControlManager::getInstance()->AddControlAvatar(av);
+            if (i==0)
+            {
+                ControlManager::getInstance()->setActiveAvatar(0);
+            }
+        }
+    }
 
      ft::UpdateManager::getInstance()->Dump();
+
+     UpdateManager::getInstance()->SendMessage(new Message(MSG_START_SIMULATION), true);
 }
 
 

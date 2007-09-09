@@ -13,26 +13,42 @@ namespace ft
 	/**
 	 * Class ControlManager: responsible for control of avatars
 	 **/
-    class ControlManager
+    class ControlManager : public UpdateObject
     {
     public:
-        ControlManager(void) { /*empty*/}
-	    virtual ~ControlManager(void) { /*empty*/}
+
+        bool TRACE;
+
+        ControlManager(void);
+	    virtual ~ControlManager(void);
         
         static ControlManager* getInstance();
         static void DestroyInstance();
 
         void Init();
 
-        void setActiveAvatar(ControlAvatar* av) { m_activeAvatar = av; };
-        ControlAvatar* getActiveAvatar() { return m_activeAvatar; }
+        void setActiveAvatar(int ind);
+        ControlAvatar* getActiveAvatar();
+
+        bool AddControlAvatar(ControlAvatar* av);
+
+        //TODO: uncommnet it when RemoveControlAvatar is implemented
+        //bool  RemoveControlAvatar(ControlAvatar* av);
+
+        void OnUpdate(float elapsedSeconds);  // OVERRIDEN, updates by UpdateManager 
 
         void OnSpecial(int key, int x, int y);
 
     private:
         static ControlManager* m_instance;
 
-        ControlAvatar* m_activeAvatar;
+        std::vector<ControlAvatar*> m_vControlAvatars;
+
+        int m_activeAvatarInd;
+
+        TraceLine *tracer_active_avatar;
+
+        void UpdateActiveAvatarMarker();
     };
 };
 

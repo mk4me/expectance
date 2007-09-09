@@ -106,7 +106,6 @@ void TimeLineMotion::Execute(float elapsedSeconds, TimeLineContext* timeLineCont
     
     anyStarted = ExecuteSubMotions(elapsedSeconds, timeLineContext);
 
-//    ExecuteAnim(elapsedSeconds, timeLineContext);
     CheckAnimToStop(elapsedSeconds, timeLineContext);
 
     if (isStarted() && !anyStarted && !isAnimStarted())
@@ -374,111 +373,6 @@ void TimeLineMotion::CheckAnimToStop(float elapsedSeconds, TimeLineContext* time
     }
 }
 
-/**
- * \brief Updates motion (animation) related to this TimeLineMotion at current frame
- *
- * \param float elapsedSeconds - time elapsed from previous frame
- * \param ft::TimeLineContext * timeLineContext - TimeLineContext of avatar to which this TimeLineMotion is assigned
- **/
-void TimeLineMotion::ExecuteAnim(float elapsedSeconds, TimeLineContext* timeLineContext)
-{
-//    if (m_motionRef == NULL)
-//        return;
-//
-//    if (isAnimStarted())
-//    {
-//                if (isTerminated())
-//                {
-//                    if (timeLineContext->stop_immediate)
-//                    {
-//                        StopAnimImmediate(timeLineContext);
-//                        setAnimStarted(false);
-//                        return;
-//                    }
-//                    else
-//                    {
-//                        setAnimToFinish(true);
-//                    }
-//                }
-//
-//                int animId = m_motionRef->getAnimID();
-//                CalCoreAnimation* anim = timeLineContext->getAvatar()->GetCalCoreModel()->getCoreAnimation(animId);
-//
-//                m_animTime += elapsedSeconds;  //TODO: ABAK: consider other animation time detection (maybe by cla3d function)
-//
-//                float animTime = timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationTime();
-//                float animDuration;
-//                
-//                if (m_motionRef->isNullAnim())
-//                {
-//                    animDuration = 0;
-//                }
-//                else
-//                {
-//                    animDuration = anim->getDuration();
-//                }
-//
-//                if (this->isAnimLoop())
-//                {
-//                    int i=0;
-//                    // check if current loop is finished
-//                    if ( m_animTime >= animDuration)
-//                    {
-//                        //if m_loopNumber is -1 this means that this motion is infinitive
-//                        if ( isAnimToFinish() || (  m_loopNumber>=0   &&    (m_currLoop >= (m_loopNumber-1)) ) )
-//                        {
-//                            std::cout << " anim stop: m_animTime " << m_animTime << " anim duration " <<  animDuration << std::endl;      
-//                            StopLoopAnim(timeLineContext, 0);
-////                            timeLineContext->getAvatar()->GetCalModel()->getMixer()->clearCycle(m_motionRef->getAnimID(), 0);
-////                            std::cout << " anim stopped (cycled)" << std::endl;
-//                            setAnimStarted(false);
-//                        }
-//                        else
-//                        {
-//                            m_currLoop++;
-//                            m_animTime = 0;
-//                        }
-//                    }
-//                    
-//                }
-//                else
-//                {
-//                    //check if anim finished
-//                    if (m_animTime >= animDuration)
-//                    {
-//                        std::cout << " anim stopped (action)" << std::endl;
-//                        setAnimStarted(false);
-//                    }
-//                }
-//    }
-//    else // anim not started 
-//    {
-    //    if (!isTerminated() && !isAnimToFinish())
-    //    {
-    //        if (this->isAnimLoop())
-    //        {
-    //            if (! m_motionRef->isNullAnim() )
-    //            {
-    //                timeLineContext->getAvatar()->GetCalModel()->getMixer()->blendCycle(m_motionRef->getAnimID(), 1.0f, 0.0f);
-    //            }
-    //            m_currLoop = 0;
-    //        }
-    //        else
-    //        {
-    //            if (! m_motionRef->isNullAnim() )
-    //            {
-    //                float fade_out = 0;
-    ////                if (this->getBlender() != NULL)
-    ////                    fade_out = this->getBlender()->getOverlap();
-    //                    timeLineContext->getAvatar()->GetCalModel()->getMixer()->executeAction(m_motionRef->getAnimID(), 0.0f, fade_out);
-    //            }
-    //        }
-    //        setAnimStarted(true);
-    //    }
-    //}
-
-    return;
-}
 
 /**
  * \brief Updates modifiers related to this TimeLineMotion at current frame

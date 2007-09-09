@@ -36,12 +36,6 @@ namespace ft
         void ClearSubObjects();
         void DumpSubObjects(int depth);
 
-        void setStartTime(float startTime) { m_startTime = startTime; }
-        float getStartTime() { return m_startTime; }
-
-        void setEndTime(float endTime) { m_endTime = endTime; }
-        float getEndTime() { return m_endTime; }
-
         void setStarted(bool set) { m_started = set; }
         bool isStarted() { return m_started; }
 
@@ -59,9 +53,6 @@ namespace ft
         virtual void Dump(int depth);
 
     protected:
-        float m_startTime;
-        float m_endTime;
-
         bool m_started;
 
         //list

@@ -39,8 +39,6 @@ namespace ft
         void RemoveExecutedMotions(TimeLineContext* timeLineContext);
 
     private:
-        float m_currTime;  //current time while timeline is being executed
-
         bool m_waitingState;
     };
 };

@@ -69,9 +69,13 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
     int currAnimID_from_context = timeLineContext->getCurrAnimID();
 //    float currAnimTime = timeLineContext->getCurrAnimTime();
 
-    static int counter = 0;
-    static int currAnimID = -1;
-    static float currAnimTime = 0;
+    if (!m_translationInited)
+    {
+        counter = 0;
+        currAnimID = -1;
+        currAnimTime = 0;
+    }
+
     float currAnimDuration = -1;
 
     if (currAnimID == -1 && currAnimID_from_context != -1)
@@ -100,6 +104,8 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
                 << " anim duration " << currAnimDuration << " animTime " << currAnimTime << endl;
 
         }
+
+        std::string avName = timeLineContext->getAvatar()->getName();
 
         currAnimID = currAnimID_from_context;
         if (timeLineContext->isCurrAnimLoop())
