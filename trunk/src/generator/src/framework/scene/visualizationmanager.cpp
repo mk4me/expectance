@@ -107,6 +107,7 @@ bool VisualizationManager::AddObject(SceneObject* pObj)
 		if ( it!=m_SceneObjects.end()) { 
 			return false;
 		}
+		CameraManager::getInstance()->AddCamera(pObj); // add camera by default to scene object
 	    m_SceneObjects.insert( std::make_pair( std::string(_id), pObj ) );
 	}
 	return true;
@@ -159,8 +160,19 @@ bool VisualizationManager::RemoveObject(std::string id)
 void VisualizationManager::Render3DObjects()
 {
 	SceneObject *pObj;
-	// iterate through the objects to find object needs rendering
+	// iterate through the objects and render shadows
 	std::map<std::string,SceneObject*>::iterator it=m_SceneObjects.begin();
+	for( ; it != m_SceneObjects.end(); ++it ) {
+		if ((pObj = dynamic_cast<SceneObject*>(it->second))!=NULL)
+		{
+			if (pObj->isVisible())
+			{
+				pObj->RenderShadow();
+			}
+		}
+	}
+	// iterate through the objects to find object needs rendering
+	it=m_SceneObjects.begin();
 	for( ; it != m_SceneObjects.end(); ++it ) {
 		if ((pObj = dynamic_cast<SceneObject*>(it->second))!=NULL)
 		{

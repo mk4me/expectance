@@ -24,7 +24,9 @@ namespace ft
 		SceneObject(void);
 		virtual~SceneObject(void) {};
 		/// \brief virtual base for inherited objects for rendering purposes
-		virtual bool Render();
+		virtual bool Render();		
+		/// \brief virtual base for inherited objects for rendering shadows
+		virtual bool RenderShadow();
 		
 		/// \brief Sets object position by 3D vector
 		SceneObject& setPosition(const FTVect &position);

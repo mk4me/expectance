@@ -21,6 +21,12 @@ bool SceneObject::Render()
 	return true;
 }
 
+bool SceneObject::RenderShadow()
+{
+	return true;
+}
+
+
 SceneObject& SceneObject::setPosition(const FTVect& pos)
 {
 	m_position = pos;

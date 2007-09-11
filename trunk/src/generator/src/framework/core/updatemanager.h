@@ -46,9 +46,10 @@ namespace ft
         
         static UpdateManager* m_instance;
 
-        unsigned int m_lastTick;
+        
+		unsigned long long m_lastTick;
 
-        float m_fpsDuration;
+        double m_fpsDuration;
         int m_fpsFrames;
         int m_fps;
         float m_timeScale;

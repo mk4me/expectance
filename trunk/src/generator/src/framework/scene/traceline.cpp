@@ -40,13 +40,32 @@ bool TraceLine::Render()
 			// point at the end
 			if (m_marker)
 			{
-				glPointSize(8.0f);
-				glColor3f(0.9f,0.5f, 0.8f);
-				glBegin(GL_POINTS);
-					glVertex3f(p1.x, p1.y, p1.z);
+				//glPointSize(8.0f);
+				//glColor3f(0.9f,0.5f, 0.8f);
+				//glBegin(GL_POINTS);
+				//	glVertex3f(p1.x, p1.y, p1.z);
+				//glEnd();
+				//glPointSize(1.0f);
+				glDisable(GL_CULL_FACE);
+				glLineWidth(2.0f);
+				glColor3f(0.5f,0.5f, 0.8f);
+				glBegin(GL_QUADS);
+					glVertex3f(p1.x+10, p1.y, p1.z);
+					glVertex3f(p1.x, p1.y, p1.z-10);
+					glVertex3f(p1.x-10, p1.y, p1.z);
+					glVertex3f(p1.x, p1.y, p1.z+10);
 				glEnd();
+				glBegin(GL_TRIANGLE_FAN);
+					glVertex3f(p1.x, p1.y-10, p1.z);
+					glVertex3f(p1.x+10, p1.y, p1.z);
+					glVertex3f(p1.x, p1.y, p1.z-10);
+					glVertex3f(p1.x-10, p1.y, p1.z);
+					glVertex3f(p1.x, p1.y, p1.z+10);
+				glEnd();
+				glLineWidth(1.0f);
+				glEnable(GL_CULL_FACE);
 
-					glPointSize(1.0f);
+
 			}
 
 			glPopMatrix();

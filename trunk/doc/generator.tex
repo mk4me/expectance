@@ -119,7 +119,7 @@ G³ówn¹ klas¹ modu³u jest \textit{UpdateManager}, która posiada tylko jedn¹ insta
 Aby obiekty mog³y byæ odœwie¿anie przez \textit{UpdateManagera} lub odbieraæ wiadomoœci musz¹ byæ pochodnymi klasy \textit{UpdateObject} oraz byæ zarejestrowanie w UpdateManager'ze.
 
 \subsection{Odœwie¿anie obiektów}
-Aby dany obiekt  móg³ reagowaæ na odœwie¿enie w ka¿dej klatce animacji powinien pokryæ metodê \textit{OnUpdate (float elapsedTime)} z klasy bazowej UpdateObject.  Parametr \textit{elapsedTime} okreœla ile czasu minê³o od poprzedniego odœwie¿enia. UpdateManager bêdzie wywo³ywa³ metodê \textit{elapsedTime} na wszystkich zarejestrowanych obiektach zgodnie z parametrami okreœlonymi dla aktualnej symulacji (klasa \textit{ft::Simulation}).
+Aby dany obiekt  móg³ reagowaæ na odœwie¿enie w ka¿dej klatce animacji powinien pokryæ metodê \textit{OnUpdate (float elapsedTime)} z klasy bazowej UpdateObject.  Parametr \textit{elapsedTime} okreœla ile czasu minê³o od poprzedniego odœwie¿enia. UpdateManager bêdzie wywo³ywa³ metodê \textit{OnUpdate} na wszystkich zarejestrowanych obiektach zgodnie z parametrami okreœlonymi dla aktualnej symulacji (klasa \textit{ft::Simulation}). Klasa \textit{ft::Simulation} odczytuje czas przy pomocy metody \textit{getTick()}. W zale¿noœci od potrzeby mo¿na pobieraæ czas z dok³adnoœci¹ do mili albo mikrosekund.
 \subsection{Rozsy³anie wiadomoœci}
 UpdateManager rozsy³a wiadomoœci do zarejestrowanych obiektów za pomoc¹ obiektów klasy \textit{ft::Message}.  Wywo³uje w tym celu na obiektach funkcje \textit{OnMessage(Message* msg)}, która jest zdefiniowana w klasie \textit{UpdateObject}. Aby obiekt móg³ zareagowaæ na wiadomoœæ powinien on pokryæ metodê \textit{OnMessage} i zaimplementowaæ w niej rozpoznanie typu wiadomoœci oraz odpowiednie akcje.
 
@@ -213,7 +213,7 @@ Wizualizacja obiektów stanowi niezale¿ny mechanizm generatora i poprzez œciœle o
 3.Obiekt \textit{ft::VisualizationManager} wywo³uje cyklicznie metodê \textit{ft::VisualizationManager::OnRender}, zsynchronizowan¹ z mechanizmem GLUT, i przetwarza wszystkie zarejestrowane obiekty wywo³uj¹c metodê Render ka¿dego z nich.
   
 \subsubsection{ft::SceneObject}
-Podstawowy obiekt graficzny. Realizuje bazowy interfejs obiektu sceny (kolor, po³o¿enie, nazwa obiektu, aktywnoœæ) i udostêpnia interfejs renderowania obiektu - metoda \textit{Render}.
+Podstawowy obiekt graficzny. Realizuje bazowy interfejs obiektu sceny (kolor, po³o¿enie, nazwa obiektu, aktywnoœæ) i udostêpnia interfejs renderowania obiektu - metoda \textit{Render} oraz  \textit{RenderShadow}.
 
 \subsubsection{ft::MenuItem}
 Podstawowy element menu graficznego, korzysta z bazowych w³asnoœci typu \textit{ft::SceneObject}
@@ -234,13 +234,13 @@ Pozwala realizowaæ ró¿ne warianty linii lub strza³kê w trzech wymiarach. Obiekt 
 Pozwala realizowaæ liniê wielosegmentow¹ po³¹czon¹ markerami w trzech wymiarach poprzez zadawanie punktu w przestrzeni metod¹  \textit{ft::TraceLine::AddPoint}. Obiekt mo¿e wyœwietlaæ i ukrywaæ markery, ustawiaæ kolor ka¿dego segmentu. Doskonale nadaje siê do wizualizacji miejsc, w których trzeba œledziæ po³o¿enie przesuwaj¹cego siê obiektu. W obszarze renderowania implementuje w³asn¹ metodê \textit{Render}.
 
 \subsubsection{ft:Avatar}
-W kontekœcie wizualizacji jest to obiekt graficzny z najbardziej rozbudowan¹ struktur¹ renderowania. Obiekt \textit{ft::Avatar} posiada trzy mo¿liwoœci renderowania: renderowanie szkieletu, renderowanie ograniczeñ ka¿dej koœci lub renderowanie siatki modelu (mesha). Dodatkowo ze wzglêdu na z³o¿onoœæ siatki modelu wprowadzono mo¿liwoœæ renderowania modelu przy u¿yciu vertex shadera. Po wyborze metody renderowania Avatara dochodzi jeszcze renderowanie cienia obiektu, które docelowo powinno byæ realizowane jako globalna metoda renderowania cienia (np. przez \textit{ft::VisualizationManager})
+W kontekœcie wizualizacji jest to obiekt graficzny z najbardziej rozbudowan¹ struktur¹ renderowania. Obiekt \textit{ft::Avatar} posiada trzy mo¿liwoœci renderowania: renderowanie szkieletu, renderowanie ograniczeñ ka¿dej koœci lub renderowanie siatki modelu (mesha). Dodatkowo ze wzglêdu na z³o¿onoœæ siatki modelu wprowadzono mo¿liwoœæ sprzêtowego renderowania siatki modelu przy u¿yciu vertex shadera. Po wyborze metody renderowania Avatara dochodzi jeszcze renderowanie cienia obiektu, które jest realizowane przed renderowaniem ca³ego obiektu przez metodê \textit{RenderShadow} jako element globalnej metody renderowania cienia (np. przez \textit{ft::VisualizationManager}). Przep³yw potoku renderuj¹cego zwi¹zanego z renderowaniem avatara przedstawiono na rysunku \ref{rys_8}
 
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=1\textwidth]{./img/avatarPipeline.png}
   \end{center}
-  \caption{Potok renderowania dla typu \textit{ft::Avatar}}
+  \caption{Potok renderowania dla typu \textit{ft::Avatar}. Linie przerywane oznaczaj¹ œcie¿ki alternatywne potoku renderuj¹cego.}
   \label{rys_8}
 \end{figure}
 
@@ -252,18 +252,21 @@ W kontekœcie wizualizacji jest to obiekt graficzny z najbardziej rozbudowan¹ str
 Zarz¹dza kolekcj¹ obiektów typu \textit{ft::MenuItem}. Tworzy menu graficzne na podstawie definicji w pliku konfiguracyjnym. Obs³uguje komunikaty z zewn¹trz od obiektu \textit{ft::UpdateManager} i z lokalnych obiektów \textit{ft::MenuItem} oraz generuje komunikat do systemu o wciœniêciu konkretnego przycisku w menu (MSG\_MENU\_ITEM\_SELECTED) dla wszystkich zarejestrowanych obiektów nas³uchuj¹cych. Ze wzglêdu na interakcjê przy pomocy klawiatury i myszy, korzysta z \textit{ft::InputManagera} przy obs³udze komunikatów z tych urz¹dzeñ.
 
 \subsubsection{ft::VisualizationManager}
-Centralny element zarz¹dzania elementami graficznymi sceny. Realizuje komunikacjê z pozosta³ymi niegraficznymi elementami systemu. Obiekt \textit{ft::VisualizationManager} jest odpowiedzialny za renderowanie wszystkich obiektów graficznych typu \textit{ft:SceneObject}, przy pomocy metody \textit{Render}. Wszystkie obiekty, które maj¹ byæ automatycznie renderowane musz¹ byæ uprzednio zarejestrowane do renderowania metod¹ \textit{ft::VisualizationManager::AddObject}. 	
+Centralny element zarz¹dzania elementami graficznymi sceny. Realizuje komunikacjê z pozosta³ymi niegraficznymi elementami systemu. Obiekt \textit{ft::VisualizationManager} jest odpowiedzialny za renderowanie wszystkich obiektów graficznych typu \textit{ft:SceneObject}, przy pomocy metody \textit{Render3DObjects}. Wszystkie obiekty, które maj¹ byæ automatycznie renderowane musz¹ byæ uprzednio zarejestrowane do renderowania metod¹ \textit{ft::VisualizationManager::AddObject}. 	
 
 \subsubsection{ft::OGLContext}
 Tworzy zawartoœæ renderowania (prymitywy graficzne) przy pomocy API OpenGL. Buduje wizualne, trwa³e elementy sceny (pod³oga, logo), korzysta z tekstur obiektu \textit{ft::TextureManager}.
 
 \subsubsection{ft::Camera}
-Obecnie realizuje bardzo prymitywne operacje widoku sceny (przesuwanie sceny, obracanie sceny). Ze wzglêdu na interakcjê przy pomocy klawiatury i myszy, korzysta z \textit{ft::InputManagera} przy obs³udze komunikatów z tych urz¹dzeñ.
+Obecnie realizuje bardzo prymitywne operacje widoku sceny (przesuwanie sceny, obracanie sceny). Jest obiektem zarz¹dzanym ca³kowicie przez \textit{ft::CameraManager}. 
+
+\subsection{ft::CameraManager}
+Zarz¹dza realcjami pomiêdzy stworzonymi kamerami i obiektami sceny. Tworzy dla dowolnego obiektu sceny kamerê, której identyfikator odpowiada ID przypisanego obiektu sceny. Przetwarza komunikaty z klawiatury i myszy dotycz¹ce aktywnej kamery. Aktualizuje parametry bie¿¹cej kamery oraz widoku dla kontekstu rederowania \textit{ft::VisualizationManager}.  
 
 \subsection{Renderowanie Sprzêtowe}
-Ka¿dy obiekt typu \textit{ft::SceneObject} mo¿e implementowaæ w³asne sprzêtowe renderowanie przy u¿yciu jêzyka GLSL w postaci assemblera \textit{ARB vertex program} oraz/lub \textit{ARB fragment program}. Aby zrealizowaæ sprzêtowe renderowanie wybranego obiektu nale¿y:
+Ka¿dy obiekt typu \textit{ft::SceneObject} mo¿e implementowaæ w³asne sprzêtowe renderowanie przy u¿yciu jêzyka assemblera ARB: \textit{ARB vertex program} oraz/lub \textit{ARB fragment program}. Aby zrealizowaæ sprzêtowe renderowanie wybranego obiektu nale¿y:
 \begin{enumerate}
-\item Utworzyæ pliki z kodem vertex shaderów dla fragmentów lub ca³ego obiektu graficznego w katalogu \textbf{shaders}. Shadery dla fragmentów powinny mieæ rozszerzenie \textit{.frag} natomiast dla ca³ego obiektu \textit{.vert}.
+\item Utworzyæ pliki z kodem vertex shaderów i pixel shaderów dla fragmentów lub ca³ego obiektu graficznego w katalogu \textbf{shaders}. Shadery dla pixel shaderów (fragmentów programy) powinny mieæ rozszerzenie \textit{.frag} natomiast dla vertex shaderów (vertex programy) \textit{.vert}.
 \item Utworzyæ w kodzie obiektu graficznego metody do inicjalizacji i wczytywania shaderów oraz rezerwacji pamiêci, analogicznie do metod \textit{Avatar::InitHardwareAcceleration} i \textit{Avatar::loadBufferObject}.
 \item Utworzyæ w kodzie obiektu graficznego metodê renderuj¹c¹ obiekt przy pomocy sprzêtu analogiczn¹ do \textit{Avatar::HardwareRenderModelMesh}
 \end{enumerate}

@@ -36,6 +36,7 @@ namespace ft
 
         void OnMessage(Message* msg);  // OVERRIDEN, receives a message from UpdateManager
 		virtual bool Render();
+		virtual bool RenderShadow();
 
         void ChangeRenderMethod();
 		void setRenderMethod(const int renderMethod);

@@ -41,7 +41,7 @@ void UpdateManager::Init()
   m_fps = 0;
 
   setTimeScale(1);
-
+  ft::Simulation::setTimePrecision(ft_Microseconds); //set precision of program timer
   m_lastTick = ft::Simulation::getTick();
 
 }
@@ -63,17 +63,19 @@ void UpdateManager::DestroyInstance()
  **/
 void UpdateManager::OnUpdate()
 {
-      // get the current tick value
-  unsigned int tick = ft::Simulation::getTick();
+  // get the current tick value
+  unsigned long long tick = ft::Simulation::getTick();
 
   // calculate the amount of elapsed seconds
-  float elapsedSeconds = (float)(tick - m_lastTick) / 1000.0f;
+  unsigned int div =(ft::Simulation::getTimePrecision() == ft_Miliseconds)? 1000 : 1000000;
+
+  double elapsedSeconds = (double)(tick - m_lastTick) / div;
 
   // adjust fps counter
   m_fpsDuration += elapsedSeconds;
   if(m_fpsDuration >= 1.0f)
   {
-    m_fps = (int)((float)m_fpsFrames / m_fpsDuration);
+    m_fps = (int)((double)m_fpsFrames / m_fpsDuration);
 	printf("%d\n",m_fps);
     m_fpsDuration = 0.0f;
     m_fpsFrames = 0;

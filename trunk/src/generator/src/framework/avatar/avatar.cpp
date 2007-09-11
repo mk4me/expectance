@@ -150,18 +150,6 @@ void Avatar::OnMessage(Message* msg)
  **/
 bool Avatar::Render()
 {
-	if (m_shadow) //draw the shadow
-	{
-		m_calModel->setLodLevel(0.0);
-		glPushMatrix();
-			OGLContext::getInstance()->GlShadowProjection();
-			glColor4f(0.0f,0.0f,0.0f,0.0f);
-			//glRotatef(-90,1.0f,0.0f,0.0f); //unnecessary while XYZ order in cal files
-			RenderAvatar(m_renderMethod, m_shadow); 	
-		glPopMatrix();
-		m_calModel->setLodLevel(1.0);
-	}
-	
 	// draw the object that casts the shadow
 
 	glEnable(GL_DEPTH_TEST);
@@ -182,6 +170,26 @@ bool Avatar::Render()
 
 	return true;
 }
+
+/**
+ * \brief Main rendering routine for Avatar's shadow
+ **/
+bool Avatar::RenderShadow()
+{
+	if (m_shadow) //draw the shadow
+	{
+		m_calModel->setLodLevel(0.0f);
+		glPushMatrix();
+			OGLContext::getInstance()->GlShadowProjection();
+			glColor4f(0.1f,0.1f,0.1f,0.5f);
+			//glRotatef(-90,1.0f,0.0f,0.0f); //unnecessary while XYZ order in cal files
+			RenderAvatar(m_renderMethod, m_shadow); 	
+		glPopMatrix();
+		m_calModel->setLodLevel(1.0f);
+	}
+	return true;
+}
+
 
 /**
  * \brief Changes between three rendering methods: Mesh Skeleton and BoundingBox consecutivevely  
