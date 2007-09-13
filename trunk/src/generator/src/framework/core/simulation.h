@@ -30,12 +30,12 @@ namespace ft
 		/// \brief Gives actual time with microsecond precision
 		static unsigned long long getusTick();
 		//! set Simulation precision flag
-		static TimePrecision getTimePrecision();
+		static ft::TimePrecision getTimePrecision();
 		//! get Simulation precision flag
-		static void setTimePrecision(const TimePrecision tp);
+		static void setTimePrecision(const ft::TimePrecision tp);
 
 	private:
-		static TimePrecision m_timePrecision;
+		static ft::TimePrecision m_timePrecision;
 		#ifdef WIN32
 			static unsigned long long currentTime;
 		#else

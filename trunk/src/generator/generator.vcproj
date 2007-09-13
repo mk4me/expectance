@@ -496,6 +496,15 @@
 				<File
 					RelativePath=".\src\framework\ui\menumanager.cpp"
 					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+							PrecompiledHeaderThrough="../utility/util_pch.h"
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\src\framework\ui\menumanager.h"
@@ -568,6 +577,15 @@
 				<File
 					RelativePath=".\src\framework\scene\visualizationmanager.cpp"
 					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+							PrecompiledHeaderThrough="../utility/util_pch.h"
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\src\framework\scene\visualizationmanager.h"
@@ -603,6 +621,14 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\utility\mathconversions.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\utility\mtxlib.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\utility\mtxlib.h"
 					>
 				</File>
 				<File

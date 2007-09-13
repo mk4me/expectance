@@ -300,7 +300,7 @@ void OGLContext::InitRendering()
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0f, (GLdouble)m_width / (GLdouble)m_height, 0.01, 1000000);
+	gluPerspective(45.0f, (GLdouble)m_width / (GLdouble)m_height, 1, 100000);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

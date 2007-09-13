@@ -14,7 +14,7 @@ using namespace ft;
 	timeval currentTime;
 #endif
 
-TimePrecision Simulation::m_timePrecision = ft_Microseconds;
+ft::TimePrecision Simulation::m_timePrecision = ft_Microseconds;
 
 
 
@@ -63,12 +63,12 @@ unsigned long long Simulation::getusTick()
 #endif
 }
 
-TimePrecision Simulation::getTimePrecision()
+ft::TimePrecision Simulation::getTimePrecision()
 {
 	return m_timePrecision;
 }
 
-void Simulation::setTimePrecision(const TimePrecision tp)
+void Simulation::setTimePrecision(const ft::TimePrecision tp)
 {
 	m_timePrecision = tp;
 }

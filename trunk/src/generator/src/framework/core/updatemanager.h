@@ -40,6 +40,9 @@ namespace ft
         void UpdateObjects(float elapsedSeconds);
         void increraseFramesCounter() {   m_fpsFrames++;  }
 
+		void setElapsedSeconds(double elapsedSeconds) { m_elapsedSeconds = elapsedSeconds;}
+		double getElapsedSeconds(){ return m_elapsedSeconds;}
+
         void Dump();
 
     private:
@@ -47,7 +50,7 @@ namespace ft
         static UpdateManager* m_instance;
 
         
-		unsigned long long m_lastTick;
+		unsigned long long m_lastTick, m_elapsedSeconds;
 
         double m_fpsDuration;
         int m_fpsFrames;

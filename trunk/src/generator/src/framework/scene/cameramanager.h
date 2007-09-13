@@ -7,6 +7,7 @@
 #define _GEN_CAMERA_MANAGER_H
 
 #include <iostream>
+#include <algorithm>
 #include <map>
 #include "../utility/debug.h"
 #include "../core/global.h"
@@ -15,6 +16,8 @@
 
 namespace ft
 {
+	enum Direction { ft_Forward, ft_Backward };
+	
 	//! A Camera Manager class
 	/*!
 	 *	This class is responsible for global current camera operations and management of all system cameras. 
@@ -44,8 +47,10 @@ namespace ft
 		Camera* getCamera(std::string id);
 		//! set indicated camera as current camera
 		void setCurrentCamera(std::string id);
+		//! change current camera 
+		void changeCurrentCamera(ft::Direction direction);
 		//! remove CameraObject
-		/*! Unregisters Camera object from m_CameraContainer list and deactivate it in object */
+		/*! Unregisters Camera object from m_cameraContainer list and deactivate it in object */
 		bool RemoveCamera(Camera*);
 		//! unregister Camera object
 		bool RemoveCamera(std::string id);
@@ -66,9 +71,18 @@ namespace ft
 		void OnMouseMove(int x, int y);
 
     private:
-        static CameraManager* m_instance;
+		/// \brief Helper for getting current camera index
+		int getCurrentCameraIndex();
+		/// \brief Helper for setting current camera index
+		void setCurrentCameraIndex(const std::string);
+        
+		static CameraManager* m_instance;
 		Camera* m_currentCamera;
-		std::map<std::string,Camera*> m_CameraContainer;
+		std::map<std::string,Camera*> m_cameraContainer;
+		
+		//helpers for numerical indexing camera container
+		int m_currentCameraIndex;
+		std::vector<std::string> m_cameraIndexContainer;
 
 		float m_pitchAngle; // OX
 		float m_yawAngle;   // OY

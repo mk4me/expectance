@@ -70,6 +70,9 @@ void UpdateManager::OnUpdate()
   unsigned int div =(ft::Simulation::getTimePrecision() == ft_Miliseconds)? 1000 : 1000000;
 
   double elapsedSeconds = (double)(tick - m_lastTick) / div;
+  
+  //set elapsed seconds for other places
+  setElapsedSeconds(elapsedSeconds); 
 
   // adjust fps counter
   m_fpsDuration += elapsedSeconds;
@@ -81,7 +84,7 @@ void UpdateManager::OnUpdate()
     m_fpsFrames = 0;
   }
 
-  elapsedSeconds *= m_timeScale;
+  elapsedSeconds *= m_timeScale; //for cal3D
 
   
   UpdateObjects(elapsedSeconds);

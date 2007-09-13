@@ -13,6 +13,13 @@
 
 namespace ft
 {
+	//StaticCamera - rigid camera without moves, static viewport only 
+	//SpringCamera - 3rd person camera following target without stearing mode
+	//FlyCamera - dynamic viewport with possibility of moving
+	//Tracing Camera - camera turning around the target point
+	//                       0                 1               2              3
+	enum CameraMode { ft_StaticCamera, ft_SpringCamera, ft_FlyCamera, ft_TracingCamera };
+
 	//! A Camera class
 	/*!
 	 *	This class is responsible for global camera operations. 
@@ -51,10 +58,14 @@ namespace ft
 		//! get the value of Camera Left-Right factor
 		float getCamLeftRight();
 
-		void ChangeVelocity(GLfloat vel);
-		void ChangeHeading(GLfloat degrees);
-		void ChangePitch(GLfloat degrees);
-		void SetPrespective(void);
+		//! set camera mode
+		void setCameraMode(const ft::CameraMode mode);
+		//! get camera mode
+		const ft::CameraMode getCameraMode();
+		//! change camera mode
+		void changeCameraMode();
+		/// \brief Prints general information about values of object properties  
+		const void PrintInfo() const;		
 
     private:
 		//! set unique ID from sceneobject instance that owns this camera
@@ -63,20 +74,7 @@ namespace ft
 		std::string m_id;
 		SceneObject *m_scObj; // camera for scene object
 
-		GLfloat m_MaxPitchRate;         // max OX
-		GLfloat m_MaxHeadingRate;       // max OY
-		GLfloat m_HeadingDegrees;       // OY
-		GLfloat m_PitchDegrees;         // OX
-		GLfloat m_MaxForwardVelocity;	// max Vel
-		GLfloat m_ForwardVelocity;
-		//glQuaternion m_qHeading;
-		//glQuaternion m_qPitch;
-		//glPoint m_Position;
-		//glVector m_DirectionVector;
-
-
-
-
+		ft::CameraMode m_cameraMode;
 
 		float m_pitchAngle; // OX
 		float m_yawAngle;   // OY

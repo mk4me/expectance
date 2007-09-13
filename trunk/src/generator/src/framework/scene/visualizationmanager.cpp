@@ -80,7 +80,7 @@ bool VisualizationManager::InitSceneObjects()
 void VisualizationManager::OnRender()
 {
 	OGLContext::getInstance()->InitRendering();
-	//camera.update();
+	//camera.update(); <-przekaz tu deltatime z UpdateManagera
 	CameraManager::getInstance()->Update(); //update current camera information
 	OGLContext::getInstance()->RenderScene(); //camera.lookAt(); TODO
 	Render3DObjects();
@@ -100,6 +100,7 @@ void VisualizationManager::CleanUp()
 
 bool VisualizationManager::AddObject(SceneObject* pObj)
 {
+	SceneObject *pScObj;
 	std::string _id = pObj->getID();
 	if (!_id.empty())
 	{
@@ -107,8 +108,11 @@ bool VisualizationManager::AddObject(SceneObject* pObj)
 		if ( it!=m_SceneObjects.end()) { 
 			return false;
 		}
-		CameraManager::getInstance()->AddCamera(pObj); // add camera by default to scene object
 	    m_SceneObjects.insert( std::make_pair( std::string(_id), pObj ) );
+
+		if ((pScObj = dynamic_cast<Avatar*>(pObj))!=NULL)
+			CameraManager::getInstance()->AddCamera(pObj); // add camera by default to Avatar object only
+
 	}
 	return true;
 }  
@@ -136,7 +140,8 @@ SceneObject* VisualizationManager::getObjectByName(std::string name)
 bool VisualizationManager::RemoveObject(SceneObject* pObj)
 {
 	std::string _id = pObj->getID();
-	bool done;
+	bool done;	
+	CameraManager::getInstance()->RemoveCamera(_id); // remove pointer to camera from erased object
 	done = RemoveObject(_id);
 	return done;
 }

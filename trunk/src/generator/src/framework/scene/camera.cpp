@@ -36,6 +36,7 @@ void Camera::Init(float pitch, float yaw, float roll, float dist, float leftRigh
 	m_distance = dist;
 	m_camLeftRight = leftRight;
 	m_camUpDown = upDown;
+	m_cameraMode = ft_FlyCamera;
 }
 
 void Camera::Update()
@@ -112,4 +113,27 @@ float Camera::getCamUpDown()
 float Camera::getCamLeftRight()
 {
 	return m_camLeftRight;
+}
+
+
+void Camera::setCameraMode(const ft::CameraMode mode)
+{
+	m_cameraMode = mode;
+}
+
+const ft::CameraMode Camera::getCameraMode()
+{
+	return m_cameraMode;
+}
+
+void Camera::changeCameraMode()
+{
+	m_cameraMode = static_cast<ft::CameraMode>( (static_cast<unsigned short>(m_cameraMode) +1) % 4 );
+}
+
+const void Camera::PrintInfo() const
+{
+	std::cout << "Camera <" << m_id <<">: mode [" << m_cameraMode <<"] \n";
+	//	", location = [" << m_position.x <<", " << m_position.y << ", " << m_position.z 
+	//<<"], m_color = [" << m_color.x << ", "<<m_color.y<<", "<< m_color.z <<"] \n";
 }

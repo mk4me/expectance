@@ -24,12 +24,12 @@ void CameraManager::DestroyInstance()
 {
     if (m_instance != NULL)
 	{
-    	std::map<std::string,Camera*>::iterator it = m_instance->m_CameraContainer.begin(); //clean camera list
-		for( ; it != m_instance->m_CameraContainer.end(); ++it ) {
+    	std::map<std::string,Camera*>::iterator it = m_instance->m_cameraContainer.begin(); //clean camera list
+		for( ; it != m_instance->m_cameraContainer.end(); ++it ) {
 			delete it->second;
 	    }
-	    m_instance->m_CameraContainer.clear();
-
+	    m_instance->m_cameraContainer.clear();
+		m_instance->m_cameraIndexContainer.clear();
         delete m_instance;
 	}
 }
@@ -43,14 +43,16 @@ void CameraManager::Init()
 	m_bMiddleMouseButtonDown = false;
 
 	AddCamera(new Camera("mainCamera"));	
-	setCurrentCamera("mainCamera");
+	setCurrentCamera("mainCamera");	
 }
 
 
 void CameraManager::Update()
 {
 	if(m_currentCamera!=NULL)
+	{
 		m_currentCamera->Update();
+	}
 }
 
 bool CameraManager::AddCamera(SceneObject *pScObj)
@@ -58,14 +60,15 @@ bool CameraManager::AddCamera(SceneObject *pScObj)
 	std::string _id = pScObj->getID();
 	if (!_id.empty())
 	{
-	 	std::map<std::string,Camera*>::iterator it = m_CameraContainer.find(_id);
-		if ( it!=m_CameraContainer.end()) { 
+	 	std::map<std::string,Camera*>::iterator it = m_cameraContainer.find(_id);
+		if ( it!=m_cameraContainer.end()) { 
 			return false;
 		}
 		else
 		{
 			Camera *_pCamObj = new Camera(pScObj);
-			m_CameraContainer.insert( std::make_pair( std::string(_id), _pCamObj ) );
+			m_cameraContainer.insert( std::make_pair( std::string(_id), _pCamObj ) );
+			m_cameraIndexContainer.push_back(std::string(_id)); //add index
 		}
 	}
 	return true;
@@ -76,13 +79,14 @@ bool CameraManager::AddCamera(Camera *pCamObj)
 	std::string _id = pCamObj->getID();
 	if (!_id.empty())
 	{
-	 	std::map<std::string,Camera*>::iterator it = m_CameraContainer.find(_id);
-		if ( it!=m_CameraContainer.end()) { 
+	 	std::map<std::string,Camera*>::iterator it = m_cameraContainer.find(_id);
+		if ( it!=m_cameraContainer.end()) { 
 			return false;
 		}
 		else
 		{
-			m_CameraContainer.insert( std::make_pair( std::string(_id), pCamObj ) );
+			m_cameraContainer.insert( std::make_pair( std::string(_id), pCamObj ) );
+			m_cameraIndexContainer.push_back(std::string(_id)); //add index
 		}
 	}
 	return true;
@@ -97,11 +101,32 @@ bool CameraManager::AddCamera(std::string camName, float pitch, float yaw, float
 
 Camera* CameraManager::getCamera(std::string id)
 {
- 	std::map<std::string,Camera*>::iterator it = m_CameraContainer.find(id);
-	if ( it!=m_CameraContainer.end()) { 
+ 	std::map<std::string,Camera*>::iterator it = m_cameraContainer.find(id);
+	if ( it!=m_cameraContainer.end()) { 
 		return it->second;
 	}
 	return NULL;
+}
+
+void CameraManager::changeCurrentCamera(ft::Direction direction)
+{
+	if(direction == ft_Forward)
+	{
+		if (m_currentCameraIndex == m_instance->m_cameraContainer.size()-1)
+			m_currentCameraIndex  = 0;
+		else
+			m_currentCameraIndex++;
+
+	}
+	else if (direction == ft_Backward)
+	{
+		if (m_currentCameraIndex == 0)
+			m_currentCameraIndex  = m_instance->m_cameraContainer.size()-1;
+		else
+			m_currentCameraIndex--;
+	}
+	
+	setCurrentCamera(m_cameraIndexContainer[m_currentCameraIndex]);
 }
 
 void CameraManager::setCurrentCamera(std::string id)
@@ -116,6 +141,7 @@ void CameraManager::setCurrentCamera(std::string id)
 		m_camLeftRight = cam->getCamLeftRight();
 
 		m_currentCamera = cam;
+		setCurrentCameraIndex(id);
 	}
 	else
 	{
@@ -125,7 +151,10 @@ void CameraManager::setCurrentCamera(std::string id)
 		m_distance = 800.0f;
 		m_camUpDown = 0.0f;
 		m_camLeftRight = 0.0f;
+		if ((m_currentCamera = getCamera("mainCamera")) == NULL) 
+			AddCamera(new Camera("mainCamera"));
 		m_currentCamera = new Camera("mainCamera");
+		setCurrentCameraIndex("mainCamera");
 	}
 }
 
@@ -142,16 +171,30 @@ bool CameraManager::RemoveCamera(std::string id)
 {
 	if (!id.empty())
 	{
-	 	std::map<std::string,Camera*>::iterator it = m_CameraContainer.find(id);
-		if ( it!=m_CameraContainer.end()) 
+	 	std::map<std::string,Camera*>::iterator it = m_cameraContainer.find(id);
+		if ( it!=m_cameraContainer.end()) 
 		{ 
 			delete it->second;
-			m_CameraContainer.erase(it);
+			m_cameraContainer.erase(it);
 			return true;
 		}
 	}
 	return false;
 }
+
+int CameraManager::getCurrentCameraIndex()
+{
+	return m_currentCameraIndex;	
+}
+
+void CameraManager::setCurrentCameraIndex(const std::string id)
+{	
+	std::vector< std::string >::iterator location;
+	location = std::find( m_cameraIndexContainer.begin(), m_cameraIndexContainer.end(), id );
+	if ( location != m_cameraIndexContainer.end() ) // founded
+		m_currentCameraIndex = location - m_cameraIndexContainer.begin();
+}
+
 
 
 /*----- Handle a keys and mouse events -----*/
@@ -159,18 +202,17 @@ void CameraManager::OnKey(unsigned char key, int x, int y)
 {
 	switch(key)
 	{
-	  case 'X':
-		  setCurrentCamera("frontLeft");
+	  case ']':
+		  changeCurrentCamera(ft_Forward);
 	    break;
-	  case 'C':
-		  setCurrentCamera("backLeft");
+	  case '[':
+		  changeCurrentCamera(ft_Backward);
 	    break;
-	  case 'V':
-		  setCurrentCamera("backRight");
-	    break;
-	  case 'B':
-		  setCurrentCamera("frontRight");
-	    break;
+	  case '\\':
+		  // TODO change camera Type ( StaticCamera, SpringCamera, FlyCamera, Tracing Camera )
+		  m_currentCamera->changeCameraMode();
+		  m_currentCamera->PrintInfo();
+		break;
 	  default:
 	    break;
 	}
@@ -253,17 +295,18 @@ void CameraManager::OnMouseMove(int x, int y)
 		m_camUpDown +=(float)(y-m_mouseY);	
 	}
 	
-	if (m_currentCamera!=NULL)
+	if ((m_currentCamera!=NULL)&&(m_currentCamera->getCameraMode() == ft_FlyCamera)) //update only if FlyCamera
 	{
-	m_currentCamera->setYawAngle(m_yawAngle);
-	m_currentCamera->setPitchAngle(m_pitchAngle);
-	m_currentCamera->setDistance(m_distance);
-	m_currentCamera->setCamUpDown(m_camUpDown);
+		m_currentCamera->setYawAngle(m_yawAngle);
+		m_currentCamera->setPitchAngle(m_pitchAngle);
+		m_currentCamera->setDistance(m_distance);
+		m_currentCamera->setCamUpDown(m_camUpDown);
 	}
 	// update internal mouse position
 	m_mouseX = x;
 	m_mouseY = y;
 }
+
 
 
 
