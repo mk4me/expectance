@@ -74,8 +74,10 @@ namespace ft
 		/// \brief Helper for getting current camera index
 		int getCurrentCameraIndex();
 		/// \brief Helper for setting current camera index
-		void setCurrentCameraIndex(const std::string);
-        
+		void setCurrentCameraIndex(const std::string id);
+		/// \brief Removes camera index while camera is removed from main Camera Container
+		void RemoveCameraIndex(const std::string id);
+
 		static CameraManager* m_instance;
 		Camera* m_currentCamera;
 		std::map<std::string,Camera*> m_cameraContainer;

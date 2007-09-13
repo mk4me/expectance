@@ -115,7 +115,7 @@ void CameraManager::changeCurrentCamera(ft::Direction direction)
 		if (m_currentCameraIndex == m_instance->m_cameraContainer.size()-1)
 			m_currentCameraIndex  = 0;
 		else
-			m_currentCameraIndex++;
+			++m_currentCameraIndex;
 
 	}
 	else if (direction == ft_Backward)
@@ -123,7 +123,7 @@ void CameraManager::changeCurrentCamera(ft::Direction direction)
 		if (m_currentCameraIndex == 0)
 			m_currentCameraIndex  = m_instance->m_cameraContainer.size()-1;
 		else
-			m_currentCameraIndex--;
+			--m_currentCameraIndex;
 	}
 	
 	setCurrentCamera(m_cameraIndexContainer[m_currentCameraIndex]);
@@ -163,6 +163,8 @@ bool CameraManager::RemoveCamera(ft::Camera *pObj)
 {
 	std::string _id = pObj->getID();
 	bool done;
+	if (_id=="mainCamera")
+		return false;
 	done = RemoveCamera(_id);
 	return done;
 }
@@ -176,6 +178,7 @@ bool CameraManager::RemoveCamera(std::string id)
 		{ 
 			delete it->second;
 			m_cameraContainer.erase(it);
+			RemoveCameraIndex(id);
 			return true;
 		}
 	}
@@ -196,6 +199,22 @@ void CameraManager::setCurrentCameraIndex(const std::string id)
 }
 
 
+void CameraManager::RemoveCameraIndex(const std::string id)
+{
+	int _index;
+	std::vector< std::string >::iterator location;
+	location = std::find( m_cameraIndexContainer.begin(), m_cameraIndexContainer.end(), id );
+	if ( location != m_cameraIndexContainer.end() ) // founded
+	{
+		_index = location - m_cameraIndexContainer.begin();
+		//check if current camera index isn't equal to founded camera
+		if ( m_currentCameraIndex == _index )
+			setCurrentCameraIndex("mainCamera");
+		
+		//remove selected camera index
+		m_cameraIndexContainer.erase(m_cameraIndexContainer.begin()+ _index);
+	}
+}
 
 /*----- Handle a keys and mouse events -----*/
 void CameraManager::OnKey(unsigned char key, int x, int y)
@@ -213,7 +232,8 @@ void CameraManager::OnKey(unsigned char key, int x, int y)
 		  m_currentCamera->changeCameraMode();
 		  m_currentCamera->PrintInfo();
 		break;
-	  default:
+	  //case 'x': RemoveCamera("frontLeft");
+	  //default:
 	    break;
 	}
 }
