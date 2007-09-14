@@ -47,8 +47,8 @@ namespace ft
 
         void ChangeState(int newState);
 
-        void UpdateMotions(float elapsedSeconds);
-        void UpdateModifiers(float elapsedSeconds);
+        void UpdateMotions(const double elapsedSeconds);
+        void UpdateModifiers(const double elapsedSeconds);
 
         void setTerminated(bool set) { m_isTerminated = set; }
         bool isTerminated() { return m_isTerminated; }

@@ -22,7 +22,7 @@ namespace ft
 
         virtual void OnMessage(Message* msg);  // receives a message from UpdateManager
 
-        virtual void OnUpdate(float elapsedTime);  // updates by UpdateManager
+        virtual void OnUpdate(const double elapsedTime);  // updates by UpdateManager
     };
 };
 

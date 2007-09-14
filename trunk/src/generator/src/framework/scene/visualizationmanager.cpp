@@ -79,9 +79,9 @@ bool VisualizationManager::InitSceneObjects()
 
 void VisualizationManager::OnRender()
 {
-	OGLContext::getInstance()->InitRendering();
+	OGLContext::getInstance()->InitRendering(); //TODO przenies to do Initu
 	//camera.update(); <-przekaz tu deltatime z UpdateManagera
-	CameraManager::getInstance()->Update(); //update current camera information
+	CameraManager::getInstance()->UpdateView(); //update current camera View
 	OGLContext::getInstance()->RenderScene(); //camera.lookAt(); TODO
 	Render3DObjects();
 	Render2DObjects();

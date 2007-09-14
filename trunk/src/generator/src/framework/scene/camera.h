@@ -37,7 +37,10 @@ namespace ft
 
 		/// \brief Initializes basic camera parameters
 	    void Init(float pitch=20.0f, float yaw=0.0f, float roll=0.0f, float dist=800.0f, float leftRight=0.0f, float upDown=0.0f);
-		void Update();
+		//! calculate and set Viewport for current camera settings
+		void UpdateView();
+		//! calculate view matrix for current camera
+		void OnUpdate(const double deltaTime);
 		void setPitchAngle(float angle);
 		void setYawAngle(float angle);
 		void setRollAngle(float angle);

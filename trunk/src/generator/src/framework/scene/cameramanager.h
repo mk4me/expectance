@@ -11,6 +11,7 @@
 #include <map>
 #include "../utility/debug.h"
 #include "../core/global.h"
+#include "../core/UpdateObject.h"
 #include "camera.h"
 
 
@@ -22,7 +23,7 @@ namespace ft
 	/*!
 	 *	This class is responsible for global current camera operations and management of all system cameras. 
 	 */
-    class CameraManager
+	class CameraManager : public UpdateObject
     {
     public:
         CameraManager(void) { /*empty*/}
@@ -34,6 +35,10 @@ namespace ft
 		
 		/// \brief Initializes basic Camera Manager parameters
 		void Init();
+
+		/// \brief Updates current camera View
+		void UpdateView();
+        void OnUpdate(const double elapsedSeconds);  // OVERRIDEN, updates by UpdateManager 
 
 		/*! Add camera and register object to be tracked by camera */
 		bool AddCamera(SceneObject *pScObj);   
@@ -55,8 +60,7 @@ namespace ft
 		//! unregister Camera object
 		bool RemoveCamera(std::string id);
 
-		/// \brief Updates current camera parameters
-		void Update();
+
 
 
 		/// \brief Handles a key event

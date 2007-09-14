@@ -71,8 +71,6 @@ void UpdateManager::OnUpdate()
 
   double elapsedSeconds = (double)(tick - m_lastTick) / div;
   
-  //set elapsed seconds for other places
-  setElapsedSeconds(elapsedSeconds); 
 
   // adjust fps counter
   m_fpsDuration += elapsedSeconds;
@@ -84,7 +82,7 @@ void UpdateManager::OnUpdate()
     m_fpsFrames = 0;
   }
 
-  elapsedSeconds *= m_timeScale; //for cal3D
+  elapsedSeconds *= (double)m_timeScale; //for cal3D
 
   
   UpdateObjects(elapsedSeconds);
@@ -189,7 +187,7 @@ void UpdateManager::Dump()
  *
  * \param float elapsedSeconds - time elapsed since last frame (since last update)
  **/
-void UpdateManager::UpdateObjects(float elapsedSeconds)
+void UpdateManager::UpdateObjects(const double elapsedSeconds)
 {
     //TODO: abak:  this update should be synchronized with adding and removing UpdateObjects
 

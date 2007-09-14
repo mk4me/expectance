@@ -27,7 +27,7 @@ namespace ft
 
         void Init();
 
-        void OnUpdate();  // caled from window application
+        void OnUpdate();  // called from window application
 
         void SendMessage(Message* msg, bool deleteAfterSent);  //request to send a message to registered objects
 
@@ -37,20 +37,17 @@ namespace ft
         void setTimeScale(float timeScale) { m_timeScale = timeScale; }
         float getTimeScale() { return m_timeScale; }
 
-        void UpdateObjects(float elapsedSeconds);
+        void UpdateObjects(const double elapsedSeconds);
         void increraseFramesCounter() {   m_fpsFrames++;  }
 
-		void setElapsedSeconds(double elapsedSeconds) { m_elapsedSeconds = elapsedSeconds;}
-		double getElapsedSeconds(){ return m_elapsedSeconds;}
-
-        void Dump();
+		void Dump();
 
     private:
         
         static UpdateManager* m_instance;
 
         
-		unsigned long long m_lastTick, m_elapsedSeconds;
+		unsigned long long m_lastTick;
 
         double m_fpsDuration;
         int m_fpsFrames;

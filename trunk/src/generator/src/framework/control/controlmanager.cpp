@@ -70,7 +70,7 @@ void ControlManager::Init()
 
 }
 
-void ControlManager::OnUpdate(float elapsedSeconds)
+void ControlManager::OnUpdate(const double elapsedSeconds)
 {
     UpdateActiveAvatarMarker();
 }

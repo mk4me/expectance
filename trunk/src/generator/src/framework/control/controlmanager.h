@@ -35,7 +35,7 @@ namespace ft
         //TODO: uncommnet it when RemoveControlAvatar is implemented
         //bool  RemoveControlAvatar(ControlAvatar* av);
 
-        void OnUpdate(float elapsedSeconds);  // OVERRIDEN, updates by UpdateManager 
+        void OnUpdate(const double elapsedSeconds);  // OVERRIDEN, updates by UpdateManager 
 
         void OnSpecial(int key, int x, int y);
 

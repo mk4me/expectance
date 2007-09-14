@@ -73,7 +73,7 @@ bool Application::InitModules()
 
     ControlManager::getInstance()->Init(); //enforced creation of singleton
     UpdateManager::getInstance()->AddUpdateObject(ControlManager::getInstance());
-
+	UpdateManager::getInstance()->AddUpdateObject(CameraManager::getInstance()); //synchronize cameramanager from global timer
 	return true;
 }
 

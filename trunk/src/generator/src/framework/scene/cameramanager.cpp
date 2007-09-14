@@ -47,11 +47,19 @@ void CameraManager::Init()
 }
 
 
-void CameraManager::Update()
+void CameraManager::UpdateView()
 {
 	if(m_currentCamera!=NULL)
 	{
-		m_currentCamera->Update();
+		m_currentCamera->UpdateView();
+	}
+}
+
+void CameraManager::OnUpdate(const double elapsedSeconds)  // OVERRIDEN, updates by UpdateManager 
+{
+	if(m_currentCamera!=NULL)
+	{
+		m_currentCamera->OnUpdate(elapsedSeconds);
 	}
 }
 

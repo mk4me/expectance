@@ -21,6 +21,6 @@ void UpdateObject::OnMessage(Message* msg)
  *
  * \param float elapsedSeconds - time elapsed sice last update
  **/
-void UpdateObject::OnUpdate(float elapsedTime)
+void UpdateObject::OnUpdate(const double elapsedTime)
 {
 }

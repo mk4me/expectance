@@ -314,7 +314,7 @@ void MovableAvatar::Init()
  *
  * \param float elapsedSeconds - time elapsed sice last update
  **/
-void MovableAvatar::OnUpdate(float elapsedSeconds)
+void MovableAvatar::OnUpdate(const double elapsedSeconds)
 {
      if(!m_bPaused)
     {

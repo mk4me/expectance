@@ -52,12 +52,12 @@ void TimeLineExecutor::ChangeState(int newState)
 
 }
 
-void TimeLineExecutor::UpdateMotions(float elapsedSeconds)
+void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
 {
     int test = 0;
 }
 
-void TimeLineExecutor::UpdateModifiers(float elapsedSeconds)
+void TimeLineExecutor::UpdateModifiers(const double elapsedSeconds)
 {
 }
 

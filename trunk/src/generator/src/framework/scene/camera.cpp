@@ -39,14 +39,16 @@ void Camera::Init(float pitch, float yaw, float roll, float dist, float leftRigh
 	m_cameraMode = ft_FlyCamera;
 }
 
-void Camera::Update()
+void Camera::UpdateView()
 {
-	//usun to stad lub zrob jak we francuskim kodzie w draw (Camera.Update, Camera.LookAt)
-	//set camera position
 	glTranslatef(0.0f, m_camUpDown, -m_distance);
 	glRotatef(m_pitchAngle, 1.0f, 0.0f, 0.0f);
-	glRotatef(m_yawAngle, 0.0f, 1.0f, 0.0f);
+	glRotatef(m_yawAngle, 0.0f, 1.0f, 0.0f);	
+}
 
+void Camera::OnUpdate(const double deltaTime)
+{
+	// for testing purposes std::cout << deltaTime <<" elapsed time \n";
 }
 const std::string& Camera::getID() const
 {
