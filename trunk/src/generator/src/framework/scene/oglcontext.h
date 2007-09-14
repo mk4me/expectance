@@ -68,8 +68,10 @@ namespace ft
 		bool InitTexturedFloorDL(int size);
 		/// \brief Creates display list for logo texture
 		bool InitLogoDL();
-		/// \brief Initializes context for OGL rendering  - TMP
-		void InitRendering();
+		///// \brief Initializes context for OGL rendering  - TMP
+		//void InitRendering();
+		/// \brief Sets View perspective
+		void setPerspective(const bool zoom);
 		/// \brief Sets camera and viewports parameters and renders floor
 		void RenderScene();
 		/// \brief Renders FT logo 

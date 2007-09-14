@@ -59,10 +59,10 @@ namespace ft
 		bool RemoveCamera(Camera*);
 		//! unregister Camera object
 		bool RemoveCamera(std::string id);
-
-
-
-
+		//! check if zoom is on
+		const bool IsZoom() { return m_currentCamera->IsZoom();};
+		
+		
 		/// \brief Handles a key event
         void OnKey(unsigned char key, int x, int y);
 		/// \brief Handles special keys (F1, F2, UP, DOWN, etc.)

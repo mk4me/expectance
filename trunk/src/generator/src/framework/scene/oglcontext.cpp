@@ -294,19 +294,49 @@ bool OGLContext::InitLogoDL()
 	return true;
 }
 
-void OGLContext::InitRendering()
+//void OGLContext::InitRendering()
+//{
+//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//
+//	glMatrixMode(GL_PROJECTION);
+//	glLoadIdentity();
+//	gluPerspective(45.0f, (GLdouble)m_width / (GLdouble)m_height, 1, 100000);
+//	glMatrixMode(GL_MODELVIEW);
+//	glLoadIdentity();
+//
+//
+//}
+
+void OGLContext::setPerspective(const bool zoom)
 {
+	static float _tempAng = 0;
+	//static bool _switch = false;
+	//float _hlp;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0f, (GLdouble)m_width / (GLdouble)m_height, 1, 100000);
 
+	if (zoom)
+	{
+		//if (_tempAng>45.0f) 
+		//switch = true;
+		//_hlp = (switch)? 1 : -1;
+		//else if (_tempAng <=60.0F) _hlp = -0.03F;
+		//else if (_tempAng <=0.0F) _hlp = 0.03F;
+		gluPerspective(cos(_tempAng += 0.03F)*10 + 45.0f, (GLdouble)m_width / (GLdouble)m_height, 1, 100000);
+	}
+	else
+	{
+		//_switch = true;
+		gluPerspective(45.0f, (GLdouble)m_width / (GLdouble)m_height, 1, 100000);
+	}
+	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-}
 
+}
 void OGLContext::RenderScene()
 {
 	//render floor

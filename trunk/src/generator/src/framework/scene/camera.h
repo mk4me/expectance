@@ -7,6 +7,7 @@
 #define _GEN_CAMERA_H
 
 #include <iostream>
+#include "../utility/mtxlib.h"
 #include "../utility/debug.h"
 #include "../core/global.h"
 #include "sceneobject.h"
@@ -66,11 +67,15 @@ namespace ft
 		//! get camera mode
 		const ft::CameraMode getCameraMode();
 		//! change camera mode
-		void changeCameraMode();
+		void ChangeCameraMode();
 		/// \brief Prints general information about values of object properties  
 		const void PrintInfo() const;		
+		//! turn on or turn off zoom
+		void ChangeZoom();
+		//! check if zoom is on
+		const bool IsZoom() { return static_cast<bool>(m_zoom);};
 
-    private:
+	private:
 		//! set unique ID from sceneobject instance that owns this camera
 		void setID(const std::string name);
 		
@@ -78,6 +83,7 @@ namespace ft
 		SceneObject *m_scObj; // camera for scene object
 
 		ft::CameraMode m_cameraMode;
+		bool m_zoom;
 
 		float m_pitchAngle; // OX
 		float m_yawAngle;   // OY

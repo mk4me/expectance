@@ -237,11 +237,14 @@ void CameraManager::OnKey(unsigned char key, int x, int y)
 	    break;
 	  case '\\':
 		  // TODO change camera Type ( StaticCamera, SpringCamera, FlyCamera, Tracing Camera )
-		  m_currentCamera->changeCameraMode();
+		  m_currentCamera->ChangeCameraMode();
 		  m_currentCamera->PrintInfo();
 		break;
+	  case '|':
+		  m_currentCamera->ChangeZoom();
+	  break;
 	  //case 'x': RemoveCamera("frontLeft");
-	  //default:
+	  default:
 	    break;
 	}
 }

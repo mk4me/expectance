@@ -79,7 +79,7 @@ bool VisualizationManager::InitSceneObjects()
 
 void VisualizationManager::OnRender()
 {
-	OGLContext::getInstance()->InitRendering(); //TODO przenies to do Initu
+	OGLContext::getInstance()->setPerspective( CameraManager::getInstance()->IsZoom() ); 
 	//camera.update(); <-przekaz tu deltatime z UpdateManagera
 	CameraManager::getInstance()->UpdateView(); //update current camera View
 	OGLContext::getInstance()->RenderScene(); //camera.lookAt(); TODO

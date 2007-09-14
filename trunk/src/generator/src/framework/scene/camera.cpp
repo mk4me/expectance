@@ -37,6 +37,7 @@ void Camera::Init(float pitch, float yaw, float roll, float dist, float leftRigh
 	m_camLeftRight = leftRight;
 	m_camUpDown = upDown;
 	m_cameraMode = ft_FlyCamera;
+	m_zoom = 0;
 }
 
 void Camera::UpdateView()
@@ -48,8 +49,45 @@ void Camera::UpdateView()
 
 void Camera::OnUpdate(const double deltaTime)
 {
+	// Distance & Speed
+	static float _cameraDistance = 0.0;
+	static float _targetDistance = 0.0;
+	static float _cameraSpeed = 40.0;
+	static float _targetSpeed = 40.0;
+	// Time
+	float _deltaSecs;
+	// Temp
+	int _index;
+	// Spring 
+	static vector3 _prevTrgPos(0.0, 0.0, 0.0);
+	matrix44 _splineViewMtx;
+	matrix44 _springViewMtx;
+	float _springConstants[3] = {0.5, 2.5, 4.5};
+
+
+
 	// for testing purposes std::cout << deltaTime <<" elapsed time \n";
+
+	// *** Set Proper View Matrix
+	switch (m_cameraMode) {
+		case ft_StaticCamera:
+			//m_viewMtx = LookAtMatrix44(camPos, camAt, camUp);
+		break;
+		case ft_FlyCamera:
+			//cameraP->Tick(deltaSecs);
+			//m_viewMtx = cameraP->GetViewMtx();
+		break;
+		case ft_TracingCamera:
+			//m_viewMtx = m_splineViewMtx;
+		break;
+		case ft_SpringCamera:
+			//m_viewMtx = m_springViewMtx;
+		break;
+	}
+
 }
+
+
 const std::string& Camera::getID() const
 {
 	return m_id;
@@ -128,7 +166,7 @@ const ft::CameraMode Camera::getCameraMode()
 	return m_cameraMode;
 }
 
-void Camera::changeCameraMode()
+void Camera::ChangeCameraMode()
 {
 	m_cameraMode = static_cast<ft::CameraMode>( (static_cast<unsigned short>(m_cameraMode) +1) % 4 );
 }
@@ -138,4 +176,9 @@ const void Camera::PrintInfo() const
 	std::cout << "Camera <" << m_id <<">: mode [" << m_cameraMode <<"] \n";
 	//	", location = [" << m_position.x <<", " << m_position.y << ", " << m_position.z 
 	//<<"], m_color = [" << m_color.x << ", "<<m_color.y<<", "<< m_color.z <<"] \n";
+}
+
+void Camera::ChangeZoom()
+{
+	m_zoom ^=1;
 }
