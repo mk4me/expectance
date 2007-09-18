@@ -20,7 +20,7 @@ namespace ft
 	//Tracing Camera - camera turning around the target point
 	//                       0                 1               2              3
 	enum CameraMode { ft_StaticCamera, ft_SpringCamera, ft_FlyCamera, ft_TracingCamera };
-
+	static char *CameraModeId[] = {"Static Camera", "Spring Camera", "Fly Camera", "Tracing Camera"};
 	//! A Camera class
 	/*!
 	 *	This class is responsible for global camera operations. 
@@ -42,26 +42,6 @@ namespace ft
 		void UpdateView();
 		//! calculate view matrix for current camera
 		void OnUpdate(const double deltaTime);
-		void setPitchAngle(float angle);
-		void setYawAngle(float angle);
-		void setRollAngle(float angle);
-		void setDistance(float distance);
-		void setCamUpDown(float updown);
-		void setCamLeftRight(float leftright);
-		
-		//! get the value of distance camera from middle of the scene
-		float getDistance();
-		//! get the value of Pitch Angle
-		float getPitchAngle();
-		//! get the value of Yaw Angle
-		float getYawAngle();
-		//! get the value of Roll Angle
-		float getRollAngle();
-		//! get the value of Camera Up-Down factor
-		float getCamUpDown();
-		//! get the value of Camera Left-Right factor
-		float getCamLeftRight();
-
 		//! set camera mode
 		void setCameraMode(const ft::CameraMode mode);
 		//! get camera mode
@@ -74,16 +54,65 @@ namespace ft
 		void ChangeZoom();
 		//! check if zoom is on
 		const bool IsZoom() { return static_cast<bool>(m_zoom);};
+		
+		///\brief Creates Fly camera
+		void DefineFlyCam(vector3 & eyeIn, float yIn, float pIn, float rIn);
+		///\brief Computes parameters for Fly Camera
+		//void ComputeFlyCameraParameters();
+		///\brief Computes viewing matrix according to flight
+		const matrix44 getFlyCameraViewMatrix();
+		///\brief Computes mouse affection on camera
+		void OnMouseMove(float x, float y);
+		///\brief Sets pressed key on the keyboard
+		void OnKey(unsigned char key);
+		///\brief Updates fly camera paraeters
+		void UpdateFlyCamera(const double deltaTime);
+		
+
 
 	private:
 		//! set unique ID from sceneobject instance that owns this camera
 		void setID(const std::string name);
 		
+		float Damp(float currX, float targetX);
+		vector3 SpringDamp(vector3 currPos, vector3 trgPos, vector3 prevTrgPos, 
+			const double deltaTime, float springConst, float dampConst, float springLen);
+
+
 		std::string m_id;
 		SceneObject *m_scObj; // camera for scene object
 
 		ft::CameraMode m_cameraMode;
 		bool m_zoom;
+		unsigned char m_key;
+
+		matrix44 m_viewMtx;
+		vector3 m_camPos, m_camUp, m_camAt;
+		
+		// Position (Point)
+		vector3 m_eye;
+		// Forward (Point) (IE LookAt)
+		vector3 m_at;
+		// Up (Vector)
+		vector3 m_up;
+		// Forward (Vector) (IE View Direction)
+		vector3 m_fwd;
+		// Side (right)
+		vector3 m_side;
+
+		// Orientation data
+		// Yaw, Pitch, and Roll
+		float m_Yaw, m_Pitch, m_Roll;
+		vector3 m_angTrg;
+		vector3 m_angTrgPrev;
+
+		// Forward Speed
+		float m_fwdS;
+
+		// Damp Targets
+		vector3 m_eyeTrg;
+		vector3 m_eyeTrgPrev;
+
 
 		float m_pitchAngle; // OX
 		float m_yawAngle;   // OY
@@ -91,6 +120,17 @@ namespace ft
 		float m_distance;
 		float m_camLeftRight, m_camUpDown;
     };
+
+
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+#define RANGE(x, minX, maxX, minY, maxY) \
+	((((x - minX) * (maxY - minY))/(maxX - minX)) + minY)
+
+
 };
 
 #endif //_GEN_CAMERA_H

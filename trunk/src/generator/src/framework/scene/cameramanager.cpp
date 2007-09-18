@@ -4,6 +4,7 @@
  */
 
 #include "cameramanager.h"
+#include "oglcontext.h"
 
 using namespace ft;
 
@@ -142,23 +143,23 @@ void CameraManager::setCurrentCamera(std::string id)
 	Camera *cam = getCamera(id);
 	if (cam!=NULL)
 	{
-		m_pitchAngle = cam->getPitchAngle();
-		m_yawAngle = cam->getYawAngle();
-		m_distance = cam->getDistance();
-		m_camUpDown = cam->getCamUpDown();
-		m_camLeftRight = cam->getCamLeftRight();
+		////m_pitchAngle = cam->getPitchAngle();
+		////m_yawAngle = cam->getYawAngle();
+		////m_distance = cam->getDistance();
+		////m_camUpDown = cam->getCamUpDown();
+		////m_camLeftRight = cam->getCamLeftRight();
 
 		m_currentCamera = cam;
 		setCurrentCameraIndex(id);
 	}
 	else
 	{
-		m_pitchAngle = 20.0f;
-		m_yawAngle = 0.0f;
-		m_rollAngle = 0.0f;
-		m_distance = 800.0f;
-		m_camUpDown = 0.0f;
-		m_camLeftRight = 0.0f;
+		////m_pitchAngle = 20.0f;
+		////m_yawAngle = 0.0f;
+		////m_rollAngle = 0.0f;
+		////m_distance = 800.0f;
+		////m_camUpDown = 0.0f;
+		////m_camLeftRight = 0.0f;
 		if ((m_currentCamera = getCamera("mainCamera")) == NULL) 
 			AddCamera(new Camera("mainCamera"));
 		m_currentCamera = new Camera("mainCamera");
@@ -245,6 +246,7 @@ void CameraManager::OnKey(unsigned char key, int x, int y)
 	  break;
 	  //case 'x': RemoveCamera("frontLeft");
 	  default:
+		  m_currentCamera->OnKey(key);
 	    break;
 	}
 }
@@ -304,34 +306,34 @@ void CameraManager::OnMouseButtonUp(int button, int x, int y)
 void CameraManager::OnMouseMove(int x, int y)
 {
 	// update pitch/yaw angles
-	if(m_bLeftMouseButtonDown)
-	{
-		// calculate new angles
-		m_yawAngle += (float)(x - m_mouseX);
-		m_pitchAngle -= (float)(y - m_mouseY);
-	}
+	//if(m_bLeftMouseButtonDown)
+	//{
+	//	// calculate new angles
+	//	m_yawAngle += (float)(x - m_mouseX);
+	//	m_pitchAngle -= (float)(y - m_mouseY);
+	//}
 
-	// update distance
-	if(m_bRightMouseButtonDown)
-	{
-		// calculate new distance
-		m_distance -= (float)(y - m_mouseY); 
-		if(m_distance < 0.0f) m_distance = 0.0f;
-	}
+	//// update distance
+	//if(m_bRightMouseButtonDown)
+	//{
+	//	// calculate new distance
+	//	m_distance -= (float)(y - m_mouseY); 
+	//	if(m_distance < 0.0f) m_distance = 0.0f;
+	//}
 
-	// update Y screen position
-	if(m_bMiddleMouseButtonDown)
-	{
-		//calculate new Y position
-		m_camUpDown +=(float)(y-m_mouseY);	
-	}
+	//// update Y screen position
+	//if(m_bMiddleMouseButtonDown)
+	//{
+	//	//calculate new Y position
+	//	m_camUpDown +=(float)(y-m_mouseY);	
+	//}
 	
-	if ((m_currentCamera!=NULL)&&(m_currentCamera->getCameraMode() == ft_FlyCamera)) //update only if FlyCamera
+	if ((m_currentCamera!=NULL)&&(m_currentCamera->getCameraMode() == ft_FlyCamera)&&(m_bLeftMouseButtonDown)) //update only if FlyCamera
 	{
-		m_currentCamera->setYawAngle(m_yawAngle);
-		m_currentCamera->setPitchAngle(m_pitchAngle);
-		m_currentCamera->setDistance(m_distance);
-		m_currentCamera->setCamUpDown(m_camUpDown);
+		m_currentCamera->OnMouseMove((float)x/(float)OGLContext::getInstance()->getWidth(), (float)y/(float)OGLContext::getInstance()->getHeight());
+		////m_currentCamera->setPitchAngle(m_pitchAngle);
+		////m_currentCamera->setDistance(m_distance);
+		////m_currentCamera->setCamUpDown(m_camUpDown);
 	}
 	// update internal mouse position
 	m_mouseX = x;

@@ -90,11 +90,6 @@ namespace ft
 		int m_currentCameraIndex;
 		std::vector<std::string> m_cameraIndexContainer;
 
-		float m_pitchAngle; // OX
-		float m_yawAngle;   // OY
-		float m_rollAngle;  // OZ
-		float m_distance;
-		float m_camLeftRight, m_camUpDown;
 		int m_mouseX, m_mouseY;
 		bool m_bLeftMouseButtonDown, m_bRightMouseButtonDown, m_bMiddleMouseButtonDown;
 
