@@ -217,6 +217,9 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
     bone->setTranslation(m_vTranslation);
 
     bone->calculateState();
+	
+	//set current parameters lcs to scene object
+	timeLineContext->getAvatar()->setPosition(m_vTranslation);
 }
 
 /// \brief Resets parameters of this modifier

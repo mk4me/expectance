@@ -559,6 +559,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\framework\scene\spline.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\spline.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\scene\texturemanager.cpp"
 					>
 				</File>

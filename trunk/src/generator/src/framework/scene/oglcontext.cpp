@@ -307,31 +307,38 @@ bool OGLContext::InitLogoDL()
 //
 //}
 
+
 void OGLContext::setPerspective(const bool zoom)
 {
 	static float _tempAng = 0;
 	//static bool _switch = false;
-	//float _hlp;
+	double _fovy;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	if (zoom)
+	if (zoom) //zoom is on
 	{
-		//if (_tempAng>45.0f) 
-		//switch = true;
-		//_hlp = (switch)? 1 : -1;
-		//else if (_tempAng <=60.0F) _hlp = -0.03F;
-		//else if (_tempAng <=0.0F) _hlp = 0.03F;
-		gluPerspective(cos(_tempAng += 0.03F)*10 + 45.0f, (GLdouble)m_width / (GLdouble)m_height, 1, 100000);
+		if (_tempAng <= 3.141592f)
+		{
+			_fovy = cos(_tempAng += 0.05F)*15; // decrease _fovy value in the scope [15...-15]
+		}
+		else
+			_fovy = -15;					   // after that keep constant value					
 	}
-	else
+	else  //zom is off
 	{
-		//_switch = true;
-		gluPerspective(45.0f, (GLdouble)m_width / (GLdouble)m_height, 1, 100000);
+		if (_tempAng >= 0.0f)
+		{
+			_fovy = cos(_tempAng -= 0.05F)*15; // increase _fovy value in the scope [-15...15]
+		}
+		else
+			_fovy = 15;						   // after that keep constant value
 	}
-	
+
+	gluPerspective(_fovy+45.0f, (GLdouble)m_width / (GLdouble)m_height, 1, 100000);
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 

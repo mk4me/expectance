@@ -245,8 +245,16 @@ void CameraManager::OnKey(unsigned char key, int x, int y)
 		  m_currentCamera->ChangeZoom();
 	  break;
 	  //case 'x': RemoveCamera("frontLeft");
-	  default:
+	  case 'w':
+	  case 's':
+	  case 'a':
+	  case 'd':
+	  case 'r':
+	  case 'f':
 		  m_currentCamera->OnKey(key);
+	  break;
+
+	  default:
 	    break;
 	}
 }

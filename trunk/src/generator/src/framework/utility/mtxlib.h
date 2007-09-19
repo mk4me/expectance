@@ -837,8 +837,8 @@ matrix44    RotateRadMatrix44(char axis, float rad);
 matrix44    RotateRadMatrix44(const vector3 &axis, float rad);
 matrix44    TranslateMatrix44(float x, float y, float z);
 matrix44    ScaleMatrix44(float x, float y, float z, float w = 1.0);
-matrix44    LookAtMatrix44(const vector3 &camPos, const vector3 &camUp, 
-    const vector3 &target );
+matrix44    LookAtMatrix44(const vector3 &camPos, const vector3 &target, 
+    const vector3 &camUp );
 matrix44    FrustumMatrix44(float l, float r, float b, float t, 
     float n, float f);
 matrix44    PerspectiveMatrix44(float fovY, float aspect, 

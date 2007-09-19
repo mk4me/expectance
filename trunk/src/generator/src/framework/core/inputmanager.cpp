@@ -61,7 +61,6 @@ void InputManager::OnKey(unsigned char key, int x, int y)
        break;     
     // test for quit event
     case 27:
-    case 'q':
     case 'Q':
       exit(0);
       break;
@@ -74,23 +73,18 @@ void InputManager::OnKey(unsigned char key, int x, int y)
     case '/':
       UpdateManager::getInstance()->setTimeScale(  UpdateManager::getInstance()->getTimeScale() / 1.1f);
       break;
-    case 'r':
     case 'R':
       UpdateManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_RENDER_METHOD), true);  
       break;
-	case 's':
 	case 'S':
       UpdateManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_SHADOW), true);  
   	  break;
-    case 'f':
 	case 'F':
 		OGLContext::getInstance()->changeFloorType();
       break;
-	case 'l':
 	case 'L':
 		OGLContext::getInstance()->hideFTLogo();
       break;
-	case 'm':
 	case 'M':
 		MenuManager::getInstance()->hideMenu();
       break;

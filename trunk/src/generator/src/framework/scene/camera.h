@@ -11,6 +11,7 @@
 #include "../utility/debug.h"
 #include "../core/global.h"
 #include "sceneobject.h"
+#include "spline.h"
 
 namespace ft
 {
@@ -119,6 +120,9 @@ namespace ft
 		float m_rollAngle;  // OZ
 		float m_distance;
 		float m_camLeftRight, m_camUpDown;
+		
+		//temporary
+		Spline *cameraSpline;
     };
 
 

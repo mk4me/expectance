@@ -31,20 +31,30 @@ Camera::Camera(std::string id)
 
 void Camera::Init(float pitch, float yaw, float roll, float dist, float leftRight, float upDown)
 {
-	m_pitchAngle = pitch;
-	m_yawAngle = yaw;
-	m_rollAngle = roll;
-	m_distance = dist;
-	m_camLeftRight = leftRight;
-	m_camUpDown = upDown;
-	m_cameraMode = ft_FlyCamera;
+	float _x, _y, _z;
+	_x = sinf(DegToRad(yaw))*dist;
+	_y = sinf(DegToRad(pitch))*dist;
+	_z = cosf(DegToRad(yaw))*dist;
+	//m_pitchAngle = pitch;
+	//m_yawAngle = yaw;
+	//m_rollAngle = roll;
+	//m_distance = dist;
+	//m_camLeftRight = leftRight;
+	//m_camUpDown = upDown;
+
+	m_cameraMode = ft_StaticCamera;
 	m_zoom = 0;
-	m_camPos.set(0.0, 100.0, 800.0);
+	m_camPos.set(_x, _y, _z);
 	m_camUp.set(0.0, 1.0, 0.0);
 	m_camAt.set(0.0, 0.0, 0.0);
-	
-	DefineFlyCam(m_camPos, DegToRad(-45), DegToRad(-40), 0);
-	m_viewMtx = getFlyCameraViewMatrix();
+	m_viewMtx = LookAtMatrix44(m_camPos, m_camAt, m_camUp);
+
+
+	DefineFlyCam( m_camPos, DegToRad(yaw), DegToRad(pitch), DegToRad(roll) );
+	//m_viewMtx = getFlyCameraViewMatrix();
+
+	//tmp
+	cameraSpline = new Spline("data\\spline\\curve.sdf");
 
 }
 
@@ -54,29 +64,85 @@ void Camera::UpdateView()
 	//glRotatef(m_pitchAngle, 1.0f, 0.0f, 0.0f);
 	//glRotatef(m_yawAngle, 0.0f, 1.0f, 0.0f);
 	glLoadMatrixf((float *)&m_viewMtx);
-
 }
 
 void Camera::OnUpdate(const double deltaTime)
 {
+	static int first_time = 1;
+
 	// Distance & Speed
 	static float _cameraDistance = 0.0;
 	static float _targetDistance = 0.0;
 	static float _cameraSpeed = 40.0;
 	static float _targetSpeed = 40.0;
-	// Time
-	float _deltaSecs;
 	// Temp
 	int _index;
 	// Spring 
-	static vector3 _prevTrgPos(0.0, 0.0, 0.0);
+	static vector3 _prevTrgPos(0.0, 0.0, 0.0), _currTrgPos;
 	matrix44 _splineViewMtx;
 	matrix44 _springViewMtx;
 	float _springConstants[3] = {0.5, 2.5, 4.5};
 
+
+	if (m_scObj!=NULL) //update translation from sceneobject
+	{
+		_currTrgPos = CalVecToVector3(m_scObj->getPosition());
+	}
+
 	// Update Distances
-	_cameraDistance += (deltaTime) * _cameraSpeed;
-    _targetDistance += (deltaTime) * _targetSpeed; //if (movementMode) jesli sie nie rusza to trzeba zmienic speed na 0
+	_cameraDistance += (deltaTime*15) * _cameraSpeed;
+    
+	if(_currTrgPos!=_prevTrgPos)
+	{
+		_targetDistance += (deltaTime) * _targetSpeed; //if (movementMode) jesli sie nie rusza to trzeba zmienic speed na 0
+		_prevTrgPos = _currTrgPos;
+	}
+
+
+	if (first_time) {
+	//	// Ranomly Initialize Splines
+	//	//for(int i = 0; i < 4; i++) {
+	//	//	cameraSpline->RAND_FUNC_CAMERA(cameraSpline->controlData[i].pos);
+	//	//	//RAND_FUNC_TARGET(targetSpline.controlData[i].pos);
+	//	//}
+		cameraSpline->Build();
+	//	//targetSpline.Build();
+	}
+
+	// *** Update Spring Cmamera
+
+	//currTrgPos = targetObjP->position + (-40.0F * targetSpline.curveData[index].tan);
+	//springCameraObjP->position = 
+	//	SpringDamp(springCameraObjP->position, currTrgPos, prevTrgPos, 
+	//		deltaSecs, springConstants[springMode], 0.25F, 1.0F);
+	//// Initialization
+	//if (first_time) springCameraObjP->position = currTrgPos;
+	
+	_springViewMtx = LookAtMatrix44(_currTrgPos + vector3(0.0, 20.0, 400.0),
+		_currTrgPos , //(-10.0F * targetSpline.curveData[index].tan),
+		vector3(0.0, 1.0, 0.0));
+	
+	//springCameraObjP->orientation = LookAtMatrix44(vector3(0.0, 0.0, 0.0),
+	//	(targetObjP->position + (-10.0F * targetSpline.curveData[index].tan)
+	//		- springCameraObjP->position).normalize(),
+	//	vector3(0.0, 1.0, 0.0)).invert();
+	//springCameraObjP->normalMtx = InvertMatrix44(springCameraObjP->orientation);
+
+
+
+	// *** Update Spline Camera
+	_index = cameraSpline->GET_SPLINE_INDEX(cameraSpline, &_cameraDistance); 
+	_splineViewMtx = LookAtMatrix44(cameraSpline->curveData[_index].pos+_currTrgPos,
+		//targetObjP->position, 
+		_currTrgPos,
+		//vector3(0.0, 0.0, 0.0),
+		vector3(0.0, 1.0, 0.0));
+
+//	splineCameraObjP->orientation = LookAtMatrix44(vector3(0.0, 0.0, 0.0),
+		//(targetObjP->position - splineCameraObjP->position).normalize(),
+//		(vector3(0.0, 2.0, 0.0) - splineCameraObjP->position).normalize(),
+//		vector3(0.0, 1.0, 0.0)).invert();
+//	splineCameraObjP->normalMtx = InvertMatrix44(splineCameraObjP->orientation);
 
 
 	// for testing purposes std::cout << deltaTime <<" elapsed time \n";
@@ -87,17 +153,19 @@ void Camera::OnUpdate(const double deltaTime)
 			m_viewMtx = LookAtMatrix44(m_camPos, m_camAt, m_camUp);
 		break;
 		case ft_FlyCamera:
-			UpdateFlyCamera(deltaTime);
 			m_viewMtx = getFlyCameraViewMatrix();
+			UpdateFlyCamera(deltaTime);
 		break;
 		case ft_TracingCamera:
-			//m_viewMtx = m_splineViewMtx;
+			m_viewMtx = _splineViewMtx;
 		break;
 		case ft_SpringCamera:
-			//m_viewMtx = m_springViewMtx;
+			m_viewMtx = _springViewMtx;
 		break;
 	}
 
+	// No more
+	first_time = 0;
 }
 
 
@@ -196,10 +264,10 @@ void Camera::OnMouseMove(float x, float y)
 {
 	float YT, PT;
 
-	YT = RANGE(x, 0.0F, 1.0F, -3.1415F, 3.1415F);
-	PT = RANGE(y, 0.0F, 1.0F, 1.5707F, -1.5707F);
+	YT = RANGE(x, 0.0F, 1.0F, -3.141592F, 3.141592F);
+	PT = RANGE(y, 0.0F, 1.0F, -1.5707F/2, 1.5707F/2);
 
-	m_angTrg.set(YT, -PT, 0.0);	
+	m_angTrg.set(YT, PT, 0.0);	
 }
 
 void Camera::OnKey(unsigned char key)
@@ -219,26 +287,16 @@ void Camera::UpdateFlyCamera(const double deltaTime)
 	m_eyeTrgPrev = m_eyeTrg;
 
 	// Keyboard Data
-		if (GetKeyState('W') & 0x80) m_eyeTrg += deltaTime * m_fwdS * m_fwd;
-		if (GetKeyState('S') & 0x80) m_eyeTrg -= deltaTime * m_fwdS * m_fwd;
-		if (GetKeyState('D') & 0x80) m_eyeTrg += deltaTime * m_fwdS * m_side;
-		if (GetKeyState('A') & 0x80) m_eyeTrg -= deltaTime * m_fwdS * m_side;
-		//if (GetKeyState(VK_UP) & 0x80) m_eyeTrg += deltaTime * m_fwdS * m_fwd;
-		//if (GetKeyState(VK_DOWN) & 0x80) m_eyeTrg -= deltaTime * m_fwdS * m_fwd;
-		//if (GetKeyState(VK_RIGHT) & 0x80) m_eyeTrg += deltaTime * m_fwdS * m_side;
-		//if (GetKeyState(VK_LEFT) & 0x80) m_eyeTrg -= deltaTime * m_fwdS * m_side;
-		if (GetKeyState('R') & 0x80) m_eyeTrg += deltaTime * m_fwdS * m_up;
-		if (GetKeyState('F') & 0x80) m_eyeTrg -= deltaTime * m_fwdS * m_up;
-		////if (m_key!= 255)
-		////{
-		////if (m_key=='w') m_eyeTrg += deltaTime * m_fwdS * m_fwd;
-		////if (m_key=='s') m_eyeTrg -= deltaTime * m_fwdS * m_fwd;
-		////if (m_key=='d') m_eyeTrg += deltaTime * m_fwdS * m_side;
-		////if (m_key=='a') m_eyeTrg -= deltaTime * m_fwdS * m_side;
-		////if (m_key=='r') m_eyeTrg += deltaTime * m_fwdS * m_up;
-		////if (m_key=='f') m_eyeTrg -= deltaTime * m_fwdS * m_up;
-		////m_key=255;
-		////}
+	if (m_key!= 255)
+	{
+		if (m_key=='w') m_eyeTrg += deltaTime * m_fwdS * m_fwd*40;
+		if (m_key=='s') m_eyeTrg -= deltaTime * m_fwdS * m_fwd*40;
+		if (m_key=='d') m_eyeTrg += deltaTime * m_fwdS * m_side*40;
+		if (m_key=='a') m_eyeTrg -= deltaTime * m_fwdS * m_side*40;
+		if (m_key=='r') m_eyeTrg += deltaTime * m_fwdS * m_up*40;
+		if (m_key=='f') m_eyeTrg -= deltaTime * m_fwdS * m_up*40;
+		m_key=255;
+	}
 	m_eye = SpringDamp(m_eye, m_eyeTrg, m_eyeTrgPrev, deltaTime, 2.5F, 0.5F, 1.0F);	
 }
 
