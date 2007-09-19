@@ -194,6 +194,12 @@ bool CameraManager::RemoveCamera(std::string id)
 	return false;
 }
 
+const char *CameraManager::getCurrentCameraInfo()
+{
+	return m_currentCamera->getCameraInfo();
+}
+
+
 int CameraManager::getCurrentCameraIndex()
 {
 	return m_currentCameraIndex;	
@@ -237,9 +243,13 @@ void CameraManager::OnKey(unsigned char key, int x, int y)
 		  changeCurrentCamera(ft_Backward);
 	    break;
 	  case '\\':
+		  {
 		  // TODO change camera Type ( StaticCamera, SpringCamera, FlyCamera, Tracing Camera )
 		  m_currentCamera->ChangeCameraMode();
 		  m_currentCamera->PrintInfo();
+		  //std::string st = "Camera:" m_current
+		  OGLContext::getInstance()->RenderInfo("Hello world");
+		  }
 		break;
 	  case '|':
 		  m_currentCamera->ChangeZoom();

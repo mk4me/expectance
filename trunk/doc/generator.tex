@@ -207,11 +207,12 @@ Wizualizacja obiektów stanowi niezale¿ny mechanizm generatora i poprzez œciœle o
 \end{figure}
 
 
-\textbf{Zasady renderowania obiektów graficznych w systemie}
-1.Ka¿dy obiekt który ma byæ w³¹czony do potoku renderuj¹cego musi implementowaæ interfejs (pokrywa metodê \textit{Render}) obiektu \textit{ft::SceneObject}.
-2. Ka¿dy obiekt, który ma byæ w³¹czony do potoku renderuj¹cego jest musi byæ zarejestrowany przez obiekt \textit{ft::VisualizationManager} przy pomocy metody \textit{ft::VisualizationManager::AddObject} 
-3.Obiekt \textit{ft::VisualizationManager} wywo³uje cyklicznie metodê \textit{ft::VisualizationManager::OnRender}, zsynchronizowan¹ z mechanizmem GLUT, i przetwarza wszystkie zarejestrowane obiekty wywo³uj¹c metodê Render ka¿dego z nich.
-  
+\textbf{Zasady renderowania obiektów graficznych w systemie:}
+\begin{enumerate}
+\item 1.Ka¿dy obiekt który ma byæ w³¹czony do potoku renderuj¹cego musi implementowaæ interfejs (pokrywa metodê \textit{Render}) obiektu \textit{ft::SceneObject}.
+\item 2. Ka¿dy obiekt, który ma byæ w³¹czony do potoku renderuj¹cego jest musi byæ zarejestrowany przez obiekt \textit{ft::VisualizationManager} przy pomocy metody \textit{ft::VisualizationManager::AddObject} 
+\item 3.Obiekt \textit{ft::VisualizationManager} wywo³uje cyklicznie metodê \textit{ft::VisualizationManager::OnRender}, zsynchronizowan¹ z mechanizmem GLUT, i przetwarza wszystkie zarejestrowane obiekty wywo³uj¹c metodê Render ka¿dego z nich.
+\end{enumerate}  
 \subsubsection{ft::SceneObject}
 Podstawowy obiekt graficzny. Realizuje bazowy interfejs obiektu sceny (kolor, po³o¿enie, nazwa obiektu, aktywnoœæ) i udostêpnia interfejs renderowania obiektu - metoda \textit{Render} oraz  \textit{RenderShadow}.
 
@@ -258,10 +259,35 @@ Centralny element zarz¹dzania elementami graficznymi sceny. Realizuje komunikacj
 Tworzy zawartoœæ renderowania (prymitywy graficzne) przy pomocy API OpenGL. Buduje wizualne, trwa³e elementy sceny (pod³oga, logo), korzysta z tekstur obiektu \textit{ft::TextureManager}.
 
 \subsubsection{ft::Camera}
-Obecnie realizuje bardzo prymitywne operacje widoku sceny (przesuwanie sceny, obracanie sceny). Jest obiektem zarz¹dzanym ca³kowicie przez \textit{ft::CameraManager}. 
+Tworzy cztery rodzaje kamer, oraz aktualizuje widok dla aktywnej kamery. Jest obiektem zarz¹dzanym ca³kowicie przez \textit{ft::CameraManager}. 
 
 \subsection{ft::CameraManager}
 Zarz¹dza realcjami pomiêdzy stworzonymi kamerami i obiektami sceny. Tworzy dla dowolnego obiektu sceny kamerê, której identyfikator odpowiada ID przypisanego obiektu sceny. Przetwarza komunikaty z klawiatury i myszy dotycz¹ce aktywnej kamery. Aktualizuje parametry bie¿¹cej kamery oraz widoku dla kontekstu rederowania \textit{ft::VisualizationManager}.  
+\textit{ft::CameraManager} zarz¹dza kolekcj¹ kamer. Do podstawowych operacji nale¿y:
+\begin{enumerate}
+\item Prze³¹czanie bie¿¹cego widoku miêdzy zdefiniowanymi kamerami - klawisze \textbf{[} oraz \textbf{]}
+\item Powiêkszenie obserwowanego fragmentu - klawisz \textbf{|}
+\item Zmiana rodzaju bie¿¹cej kamery - klawisz \textbf{\textbackslash}
+\end{enumerate}
+
+Do prze³¹czania siê pomiêdzy zdefiniowanymi kamerami w systemie s³u¿¹ klawisze \textbf{[} oraz \textbf{]}. Opcja powiêkszenia (zoom) u³atwia obserwacjê szczegó³ów widoku. Zoom w³¹cza siê oraz wy³¹cza za pomoc¹ jednokrotnego wciœciêcia klawisza \textbf{|}. Zmiana rodzaju bie¿¹cej kamery nastêpuje po wciœniêciu klawisza. W systemie zdefiniowano 4 rodzaje kamer:
+\begin{enumerate}
+\item \textit{StaticCamera} - sztywna kamera bez mo¿liwoœci poruszania, pozwala tylko na statyczny widok z okreœlonego miejsca
+\item \textit{SpringCamera} - kamera z pozycji trzeciej osoby. Pod¹¿a za celem i nie mo¿na ni¹ sterowaæ
+\item \textit{FlyCamera} - kamera umo¿liwia przesuwanie widoku manualnie:
+\begin{enumerate}
+\item Do przodu - klawisz \textbf{w}.
+\item Do ty³u - klawisz \textbf{s}.
+\item W lewo - klawisz \textbf{a}.
+\item W prawo - klawisz \textbf{s}.
+\item W górê - klawisz \textbf{r}.
+\item W dó³ - klawisz \textbf{f}.
+\item Obrót o 360 stopni (odchylenie) - wciœniêty lewy klawisz myszy i przesuwanie jej w poziomie.
+\item Obrót w zakresie +-90 stopni w górê i w dó³ od p³aszczyzny bie¿¹cego widoku (nachylenie) - wciœniêty lewy klawisz myszy i przesuwanie jej w pionie.
+\end{enumerate}
+
+\item \textit{TracingCamera} - kamera obraca siê wokó³ punktu celu.
+\end{enumerate}
 
 \subsection{Renderowanie Sprzêtowe}
 Ka¿dy obiekt typu \textit{ft::SceneObject} mo¿e implementowaæ w³asne sprzêtowe renderowanie przy u¿yciu jêzyka assemblera ARB: \textit{ARB vertex program} oraz/lub \textit{ARB fragment program}. Aby zrealizowaæ sprzêtowe renderowanie wybranego obiektu nale¿y:

@@ -201,6 +201,11 @@ const void Camera::PrintInfo() const
 	//	", location = [" << m_position.x <<", " << m_position.y << ", " << m_position.z 
 	//<<"], m_color = [" << m_color.x << ", "<<m_color.y<<", "<< m_color.z <<"] \n";
 }
+const char *Camera::getCameraInfo()
+{
+	std::string _s = "Camera <" + m_id +">: mode [" + CameraModeId[m_cameraMode] +"]";
+	return _s.c_str();
+}
 
 void Camera::ChangeZoom()
 {

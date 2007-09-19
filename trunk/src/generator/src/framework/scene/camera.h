@@ -50,7 +50,10 @@ namespace ft
 		//! change camera mode
 		void ChangeCameraMode();
 		/// \brief Prints general information about values of object properties  
-		const void PrintInfo() const;		
+		const void PrintInfo() const;
+		
+		//! gets Information about Camera
+		const char* getCameraInfo();
 		//! turn on or turn off zoom
 		void ChangeZoom();
 		//! check if zoom is on
