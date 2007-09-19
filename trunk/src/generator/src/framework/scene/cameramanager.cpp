@@ -238,9 +238,11 @@ void CameraManager::OnKey(unsigned char key, int x, int y)
 	{
 	  case ']':
 		  changeCurrentCamera(ft_Forward);
+		  m_currentCamera->PrintInfo();
 	    break;
 	  case '[':
 		  changeCurrentCamera(ft_Backward);
+		  m_currentCamera->PrintInfo();
 	    break;
 	  case '\\':
 		  {
@@ -248,7 +250,6 @@ void CameraManager::OnKey(unsigned char key, int x, int y)
 		  m_currentCamera->ChangeCameraMode();
 		  m_currentCamera->PrintInfo();
 		  //std::string st = "Camera:" m_current
-		  OGLContext::getInstance()->RenderInfo("Hello world");
 		  }
 		break;
 	  case '|':

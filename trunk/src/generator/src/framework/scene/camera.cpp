@@ -90,7 +90,7 @@ void Camera::OnUpdate(const double deltaTime)
 	}
 
 	// Update Distances
-	_cameraDistance += (deltaTime*15) * _cameraSpeed;
+	_cameraDistance += (deltaTime*5) * _cameraSpeed;
     
 	if(_currTrgPos!=_prevTrgPos)
 	{
