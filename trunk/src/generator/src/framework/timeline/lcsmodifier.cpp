@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2007, FutureToday. All rights reserved.
- * author: abak
+ * author: abak, mka
  */
 #include "lcsmodifier.h"
 //#include "cal3d/coreanimation.h"
@@ -60,7 +60,7 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 
     //SET ROTATION ////////////////////
     CalQuaternion currRotatation = bone->getRotation();
-	currRotatation *= timeLineContext->getAvatar()->m_vRotation;
+	currRotatation *= timeLineContext->getAvatar()->getOrientation();
     bone->setRotation(currRotatation);
 
         
@@ -195,7 +195,7 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 
     CalVector diff = currPos - m_vLastPos;
 
-    diff *= timeLineContext->getAvatar()->m_vRotation;
+    diff *= timeLineContext->getAvatar()->getOrientation();
 
     float diff_lenght = diff.length();
 
@@ -220,6 +220,9 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 	
 	//set current parameters lcs to scene object
 	timeLineContext->getAvatar()->setPosition(m_vTranslation);
+	//timeLineContext->getAvatar()->setOrientation(m_vRotation);
+	////Quat _rot = CalQuatToQuat(m_vRotation);
+	////_rot.transformInPlace(
 }
 
 /// \brief Resets parameters of this modifier

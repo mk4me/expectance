@@ -194,7 +194,7 @@ bool CameraManager::RemoveCamera(std::string id)
 	return false;
 }
 
-const char *CameraManager::getCurrentCameraInfo()
+const std::string CameraManager::getCurrentCameraInfo()
 {
 	return m_currentCamera->getCameraInfo();
 }

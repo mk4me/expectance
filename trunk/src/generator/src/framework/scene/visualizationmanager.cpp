@@ -196,8 +196,6 @@ void VisualizationManager::Render2DObjects()
 		//2D context for rendering
 		MenuManager::getInstance()->Render();
 		OGLContext::getInstance()->RenderLogo();
-		OGLContext::getInstance()->RenderInfo(CameraManager::getInstance()->getCurrentCameraInfo());
-
 	}
 
 }

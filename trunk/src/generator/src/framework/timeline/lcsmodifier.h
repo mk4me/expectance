@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2007, FutureToday. All rights reserved.
- * author: abak
+ * author: abak, mka
  */
 
 #ifndef _GEN_LCS_MODIFIER_H

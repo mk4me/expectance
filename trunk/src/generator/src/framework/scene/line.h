@@ -24,24 +24,24 @@ namespace ft {
 		/// \brief create line given by id and set if arrow is visible
 		Line(const std::string& id, bool arrow);
 		/// \brief create line given by start, end and label
-		Line(const FTVect& start, const FTVect& end, const std::string& name);
+		Line(const CalVector& start, const CalVector& end, const std::string& name);
 		/// \brief create line given by position, orientation, length and label
-		Line(const FTVect& position, const FTVect& orientation, float length, const std::string& name);
+		Line(const CalVector& position, const Quat& orientation, float length, const std::string& name);
 		virtual ~Line(void);
 		//! render line
 		virtual bool Render();
 		//! set the value of line length
 		Line& setLenght(const float lenght);
 		//! set the value of line start point
-		Line& setStart(const FTVect &start);
+		Line& setStart(const CalVector &start);
 		//! set the value of line end point
-		Line& setEnd(const FTVect &end);
+		Line& setEnd(const CalVector &end);
 		//! set Arrow visible or not
 		Line& setArrow(const bool arrow);
 
 	private:
-		FTVect m_start;
-		FTVect m_end;
+		CalVector m_start;
+		CalVector m_end;
 		float m_lenght;
 		bool m_arrow;
 	};

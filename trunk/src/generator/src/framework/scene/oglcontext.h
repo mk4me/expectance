@@ -76,8 +76,6 @@ namespace ft
 		void RenderScene();
 		/// \brief Renders FT logo 
 		void RenderLogo();
-		/// \brief Render Information message
-		void RenderInfo(const char *text);
 		/// \brief Calculates projection matrix for shadow effect with customized parameters
 		void GlShadowProjection(float * l, float * e, float * n);
 		//! calculate projecton matrix for shadow effect with default parameters

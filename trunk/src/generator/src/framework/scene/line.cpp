@@ -13,21 +13,26 @@ Line::Line(const std::string& name):m_arrow(false)
 	
 }
 
-Line::Line(const FTVect& position, const FTVect& orientation, float lenght, const std::string& name):m_arrow(false)
+Line::Line(const CalVector& position, const Quat& orientation, float lenght, const std::string& name):m_arrow(false)
 {
-	FTVect tmpv = orientation;
-	tmpv.normalize();
-	tmpv = (m_start + tmpv*lenght);
+	// axis angle unit vector + angle
+	//1. unit vector*lenght
+	//orientation.normalise(); //is it necessary???
+	float _angle;
+	Vec _axis;
+	orientation.getAngleAxis(_angle,_axis);
+	_axis.normalize(); //is it necessary???
+	m_end = (m_start + VecToCalVec(_axis*lenght));
 
-	setLenght(lenght).setStart(position).setEnd(tmpv);
-	setPosition(position).setOrientation(orientation);
+	setLenght(lenght).setStart(position);
+	setPosition(position).setOrientation( QuatToCalQuat(orientation) );
 	setName(name);
 	
 
 	//Line(position, tmpv, name); 
 }
 
-Line::Line(const FTVect& start, const FTVect& end, const std::string& name):m_arrow(false)
+Line::Line(const CalVector& start, const CalVector& end, const std::string& name):m_arrow(false)
 {
 	m_start = start;
 	m_end = end;
@@ -61,7 +66,7 @@ bool Line::Render()
 		{
 			GLUquadricObj* pQuadric = gluNewQuadric();
 
-			FTVect v = m_end-m_start;
+			CalVector v = m_end-m_start;
 			float height = v.normalize();
 			float angle = 0.0f;
 			if(sqrt(v.x*v.x+v.y*v.y) > 1)
@@ -72,7 +77,7 @@ bool Line::Render()
 				angle = 180.0f-angle;
 
            // the rotation vector
-           FTVect rot(v.y,-v.x,0.0f);
+           CalVector rot(v.y,-v.x,0.0f);
 
 			GLdouble radius = 5;
 			// the arrow (cone)
@@ -92,13 +97,13 @@ bool Line::Render()
 	return true;
 }
 
-Line& Line::setStart(const FTVect& start)
+Line& Line::setStart(const CalVector& start)
 {
 	m_start = start;
 	return *this;
 }
 
-Line& Line::setEnd(const FTVect& end)
+Line& Line::setEnd(const CalVector& end)
 {
 	m_end = end;
 	return *this;

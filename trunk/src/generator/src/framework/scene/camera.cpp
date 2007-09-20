@@ -42,7 +42,7 @@ void Camera::Init(float pitch, float yaw, float roll, float dist, float leftRigh
 	//m_camLeftRight = leftRight;
 	//m_camUpDown = upDown;
 
-	m_cameraMode = ft_StaticCamera;
+	m_cameraMode = ft_FlyCamera;
 	m_zoom = 0;
 	m_camPos.set(_x, _y, _z);
 	m_camUp.set(0.0, 1.0, 0.0);
@@ -150,6 +150,9 @@ void Camera::OnUpdate(const double deltaTime)
 	// *** Set Proper View Matrix
 	switch (m_cameraMode) {
 		case ft_StaticCamera:
+		if (m_scObj!=NULL) 
+			m_viewMtx = LookAtMatrix44(m_camPos, _currTrgPos, m_camUp);
+		else
 			m_viewMtx = LookAtMatrix44(m_camPos, m_camAt, m_camUp);
 		break;
 		case ft_FlyCamera:
@@ -201,10 +204,10 @@ const void Camera::PrintInfo() const
 	//	", location = [" << m_position.x <<", " << m_position.y << ", " << m_position.z 
 	//<<"], m_color = [" << m_color.x << ", "<<m_color.y<<", "<< m_color.z <<"] \n";
 }
-const char *Camera::getCameraInfo()
+const std::string Camera::getCameraInfo()
 {
 	std::string _s = "Camera <" + m_id +">: mode [" + CameraModeId[m_cameraMode] +"]";
-	return _s.c_str();
+	return _s;
 }
 
 void Camera::ChangeZoom()

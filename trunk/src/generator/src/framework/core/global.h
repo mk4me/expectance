@@ -28,13 +28,6 @@ static const std::string FT_SHADERPATH = "data\\shaders\\";
 static const std::string FT_TEXTUREPATH = "data\\textures\\";
 static const std::string FT_MODELPATH = "data\\cally\\";
 
-typedef CalVector FTVect;
-
-struct FTColor {
-byte r,g,b;
-};
-
-
 #endif
 
 

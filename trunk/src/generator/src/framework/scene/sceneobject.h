@@ -29,17 +29,20 @@ namespace ft
 		virtual bool RenderShadow();
 		
 		/// \brief Sets object position by 3D vector
-		SceneObject& setPosition(const FTVect &position);
-		/// \brief Sets object orientation by 3D vector 
-		SceneObject& setOrientation(const FTVect &orientation);
+		SceneObject& setPosition(const CalVector &position);
+		/// \brief Sets object orientation by quaternion 
+		SceneObject& setOrientation(const CalQuaternion &orientation);
 		/// \brief Sets object color by vector of RGB values 
-		SceneObject& setColor(const FTVect &color);
+		SceneObject& setColor(const CalVector &color);
 		//! get the value of object position 
-		const FTVect& getPosition() const;
-		//! get the value of object orientation
-		const FTVect& getOrientation() const;
+		const CalVector& getPosition() const;
+		//! get the value of object orientation by 3D vector 
+		//const CalVector& getOrientation() const;
+		////! get the value of object orientation by quaternion
+		const CalQuaternion& getOrientation() const;
+
 		//! get the value of object color
-		const FTVect& getColor() const;
+		const CalVector& getColor() const;
 		//! show object
 		void Show();
 		//! hide object
@@ -49,11 +52,12 @@ namespace ft
 		const bool isVisible() const;
 		/// \brief Prints general information about values of object properties  
 		const void PrintInfo(void) const;
-		CalQuaternion m_vRotation; //tmp
+
 	protected:
 		bool m_visible;
-		FTVect m_position, m_orientation;
-		FTVect m_color;
+		CalVector m_position, m_orient;
+		CalQuaternion m_orientation;
+		CalVector m_color;
 		float m_alpha;
 	};
 };

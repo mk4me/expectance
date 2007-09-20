@@ -150,7 +150,10 @@ void ControlAvatar::OnMessage(Message* msg)
         {
 //            cout << "MovableAvatar : turn left " << std::endl;
             Quat addRot = Quat(degToRad(-3.0f), Vec(0,1,0));
-            m_vRotation *= QuatToCalQuat(addRot);
+			CalQuaternion rot = getOrientation();
+			rot*= QuatToCalQuat(addRot);
+			setOrientation(rot);
+            //m_vRotation *= QuatToCalQuat(addRot);
         }
     }
     else if (msg->getType() == MSG_CONTROL_TURN_RIGHT)
@@ -159,7 +162,10 @@ void ControlAvatar::OnMessage(Message* msg)
         {
 //            cout << "MovableAvatar : turn left " << std::endl;
             Quat addRot = Quat(degToRad(3.0f), Vec(0,1,0));
-            m_vRotation *= QuatToCalQuat(addRot);
+			CalQuaternion rot = getOrientation();
+			rot*= QuatToCalQuat(addRot);
+			setOrientation(rot);
+            //m_vRotation *= QuatToCalQuat(addRot);
         }
     }
  }

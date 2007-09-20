@@ -10,7 +10,7 @@ using namespace ft;
 TraceLine::TraceLine(const std::string& name)
 {
 	setName(name);
-	setColor(FTVect(1,1,1));
+	setColor(CalVector(1,1,1));
 	m_colorMix = false;
 	m_marker = true;
 }
@@ -21,8 +21,8 @@ bool TraceLine::Render()
 	{
 		for (unsigned int i = 1; i < m_traces.size(); i++)
 		{
-			FTVect p1 = static_cast<FTVect>(m_traces[i-1]);
-			FTVect p2 = static_cast<FTVect>(m_traces[i]);
+			CalVector p1 = static_cast<CalVector>(m_traces[i-1]);
+			CalVector p2 = static_cast<CalVector>(m_traces[i]);
 			
 			
 			glPushMatrix();
@@ -75,7 +75,7 @@ bool TraceLine::Render()
 }
 
 
-void TraceLine::AddPoint(const FTVect& point)
+void TraceLine::AddPoint(const CalVector& point)
 {
 	m_traces.push_back(point);
 }

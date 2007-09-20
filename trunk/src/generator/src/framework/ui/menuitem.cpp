@@ -14,7 +14,7 @@ MenuItem::MenuItem(const std::string& name, int x, int y)
 
 MenuItem::MenuItem(int x, int y)
 {
-	setPosition(FTVect(x,y,0)); // or setPosition2D
+	setPosition(CalVector(x,y,0)); // or setPosition2D
 	m_width = 32;
 	m_height = 32;
 }

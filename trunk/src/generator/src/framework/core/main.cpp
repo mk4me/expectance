@@ -140,22 +140,22 @@ int main(int argc, char *argv[])
 /*-------------------------------------------- some examples of markers use -------------------------------------*/
 //	Line *ln, *ln1, *ln2, *ln3;
 //	ln  = new Line("Linia0"); 
-//	ln1 = new Line(FTVect(100,100,100), FTVect(30,40,10), "Linia I");
-//	ln1->setStart(FTVect(0,0,0)).setEnd(FTVect(100,200,200)).setColor(FTVect(1,0,0));
+//	ln1 = new Line(CalVector(100,100,100), CalVector(30,40,10), "Linia I");
+//	ln1->setStart(CalVector(0,0,0)).setEnd(CalVector(100,200,200)).setColor(CalVector(1,0,0));
 //	
 //	TraceLine *tn;
 //	tn = new TraceLine("TL1");
-//    tn->AddPoint(FTVect(0,0,0));
-//    tn->AddPoint(FTVect(10,80,10));
-//    tn->AddPoint(FTVect(100,200,100));
-//    tn->AddPoint(FTVect(100,400,100));
+//    tn->AddPoint(CalVector(0,0,0));
+//    tn->AddPoint(CalVector(10,80,10));
+//    tn->AddPoint(CalVector(100,200,100));
+//    tn->AddPoint(CalVector(100,400,100));
 //	//tn->HideMarker();
 //	//tn->ClearTrace();
 //	ft::VisualizationManager::getInstance()->AddObject(tn);
 //
 //	ft::VisualizationManager::getInstance()->AddObject(ln);
 //	ft::VisualizationManager::getInstance()->AddObject(ln1);
-//    ln2 = new Line(FTVect(100,100,100), FTVect(30,40,10), 100, "LiniaII");
+//    ln2 = new Line(CalVector(100,100,100), CalVector(30,40,10), 100, "LiniaII");
 //
 //
 //	ft::VisualizationManager::getInstance()->AddObject(ln2);
@@ -163,14 +163,14 @@ int main(int argc, char *argv[])
 //    ln3 = new Line("LiniaIII");
 //	ft::VisualizationManager::getInstance()->AddObject(ln3);
 //	
-//	ln1->setColor(FTVect(1,1,0));
-//	ln->setStart(FTVect(100,0,0)).setEnd(FTVect(400,0,0)).setColor(FTVect(0,0,1));
+//	ln1->setColor(CalVector(1,1,0));
+//	ln->setStart(CalVector(100,0,0)).setEnd(CalVector(400,0,0)).setColor(CalVector(0,0,1));
 ////	ln2 = dynamic_cast<Line*>(VisualizationManager::getInstance()->getObject("LiniaII"));
-//	ln2->setColor(FTVect(0,1,0));
+//	ln2->setColor(CalVector(0,1,0));
 ////	ln3 = dynamic_cast<Line*>(VisualizationManager::getInstance()->getObject("LiniaIII"));
-//	ln3->setStart(FTVect(0,100,0)).setEnd(FTVect(200,100,0)).setColor(FTVect(1,1,0));
+//	ln3->setStart(CalVector(0,100,0)).setEnd(CalVector(200,100,0)).setColor(CalVector(1,1,0));
 //	ln1->Hide();
-//	ln1->setColor(FTVect(0,1,1));
+//	ln1->setColor(CalVector(0,1,1));
 //	ln1->Show();
 //	ln1->setArrow(true);
 /*-------------------------------------------- some examples of markers use finish -------------------------------------*/

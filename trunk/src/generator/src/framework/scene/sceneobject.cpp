@@ -9,11 +9,10 @@ using namespace ft;
 SceneObject::SceneObject(void)
 {
 	m_position.set(0,0,0);
-	m_orientation.set(0,0,1);
+	m_orientation = QuatToCalQuat( Quat(degToRad(0.0f), Vec(0,1,0)) ); //accordig to positive Z axis (zero angle)
 	m_color.set(1.0,1.0,1.0); //white
 	m_alpha = 1;
 	m_visible = true;
-	m_vRotation = QuatToCalQuat(Quat(degToRad(0.0f), Vec(0,1,0))); // according to Z axis
 }
 
 bool SceneObject::Render()
@@ -27,36 +26,37 @@ bool SceneObject::RenderShadow()
 }
 
 
-SceneObject& SceneObject::setPosition(const FTVect& pos)
+SceneObject& SceneObject::setPosition(const CalVector& pos)
 {
 	m_position = pos;
 	return *this;
 }
 
 
-SceneObject& SceneObject::setOrientation(const FTVect& orientation)
+
+SceneObject& SceneObject::setOrientation(const CalQuaternion &orientation)
 {
 	m_orientation = orientation;
 	return *this;
 }
 
-SceneObject& SceneObject::setColor(const FTVect& col)
+SceneObject& SceneObject::setColor(const CalVector& col)
 {
 	m_color = col;
 	return *this;
 }
 
-const FTVect& SceneObject::getPosition() const
+const CalVector& SceneObject::getPosition() const
 {
 	return m_position;
 }
 
-const FTVect& SceneObject::getOrientation() const
+const CalQuaternion& SceneObject::getOrientation() const
 {
 	return m_orientation;
 }
 
-const FTVect& SceneObject::getColor() const
+const CalVector& SceneObject::getColor() const
 {
 	return m_color;
 }

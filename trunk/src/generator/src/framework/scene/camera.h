@@ -53,7 +53,7 @@ namespace ft
 		const void PrintInfo() const;
 		
 		//! gets Information about Camera
-		const char* getCameraInfo();
+		const std::string getCameraInfo();
 		//! turn on or turn off zoom
 		void ChangeZoom();
 		//! check if zoom is on

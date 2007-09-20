@@ -63,7 +63,7 @@ namespace ft
 		const bool IsZoom() { return m_currentCamera->IsZoom();};
 		
 		//! get Information about current Camera
-		const char* getCurrentCameraInfo();
+		const std::string getCurrentCameraInfo();
 		
 		/// \brief Handles a key event
         void OnKey(unsigned char key, int x, int y);

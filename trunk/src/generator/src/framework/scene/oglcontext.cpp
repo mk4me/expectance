@@ -480,39 +480,39 @@ void OGLContext::GlShadowProjection()
 	GlShadowProjection(lightPosition,point,normal);
 }
 
-void OGLContext::RenderInfo(const char *text)
-{
-	int _x,_y;
-	_x = getWidth() / 2;
-	_y = getHeight() / 2;
-	static float _alpha = 0.0f;
-	static float _p = 0.0f;
-	glPushMatrix();
-		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_BLEND);
-		glTranslatef(-_x,-_y,0);
-		
-		if ((_alpha < 1)&&(_p<1)) _alpha+=0.001f;
-		else if (_alpha == 1) 
-		{
-			_p+=0.001f;
-			if(_p == 1)
-			{
-				_alpha+=0.1f;
-			}
-		}
-		else if ((_alpha > 1.0f)&&(_p==1)) _alpha-=0.001f;
-
-		//get apropriate text
-		glEnable(GL_LINE_SMOOTH);
-			glColor4f(1.0f,0.0f,0.0f,_alpha);
-			OGLContext::getInstance()->OGLWriteBitmap(5,5, _y-50, text);
-		glDisable(GL_LINE_SMOOTH);
-
-		glDisable(GL_BLEND);
-	glPopMatrix();
-
-}
+//void OGLContext::RenderInfo(const char *text)
+//{
+//	int _x,_y;
+//	_x = getWidth() / 2;
+//	_y = getHeight() / 2;
+//	static float _alpha = 0.0f;
+//	static float _p = 0.0f;
+//	glPushMatrix();
+//		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+//		glEnable(GL_BLEND);
+//		glTranslatef(-_x,-_y,0);
+//		
+//		if ((_alpha < 1)&&(_p<1)) _alpha+=0.001f;
+//		else if (_alpha == 1) 
+//		{
+//			_p+=0.001f;
+//			if(_p == 1)
+//			{
+//				_alpha+=0.1f;
+//			}
+//		}
+//		else if ((_alpha > 1.0f)&&(_p==1)) _alpha-=0.001f;
+//
+//		//get apropriate text
+//		glEnable(GL_LINE_SMOOTH);
+//			glColor4f(1.0f,0.0f,0.0f,_alpha);
+//			OGLContext::getInstance()->OGLWriteBitmap(5,5, _y-50, text);
+//		glDisable(GL_LINE_SMOOTH);
+//
+//		glDisable(GL_BLEND);
+//	glPopMatrix();
+//
+////} TODO MKA DELETE IT - now for alpha timing purpose.
 
 void OGLContext::OGLWriteBitmap(int font, int x, int y, const char *text)
 {

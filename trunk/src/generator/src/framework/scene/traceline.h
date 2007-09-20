@@ -26,7 +26,7 @@ namespace ft {
 		/*! \brief Renders line with point at the end of it */
 		virtual bool Render();
 		/*! \brief Adds new point to the collection for rendering*/
-		void AddPoint(const FTVect& point);
+		void AddPoint(const CalVector& point);
 		//! clear collection of existing points
 	    void ClearTrace();
 		//! set multicolor mode (true)
@@ -36,7 +36,7 @@ namespace ft {
 		//! set marker invisible
 		void HideMarker();
 	protected:
-		std::vector <FTVect> m_traces;
+		std::vector <CalVector> m_traces;
 		bool m_colorMix;
 		bool m_marker;
 	};
