@@ -35,12 +35,6 @@ void Camera::Init(float pitch, float yaw, float roll, float dist, float leftRigh
 	_x = sinf(DegToRad(yaw))*dist;
 	_y = sinf(DegToRad(pitch))*dist;
 	_z = cosf(DegToRad(yaw))*dist;
-	//m_pitchAngle = pitch;
-	//m_yawAngle = yaw;
-	//m_rollAngle = roll;
-	//m_distance = dist;
-	//m_camLeftRight = leftRight;
-	//m_camUpDown = upDown;
 
 	m_cameraMode = ft_FlyCamera;
 	m_zoom = 0;
@@ -49,9 +43,8 @@ void Camera::Init(float pitch, float yaw, float roll, float dist, float leftRigh
 	m_camAt.set(0.0, 0.0, 0.0);
 	m_viewMtx = LookAtMatrix44(m_camPos, m_camAt, m_camUp);
 
-
 	DefineFlyCam( m_camPos, DegToRad(yaw), DegToRad(pitch), DegToRad(roll) );
-	//m_viewMtx = getFlyCameraViewMatrix();
+	m_viewMtx = getFlyCameraViewMatrix();
 
 	//tmp
 	cameraSpline = new Spline("data\\spline\\curve.sdf");
@@ -60,10 +53,86 @@ void Camera::Init(float pitch, float yaw, float roll, float dist, float leftRigh
 
 void Camera::UpdateView()
 {
-	//glTranslatef(0.0f, m_camUpDown, -m_distance);
-	//glRotatef(m_pitchAngle, 1.0f, 0.0f, 0.0f);
-	//glRotatef(m_yawAngle, 0.0f, 1.0f, 0.0f);
+
 	glLoadMatrixf((float *)&m_viewMtx);
+
+}
+
+void  Camera::Render()
+{
+	static float _tempAng = 0;
+	float _alpha;
+
+	if (m_scObj!=NULL) //update translation from sceneobject
+	{
+		_alpha = cos(_tempAng += 0.05F);
+
+		// draw grid for indicating camera target
+		static vector3 _pos(0.0,0.0,0.0); //default position definition
+		_pos = CalVecToVector3(m_scObj->getPosition());
+		_pos.y = 0;
+		int _sc=30, _st=15;
+		vector3 _p1 = _pos+vector3(_sc,0,_sc), _p2 = _pos+vector3(_sc,0,-_sc),_p3= _pos+vector3(-_sc,0,-_sc),_p4=_pos+vector3(-_sc,0,_sc);
+		glPushMatrix();
+			glDisable(GL_CULL_FACE);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_BLEND);
+			glLineWidth(2.0f);
+			glColor4d(1.0,0.5, 0.0, _alpha);
+			glBegin(GL_LINES);
+				glVertex3f(_p1.x-_st, _p1.y, _p1.z); 
+				glVertex3f(_p1.x, _p1.y, _p1.z); 
+				glVertex3f(_p1.x, _p1.y, _p1.z-_st); 
+				glVertex3f(_p1.x, _p1.y, _p1.z); 
+			glEnd();
+			glBegin(GL_LINES);
+				glVertex3f(_p2.x, _p2.y, _p2.z+_st); 
+				glVertex3f(_p2.x, _p2.y, _p2.z); 
+				glVertex3f(_p2.x-_st, _p2.y, _p2.z); 
+				glVertex3f(_p2.x, _p2.y, _p2.z); 
+			glEnd();
+			glBegin(GL_LINES);
+				glVertex3f(_p3.x+_st, _p3.y, _p3.z); 
+				glVertex3f(_p3.x, _p3.y, _p3.z); 
+				glVertex3f(_p3.x, _p3.y, _p3.z+_st); 
+				glVertex3f(_p3.x, _p3.y, _p3.z); 
+			glEnd();
+			glBegin(GL_LINES);
+				glVertex3f(_p4.x, _p4.y, _p4.z-_st); 
+				glVertex3f(_p4.x, _p4.y, _p4.z); 
+				glVertex3f(_p4.x+_st, _p4.y, _p4.z); 
+				glVertex3f(_p4.x, _p4.y, _p4.z); 
+			glEnd();
+			////glBegin(GL_QUADS);
+			////	glNormal3f( 0.0f, 1.0f, 0.0f );
+			////	glVertex3f(_pos.x+10, _pos.y+18, _pos.z); //0(0)
+			////	glVertex3f(_pos.x, _pos.y+18, _pos.z-10); //1(2)
+			////	glVertex3f(_pos.x-10, _pos.y+18, _pos.z); //2(4)
+			////	glVertex3f(_pos.x, _pos.y+18, _pos.z+10); //3(6)
+			////glEnd();
+			////glBegin(GL_QUADS);
+			////	glNormal3f( 0.0f, 1.0f, 0.0f );
+			////	glVertex3f(_pos.x+30, _pos.y+17, _pos.z); //4(1)
+			////	glVertex3f(_pos.x, _pos.y+17, _pos.z-30); //5(3)
+			////	glVertex3f(_pos.x-30, _pos.y+17, _pos.z); //6(5)
+			////	glVertex3f(_pos.x, _pos.y+17, _pos.z+30); //7(7)
+			////glEnd();
+			////glBegin(GL_QUAD_STRIP);
+			////	glNormal3f( 0.0f, 1.0f, 0.0f );
+			////	glVertex3f(_pos.x+10, _pos.y+18, _pos.z); //0(0)
+			////	glVertex3f(_pos.x+30, _pos.y+17, _pos.z); //4(1)
+			////	glVertex3f(_pos.x, _pos.y+18, _pos.z-10); //1(2)
+			////	glVertex3f(_pos.x, _pos.y+17, _pos.z-30); //5(3)
+			////	glVertex3f(_pos.x-10, _pos.y+18, _pos.z); //2(4)
+			////	glVertex3f(_pos.x-30, _pos.y+17, _pos.z); //6(5)
+			////	glVertex3f(_pos.x, _pos.y+18, _pos.z+10); //3(6)
+			////	glVertex3f(_pos.x, _pos.y+17, _pos.z+30); //7(7)
+			////glEnd();
+			glLineWidth(1.0f);
+			glDisable(GL_BLEND);
+			glEnable(GL_CULL_FACE);
+		glPopMatrix();
+	}
 }
 
 void Camera::OnUpdate(const double deltaTime)
@@ -99,51 +168,13 @@ void Camera::OnUpdate(const double deltaTime)
 	}
 
 
-	if (first_time) {
-	//	// Ranomly Initialize Splines
-	//	//for(int i = 0; i < 4; i++) {
-	//	//	cameraSpline->RAND_FUNC_CAMERA(cameraSpline->controlData[i].pos);
-	//	//	//RAND_FUNC_TARGET(targetSpline.controlData[i].pos);
-	//	//}
-		cameraSpline->Build();
-	//	//targetSpline.Build();
-	}
-
 	// *** Update Spring Cmamera
-
-	//currTrgPos = targetObjP->position + (-40.0F * targetSpline.curveData[index].tan);
-	//springCameraObjP->position = 
-	//	SpringDamp(springCameraObjP->position, currTrgPos, prevTrgPos, 
-	//		deltaSecs, springConstants[springMode], 0.25F, 1.0F);
-	//// Initialization
-	//if (first_time) springCameraObjP->position = currTrgPos;
+	_springViewMtx = LookAtMatrix44(_currTrgPos + vector3(0.0, 100.0, 400.0), _currTrgPos , vector3(0.0, 1.0, 0.0));
 	
-	_springViewMtx = LookAtMatrix44(_currTrgPos + vector3(0.0, 20.0, 400.0),
-		_currTrgPos , //(-10.0F * targetSpline.curveData[index].tan),
-		vector3(0.0, 1.0, 0.0));
-	
-	//springCameraObjP->orientation = LookAtMatrix44(vector3(0.0, 0.0, 0.0),
-	//	(targetObjP->position + (-10.0F * targetSpline.curveData[index].tan)
-	//		- springCameraObjP->position).normalize(),
-	//	vector3(0.0, 1.0, 0.0)).invert();
-	//springCameraObjP->normalMtx = InvertMatrix44(springCameraObjP->orientation);
-
-
 
 	// *** Update Spline Camera
 	_index = cameraSpline->GET_SPLINE_INDEX(cameraSpline, &_cameraDistance); 
-	_splineViewMtx = LookAtMatrix44(cameraSpline->curveData[_index].pos+_currTrgPos,
-		//targetObjP->position, 
-		_currTrgPos,
-		//vector3(0.0, 0.0, 0.0),
-		vector3(0.0, 1.0, 0.0));
-
-//	splineCameraObjP->orientation = LookAtMatrix44(vector3(0.0, 0.0, 0.0),
-		//(targetObjP->position - splineCameraObjP->position).normalize(),
-//		(vector3(0.0, 2.0, 0.0) - splineCameraObjP->position).normalize(),
-//		vector3(0.0, 1.0, 0.0)).invert();
-//	splineCameraObjP->normalMtx = InvertMatrix44(splineCameraObjP->orientation);
-
+	_splineViewMtx = LookAtMatrix44(cameraSpline->curveData[_index].pos+_currTrgPos, _currTrgPos, vector3(0.0, 1.0, 0.0));
 
 	// for testing purposes std::cout << deltaTime <<" elapsed time \n";
 

@@ -61,10 +61,13 @@ namespace ft
 		bool RemoveCamera(std::string id);
 		//! check if zoom is on
 		const bool IsZoom() { return m_currentCamera->IsZoom();};
+
 		
 		//! get Information about current Camera
 		const std::string getCurrentCameraInfo();
-		
+		//! draw/show current camera position
+		const void RenderCurrentCamera();
+
 		/// \brief Handles a key event
         void OnKey(unsigned char key, int x, int y);
 		/// \brief Handles special keys (F1, F2, UP, DOWN, etc.)

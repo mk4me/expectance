@@ -68,10 +68,10 @@ bool VisualizationManager::InitSceneObjects()
 	if (!OGLContext::getInstance()->InitLogoDL()) return false;
 
 	//init 4 scene cameras
-	CameraManager::getInstance()->AddCamera("frontLeft",20,45,0.0,1000);
-	CameraManager::getInstance()->AddCamera("backLeft",20,135,0.0,1000);
-	CameraManager::getInstance()->AddCamera("backRight",20,225,0.0,1000);
-	CameraManager::getInstance()->AddCamera("frontRight",20,315,0.0,1000);
+	//CameraManager::getInstance()->AddCamera("frontLeft",20,45,0.0,1000);
+	//CameraManager::getInstance()->AddCamera("backLeft",20,135,0.0,1000);
+	//CameraManager::getInstance()->AddCamera("backRight",20,225,0.0,1000);
+	//CameraManager::getInstance()->AddCamera("frontRight",20,315,0.0,1000);
 
 	return true;
 }
@@ -80,9 +80,11 @@ bool VisualizationManager::InitSceneObjects()
 void VisualizationManager::OnRender()
 {
 	OGLContext::getInstance()->setPerspective( CameraManager::getInstance()->IsZoom() ); 
-	//camera.update(); <-przekaz tu deltatime z UpdateManagera
 	CameraManager::getInstance()->UpdateView(); //update current camera View
 	OGLContext::getInstance()->RenderScene(); //camera.lookAt(); TODO
+	CameraManager::getInstance()->RenderCurrentCamera(); //show camera position
+
+
 	Render3DObjects();
 	Render2DObjects();
 	// swap the front- and back-buffer

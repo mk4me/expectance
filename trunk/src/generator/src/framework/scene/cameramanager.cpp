@@ -198,6 +198,10 @@ const std::string CameraManager::getCurrentCameraInfo()
 {
 	return m_currentCamera->getCameraInfo();
 }
+const void CameraManager::RenderCurrentCamera()
+{
+	m_currentCamera->Render();
+}
 
 
 int CameraManager::getCurrentCameraIndex()
