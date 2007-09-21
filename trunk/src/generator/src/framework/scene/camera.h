@@ -38,7 +38,7 @@ namespace ft
 		const std::string& getID() const;
 
 		/// \brief Initializes basic camera parameters
-	    void Init(float pitch=20.0f, float yaw=0.0f, float roll=0.0f, float dist=800.0f, float leftRight=0.0f, float upDown=0.0f);
+	    void Init(float pitch=20.0f, float yaw=0.0f, float roll=0.0f, float dist=1000.0f, float leftRight=0.0f, float upDown=0.0f);
 		//! calculate and set Viewport for current camera settings
 		void UpdateView();
 		//! draw current target

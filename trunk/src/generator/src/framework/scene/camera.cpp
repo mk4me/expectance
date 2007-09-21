@@ -61,9 +61,9 @@ void Camera::UpdateView()
 void  Camera::Render()
 {
 	static float _tempAng = -1.57079633f;
-	float _alpha;
+	float _alpha, _r;
 
-	if (m_scObj!=NULL) //update translation from sceneobject
+	if ( (m_scObj!=NULL) || (m_id=="mainCamera") ) //update translation from sceneobject
 	{
 		if (_tempAng <= 1.57079633f)
 			_tempAng += 0.02f;
@@ -73,16 +73,27 @@ void  Camera::Render()
 		_alpha = cos(_tempAng);
 		// draw grid for indicating camera target
 		static vector3 _pos(0.0,0.0,0.0); //default position definition
-		_pos = CalVecToVector3(m_scObj->getPosition());
+		int _sc=40, _st=10;
+		if (m_id == "mainCamera")
+		{
+			_sc = 1280; _st = 1280;
+			_pos.set(0.0,0.0,0.0);
+			_r=0.6f;
+		} 
+		else
+		{
+			_pos = CalVecToVector3(m_scObj->getPosition());
+			_r=0.7f;
+		}
+		
 		_pos.y = 0;
-		int _sc=40, _st=5;
 		vector3 _p1 = _pos+vector3(_sc,0,_sc), _p2 = _pos+vector3(_sc,0,-_sc),_p3= _pos+vector3(-_sc,0,-_sc),_p4=_pos+vector3(-_sc,0,_sc);
 		glPushMatrix();
 			glDisable(GL_CULL_FACE);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glEnable(GL_BLEND);
-			glLineWidth(2.0f);
-			glColor4d(1.0,0.5, 0.0, _alpha);
+			glLineWidth(1.0f);
+			glColor4d(_r,_r/2, 0.0, _alpha);
 			glBegin(GL_LINES);
 				glVertex3f(_p1.x-_st, _p1.y, _p1.z); 
 				glVertex3f(_p1.x, _p1.y, _p1.z); 
