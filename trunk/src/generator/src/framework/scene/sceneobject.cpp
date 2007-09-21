@@ -9,10 +9,13 @@ using namespace ft;
 SceneObject::SceneObject(void)
 {
 	m_position.set(0,0,0);
-	m_orientation = QuatToCalQuat( Quat(degToRad(0.0f), Vec(0,1,0)) ); //accordig to positive Z axis (zero angle)
+	m_direction.set(0,0,1); // each scene object start direction according to positive Z axis (zero angle)
+	m_orientation = QuatToCalQuat( Quat(degToRad(0.0f), Vec(0,1,0)) ); //global orientation (zero angle around Y axis for initial global rotation)
 	m_color.set(1.0,1.0,1.0); //white
 	m_alpha = 1;
 	m_visible = true;
+	m_stepOrientation = QuatToCalQuat(Quat(degToRad(0.0f), Vec(0,1,0))); // (zero angle around Y axis step rotation)
+
 }
 
 bool SceneObject::Render()
@@ -40,6 +43,12 @@ SceneObject& SceneObject::setOrientation(const CalQuaternion &orientation)
 	return *this;
 }
 
+SceneObject& SceneObject::setDirection(const CalVector &direction)
+{
+	m_direction = direction;
+	return *this;
+}
+
 SceneObject& SceneObject::setColor(const CalVector& col)
 {
 	m_color = col;
@@ -54,6 +63,11 @@ const CalVector& SceneObject::getPosition() const
 const CalQuaternion& SceneObject::getOrientation() const
 {
 	return m_orientation;
+}
+
+const CalVector& SceneObject::getDirection() const
+{
+	return m_direction;
 }
 
 const CalVector& SceneObject::getColor() const
