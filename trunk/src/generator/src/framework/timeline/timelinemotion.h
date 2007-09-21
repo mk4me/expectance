@@ -77,6 +77,9 @@ namespace ft
 
         void Dump(int depth);   //OVERRIDEN
         std::string toString(); //OVERRIDEN
+
+        std::vector<TimeLineModifier*> m_vModifiers;
+
     protected:
 //        void RemoveExecutedMotions();
 
@@ -95,8 +98,6 @@ namespace ft
         bool m_isAnimToFinish;  //marker if this motion should be finished as soobn as possible
 
         bool m_isTerminated;
-
-        std::vector<TimeLineModifier*> m_vModifiers;
 
         void ResetParams();
         bool IsBlendingToStart(TimeLineMotion* currMotion, TimeLineMotion* nextMotion, TimeLineContext* timeLineContext);

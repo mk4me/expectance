@@ -18,6 +18,8 @@ LCSModifier::LCSModifier()
 
     TRACE = false;
     LOCAL_DEBUG = false;
+    INTERPOLATION = true;
+    REST_TRANS_CALC = true;
 
     if (TRACE)
     {
@@ -66,156 +68,140 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
         
     //SET TRANSLATION //////////////////////
     CalVector currPos;
-    int currAnimID_from_context = timeLineContext->getCurrAnimID();
-//    float currAnimTime = timeLineContext->getCurrAnimTime();
+    CalVector restTrans(0,0,0); // used in case of changing animation or new cycle in loop anim
+    CalVector vPrevPos(0,0,0); //used only for OVERLAP state
 
     if (!m_translationInited)
     {
-        counter = 0;
-        currAnimID = -1;
-        currAnimTime = 0;
+        m_vTranslation = timeLineContext->getAvatar()->getStartPosition(); 
+        m_translationInited = true;
     }
 
-    float currAnimDuration = -1;
-
-    if (currAnimID == -1 && currAnimID_from_context != -1)
+    if (timeLineContext->currAnim != NULL)
     {
-        currAnimID = currAnimID_from_context;
-        currAnimTime = 0;
-    }
 
-    CalCoreAnimation *pCoreAnimation;
-
-    if (currAnimID != -1)
-    {
-        pCoreAnimation = timeLineContext->getAvatar()->GetCalCoreModel()->getCoreAnimation(currAnimID);
-        currAnimDuration = pCoreAnimation->getDuration();
-    }
-
-    currAnimTime += elapsedSeconds;
-
-    bool wasAnimChange = false;
-
-    if ( currAnimDuration!=-1 &&  currAnimDuration<currAnimTime  )
-    {
-        if (LOCAL_DEBUG)
-        {
-            cout << "--------NEW ANIM -------- loop: " <<  timeLineContext->isCurrAnimLoop()
-                << " anim duration " << currAnimDuration << " animTime " << currAnimTime << endl;
-
-        }
-
-        std::string avName = timeLineContext->getAvatar()->getName();
-
-        currAnimID = currAnimID_from_context;
-        if (timeLineContext->isCurrAnimLoop())
-        {
-            if (LOCAL_DEBUG)
-                cout << "- cycle size " << timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationCycle().size();
-
-            if (timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationCycle().size() > 0)
-            {
-                //currAnimTime = timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationCycle().front()->getTime();
-                currAnimTime = timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationTime();
-                if (LOCAL_DEBUG)
-                    cout << "- currAnimTime " << currAnimTime << endl;
-            }
-            else
-                currAnimTime = 0;
-        }
-        else
-        {
-            if (LOCAL_DEBUG)
-                cout << "- action list size " << timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationActionList().size();
-
-            if (timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationActionList().size() > 0)
-                currAnimTime = timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationActionList().front()->getTime();
-            else
-                currAnimTime = 0;
-        }
-        wasAnimChange = true;
-        if (LOCAL_DEBUG)
-            cout << " new anim time " << currAnimTime << endl;
-    }
-
-
-    if (currAnimID != -1 && currAnimTime != -1)
-    {
-        pCoreAnimation = timeLineContext->getAvatar()->GetCalCoreModel()->getCoreAnimation(currAnimID);
-        currAnimDuration = pCoreAnimation->getDuration();
-        CalCoreTrack* track = pCoreAnimation->getCoreTrack(0);
         CalVector translation;
         CalQuaternion rotation;
-        track->getState(currAnimTime, currPos, rotation);
-        if (wasAnimChange)
-            m_vLastPos = currPos;
+        CalCoreAnimation* coreAnim = timeLineContext->currAnim->getCoreAnimation();
+        CalCoreTrack* track = coreAnim->getCoreTrack(0);
+        track->getState(timeLineContext->currAnimTime, currPos, rotation);
 
-        if (LOCAL_DEBUG)
+        float animTime = timeLineContext->currAnimTime;
+
+        if (timeLineContext->anim_changed)
         {
-            if (counter == 0)
-                cout << "anim_id: " << currAnimID << " trans: my x "<< currPos.x << " z " << currPos.z << " cal x " << bone->getTranslation().x 
-                            << " z " << bone->getTranslation().z << 
-                            " anims " <<  timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationActionList().size() << endl;
-            counter = (counter+1)%100;
+            if (LOCAL_DEBUG) cout << " Anim changed .... anim time " << animTime  << endl;
+
+            if (timeLineContext->prevAnim != NULL)
+            {
+                if (LOCAL_DEBUG) cout << " Prev != NULL " << endl;
+                //calculate rest time
+                timeLineContext->prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(timeLineContext->prevAnimTime, restTrans, rotation);
+                restTrans -= m_vLastPos;
+
+                if (LOCAL_DEBUG) cout << " resTrans " << restTrans.length() << endl;
+
+            }
+            else
+            {
+                //TODO:  implement calculation of restTrans for case without OVERLAP
+            }
+         }
+         else if (timeLineContext->anim_new_cycle)
+         {
+            float animEndTime = timeLineContext->currAnimDuration; //TODO: chceck if its correct
+            //calculate rest time for new cycle
+            track->getState(animEndTime, restTrans, rotation);
+            restTrans -= m_vLastPos;
+            
+            CalVector vStartOffset = currPos;
+            CalVector startAnimPos;
+            track->getState(0, startAnimPos, rotation);
+            vStartOffset -= startAnimPos;
+         
+            restTrans += vStartOffset;
+
+            //if (LOCAL_DEBUG) cout << " resTrans " << restTrans.length() << endl;
+         }
+
+        if (INTERPOLATION && timeLineContext->exec_state == EXEC_STATE_OVERLAP)
+            //&& timeLineContext->prevAnimTime <= timeLineContext->prevAnimDuration)
+        {
+            //cout << " Anim overlaped .... " << endl;
+            if (timeLineContext->prevAnim != NULL)
+            {
+                timeLineContext->prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(timeLineContext->prevAnimTime, vPrevPos , rotation);
+                if (timeLineContext->anim_changed)
+                    m_vLastPrevPos = vPrevPos;
+            }
+            else
+            {
+                cout << " ERR: LCSModifier::Apply(): no prev anim for OVERLAP !!! " << endl;
+            }
+        }
+
+        if (timeLineContext->anim_changed || timeLineContext->anim_new_cycle)
+        {
+            m_vLastPos = currPos;
         }
     }
     else
     {
-        if (LOCAL_DEBUG)
-            cout << "********** original trans " << endl;
+        if (LOCAL_DEBUG) cout << " Original pos " << endl;
         currPos = bone->getTranslation();
-    }
-    
-        //std::cout << " z : " << currPos.z << std::endl;
-
-    if (!m_translationInited)
-    {
-                    if (TRACE)
-                    {
-                        tracer_translation->ClearTrace();
-                        tracer_curr_pos->ClearTrace();
-                    }
-
-        m_vTranslation = timeLineContext->getAvatar()->getStartPosition(); // - currPos;
-        
-        m_vTranslation.y = currPos.y;
-        m_vLastPos = currPos;
-
-        m_translationInited = true;
-
-                    if (TRACE)
-                    {
-                        tracer_translation->AddPoint(m_vTranslation + CalVector(0,70,0));
-                        tracer_translation->AddPoint(m_vTranslation + CalVector(0,80,0));
-
-                        tracer_curr_pos->AddPoint(currPos + CalVector(0,70,0));
-                        tracer_curr_pos->AddPoint(currPos + CalVector(0,80,0));
-                    }
     }
 
     CalVector diff = currPos - m_vLastPos;
 
+    float y_to_set = currPos.y;
+
+    if (INTERPOLATION && timeLineContext->exec_state == EXEC_STATE_OVERLAP)
+            //&& timeLineContext->prevAnimTime <= timeLineContext->prevAnimDuration)
+    {
+        CalVector prevDiff = vPrevPos - m_vLastPrevPos;
+        float factor =  timeLineContext->currAnimTime/timeLineContext->prevOverlap; 
+        diff = (1.0f - factor) * prevDiff + factor * diff;
+        
+        y_to_set = (1.0f - factor) * vPrevPos.y + factor * currPos.y;
+
+        m_vLastPrevPos = vPrevPos;
+
+            if (LOCAL_DEBUG) 
+            {
+                if (counter == 0 || timeLineContext->anim_changed)
+                {
+                    //if (timeLineContext->anim_changed)
+                    //{
+                    //    cout << " prev time " << timeLineContext->prevAnimTime << " prev dur " << timeLineContext->prevAnimDuration << endl;
+                    //}
+                    //cout << " animTime " << timeLineContext->currAnimTime << " dur " << timeLineContext->prevOverlap 
+                    //    << " factor " << factor << " diff " << diff.length() <<endl;
+                    //cout << " prevAnimTime " << timeLineContext->prevAnimTime << " prev dur " << timeLineContext->prevAnimDuration << endl;
+                }
+                counter = (counter+1)%5;
+            }
+    }
+
+    if (REST_TRANS_CALC)
+       diff += restTrans; 
+
     diff *= timeLineContext->getAvatar()->m_stepOrientation;
 
-    float diff_lenght = diff.length();
+    
+    m_vTranslation += diff;
+    m_vTranslation.y = y_to_set;   
 
-    if ( diff_lenght < 50)
-    {
-        m_vTranslation += diff;
-        m_vTranslation.y = currPos.y;   //TODO:abak:  it should be applied also for diff_length>=50
 
                         if (TRACE)
                         {
                             tracer_translation->AddPoint(m_vTranslation);
                             tracer_curr_pos->AddPoint(currPos + CalVector(0,50,0));
                         }
-        
-    }
 
 
     m_vLastPos = currPos;
-    bone->setTranslation(m_vTranslation);
 
+    bone->setTranslation(m_vTranslation);
     bone->calculateState();
 	
 	//set current parameters lcs to scene object
@@ -223,6 +209,7 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 	timeLineContext->getAvatar()->setOrientation(currRotatation);
 
 }
+
 
 /// \brief Resets parameters of this modifier
 void LCSModifier::Reset(TimeLineContext * timeLineContext)
@@ -237,6 +224,8 @@ void LCSModifier::Reset(TimeLineContext * timeLineContext)
         tracer_curr_pos->ClearTrace();
     }
      m_vTranslation = CalVector(0,0,0);
+     m_vLastPos = CalVector(0,0,0);
+     m_vLastPrevPos = CalVector(0,0,0);
     //m_vRotation = CalQuaternion();
 }
 

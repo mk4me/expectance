@@ -59,7 +59,7 @@ namespace ft
 
         ////////////////////////////
 
-        void Dump();
+        virtual void Dump();
 
         void setLCSModifier(LCSModifier* modifier) { m_lcsModifier = modifier; }
         LCSModifier* getLCSModifier() { return m_lcsModifier; }

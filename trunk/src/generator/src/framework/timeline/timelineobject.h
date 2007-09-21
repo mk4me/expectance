@@ -45,6 +45,11 @@ namespace ft
         TimeLineObject* getNextObject() { return m_next; }
         void setNextObject(TimeLineObject* obj) { m_next = obj; }
 
+        TimeLineObject* getFirstObject() { return m_first; }
+        void setFirstObject(TimeLineObject* obj) { m_first = obj; }
+
+        TimeLineObject* getParent() { return m_parent; }
+        void setParent(TimeLineObject* obj) { m_parent = obj; }
 
         virtual void Reset(TimeLineContext* timeLineContext); // resets current object and its children
 
@@ -60,6 +65,8 @@ namespace ft
         TimeLineObject* m_current;
 
         TimeLineObject* m_next;
+
+        TimeLineObject* m_parent;
 
         void PrintDebug(const std::string& text);
     };

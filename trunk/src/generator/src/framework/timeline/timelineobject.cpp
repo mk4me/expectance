@@ -14,6 +14,7 @@ TimeLineObject::TimeLineObject()
     m_first = NULL;
     m_current = NULL;
     m_next = NULL;
+    setParent(NULL);
 }
 
 /**
@@ -64,6 +65,10 @@ bool TimeLineObject::AddSubObject(TimeLineObject* object, int where_to_add)
           }
         }
     }
+
+    if (result)
+        object->setParent(this);
+
     return result;
 }
 

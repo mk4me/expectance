@@ -59,6 +59,7 @@ bool TimeLineMotion::AddModifier(TimeLineModifier* modifier)
 {
     std::cout << " AddModifier " << modifier->toString() << " to " << toString() << std::endl;
     m_vModifiers.push_back(modifier);
+    modifier->setParentMotion(this);
 	return true;
 }
 //        bool  TimeLineMotion::RemoveMdofier(TimeLineModifier* modfier);
@@ -154,6 +155,33 @@ bool TimeLineMotion::ExecuteSubMotions(float elapsedSeconds, TimeLineContext* ti
                 bool isBlendingToStart = false;
                 float fade_in = 0;
                 float fade_out = 0;
+
+                static bool testMode = false;
+
+                // ONLY for TESTING
+                //if (currMotion->isAnimLoop() || testMode)
+                //{
+                //    testMode = true;
+                //    int state = timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationCycle().front()->getState();
+
+                //    float time_1 = timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationTime();
+                //    float time_2 = timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationDuration();
+                //    float currAnimTime = timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationCycle().front()->getTime();
+                //    float currAnimDur = timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationCycle().front()->getCoreAnimation()->getDuration();
+                //    //float time_1 = timeLineContext->getAvatar()->GetCalModel()->getMixer()->getAnimationTime();
+                //    bool stop = 0;
+                //    if (state == CalAnimation::STATE_ASYNC)
+                //    {
+                //        std::cout << " ASYNC --- time --- time_1 " << time_1 << " time_2 " << time_2
+                //            << " currAnimTime " << currAnimTime << " currAnimDur " << currAnimDur << std::endl;
+                //        bool stop_1 = 0;
+                //    }
+                //    else
+                //    {
+                //        std::cout << " --SYNC -- time ---- time_1 " << time_1 << " time_2 " << time_2
+                //            << " currAnimTime " << currAnimTime << " currAnimDur " << currAnimDur << std::endl;
+                //    }
+                //}
 
                 if (nextMotion !=NULL)
                 {

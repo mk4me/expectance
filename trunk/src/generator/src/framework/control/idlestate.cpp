@@ -28,6 +28,8 @@ void IdleState::Entry(MovableAvatar* avatar)
 {
     ControlState::Entry(avatar);
 
+    Init(avatar);  //TODO: remove this line
+
     m_tlIdle->Reset(avatar->getTimeLineContext());
     avatar->getTimeLine()->AddSubObject(m_tlIdle);
 }

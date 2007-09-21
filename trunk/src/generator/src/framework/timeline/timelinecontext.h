@@ -13,6 +13,18 @@ namespace ft
     static const int REMOVE_AFTER_EXECUTION        = 0x00000008; 
     static const int STOP_IMMEDIATE                = 0x00000010; 
 
+    static const int EXEC_EVENT_NONE                 = 0; 
+    static const int EXEC_EVENT_STATE_CHANGED        = 1; 
+
+    //STATES of TimeLineExecutor
+    static const int EXEC_STATE_NOT_INITED = 0; 
+    static const int EXEC_STATE_WAIT = 1; 
+    static const int EXEC_STATE_SINGLE = 2;
+    static const int EXEC_STATE_OVERLAP = 3;
+    static const int EXEC_STATE_FADE_IN = 4;
+    static const int EXEC_STATE_FADE_OUT = 5;
+
+
 	/**
 	 * Class TimeLineContext: represents set of parameters affecting TimeLine execution
 	 **/
@@ -51,7 +63,23 @@ namespace ft
         float m_currAnimTime;
         bool m_currAnimLoop;
 
-        
+        // RUNTIME parameters
+        CalAnimation* prevAnim;
+        CalAnimation* currAnim;
+
+        float prevAnimTime;
+        float prevAnimDuration;
+
+        float currAnimTime;
+        float currAnimDuration;
+
+        float prevOverlap;
+        float currOverlap;
+
+        int exec_state;
+        int exec_event;
+        bool anim_changed;
+        bool anim_new_cycle;
     };
 };
 

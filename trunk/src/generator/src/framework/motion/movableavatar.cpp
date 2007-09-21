@@ -245,16 +245,18 @@ void MovableAvatar::UpdateTimeLine(float elapsedSeconds)
 
     bool timeLineStarted = (m_timeLine != NULL) ? m_timeLine->isStarted() : false;
     
-    if (timeLineStarted)
-        m_timeLine->Execute(elapsedSeconds, m_timeLineContext);
+    //if (timeLineStarted)
+    //    m_timeLine->Execute(elapsedSeconds, m_timeLineContext);
 
+    m_calModel->update(elapsedSeconds);
+    
     if (m_tlExecutor != NULL)
         m_tlExecutor->UpdateMotions(elapsedSeconds);
 
-    m_calModel->update(elapsedSeconds);
+    
 
-    if (timeLineStarted)
-        m_timeLine->ExecuteModifiers(elapsedSeconds, m_timeLineContext);
+    //if (timeLineStarted)
+    //    m_timeLine->ExecuteModifiers(elapsedSeconds, m_timeLineContext);
 
     if (m_tlExecutor != NULL)
         m_tlExecutor->UpdateModifiers(elapsedSeconds);
@@ -362,7 +364,11 @@ void MovableAvatar::OnMessage(Message* msg)
     if (msg->getType() == MSG_TEST) 
     {
 
-        Dump();
+        this->Dump();
+        if (getTLExecutor()!=NULL)
+        {
+            getTLExecutor()->Dump();
+        }
 /*            CalSkeleton *skel = m_calModel->getSkeleton();
 
             CalBone *bone = skel->getBone(0);

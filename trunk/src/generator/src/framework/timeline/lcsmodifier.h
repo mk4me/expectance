@@ -20,6 +20,8 @@ namespace ft
     public:
         bool TRACE;
         bool LOCAL_DEBUG;
+        bool INTERPOLATION;
+        bool REST_TRANS_CALC;  //if rest of translation lost at anim changes should be applied
 
         LCSModifier();
         virtual ~LCSModifier(void);
@@ -32,16 +34,17 @@ namespace ft
         bool m_translationInited;
         CalVector m_vTranslation;
         CalVector m_vLastPos;
+        CalVector m_vLastPrevPos;  //used only for OVERLAP state
         //CalQuaternion m_vRotation;
 		TraceLine *tracer_translation;
         TraceLine *tracer_curr_pos;
+
+        
 
         //temp variables
         int counter;
         int currAnimID;
         float currAnimTime;
-
-
     };
 };
 

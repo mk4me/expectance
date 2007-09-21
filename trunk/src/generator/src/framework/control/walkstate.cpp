@@ -18,18 +18,19 @@ void WalkState::Init(MovableAvatar* avatar)
         TimeLineMotion* timeLineMotion = new TimeLineMotion();
         timeLineMotion->setMotion(mot);
         timeLineMotion->setLoopNumber(1);
+        timeLineMotion->setInterupting(true);
 //        timeLineMotion->setAnimLoop(true);
-        timeLineMotion->setBlender(new TimeLineBlender(0.2f));
+        timeLineMotion->setBlender(new TimeLineBlender(0.15f));
         m_tlWalk->AddSubObject(timeLineMotion, ADD_OBJECT_AS_LAST);
     }
- 
- 
-    mot = avatar->GetMotion(MOTION_WALK_LOOP);
+
+     mot = avatar->GetMotion(MOTION_WALK_LOOP);
     if (mot != NULL)
     {
         TimeLineMotion* timeLineMotion = new TimeLineMotion();
 //        timeLineMotion->setLoopNumber(1);
         timeLineMotion->setAnimLoop(true);
+        timeLineMotion->setInterupting(true);
         timeLineMotion->setMotion(mot);
         timeLineMotion->setBlender(new TimeLineBlender(0.2f));
         m_tlWalk->AddSubObject(timeLineMotion);
@@ -43,19 +44,21 @@ void WalkState::Init(MovableAvatar* avatar)
         TimeLineMotion* timeLineMotion = new TimeLineMotion();
         timeLineMotion->setMotion(mot);
 //        timeLineMotion->setLoopNumber(1);
-//        timeLineMotion->setAnimLoop(true);
-        timeLineMotion->setBlender(new TimeLineBlender(0.2f));
+        //timeLineMotion->setAnimLoop(true);
+        //timeLineMotion->setBlender(new TimeLineBlender(0.2f));
         timeLineMotion->setInterupting(true);
         m_tlWalk->AddSubObject(timeLineMotion);
         m_tlStopWalk = timeLineMotion; 
     }
 
-    m_tlWalk->setBlender(new TimeLineBlender(0.1f));
+    m_tlWalk->setBlender(new TimeLineBlender(0.20f));
 }
 
 void WalkState::Entry(MovableAvatar* avatar)
 {
     ControlState::Entry(avatar);
+
+    Init(avatar);  //TODO: remove this line
 
     m_tlStopWalk->setInterupting(false);
     m_tlWalk->Reset(avatar->getTimeLineContext());
