@@ -17,6 +17,7 @@
 #include "../ui/menumanager.h"
 #include "../core/application.h"
 #include "../core/UpdateManager.h"
+#include "../core/config.h"
 
 
 
@@ -71,6 +72,7 @@ namespace ft
 		
         static VisualizationManager* m_instance;
 		std::map<std::string,SceneObject*> m_SceneObjects;
+		int m_ActiveCameraMarker;
 
     };
 };

@@ -60,18 +60,22 @@ void Camera::UpdateView()
 
 void  Camera::Render()
 {
-	static float _tempAng = 0;
+	static float _tempAng = -1.57079633f;
 	float _alpha;
 
 	if (m_scObj!=NULL) //update translation from sceneobject
 	{
-		_alpha = cos(_tempAng += 0.05F);
-
+		if (_tempAng <= 1.57079633f)
+			_tempAng += 0.02f;
+		else
+			_tempAng = -1.57079633f;
+		
+		_alpha = cos(_tempAng);
 		// draw grid for indicating camera target
 		static vector3 _pos(0.0,0.0,0.0); //default position definition
 		_pos = CalVecToVector3(m_scObj->getPosition());
 		_pos.y = 0;
-		int _sc=30, _st=15;
+		int _sc=40, _st=5;
 		vector3 _p1 = _pos+vector3(_sc,0,_sc), _p2 = _pos+vector3(_sc,0,-_sc),_p3= _pos+vector3(-_sc,0,-_sc),_p4=_pos+vector3(-_sc,0,_sc);
 		glPushMatrix();
 			glDisable(GL_CULL_FACE);

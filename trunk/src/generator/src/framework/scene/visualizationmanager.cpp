@@ -55,6 +55,13 @@ bool VisualizationManager::Init()
 	{
 		return false;
 	}
+	
+	if(Config::getInstance()->IsKey("camera_marker_visible"))
+	{
+		m_ActiveCameraMarker = Config::getInstance()->GetIntVal("camera_marker_visible");
+	}
+	else
+		m_ActiveCameraMarker = 0; // no active camera marker visible
 
 	return true;
 }
@@ -81,10 +88,10 @@ void VisualizationManager::OnRender()
 {
 	OGLContext::getInstance()->setPerspective( CameraManager::getInstance()->IsZoom() ); 
 	CameraManager::getInstance()->UpdateView(); //update current camera View
-	OGLContext::getInstance()->RenderScene(); //camera.lookAt(); TODO
-	CameraManager::getInstance()->RenderCurrentCamera(); //show camera position
-
-
+	
+	OGLContext::getInstance()->RenderScene(); 
+	if (m_ActiveCameraMarker)
+		CameraManager::getInstance()->RenderCurrentCamera(); //show avatar's camera position
 	Render3DObjects();
 	Render2DObjects();
 	// swap the front- and back-buffer
