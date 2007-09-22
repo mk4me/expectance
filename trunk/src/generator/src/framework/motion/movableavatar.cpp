@@ -201,8 +201,6 @@ void MovableAvatar::StartTimeLine()
     cout << toString() << "StartTimeLine()" << endl;
     if (m_timeLine != NULL)
     {
-        m_timeLine->Start(m_timeLineContext, 0, 0);
-
         if (m_tlExecutor != NULL)
         {
             m_tlExecutor->Initiate(m_timeLine, m_timeLineContext);
@@ -221,15 +219,7 @@ void MovableAvatar::StopTimeLine()
 
     if (m_timeLine != NULL)
     {
-        //m_timeLine->Reset(m_timeLineContext);
-//        m_timeLine->StopTimeLine(m_timeLineContext);
         m_timeLine->Reset(m_timeLineContext);
-        if (m_timeLineContext != NULL)
-        {
-            m_timeLineContext->setCurrAnimID(-1);
-            m_timeLineContext->setCurrAnimTime(-1);
-        }
-
     }
 
 }
@@ -245,18 +235,10 @@ void MovableAvatar::UpdateTimeLine(float elapsedSeconds)
 
     bool timeLineStarted = (m_timeLine != NULL) ? m_timeLine->isStarted() : false;
     
-    //if (timeLineStarted)
-    //    m_timeLine->Execute(elapsedSeconds, m_timeLineContext);
-
     m_calModel->update(elapsedSeconds);
     
     if (m_tlExecutor != NULL)
         m_tlExecutor->UpdateMotions(elapsedSeconds);
-
-    
-
-    //if (timeLineStarted)
-    //    m_timeLine->ExecuteModifiers(elapsedSeconds, m_timeLineContext);
 
     if (m_tlExecutor != NULL)
         m_tlExecutor->UpdateModifiers(elapsedSeconds);
@@ -369,17 +351,6 @@ void MovableAvatar::OnMessage(Message* msg)
         {
             getTLExecutor()->Dump();
         }
-/*            CalSkeleton *skel = m_calModel->getSkeleton();
-
-            CalBone *bone = skel->getBone(0);
-
-            CalQuaternion currRotation = bone->getRotation();
-            Quat newRot(1.5f, Vec(0,0,1)); 
-            currRotation *= QuatToCalQuat(newRot);
-            bone->setRotation(currRotation);
-
-            bone->calculateState();
-*/
     } 
     else if (msg->getType() == MSG_START_SIMULATION)
     {

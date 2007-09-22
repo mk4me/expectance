@@ -38,8 +38,8 @@ void IdleState::Exit(MovableAvatar* avatar)
 {
     ControlState::Exit(avatar);
 
-    if (m_tlIdle->isStarted())
-        m_tlIdle->SetTerminated(true);
+//    if (m_tlIdle->isStarted())
+//        m_tlIdle->SetTerminated(true);
 }
 
 void IdleState::Reset(MovableAvatar* avatar)

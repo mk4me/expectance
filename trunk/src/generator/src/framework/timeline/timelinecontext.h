@@ -10,9 +10,7 @@
 
 namespace ft
 {
-    static const int REMOVE_AFTER_EXECUTION        = 0x00000008; 
-    static const int STOP_IMMEDIATE                = 0x00000010; 
-
+    //EVENTS from TimeLineExecutor
     static const int EXEC_EVENT_NONE                 = 0; 
     static const int EXEC_EVENT_STATE_CHANGED        = 1; 
 
@@ -31,37 +29,18 @@ namespace ft
     class TimeLineContext
     {
     public:
-        TimeLineContext(void); 
-        virtual ~TimeLineContext(void);
+        TimeLineContext(void) { /* empty */ }
+        virtual ~TimeLineContext(void) { /* empty */ }
         virtual void Destroy(void);
-
-        void SetValuesByFlag(int positive_flag, int negative_flag);
-
-        void SetDefaultFlags();
 
         void setAvatar(Avatar* avatar) { m_avatar = avatar; }
         Avatar* getAvatar() { return m_avatar; }
-
-        void setCurrAnimID(int anim_id) { m_currAnimID = anim_id; }
-        int getCurrAnimID() { return m_currAnimID; }
-
-        void setCurrAnimTime(float time) { m_currAnimTime = time; }
-        float getCurrAnimTime() { return m_currAnimTime; }
-
-        void setCurrAnimLoop(bool set) { m_currAnimLoop = set; }
-        bool isCurrAnimLoop() { return m_currAnimLoop; }
-
-        
 
         Avatar *m_avatar;
 
         int where_to_add;
         bool remove_after_execution;
         bool stop_immediate;
-
-        int m_currAnimID;
-        float m_currAnimTime;
-        bool m_currAnimLoop;
 
         // RUNTIME parameters
         CalAnimation* prevAnim;

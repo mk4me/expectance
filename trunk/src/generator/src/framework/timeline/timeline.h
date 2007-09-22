@@ -20,26 +20,10 @@ namespace ft
     class TimeLine : public TimeLineMotion
     {
     public:
-        TimeLine(void);
+        TimeLine(void) { /* empty */}
         virtual ~TimeLine(void) { /* empty */}
 
         void Destroy(void) { /* TODO: abak: to implement */ }
-
-        virtual void Execute(float elapsedSeconds, TimeLineContext* timeLineContext);
-
-        void StopTimeLine(TimeLineContext* timeLineContext);
-
-        virtual void Start(TimeLineContext* timeLineContext, float fade_in, float fade_out);
-        virtual void Stop(TimeLineContext* timeLineContext);
-
-        void setWaitingState(bool set) { m_waitingState = set; }
-        bool isWaitingState() { return m_waitingState; }
-
-    protected:
-        void RemoveExecutedMotions(TimeLineContext* timeLineContext);
-
-    private:
-        bool m_waitingState;
     };
 };
 
