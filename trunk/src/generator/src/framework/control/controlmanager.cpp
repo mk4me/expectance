@@ -165,6 +165,8 @@ void ControlManager::OnSpecial(int key, int x, int y)
         {
             setActiveAvatar(0);
         }
+
+		CameraManager::getInstance()->setCurrentSceneObjectID(getActiveAvatar()->getID());
         UpdateActiveAvatarMarker();
         break;
     case GLUT_KEY_F2:

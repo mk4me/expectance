@@ -124,7 +124,10 @@ bool VisualizationManager::AddObject(SceneObject* pObj)
 	    m_SceneObjects.insert( std::make_pair( std::string(_id), pObj ) );
 
 		if ((pScObj = dynamic_cast<Avatar*>(pObj))!=NULL)
+		{
 			CameraManager::getInstance()->AddCamera(pObj); // add camera by default to Avatar object only
+			CameraManager::getInstance()->setCurrentSceneObjectID(_id);   // set current scene object ID to last added scene object
+		}
 
 	}
 	return true;

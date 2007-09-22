@@ -7,6 +7,7 @@
 #define _GEN_CONTROL_MANAGER_H
 
 #include "controlavatar.h"
+#include "../scene/cameramanager.h"
 
 namespace ft
 {

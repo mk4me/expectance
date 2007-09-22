@@ -23,7 +23,6 @@ bool CameraConfiguration::Init()
 	bool _final = true;
 	vector<string> _tokens;
 	std::string _cameraList;
-//	StringHelper _strHlp;
 	
 	//1. read main camera configuration list
 	_cameraList = Config::getInstance()->GetStrVal("camera_configurations");
@@ -45,26 +44,16 @@ bool CameraConfiguration::Init()
 			continue;
 		else
 		{
-			//bool _result = false;
-			static int _key = 10; //_strHlp.FromStringEx<int>(_cameraParameters[0],_result);
-			_key+=1;
-			//if (!_result) continue;
-			CameraType _camType = GETCameraType(_cameraParameters[1]);
-			////if (!_result) continue;
-			CameraMode _camMode = GETCameraMode(_cameraParameters[2]);
-			////if (!_result) continue;
-			CameraLocation _camLocation = GETCameraLocation(_cameraParameters[3]);
-			////if (!_result) continue;
-
 			////// 2. dispatch each option
-			std::cout << _cameraParameters[0] << _cameraParameters[1] << _cameraParameters[2] << _cameraParameters[3] << "\n";
+			int _key = GETKeyCode(_cameraParameters[0]);
+			CameraType _camType = GETCameraType(_cameraParameters[1]);
+			CameraMode _camMode = GETCameraMode(_cameraParameters[2]);
+			CameraLocation _camLocation = GETCameraLocation(_cameraParameters[3]);
 
-			AddConfiguration(_key, _camType, _camMode, _camLocation);
-			//MenuItem *mi = new MenuItem(tokens[i],0,0);  // button id
-			//mi->setInfoLabel(menuParameters[0]);            // button Information label
-			//create texture list
+			std::cout << _cameraParameters[0] <<", "<< _cameraParameters[1] <<", "<< _cameraParameters[2] <<", "<< _cameraParameters[3] << "\n";
 
 			//3. add option to menu
+			AddConfiguration(_key, _camType, _camMode, _camLocation);
 			//m_mainMenu->AddObject(mi);
 			//listID++;
 
@@ -72,9 +61,7 @@ bool CameraConfiguration::Init()
 		_cameraParameters.clear();
 		_cameraEntity.clear();
 	}
-    // count global width and height taking into consideration all options in menu (on the top level)
-	//m_width = m_mainMenu->getWidth()*m_mainMenu->getSubMenu().size();
-	//m_height = m_mainMenu->getHeight();	
+
 	return _final;
 }
 
@@ -118,4 +105,11 @@ CameraDefinition* CameraConfiguration::getConfiguration(std::string id)
 		return it->second;
 	}
 	return NULL;
+}
+
+CameraDefinition* CameraConfiguration::getConfiguration(int id)
+{
+	std::ostringstream _oss;
+	_oss << id;
+	return getConfiguration(_oss.str());
 }

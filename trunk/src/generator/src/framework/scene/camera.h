@@ -15,13 +15,6 @@
 
 namespace ft
 {
-	//StaticCamera - rigid camera without moves, static viewport only 
-	//ThirdPersonCamera - Third person camera following target without stearing mode
-	//FlyCamera - dynamic viewport with possibility of moving
-	//OrbitCamera - camera turning around the target point
-	//                       0                 1               2              3
-	enum CameraMode { ft_StaticCamera, ft_ThirdPersonCamera, ft_FlyCamera, ft_OrbitCamera };
-	static char *CameraModeId[] = {"Static Camera", "3rd Person Camera", "Fly Camera", "Orbit Camera"};
 	//! A Camera class
 	/*!
 	 *	This class is responsible for global camera operations. 

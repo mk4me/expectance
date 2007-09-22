@@ -7,6 +7,7 @@
 #else
 #include <sys/time.h>
 #endif
+#include "global.h"
 
 #pragma once
 #ifndef _GEN_SIMULATION_H
@@ -14,7 +15,6 @@
 
 namespace ft
 {
-	enum TimePrecision {ft_Microseconds, ft_Miliseconds};
 	/**
 	 * Class Simulation: class responsible for calculating simulation time 
 	 **/

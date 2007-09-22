@@ -18,7 +18,6 @@
 
 namespace ft
 {
-	enum Direction { ft_Forward, ft_Backward };
 	
 	//! A Camera Manager class
 	/*!
@@ -53,6 +52,8 @@ namespace ft
 		Camera* getCamera(std::string id);
 		//! set indicated camera as current camera
 		void setCurrentCamera(std::string id);
+		//! set current camera according to choosen configuration
+		void setCurrentCameraFromConfiguration(int key);
 		//! change current camera 
 		void changeCurrentCamera(ft::Direction direction);
 		//! remove CameraObject
@@ -68,6 +69,11 @@ namespace ft
 		const std::string getCurrentCameraInfo();
 		//! draw/show current camera position
 		const void RenderCurrentCamera();
+
+		//! get pointer value of selected scene object
+		const std::string getCurrentSceneObjectID();
+		//! set pointer value to selected scene object
+		const void setCurrentSceneObjectID(const std::string id);
 
 		/// \brief Handles a key event
         void OnKey(unsigned char key, int x, int y);
@@ -95,7 +101,7 @@ namespace ft
 		//helpers for numerical indexing camera container
 		int m_currentCameraIndex;
 		std::vector<std::string> m_cameraIndexContainer;
-
+		std::string m_currentSceneObjectID;
 		bool m_bLeftMouseButtonDown, m_bRightMouseButtonDown, m_bMiddleMouseButtonDown;
 
 		//camera configuration

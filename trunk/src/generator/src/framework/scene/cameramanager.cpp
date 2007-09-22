@@ -50,6 +50,8 @@ bool CameraManager::Init()
 	AddCamera(new Camera("mainCamera"));	
 	setCurrentCamera("mainCamera");
 	m_currentCamera->setTracingCameraRadius(1000.0f); // bigger radius for global scene view for mainCamera
+	m_currentSceneObjectID = "mainCamera"; //set for current camera to avoid current empty object
+
 
 	return true;
 }
@@ -174,6 +176,99 @@ void CameraManager::setCurrentCamera(std::string id)
 	}
 }
 
+//! set current camera according to choosen configuration
+void CameraManager::setCurrentCameraFromConfiguration(int key)
+{
+	Camera *_cam;
+	std::string _id; 
+	float _yaw = 0, _pitch = 20, _roll = 0;
+	_id.clear();
+
+	//1. check configuration KEY
+	CameraDefinition *_camDef = m_cameraConfiguration.getConfiguration(key);
+	if (_camDef==NULL) return; // wrong key pressed?
+	
+	//2. select apropriate action for camera type
+	switch(_camDef->type)
+	{
+	case ft_MainCamera:
+			_id = "mainCamera";
+		break;
+	case ft_ActiveAvatarCamera:
+			_id = m_currentSceneObjectID;
+		break;
+	default:
+		break;
+	}
+	//3. check if camera exists
+	_cam = getCamera(_id);
+	if (_cam==NULL)
+		return; //there is no such camera in camera container
+	
+	//4. change camera parameters
+	_cam->setCameraMode(_camDef->mode);
+	
+	switch(_camDef->location)
+	{
+		case ft_AutoLocation:		break;
+
+		case ft_FrontCenter:		_pitch = 0;		_yaw = 0.0f;   break;
+		case ft_TopFrontCenter:		_pitch = 20;	_yaw = 0.0f;   break;
+		case ft_BottomFrontCenter:	_pitch = -20;	_yaw = 0.0f;   break;
+			
+		case ft_FrontLeft:			_pitch = 0;		_yaw = 45.0f;  break;
+		case ft_TopFrontLeft:		_pitch = 20;	_yaw = 45.0f;  break;
+		case ft_BottomFrontLeft:	_pitch = -20;	_yaw = 45.0f;  break;
+
+		case ft_Left:				_pitch = 0;		_yaw = 90.0f;  break;
+		case ft_TopLeft:			_pitch = 20;	_yaw = 90.0f;  break;
+		case ft_BottomLeft:			_pitch = -20;	_yaw = 90.0f;  break;
+
+		case ft_BackLeft:			_pitch = 0;		_yaw = 135.0f; break;
+		case ft_TopBackLeft:		_pitch = 20;	_yaw = 135.0f; break;
+		case ft_BottomBackLeft:		_pitch = -20;	_yaw = 135.0f; break;
+
+		case ft_BackCenter:			_pitch = 0;		_yaw = 180.0f; break;
+		case ft_TopBackCenter:		_pitch = 20;	_yaw = 180.0f; break;
+		case ft_BottomBackCenter:	_pitch = -20;	_yaw = 180.0f; break;
+
+		case ft_BackRight:			_pitch = 0;		_yaw = 225.0f; break;
+		case ft_TopBackRight:		_pitch = 20;	_yaw = 225.0f; break;
+		case ft_BottomBackRight:	_pitch = -20;	_yaw = 225.0f; break;
+
+		case ft_Right:				_pitch = 0;		_yaw = 270.0f; break;
+		case ft_TopRight:			_pitch = 20;	_yaw = 270.0f; break;
+		case ft_BottomRight:		_pitch = -20;	_yaw = 270.0f; break;
+
+		case ft_FrontRight:			_pitch = 0;		_yaw = 315.0f; break;
+		case ft_TopFrontRight:		_pitch = 20;	_yaw = 315.0f; break;
+		case ft_BottomFrontRight:	_pitch = -20;	_yaw = 315.0f; break;
+
+		case ft_Center:				_pitch = 0;		_yaw = 0.0f; break;
+		case ft_TopCenter:			_pitch = 90;	_yaw = 90.0f; break;
+		case ft_BottomCenter:		_pitch = -90;	_yaw = 90.0f; break;
+		
+		default:	break;	
+	}
+	
+
+	//enum CameraLocation {ft_FrontLeft, ft_FrontCenter, ft_FrontRight, ft_Left, ft_Center, ft_Right, ft_BackLeft, ft_BackCenter, ft_BackRight,
+	//					 ft_TopFrontLeft, ft_TopFrontCenter, ft_TopFrontRight, ft_TopLeft, ft_TopCenter, ft_TopRight, ft_TopBackLeft, 
+	//					 ft_TopBackCenter, ft_TopBackRight, ft_BottomFrontLeft, ft_BottomFrontCenter, ft_BottomFrontRight, ft_BottomLeft,
+	//					 ft_BottomCenter, ft_BottomRight, ft_BottomBackLeft, ft_BottomBackCenter, ft_BottomBackRight, ft_AutoLocation
+	//					 };
+
+	if ( (_camDef->mode == ft_StaticCamera) || (_camDef->mode == ft_FlyCamera) )
+	_cam->Init(_pitch, _yaw);
+
+	//5. set that camera active unless it is already active
+	if (_cam != m_currentCamera)
+	{
+		m_currentCamera = _cam;
+		setCurrentCameraIndex(_id);
+	}
+}
+
 
 bool CameraManager::RemoveCamera(ft::Camera *pObj)
 {
@@ -208,6 +303,18 @@ const std::string CameraManager::getCurrentCameraInfo()
 const void CameraManager::RenderCurrentCamera()
 {
 	m_currentCamera->Render();
+}
+
+
+const std::string CameraManager::getCurrentSceneObjectID()
+{
+	return m_currentSceneObjectID;
+}
+
+const void CameraManager::setCurrentSceneObjectID(const std::string id)
+{
+	m_currentSceneObjectID = id;
+	setCurrentCameraFromConfiguration(GLUT_KEY_F10); //update tracing camera
 }
 
 
@@ -279,6 +386,17 @@ void CameraManager::OnKey(unsigned char key, int x, int y)
 
 void CameraManager::OnSpecial(int key, int x, int y)
 {
+	switch(key)
+	{
+	  case GLUT_KEY_F9:
+	  case GLUT_KEY_F10:
+	  case GLUT_KEY_F11:
+	  case GLUT_KEY_F12:
+		setCurrentCameraFromConfiguration(key);
+	    break;
+	  default:
+	    break;
+	}
 
 }
 
