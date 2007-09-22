@@ -35,10 +35,14 @@ void CameraManager::DestroyInstance()
 	}
 }
 
-void CameraManager::Init()
+bool CameraManager::Init()
 {
-	m_mouseX = 0;
-	m_mouseY = 0;
+	//read camera configurations
+	if (!m_cameraConfiguration.Init())
+	{
+		return false;
+	}
+
 	m_bLeftMouseButtonDown = false;
 	m_bRightMouseButtonDown = false;
 	m_bMiddleMouseButtonDown = false;
@@ -46,6 +50,8 @@ void CameraManager::Init()
 	AddCamera(new Camera("mainCamera"));	
 	setCurrentCamera("mainCamera");
 	m_currentCamera->setTracingCameraRadius(1000.0f); // bigger radius for global scene view for mainCamera
+
+	return true;
 }
 
 
@@ -250,17 +256,12 @@ void CameraManager::OnKey(unsigned char key, int x, int y)
 		  m_currentCamera->PrintInfo();
 	    break;
 	  case '\\':
-		  {
-		  // TODO change camera Type ( StaticCamera, SpringCamera, FlyCamera, Tracing Camera )
 		  m_currentCamera->ChangeCameraMode();
 		  m_currentCamera->PrintInfo();
-		  //std::string st = "Camera:" m_current
-		  }
 		break;
 	  case '|':
 		  m_currentCamera->ChangeZoom();
 	  break;
-	  //case 'x': RemoveCamera("frontLeft");
 	  case 'w':
 	  case 's':
 	  case 'a':
@@ -298,9 +299,6 @@ void CameraManager::OnMouseButtonDown(int button, int x, int y)
 	{
 	m_bMiddleMouseButtonDown = true;
 	}
-	// update internal mouse position
-	m_mouseX = x;
-	m_mouseY = y;    
 }
 
 void CameraManager::OnMouseButtonUp(int button, int x, int y)
@@ -320,48 +318,15 @@ void CameraManager::OnMouseButtonUp(int button, int x, int y)
 	{
 		m_bMiddleMouseButtonDown = false;
 	}
-
-	// update internal mouse position
-	m_mouseX = x;
-	m_mouseY = y;
 }
 
 
 void CameraManager::OnMouseMove(int x, int y)
 {
-	// update pitch/yaw angles
-	//if(m_bLeftMouseButtonDown)
-	//{
-	//	// calculate new angles
-	//	m_yawAngle += (float)(x - m_mouseX);
-	//	m_pitchAngle -= (float)(y - m_mouseY);
-	//}
-
-	//// update distance
-	//if(m_bRightMouseButtonDown)
-	//{
-	//	// calculate new distance
-	//	m_distance -= (float)(y - m_mouseY); 
-	//	if(m_distance < 0.0f) m_distance = 0.0f;
-	//}
-
-	//// update Y screen position
-	//if(m_bMiddleMouseButtonDown)
-	//{
-	//	//calculate new Y position
-	//	m_camUpDown +=(float)(y-m_mouseY);	
-	//}
-	
 	if ((m_currentCamera!=NULL)&&(m_currentCamera->getCameraMode() == ft_FlyCamera)&&(m_bLeftMouseButtonDown)) //update only if FlyCamera
 	{
 		m_currentCamera->OnMouseMove((float)x/(float)OGLContext::getInstance()->getWidth(), (float)y/(float)OGLContext::getInstance()->getHeight());
-		////m_currentCamera->setPitchAngle(m_pitchAngle);
-		////m_currentCamera->setDistance(m_distance);
-		////m_currentCamera->setCamUpDown(m_camUpDown);
 	}
-	// update internal mouse position
-	m_mouseX = x;
-	m_mouseY = y;
 }
 
 

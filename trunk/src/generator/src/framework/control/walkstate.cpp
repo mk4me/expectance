@@ -20,7 +20,7 @@ void WalkState::Init(MovableAvatar* avatar)
         timeLineMotion->setLoopNumber(1);
         timeLineMotion->setInterupting(true);
 //        timeLineMotion->setAnimLoop(true);
-        timeLineMotion->setBlender(new TimeLineBlender(0.15f));
+        timeLineMotion->setBlender(new TimeLineBlender(0.25f));
         m_tlWalk->AddSubObject(timeLineMotion, ADD_OBJECT_AS_LAST);
     }
 

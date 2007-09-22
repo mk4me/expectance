@@ -35,7 +35,7 @@ namespace ft
         static void DestroyInstance();
 		
 		/// \brief Initializes basic Camera Manager parameters
-		void Init();
+		bool Init();
 
 		/// \brief Updates current camera View
 		void UpdateView();
@@ -96,8 +96,10 @@ namespace ft
 		int m_currentCameraIndex;
 		std::vector<std::string> m_cameraIndexContainer;
 
-		int m_mouseX, m_mouseY;
 		bool m_bLeftMouseButtonDown, m_bRightMouseButtonDown, m_bMiddleMouseButtonDown;
+
+		//camera configuration
+		CameraConfiguration m_cameraConfiguration;
 
     };
 };

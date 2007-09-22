@@ -103,3 +103,21 @@ string StringHelper::RemoveChar(const string& str, const char character)
 
 	return a;
 }
+
+template <typename T> static T StringHelper::FromStringEx( const std::string& s, bool& bSuccess)
+// string conversion from string to typename T with a flag
+// the represents success or failure.
+//
+// e.g: int d = FromString<int>( s );
+//
+// if you want to check whether the conversion was successful then you can
+// use the bSuccess flag!
+{
+	bSuccess = true;
+	std::istringstream is(s);
+	T t;
+	is >> t;
+	if( !is )
+	bSuccess = false;
+	return t;
+}

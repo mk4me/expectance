@@ -40,7 +40,11 @@ void VisualizationManager::DestroyInstance()
 
 bool VisualizationManager::Init()
 {
-	CameraManager::getInstance()->Init();
+	if (!CameraManager::getInstance()->Init())
+	{
+		return false;
+	}
+
 	if (!OGLContext::getInstance()->Init())
 	{
 		return false;

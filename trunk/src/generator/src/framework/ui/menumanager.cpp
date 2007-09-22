@@ -28,11 +28,11 @@ void MenuManager::DestroyInstance()
 
 bool MenuManager::Init(int x, int y)
 {
-	bool final = true;
-	static unsigned int listID = 1000; // hope that system textures wont be so much
-	vector<string> tokens;
-	std::string menuOptions;
-	GLuint logoTexture;
+	bool _final = true;
+	static unsigned int _listID = 1000; // hope that system textures wont be so much
+	vector<string> _tokens;
+	std::string _menuOptions;
+	GLuint _logoTexture;
 	
 	m_menuOGL = (Config::getInstance()->GetIntVal("main_menu_visible")==0)? false : true; //set if menu is visible from configuration
 
@@ -41,35 +41,36 @@ bool MenuManager::Init(int x, int y)
 	m_y = y;
 	//1. read main menu options
 	m_mainMenu = new MenuItem(x,y); //main menu w (x,y)
-	menuOptions = Config::getInstance()->GetStrVal("main_menu");
-	menuOptions = StringHelper::ClearDelimiters(menuOptions, '(',')');
-	menuOptions = StringHelper::RemoveChar(menuOptions,' ');
-	tokens = StringHelper::Split(menuOptions, ",");
-	
-	for (unsigned int i = 0; i <tokens.size(); i++) //create main menu
+	_menuOptions = Config::getInstance()->GetStrVal("main_menu");
+	_menuOptions = StringHelper::ClearDelimiters(_menuOptions, '(',')');
+	_menuOptions = StringHelper::RemoveChar(_menuOptions,' ');
+	_tokens = StringHelper::Split(_menuOptions, ",");
+	if (_tokens[0] == "<KEY_NOT_FOUND>")
+		return false;	
+	for (unsigned int i = 0; i <_tokens.size(); i++) //create main menu
 	{
-		vector<string> menuParameters;
-		std::string menuOption;
-		menuOption = Config::getInstance()->GetStrVal(tokens[i]);
-		menuOption = StringHelper::ClearDelimiters(menuOption, '(', ')');
-		menuParameters = StringHelper::Split(menuOption,",");
-		menuParameters[1] = StringHelper::RemoveChar(menuParameters[1],' ');
-		if (menuParameters.size() == 1) 
+		vector<string> _menuParameters;
+		std::string _menuOption;
+		_menuOption = Config::getInstance()->GetStrVal(_tokens[i]);
+		_menuOption = StringHelper::ClearDelimiters(_menuOption, '(', ')');
+		_menuParameters = StringHelper::Split(_menuOption,",");
+		_menuParameters[1] = StringHelper::RemoveChar(_menuParameters[1],' ');
+		if (_menuParameters.size() == 1) 
 			continue;
 		else
 		{
 			// 2. dispatch each option
-			MenuItem *mi = new MenuItem(tokens[i],0,0);  // button id
-			mi->setInfoLabel(menuParameters[0]);            // button Information label
+			MenuItem *mi = new MenuItem(_tokens[i],0,0);  // button id
+			mi->setInfoLabel(_menuParameters[0]);            // button Information label
 			//create texture list
-			glNewList(listID,GL_COMPILE);
+			glNewList(_listID,GL_COMPILE);
 				glEnable(GL_TEXTURE_2D);
-				if ((logoTexture = ft::TextureManager::getInstance()-> LoadTexture(FT_TEXTUREPATH + menuParameters[1]))==0)
+				if ((_logoTexture = ft::TextureManager::getInstance()-> LoadTexture(FT_TEXTUREPATH + _menuParameters[1]))==0)
 				{
-					final = false;
+					_final = false;
 					return 0;
 				}
-				glBindTexture(GL_TEXTURE_2D,logoTexture);
+				glBindTexture(GL_TEXTURE_2D,_logoTexture);
 				glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
 				glBegin(GL_QUADS);
 					glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
@@ -80,20 +81,20 @@ bool MenuManager::Init(int x, int y)
 				glDisable(GL_TEXTURE_2D);
 			glEndList();
 
-			mi->setTexureID(listID);					// button texture filename
+			mi->setTexureID(_listID);					// button texture filename
 			//3. add option to menu
 			m_mainMenu->AddObject(mi);
-			listID++;
+			_listID++;
 
 		}
-		menuParameters.clear();
-		menuOption.clear();
+		_menuParameters.clear();
+		_menuOption.clear();
 
 	}
     // count global width and height taking into consideration all options in menu (on the top level)
 	m_width = m_mainMenu->getWidth()*m_mainMenu->getSubMenu().size();
 	m_height = m_mainMenu->getHeight();	
-	return final;
+	return _final;
 }
 
 int MenuManager::checkScope(int x, int y)
