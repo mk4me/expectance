@@ -16,12 +16,12 @@
 namespace ft
 {
 	//StaticCamera - rigid camera without moves, static viewport only 
-	//SpringCamera - 3rd person camera following target without stearing mode
+	//ThirdPersonCamera - Third person camera following target without stearing mode
 	//FlyCamera - dynamic viewport with possibility of moving
-	//Tracing Camera - camera turning around the target point
+	//OrbitCamera - camera turning around the target point
 	//                       0                 1               2              3
-	enum CameraMode { ft_StaticCamera, ft_SpringCamera, ft_FlyCamera, ft_TracingCamera };
-	static char *CameraModeId[] = {"Static Camera", "Spring Camera", "Fly Camera", "Tracing Camera"};
+	enum CameraMode { ft_StaticCamera, ft_ThirdPersonCamera, ft_FlyCamera, ft_OrbitCamera };
+	static char *CameraModeId[] = {"Static Camera", "3rd Person Camera", "Fly Camera", "Orbit Camera"};
 	//! A Camera class
 	/*!
 	 *	This class is responsible for global camera operations. 
@@ -73,6 +73,9 @@ namespace ft
 		void OnKey(unsigned char key);
 		///\brief Updates fly camera paraeters
 		void UpdateFlyCamera(const double deltaTime);
+
+		///\brief Sets radius for tracing camera
+		void setTracingCameraRadius(float radius=500.0f);
 		
 
 
@@ -80,7 +83,6 @@ namespace ft
 		//! set unique ID from sceneobject instance that owns this camera
 		void setID(const std::string name);
 		
-		float Damp(float currX, float targetX);
 		vector3 SpringDamp(vector3 currPos, vector3 trgPos, vector3 prevTrgPos, 
 			const double deltaTime, float springConst, float dampConst, float springLen);
 
@@ -118,6 +120,8 @@ namespace ft
 		// Damp Targets
 		vector3 m_eyeTrg;
 		vector3 m_eyeTrgPrev;
+
+		float m_tracingRadius;
 
 
 		float m_pitchAngle; // OX

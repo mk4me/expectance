@@ -13,6 +13,7 @@
 #include "../core/global.h"
 #include "../core/UpdateObject.h"
 #include "camera.h"
+#include "cameraconfiguration.h"
 
 
 namespace ft

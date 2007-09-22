@@ -273,7 +273,8 @@ Zarz¹dza realcjami pomiêdzy stworzonymi kamerami i obiektami sceny. Tworzy dla d
 Do prze³¹czania siê pomiêdzy zdefiniowanymi kamerami w systemie s³u¿¹ klawisze \textbf{[} oraz \textbf{]}. Opcja powiêkszenia (zoom) u³atwia obserwacjê szczegó³ów widoku. Zoom w³¹cza siê oraz wy³¹cza za pomoc¹ jednokrotnego wciœciêcia klawisza \textbf{|}. Zmiana rodzaju bie¿¹cej kamery nastêpuje po wciœniêciu klawisza. W systemie zdefiniowano 4 rodzaje kamer:
 \begin{enumerate}
 \item \textit{StaticCamera} - sztywna kamera bez mo¿liwoœci poruszania, pozwala tylko na statyczny widok z okreœlonego miejsca
-\item \textit{SpringCamera} - kamera z pozycji trzeciej osoby. Pod¹¿a za celem i nie mo¿na ni¹ sterowaæ
+\item \textit{ThirdPersonCamera} - kamera z pozycji trzeciej osoby. Pod¹¿a za celem i nie mo¿na ni¹ sterowaæ
+\item \textit{OrbitCamera} - kamera obraca siê wokó³ punktu celu.
 \item \textit{FlyCamera} - kamera umo¿liwia przesuwanie widoku manualnie:
 \begin{enumerate}
 \item Do przodu - klawisz \textbf{w}.
@@ -285,9 +286,8 @@ Do prze³¹czania siê pomiêdzy zdefiniowanymi kamerami w systemie s³u¿¹ klawisze \
 \item Obrót o 360 stopni (odchylenie) - wciœniêty lewy klawisz myszy i przesuwanie jej w poziomie.
 \item Obrót w zakresie +-90 stopni w górê i w dó³ od p³aszczyzny bie¿¹cego widoku (nachylenie) - wciœniêty lewy klawisz myszy i przesuwanie jej w pionie.
 \end{enumerate}
-
-\item \textit{TracingCamera} - kamera obraca siê wokó³ punktu celu.
 \end{enumerate}
+W wypadku, gdy kamera nie jest dowi¹zana do dynamicznego obiektu sceny, tryb \textit{ThirdPersonCamera} jest dla niej niedostêpny. Przyk³adem tego typu jest g³ówna kamera \textit{MainCamera}. Obiekt, do którego przypisana jest bie¿¹ca kamera jest oznaczony migaj¹cym kwadratem w odpowiednim kolorze - w zale¿noœci od rodzaju aktywnej kamery. Dla trybu \textit{StaticCamera} jest to kolor zielony, dla \textit{ThirdPersonCamera} kolor pomarañczowy,  dla \textit{OrbitCamera} kolor czerwony oraz kolor jasny niebieski dla trybu \textit{FlyCamera}.
 
 \subsection{Renderowanie Sprzêtowe}
 Ka¿dy obiekt typu \textit{ft::SceneObject} mo¿e implementowaæ w³asne sprzêtowe renderowanie przy u¿yciu jêzyka assemblera ARB: \textit{ARB vertex program} oraz/lub \textit{ARB fragment program}. Aby zrealizowaæ sprzêtowe renderowanie wybranego obiektu nale¿y:

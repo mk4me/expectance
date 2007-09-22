@@ -523,6 +523,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\framework\scene\cameraconfiguration.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\cameraconfiguration.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\scene\cameramanager.cpp"
 					>
 				</File>

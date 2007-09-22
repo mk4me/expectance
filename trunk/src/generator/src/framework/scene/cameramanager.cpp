@@ -42,9 +42,10 @@ void CameraManager::Init()
 	m_bLeftMouseButtonDown = false;
 	m_bRightMouseButtonDown = false;
 	m_bMiddleMouseButtonDown = false;
-
+	
 	AddCamera(new Camera("mainCamera"));	
-	setCurrentCamera("mainCamera");	
+	setCurrentCamera("mainCamera");
+	m_currentCamera->setTracingCameraRadius(1000.0f); // bigger radius for global scene view for mainCamera
 }
 
 

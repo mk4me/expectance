@@ -37,6 +37,7 @@ void Camera::Init(float pitch, float yaw, float roll, float dist, float leftRigh
 	_z = cosf(DegToRad(yaw))*dist;
 
 	m_cameraMode = ft_FlyCamera;
+	m_tracingRadius = 500.0f;
 	m_zoom = 0;
 	m_camPos.set(_x, _y, _z);
 	m_camUp.set(0.0, 1.0, 0.0);
@@ -60,8 +61,9 @@ void Camera::UpdateView()
 
 void  Camera::Render()
 {
+	static vector3 _pos(0.0,0.0,0.0); //default position definition
 	static float _tempAng = -1.57079633f;
-	float _alpha, _r;
+	float _alpha, _r, _g, _b;
 
 	if ( (m_scObj!=NULL) || (m_id=="mainCamera") ) //update translation from sceneobject
 	{
@@ -71,12 +73,12 @@ void  Camera::Render()
 			_tempAng = -1.57079633f;
 		
 		_alpha = cos(_tempAng);
+
 		// draw grid for indicating camera target
-		static vector3 _pos(0.0,0.0,0.0); //default position definition
 		int _sc=40, _st=10;
 		if (m_id == "mainCamera")
 		{
-			_sc = 1280; _st = 1280;
+			_sc = 1280; _st = 420;
 			_pos.set(0.0,0.0,0.0);
 			_r=0.6f;
 		} 
@@ -84,6 +86,18 @@ void  Camera::Render()
 		{
 			_pos = CalVecToVector3(m_scObj->getPosition());
 			_r=0.7f;
+		}
+
+		switch(m_cameraMode)
+		{
+			case ft_FlyCamera: _r=0.0f; _g=1.0f; _b=1.0f; //blue
+				break;
+			case ft_StaticCamera: _r=0.0f; _g=1.0f; _b=0.0f; //green 
+				break;
+			case ft_OrbitCamera: _r=1.0f; _g=0.0f; _b=0.5f; //red
+				break;
+			case ft_ThirdPersonCamera: _g=_r/2; _b=0.0f; //leave it orange
+				break;
 		}
 		
 		_pos.y = 0;
@@ -93,7 +107,7 @@ void  Camera::Render()
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glEnable(GL_BLEND);
 			glLineWidth(1.0f);
-			glColor4d(_r,_r/2, 0.0, _alpha);
+			glColor4d(_r, _g, _b, _alpha);
 			glBegin(GL_LINES);
 				glVertex3f(_p1.x-_st, _p1.y, _p1.z); 
 				glVertex3f(_p1.x, _p1.y, _p1.z); 
@@ -118,31 +132,6 @@ void  Camera::Render()
 				glVertex3f(_p4.x+_st, _p4.y, _p4.z); 
 				glVertex3f(_p4.x, _p4.y, _p4.z); 
 			glEnd();
-			////glBegin(GL_QUADS);
-			////	glNormal3f( 0.0f, 1.0f, 0.0f );
-			////	glVertex3f(_pos.x+10, _pos.y+18, _pos.z); //0(0)
-			////	glVertex3f(_pos.x, _pos.y+18, _pos.z-10); //1(2)
-			////	glVertex3f(_pos.x-10, _pos.y+18, _pos.z); //2(4)
-			////	glVertex3f(_pos.x, _pos.y+18, _pos.z+10); //3(6)
-			////glEnd();
-			////glBegin(GL_QUADS);
-			////	glNormal3f( 0.0f, 1.0f, 0.0f );
-			////	glVertex3f(_pos.x+30, _pos.y+17, _pos.z); //4(1)
-			////	glVertex3f(_pos.x, _pos.y+17, _pos.z-30); //5(3)
-			////	glVertex3f(_pos.x-30, _pos.y+17, _pos.z); //6(5)
-			////	glVertex3f(_pos.x, _pos.y+17, _pos.z+30); //7(7)
-			////glEnd();
-			////glBegin(GL_QUAD_STRIP);
-			////	glNormal3f( 0.0f, 1.0f, 0.0f );
-			////	glVertex3f(_pos.x+10, _pos.y+18, _pos.z); //0(0)
-			////	glVertex3f(_pos.x+30, _pos.y+17, _pos.z); //4(1)
-			////	glVertex3f(_pos.x, _pos.y+18, _pos.z-10); //1(2)
-			////	glVertex3f(_pos.x, _pos.y+17, _pos.z-30); //5(3)
-			////	glVertex3f(_pos.x-10, _pos.y+18, _pos.z); //2(4)
-			////	glVertex3f(_pos.x-30, _pos.y+17, _pos.z); //6(5)
-			////	glVertex3f(_pos.x, _pos.y+18, _pos.z+10); //3(6)
-			////	glVertex3f(_pos.x, _pos.y+17, _pos.z+30); //7(7)
-			////glEnd();
 			glLineWidth(1.0f);
 			glDisable(GL_BLEND);
 			glEnable(GL_CULL_FACE);
@@ -163,8 +152,8 @@ void Camera::OnUpdate(const double deltaTime)
 	int _index;
 	// Spring 
 	static vector3 _prevTrgPos(0.0, 0.0, 0.0), _currTrgPos;
-	matrix44 _splineViewMtx;
-	matrix44 _springViewMtx;
+	matrix44 _orbitViewMtx;
+	matrix44 _thirdPersonViewMtx;
 	float _springConstants[3] = {0.5, 2.5, 4.5};
 
 
@@ -175,21 +164,21 @@ void Camera::OnUpdate(const double deltaTime)
 
 	// Update Distances
 	_cameraDistance += (deltaTime*5) * _cameraSpeed;
+	_targetDistance += (deltaTime) * _targetSpeed; //if (movementMode) jesli sie nie rusza to trzeba zmienic speed na 0
     
 	if(_currTrgPos!=_prevTrgPos)
 	{
-		_targetDistance += (deltaTime) * _targetSpeed; //if (movementMode) jesli sie nie rusza to trzeba zmienic speed na 0
 		_prevTrgPos = _currTrgPos;
 	}
 
 
 	// *** Update Spring Cmamera
-	_springViewMtx = LookAtMatrix44(_currTrgPos + vector3(0.0, 100.0, 400.0), _currTrgPos , vector3(0.0, 1.0, 0.0));
+	_thirdPersonViewMtx = LookAtMatrix44(_currTrgPos + vector3(0.0, 100.0, 400.0), _currTrgPos , vector3(0.0, 1.0, 0.0));
 	
 
 	// *** Update Spline Camera
-	_index = cameraSpline->GET_SPLINE_INDEX(cameraSpline, &_cameraDistance); 
-	_splineViewMtx = LookAtMatrix44(cameraSpline->curveData[_index].pos+_currTrgPos, _currTrgPos, vector3(0.0, 1.0, 0.0));
+	_index = cameraSpline->getSplineIndex(cameraSpline, &_cameraDistance, m_tracingRadius); 
+	_orbitViewMtx = LookAtMatrix44(cameraSpline->curveData[_index].pos+_currTrgPos, _currTrgPos, vector3(0.0, 1.0, 0.0));
 
 	// for testing purposes std::cout << deltaTime <<" elapsed time \n";
 
@@ -205,11 +194,11 @@ void Camera::OnUpdate(const double deltaTime)
 			m_viewMtx = getFlyCameraViewMatrix();
 			UpdateFlyCamera(deltaTime);
 		break;
-		case ft_TracingCamera:
-			m_viewMtx = _splineViewMtx;
+		case ft_OrbitCamera:
+			m_viewMtx = _orbitViewMtx;
 		break;
-		case ft_SpringCamera:
-			m_viewMtx = _springViewMtx;
+		case ft_ThirdPersonCamera:
+			m_viewMtx = _thirdPersonViewMtx;
 		break;
 	}
 
@@ -242,6 +231,8 @@ const ft::CameraMode Camera::getCameraMode()
 void Camera::ChangeCameraMode()
 {
 	m_cameraMode = static_cast<ft::CameraMode>( (static_cast<unsigned short>(m_cameraMode) +1) % 4 );
+	if ((m_scObj==NULL)&&(m_cameraMode == ft_ThirdPersonCamera))  //choose once more for camera without object to trace
+		m_cameraMode = static_cast<ft::CameraMode>( (static_cast<unsigned short>(m_cameraMode) +1) % 4 );
 }
 
 const void Camera::PrintInfo() const
@@ -354,12 +345,12 @@ void Camera::UpdateFlyCamera(const double deltaTime)
 	m_eye = SpringDamp(m_eye, m_eyeTrg, m_eyeTrgPrev, deltaTime, 2.5F, 0.5F, 1.0F);	
 }
 
-//-------------------------------------------------------------------------
-// An asymptotic effect returns a float that approaches targetX from currX 
-//-------------------------------------------------------------------------
-float Camera::Damp(float currX, float targetX) {
-	return currX + ((targetX - currX) / 16.0F);
+void Camera::setTracingCameraRadius(float radius)
+{
+	m_tracingRadius = radius;
 }
+
+
 
 //---------------------------------------------------------------------------
 // Spring Damp Function

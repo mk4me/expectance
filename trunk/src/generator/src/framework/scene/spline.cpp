@@ -370,123 +370,6 @@ void Spline::Build() {
 }
 
 //---------------------------------------------------------------------------
-// Draw the Spline 
-//---------------------------------------------------------------------------
-void Spline::DrawPrimitives() {
-	int i, j;
-	vector3 * vec0P;
-	vector3 * vec1P;
-	vector3 temp;
-	COLOR color;
-
-	// Draw Control Spline
-	if (displayControlMode) {
-		// Control Lines
-		if (displayControlMode == DISPLAY_MODE_LINES) {
-			glBegin(GL_LINE_STRIP);
-			for (i = 0; i < controlCnt; i++) {
-				glColor4ub(
-					controlClr.r,
-					controlClr.g,
-					controlClr.b,
-					controlClr.a
-				);
-				glVertex3f(
-					controlData[i].pos.x,
-					controlData[i].pos.y,
-					controlData[i].pos.z
-				);
-			}
-			glEnd();
-		}
-		// Control Points
-		glPointSize(3.0);
-		glBegin(GL_POINTS);
-		for (i = 0; i < controlCnt; i++) {
-			glColor4ub(
-				controlClr.r,
-				controlClr.g,
-				controlClr.b,
-				controlClr.a
-			);
-			glVertex3f(
-				controlData[i].pos.x,
-				controlData[i].pos.y,
-				controlData[i].pos.z
-			);
-		}
-		glEnd();
-		glPointSize(1.0);
-	}
-
-	// Draw Spline
-	if (displayCurveMode) {
-		if (displayCurveMode == DISPLAY_MODE_LINES) glBegin(GL_LINE_STRIP);
-		else glBegin(GL_POINTS);
-		for (i = 0; i < curveCnt; i += displayCurveModulo) {
-			glColor4ub(
-				curveClr.r,
-				curveClr.g,
-				curveClr.b,
-				curveClr.a
-			);
-			glVertex3f(
-				curveData[i].pos.x,
-				curveData[i].pos.y,
-				curveData[i].pos.z
-			);
-		}
-		glEnd();
-	}
-
-	// Draw Orientations
-	if (displayOrientMode) {
-		for (j = 1; j < displayOrientMode + 1; j++) {
-			glBegin(GL_LINES);
-			for (i = 0; i < curveCnt; i += displayOrientModulo) {
-				vec0P = &curveData[i].pos;
-				switch (j) {
-					// Draw Normal
-					case 1:
-						vec1P = &curveData[i].nrm;
-						color = nrmClr;
-					break;
-					// Draw Tangent
-					case 2:
-						vec1P = &curveData[i].tan;
-						color = tanClr;
-					break;
-					// Draw Side
-					case 3:
-						vec1P = &curveData[i].sid;
-						color = sidClr;
-					break;
-				}
-				temp = (*vec1P) * displayOrientLen;
-				temp += (*vec0P);
-				glColor4ub(
-					color.r,
-					color.g,
-					color.b,
-					color.a
-				);
-				glVertex3f(
-					vec0P->x,
-					vec0P->y,
-					vec0P->z
-				);
-				glVertex3f(
-					temp.x,
-					temp.y,
-					temp.z
-				);
-			}
-			glEnd();
-		}
-	}
-}
-
-//---------------------------------------------------------------------------
 // Compute a spline index at distance
 //---------------------------------------------------------------------------
 int Spline::GetIndexAtDistance(float distance) {
@@ -526,7 +409,7 @@ int Spline::GetIndexAtDistanceFromIndex(float distance, int startIndex) {
 //---------------------------------------------------------------------------
 // Helper Functs
 //---------------------------------------------------------------------------
-int Spline::GET_SPLINE_INDEX (Spline * sP, float * distance) {
+int Spline::getSplineIndex(Spline * sP, float * distance, float radius) {
 	int index;
 
 	// Get index at distance
@@ -539,7 +422,7 @@ int Spline::GET_SPLINE_INDEX (Spline * sP, float * distance) {
 			sP->controlData[i].pos = sP->controlData[i+1].pos;
 		}
 		// ADD New Point
-		sP->RAND_FUNC_CAMERA(sP->controlData[3].pos);
+		sP->getRandCamLocation(sP->controlData[3].pos, radius);
 		//sP->controlData[3].pos;
 		// Rebuild Spline
 		sP->Build(sP->curveData[sP->curveCnt - 1].nrm);
@@ -553,13 +436,13 @@ int Spline::GET_SPLINE_INDEX (Spline * sP, float * distance) {
 	return index;
 }
 //---------------------------------------------------------------------------
-void Spline::RAND_FUNC_CAMERA (vector3 &input) {
+void Spline::getRandCamLocation (vector3 &input, const float radius) {
 	static float rot = 0;
 
 	rot -= 0.9F;
-	input.x = cosf(rot) * 500;
+	input.x = cosf(rot) * radius;
 	input.y = ((float)(rand()%2048))/2048.0F * 50.0F + 50;
-	input.z = sinf(rot) * 500;
+	input.z = sinf(rot) * radius;
 }
 
 ////---------------------------------------------------------------------------

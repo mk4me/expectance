@@ -156,14 +156,12 @@ public:
 
 public:
 	void ParseDefinitionFile(char * fileName);
-	void DrawPrimitives();
-	void DrawLines();
 	int GetIndexAtDistanceFromIndex(float distance, int startIndex);
 	int GetIndexAtDistance(float distance);
 	void Build();
 	void Build(vector3 defualtNrm);
-	int GET_SPLINE_INDEX (Spline * sP, float * distance);
-	void RAND_FUNC_CAMERA (vector3 &input);
+	int getSplineIndex (Spline * sP, float * distance, float radius = 500.0f);
+	void getRandCamLocation (vector3 &input, const float radius=500.0f);
 };
 
 
