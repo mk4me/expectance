@@ -73,38 +73,38 @@ Ogólna ilustracja struktury aplikacji Generator'a zosta³a przedstawiona na rysun
 
 \subsection{Konfiguracja aplikacji}
 Konfiguracja aplikacji znajduje siê w pliku tekstowym \textit{/data/application.cfg}. Format zapisu jest bardzo prosty i wyró¿nia dwie podstawowe instrukcje:
-\begin{enumeration}
-\item \textbf{komentarz} - umieszczony jest w linii zaczynaj¹cej siê znakiem\textbf{\hash}.
+\begin{enumerate}
+\item \textbf{komentarz} - umieszczony jest w linii zaczynaj¹cej siê znakiem\textbf{\#}.
 \item \textbf{definicja parametru} - linia sk³adaj¹ca siê z trzech jednostek leksykalnych:
-\begin{enumeration}
+\begin{enumerate}
 \item \textbf{identyfikatora} parametru (l-wartoœci)
-\item operatora przypisania (\textbf{\equal})
+\item operatora przypisania (\textbf{=})
 \item \textbf{wartoœci} lub \textbf{zbioru wartoœci} (r-wartoœci) 
-\end{enumeration} 
-\end{enumeration}
+\end{enumerate} 
+\end{enumerate}
 Definicje parametrów pogrupowane s¹ w sekcjach. Ka¿da sekcja rozpoczyna siê nag³ówkiem w formie komentarza. Definicja parametru mo¿e przyjmowaæ dwie formy:
-\begin{enumeration}
-\item \textbf{\textit{identyfikator parametru} \equal \textit{wartoœæ}}
-\item \textbf{\textit{identyfikator parametru} \equal (\textit{wartoœæ1, wartoœæ2, \dot, wartoœæ-n})}
-\end{enumeration}
+\begin{enumerate}
+\item \textbf{\textit{identyfikator parametru} = \textit{wartoœæ}}
+\item \textbf{\textit{identyfikator parametru} = (\textit{wartoœæ1, wartoœæ2, \ldots, wartoœæ-n})}
+\end{enumerate}
 
 \subsubsection{Tworzenie wybranych parametrów}
 
 \textbf{Tworzenie menu}
-Menu jest struktur¹ drzewiast¹ omówion¹ dok³adnie w rozdziale dotycz¹cym \textit{ft:MenuManager}. Menu buduje siê w dwóch krokach, które mo¿na cyklicznie powtaraæ:
-\begin{enumeration}
-\item zdefiniowanie menu g³ównego z list¹ parametrów : identyfikator_menu \equal (lista identyfikatorów parametrów menu oddzielonych przecinkami)
-\item zdefiniowanie ka¿dego prametru menu g³ównego w postaci: identyfikator_parametru menu \equal (etykieta informacyjna, nazwa tekstury)
-\end{enumeration}
-\text
+Menu jest struktur¹ drzewiast¹ omówion¹ dok³adnie w rozdziale dotycz¹cym typu \textit{ft:MenuManager}. Menu buduje siê w dwóch krokach, które mo¿na cyklicznie powtaraæ:
+\begin{enumerate}
+\item zdefiniowanie menu g³ównego z list¹ parametrów : \textit{identyfikator\_menu = (lista identyfikatorów\_parametrów\_menu oddzielonych przecinkami)}
+\item zdefiniowanie ka¿dego prametru menu g³ównego w postaci: \textit{identyfikator\_parametru menu = (etykieta informacyjna, nazwa tekstury)}
+\end{enumerate}
+
 \textbf{Tworzenie definicji konfiguracji kamer}
-Definicja konfiguracji kamer jest dwuetapowa. W pierwszym kroku tworzy siê listê definicji w formacie: \textit{identyfikator \equal (lista identyfikatorów konfiguracji kamer oddzielona przecinkami)}. W drugim kroku dla ka¿dego identyfikatora konfiguracji kamery przypisuje siê nastêpuj¹ce parametry:
-\begin{enumeration}
-\item \textit{Hot_key} - klawisz, który uruchamia dan¹ konfiguracjê kamery. Dostêpne wartoœci: \textit {ft_F1, ft_F2, ft_F3 ,ft_F4, ft_F5 ,ft_F6, ft_F7, ft_F8, ft_F9, ft_F10, ft_F11, ft_F12, ft_KEY_LEFT, ft_KEY_UP, ft_KEY_RIGHT, ft_KEY_DOWN, ft_KEY_PAGE_UP, ft_KEY_PAGE_DOWN, ft_KEY_HOME, ft_KEY_END, ft_KEY_INSERT}.
-\item \textit{Typ kamery} - zdefiniowany w systemie typ kamery. Dostêpne wartoœci: \textit{ft_ActiveAvatarCamera, ft_MainCamera}.
-\item \textit{Tryb pracy kamery} - mo¿na go wybraæ z listy czterech dostêpnych trybów pracy. Dostêpne wartoœci: \textit{ft_StaticCamera, ft_ThirdPersonCamera, ft_FlyCamera, ft_OrbitCamera}.
-\item \textit{Lokalizacja} - orientacja kamery wzglêdem punktu, na który kamera "patrzy". Dostêpne wartoœci: \textit{ft_FrontLeft, ft_FrontCenter, ft_FrontRight, ft_Left, ft_Center, ft_Right, ft_BackLeft, ft_BackCenter, ft_BackRight, ft_TopFrontLeft, ft_TopFrontCenter, ft_TopFrontRight, ft_TopLeft, ft_TopCenter, ft_TopRight, ft_TopBackLeft, ft_TopBackCenter, ft_TopBackRight, ft_BottomFrontLeft, ft_BottomFrontCenter, ft_BottomFrontRight, ft_BottomLeft, ft_BottomCenter, ft_BottomRight, ft_BottomBackLeft, ft_BottomBackCenter, ft_BottomBackRight, ft_AutoLocation}.
-\end{enumartaion}
+Definicja konfiguracji kamer jest dwuetapowa. W pierwszym kroku tworzy siê listê definicji w formacie: \textit{identyfikator = (lista identyfikatorów konfiguracji kamer oddzielona przecinkami)}. W drugim kroku dla ka¿dego identyfikatora konfiguracji kamery przypisuje siê nastêpuj¹ce parametry:
+\begin{enumerate}
+\item \textit{Hot\_key} - klawisz, który uruchamia dan¹ konfiguracjê kamery. Dostêpne wartoœci: \textit {ft\_F1, ft\_F2, ft\_F3 ,ft\_F4, ft\_F5 ,ft\_F6, ft\_F7, ft\_F8, ft\_F9, ft\_F10, ft\_F11, ft\_F12, ft\_KEY\_LEFT, ft\_KEY\_UP, ft\_KEY\_RIGHT, ft\_KEY\_DOWN, ft\_KEY\_PAGE\_UP, ft\_KEY\_PAGE\_DOWN, ft\_KEY\_HOME, ft\_KEY\_END, ft\_KEY\_INSERT}.
+\item \textit{Typ kamery} - zdefiniowany w systemie typ kamery. Dostêpne wartoœci: \textit{ft\_ActiveAvatarCamera, ft\_MainCamera}.
+\item \textit{Tryb pracy kamery} - mo¿na go wybraæ z listy czterech dostêpnych trybów pracy. Dostêpne wartoœci: \textit{ft\_StaticCamera, ft\_ThirdPersonCamera, ft\_FlyCamera, ft\_OrbitCamera}.
+\item \textit{Lokalizacja} - orientacja kamery wzglêdem punktu, na który kamera "patrzy". Dostêpne wartoœci: \textit{ft\_FrontLeft, ft\_FrontCenter, ft\_FrontRight, ft\_Left, ft\_Center, ft\_Right, ft\_BackLeft, ft\_BackCenter, ft\_BackRight, ft\_TopFrontLeft, ft\_TopFrontCenter, ft\_TopFrontRight, ft\_TopLeft, ft\_TopCenter, ft\_TopRight, ft\_TopBackLeft, ft\_TopBackCenter, ft\_TopBackRight, ft\_BottomFrontLeft, ft\_BottomFrontCenter, ft\_BottomFrontRight, ft\_BottomLeft, ft\_BottomCenter, ft\_BottomRight, ft\_BottomBackLeft, ft\_BottomBackCenter, ft\_BottomBackRight, ft\_AutoLocation}.
+\end{enumerate}
 
 
 \section{Avatar'y}
@@ -326,7 +326,7 @@ Do prze³¹czania siê pomiêdzy zdefiniowanymi kamerami w systemie s³u¿¹ klawisze \
 W wypadku, gdy kamera nie jest dowi¹zana do dynamicznego obiektu sceny, tryb \textit{ThirdPersonCamera} jest dla niej niedostêpny. Przyk³adem tego typu jest g³ówna kamera \textit{MainCamera}. Obiekt, do którego przypisana jest bie¿¹ca kamera jest oznaczony migaj¹cym kwadratem w odpowiednim kolorze - w zale¿noœci od rodzaju aktywnej kamery. Dla trybu \textit{StaticCamera} jest to kolor zielony, dla \textit{ThirdPersonCamera} kolor pomarañczowy,  dla \textit{OrbitCamera} kolor czerwony oraz kolor jasny niebieski dla trybu \textit{FlyCamera}.
 
 \subsection{CameraConfiguration}
-Pozwala zmieniaæ wartoœci parametrów zdefiniowanych w systemie kamer i umo¿liwia dostêp do takich konfiguracji przez zdefiniowanie klawisza dostêpu. Definicja odbywa siê w pliku konfiguracyjnym aplikacji i zosta³a doœæ szczegó³owo opisana rozdziale dotycz¹cym konfiguraji.
+Pozwala zmieniaæ wartoœci parametrów zdefiniowanych w systemie kamer i umo¿liwia dostêp do takich konfiguracji przez zdefiniowanie klawisza dostêpu. Definicja odbywa siê w pliku konfiguracyjnym aplikacji i zosta³a opisana rozdziale dotycz¹cym konfiguraji.
 
 \subsection{Renderowanie Sprzêtowe}
 Ka¿dy obiekt typu \textit{ft::SceneObject} mo¿e implementowaæ w³asne sprzêtowe renderowanie przy u¿yciu jêzyka assemblera ARB: \textit{ARB vertex program} oraz/lub \textit{ARB fragment program}. Aby zrealizowaæ sprzêtowe renderowanie wybranego obiektu nale¿y:
