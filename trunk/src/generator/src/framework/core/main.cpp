@@ -123,6 +123,7 @@ int main(int argc, char *argv[])
 	VisualizationManager::getInstance()->AddObject(new TraceLine("TL3"));	
 
     Application::getInstance()->InitAvatars();
+    Application::getInstance()->SetCameraToActiveAvatar();
 	
 
 

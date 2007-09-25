@@ -129,6 +129,17 @@ void Application::InitAvatars()
      UpdateManager::getInstance()->SendMessage(new Message(MSG_START_SIMULATION), true);
 }
 
+/**
+ * \brief Sets active 'ThirdPersonCamera' to active ControlAvatar if any is set
+ */
+void Application::SetCameraToActiveAvatar()
+{
+    Avatar* av = ControlManager::getInstance()->getActiveAvatar();
+    if (av != NULL)
+    {
+        CameraManager::getInstance()->setCurrentSceneObjectID(av->getID());
+    }
+}
 
 /**
  * \brief Creates single avatar on the scene
