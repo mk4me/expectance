@@ -48,10 +48,13 @@ void ControlAvatar::SetState(ControlState *newState)
     if (IsTransitionAllowed(m_state, newState))
     {
         if (m_state != NULL)
-            m_state->Exit(this);
+            m_state->Exit(this, newState);
+        
+        ControlState *oldState = m_state;
 
         m_state = newState;
-        newState->Entry(this);
+
+        newState->Entry(this, oldState);
     }
     else
     {
@@ -132,7 +135,10 @@ void ControlAvatar::OnMessage(Message* msg)
     {
         if (msg->getParam() == NULL || (getName().compare(msg->getParam()->getStrValue()) == 0))
         {
-            SetState(WALK_STATE);
+            if (getState() == WALK_STATE)
+                SetState(RUN_STATE);
+            else if (getState() == IDLE_STATE)
+                SetState(WALK_STATE);
         }
     }
     else if (msg->getType() == MSG_CONTROL_STOP)
@@ -141,7 +147,10 @@ void ControlAvatar::OnMessage(Message* msg)
         {
             //cout << "MovableAvatar : will stop TimeLine "<< std::endl;
             //StopTimeLine();
-            SetState(IDLE_STATE);
+           if (getState() == WALK_STATE)
+                SetState(IDLE_STATE);
+           else if (getState() == RUN_STATE)
+                SetState(WALK_STATE);
         }
     }
     else if (msg->getType() == MSG_CONTROL_TURN_LEFT)

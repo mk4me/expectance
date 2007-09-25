@@ -56,6 +56,7 @@ namespace ft
 
         void Start();
         void StopRequest();
+        void RemoveUnexecutedMotions();
 
         void ChangeState(int newState);
 
@@ -93,6 +94,7 @@ namespace ft
         bool m_isTerminated;
 
         void RemoveExecutedMotions();
+        void RemoveMotionsAfterCurrent();
         int UpdateAnimations(float elapsedSeconds);
         void UpdateExecItem(timeline_exec_item_t &item);
         void CheckInterrupting();
@@ -109,6 +111,7 @@ namespace ft
 
         void StartNextMotion();
         void StopLoopAnim();
+        void StopActionAnim();
         void ExchangeExecItems();
         void CheckLoopAnimStop(timeline_exec_item_t &item);
         void MarkAnimStopped(timeline_exec_item_t &item);

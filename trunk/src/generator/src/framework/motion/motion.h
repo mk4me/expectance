@@ -16,6 +16,9 @@ namespace ft
     static const std::string MOTION_WALK_LOOP = "data\\cally\\cally_walkloop.CAF";  
     static const std::string MOTION_WALK_STOP = "data\\cally\\cally_walkstop.CAF";  
     static const std::string MOTION_WALK_IDLE = "data\\cally\\cally_walkidle.CAF";  
+    static const std::string MOTION_RUN_START = "data\\cally\\cally_runstart.CAF";  
+    static const std::string MOTION_RUN_LOOP = "data\\cally\\cally_runloop.CAF";  
+    static const std::string MOTION_RUN_STOP = "data\\cally\\cally_runstop.CAF";  
     static const std::string MOTION_DANCE = "data\\cally\\cally_ballerina.CAF";  
 
     /**

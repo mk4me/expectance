@@ -24,19 +24,19 @@ void IdleState::Init(MovableAvatar* avatar)
     }
 }
 
-void IdleState::Entry(MovableAvatar* avatar)
+void IdleState::Entry(MovableAvatar* avatar, ControlState* oldState)
 {
-    ControlState::Entry(avatar);
+    ControlState::Entry(avatar, oldState);
 
-    Init(avatar);  //TODO: remove this line
+//    Init(avatar);  //TODO: remove this line
 
     m_tlIdle->Reset(avatar->getTimeLineContext());
     avatar->getTimeLine()->AddSubObject(m_tlIdle);
 }
 
-void IdleState::Exit(MovableAvatar* avatar)
+void IdleState::Exit(MovableAvatar* avatar, ControlState* newState)
 {
-    ControlState::Exit(avatar);
+    ControlState::Exit(avatar, newState);
 
 //    if (m_tlIdle->isStarted())
 //        m_tlIdle->SetTerminated(true);

@@ -12,12 +12,12 @@ void ControlState::Init(MovableAvatar* avatar)
     std::cout << toString() << ": Init " << std::endl;
 }
 
-void ControlState::Entry(MovableAvatar* avatar)
+void ControlState::Entry(MovableAvatar* avatar, ControlState* oldState)
 {
     std::cout << toString() << ": Entry " << std::endl;
 }
 
-void ControlState::Exit(MovableAvatar* avatar)
+void ControlState::Exit(MovableAvatar* avatar, ControlState* newState)
 {
     std::cout << toString() << ": Exit " << std::endl;
 }

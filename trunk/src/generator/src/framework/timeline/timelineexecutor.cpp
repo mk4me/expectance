@@ -363,6 +363,20 @@ void TimeLineExecutor::StopLoopAnim()
     }
 }
 
+void TimeLineExecutor::StopActionAnim()
+{
+    if (m_currMotion.motion != NULL && m_currMotion.anim != NULL 
+                && m_currMotion.motion->getMotion() != NULL && !m_currMotion.motion->isAnimLoop())
+    {
+        float fade_out = 0;
+        if (m_currBlender > 0)
+            fade_out = m_currBlender;
+    
+        std::cout << " StopActionAnim-removeAction " << m_currMotion.motion->toString() << " [ no fade out used ]" << endl;
+        getCtx()->getAvatar()->GetCalModel()->getMixer()->removeAction(m_currMotion.motion->getMotion()->getAnimID());
+    }
+}
+
 
 void TimeLineExecutor::ExchangeExecItems()
 {
@@ -843,6 +857,22 @@ void TimeLineExecutor::RemoveExecutedMotions()
         }
     }
 }
+
+void TimeLineExecutor::RemoveUnexecutedMotions()
+{
+    if (m_currMotion.motion != NULL)
+    {
+        TimeLineObject* obj = m_currMotion.motion->getNextObject();
+        while (obj != NULL)
+        {
+            if (LOCAL_DEBUG) cout << "RemoveMotionsAfterCurrent: removal of " << obj->toString() << endl;
+            TimeLineObject* obj_to_delete = obj;
+            obj = obj->getNextObject();
+            obj_to_delete->getParent()->RemoveSubObject(obj_to_delete);  //TODO: consider also different levels of motions
+        }
+    }
+}
+
 
 bool TimeLineExecutor::CheckEpmtyFrame()
 {

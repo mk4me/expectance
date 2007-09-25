@@ -22,8 +22,8 @@ namespace ft
         virtual ~IdleState(void) { /* empty */ }
 
         virtual void Init(MovableAvatar* avatar);
-        virtual void Entry(MovableAvatar* avatar);
-        virtual void Exit(MovableAvatar* avatar);
+        virtual void Entry(MovableAvatar* avatar, ControlState* oldState);
+        virtual void Exit(MovableAvatar* avatar, ControlState* newState);
         virtual void Reset(MovableAvatar* avatar);
 
         virtual std::string toString();

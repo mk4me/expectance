@@ -18,15 +18,18 @@ namespace ft
     class RunState : public ControlState
     {
     public:
-        RunState():ControlState(STATE_IDLE_ID) { /* empty */ }
+        RunState():ControlState(STATE_RUN_ID) { /* empty */ }
         virtual ~RunState(void) { /* empty */ }
 
         virtual void Init(MovableAvatar* avatar);
-        virtual void Entry(MovableAvatar* avatar);
-        virtual void Exit(MovableAvatar* avatar);
+        virtual void Entry(MovableAvatar* avatar, ControlState* oldState);
+        virtual void Exit(MovableAvatar* avatar, ControlState* newState);
         virtual void Reset(MovableAvatar* avatar);
 
         virtual std::string toString();
+    private:
+        TimeLineMotion* m_tlRun;
+        TimeLineMotion* m_tlStopRun;
     };
 };
 
