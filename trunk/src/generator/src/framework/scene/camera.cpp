@@ -29,23 +29,25 @@ Camera::Camera(std::string id)
 	m_scObj = NULL;
 }
 
-void Camera::Init(float pitch, float yaw, float roll, float dist, float leftRight, float upDown)
+void Camera::Init(float yaw, float pitch, float roll, float dist, CameraMode mode)
 {
 	float _x, _y, _z;
 	_x = sinf(DegToRad(yaw))*dist;
 	_y = sinf(DegToRad(pitch))*dist;
 	_z = cosf(DegToRad(yaw))*dist;
-
-	m_cameraMode = ft_FlyCamera;
+	
+	setYaw(yaw); setPitch(pitch); setRoll(roll); setDistance(dist); setCameraMode(mode);
+	
 	m_tracingRadius = 500.0f;
 	m_zoom = 0;
 	m_camPos.set(_x, _y, _z);
 	m_camUp.set(0.0, 1.0, 0.0);
 	m_camAt.set(0.0, 0.0, 0.0);
-	m_viewMtx = LookAtMatrix44(m_camPos, m_camAt, m_camUp);
 
 	DefineFlyCam( m_camPos, DegToRad(yaw), DegToRad(pitch), DegToRad(roll) );
 	m_viewMtx = getFlyCameraViewMatrix();
+
+	m_viewMtx = LookAtMatrix44(m_camPos, m_camAt, m_camUp);
 
 	//tmp
 	cameraSpline = new Spline("data\\spline\\curve.sdf");
@@ -145,7 +147,7 @@ void Camera::OnUpdate(const double deltaTime)
 
 	// Distance & Speed
 	static float _cameraDistance = 0.0;
-	static float _targetDistance = 0.0;
+	//static float _targetDistance = 0.0;
 	static float _cameraSpeed = 40.0;
 	static float _targetSpeed = 40.0;
 	// Temp
@@ -154,7 +156,6 @@ void Camera::OnUpdate(const double deltaTime)
 	static vector3 _prevTrgPos(0.0, 0.0, 0.0), _currTrgPos;
 	matrix44 _orbitViewMtx;
 	matrix44 _thirdPersonViewMtx;
-	float _springConstants[3] = {0.5, 2.5, 4.5};
 
 
 	if (m_scObj!=NULL) //update translation from sceneobject
@@ -164,7 +165,7 @@ void Camera::OnUpdate(const double deltaTime)
 
 	// Update Distances
 	_cameraDistance += (deltaTime*5) * _cameraSpeed;
-	_targetDistance += (deltaTime) * _targetSpeed; //if (movementMode) jesli sie nie rusza to trzeba zmienic speed na 0
+	//_targetDistance += (deltaTime) * _targetSpeed; //if (movementMode) jesli sie nie rusza to trzeba zmienic speed na 0
     
 	if(_currTrgPos!=_prevTrgPos)
 	{
@@ -345,9 +346,50 @@ void Camera::UpdateFlyCamera(const double deltaTime)
 	m_eye = SpringDamp(m_eye, m_eyeTrg, m_eyeTrgPrev, deltaTime, 2.5F, 0.5F, 1.0F);	
 }
 
-void Camera::setTracingCameraRadius(float radius)
+void Camera::setOrbitCameraRadius(float radius)
 {
 	m_tracingRadius = radius;
+}
+
+
+const float Camera::getYaw() const
+{
+	return m_Yaw;
+}
+
+const float Camera::getPitch() const
+{
+	return m_Pitch;
+}
+
+const float Camera::getRoll() const
+{
+	return m_Roll;
+}
+
+const float Camera::getDistance() const
+{
+	return m_distance;
+}
+
+void Camera::setYaw(const float yaw)
+{
+	m_Yaw = yaw;
+}
+
+void Camera::setPitch(const float pitch)
+{
+	m_Pitch = pitch;
+}
+
+void Camera::setRoll(const float roll)
+{
+	m_Roll = roll;
+}
+
+void Camera::setDistance(const float distance)
+{
+	m_distance = distance;
 }
 
 

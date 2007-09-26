@@ -31,7 +31,7 @@ namespace ft
 		const std::string& getID() const;
 
 		/// \brief Initializes basic camera parameters
-	    void Init(float pitch=20.0f, float yaw=0.0f, float roll=0.0f, float dist=1000.0f, float leftRight=0.0f, float upDown=0.0f);
+	    void Init(float yaw=0.0f, float pitch=20.0f, float roll=0.0f, float dist=1000.0f, CameraMode mode=ft_StaticCamera);
 		//! calculate and set Viewport for current camera settings
 		void UpdateView();
 		//! draw current target
@@ -68,9 +68,24 @@ namespace ft
 		void UpdateFlyCamera(const double deltaTime);
 
 		///\brief Sets radius for tracing camera
-		void setTracingCameraRadius(float radius=500.0f);
+		void setOrbitCameraRadius(float radius=500.0f);
 		
-
+		//! get the value of yaw angle
+		const float getYaw() const;
+		//! get the value of pich angle
+		const float getPitch() const;
+		//! get the value of roll angle
+		const float getRoll() const;
+		//! get the value of distance
+		const float getDistance() const;
+		//! set the value of yaw angle
+		void setYaw(const float yaw);
+		//! set the value of pitch angle
+		void setPitch(const float pitch);
+		//! set the value of roll angle
+		void setRoll(const float roll);
+		//! set the value of distance
+		void setDistance(const float distance);
 
 	private:
 		//! set unique ID from sceneobject instance that owns this camera

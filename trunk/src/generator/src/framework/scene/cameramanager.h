@@ -46,7 +46,7 @@ namespace ft
 		bool AddCamera(Camera *pCamObj);   
 		
 		/*! Add independent camera with id */
-		bool AddCamera(std::string camName, float pitch=20.0f, float yaw=0.0f, float roll=0.0f, float dist=800.0f, float leftRight=0.0f, float upDown=0.0f);   
+		bool AddCamera(std::string camName, float yaw=0.0f, float pitch=20.0f, float roll=0.0f, float dist=800.0f, CameraMode mode=ft_StaticCamera);   
 
 		//! get the pointer value of Camera object by unique id
 		Camera* getCamera(std::string id);

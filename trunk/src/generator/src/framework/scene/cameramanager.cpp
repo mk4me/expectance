@@ -49,7 +49,7 @@ bool CameraManager::Init()
 	
 	AddCamera(new Camera("mainCamera"));	
 	setCurrentCamera("mainCamera");
-	m_currentCamera->setTracingCameraRadius(1000.0f); // bigger radius for global scene view for mainCamera
+	m_currentCamera->setOrbitCameraRadius(1000.0f); // bigger radius for global scene view for mainCamera
 	m_currentSceneObjectID = "mainCamera"; //set for current camera to avoid current empty object
 
 
@@ -110,10 +110,10 @@ bool CameraManager::AddCamera(Camera *pCamObj)
 	return true;
 }
 
-bool CameraManager::AddCamera(std::string camName, float pitch, float yaw, float roll, float dist, float leftRight, float upDown)
+bool CameraManager::AddCamera(std::string camName, float yaw, float pitch, float roll, float dist, CameraMode mode)
 {
 	Camera *cam = new Camera(camName);
-	cam->Init(pitch,yaw,roll,dist,leftRight,upDown);
+	cam->Init(yaw,pitch,roll,dist,mode);
 	return AddCamera(cam);
 }
 
@@ -259,7 +259,7 @@ void CameraManager::setCurrentCameraFromConfiguration(int key)
 	//					 };
 
 	if ( (_camDef->mode == ft_StaticCamera) || (_camDef->mode == ft_FlyCamera) )
-	_cam->Init(_pitch, _yaw);
+	_cam->Init(_yaw, _pitch,_cam->getRoll(),_cam->getDistance(),_camDef->mode);
 
 	//5. set that camera active unless it is already active
 	if (_cam != m_currentCamera)
@@ -314,6 +314,7 @@ const std::string CameraManager::getCurrentSceneObjectID()
 const void CameraManager::setCurrentSceneObjectID(const std::string id)
 {
 	m_currentSceneObjectID = id;
+	if (m_currentCamera->getCameraMode()==ft_ThirdPersonCamera) // swich only when camera is in third person mode
 	setCurrentCameraFromConfiguration(GLUT_KEY_F10); //update tracing camera
 }
 
