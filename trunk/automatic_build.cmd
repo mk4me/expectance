@@ -12,13 +12,9 @@ echo ...
 if "%1"=="" echo No parameters ... exit
 if "%1"=="" goto finish
 if "%2"=="" goto finish
-if "%3"=="" goto finish
 
-if "%3"=="abak" set compiler="VCSExpress.exe"
-if "%3"=="mka" set compiler="devenv.exe"
 
 @echo on
-echo %compiler%
 set hn=%computername%
 
 echo Hello it's automatic build time at %date% for generator files
@@ -36,12 +32,13 @@ rem prepare build, deploy and try to run it
 echo build started at: %time% >> ..\%hn%_report.%date%.txt
 
 if "%2"=="release" goto release
-elseif "%2"=="debug" goto debug
+if "%2"=="debug" goto debug
 else goto finish
 
 
 :debug
-"%VS80COMNTOOLS%..\IDE\%compiler%" %CD%\Generator.sln /build "FT Full Debug Max 6|Win32"  /out build_all.log  
+rem "%VS80COMNTOOLS%..\IDE\%compiler%" %CD%\Generator.sln /build "FT Full Debug Max 6|Win32"  /out build_all.log  
+"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_all.log %CD%\Generator.sln "FT Full Debug Max 6|Win32"  
 
 mkdir ..\deploy\tests\rev_%1\debug
 mkdir ..\deploy\tests\rev_%1\debug\data\
@@ -55,7 +52,8 @@ cd ..\..\..\..
 GOTO finish
 
 :release
-"%VS80COMNTOOLS%..\IDE\%compiler%" %CD%\Generator.sln /build "FT Full Release Max 6|Win32"  /out build_all.log  
+rem "%VS80COMNTOOLS%..\IDE\%compiler%" %CD%\Generator.sln /build "FT Full Release Max 6|Win32"  /out build_all.log  
+"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe /r /time /logfile:build_all.log %CD%\Generator.sln "FT Full Release Max 6|Win32"    
 
 mkdir ..\deploy\tests\rev_%1\release
 mkdir ..\deploy\tests\rev_%1\release\data\
