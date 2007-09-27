@@ -33,6 +33,7 @@ namespace ft
     public:
 
         bool LOCAL_DEBUG;
+        bool CHECK_EMPTY_FRAMES;
 
         TimeLineExecutor(void);
         virtual ~TimeLineExecutor(void) { /* empty */}
@@ -98,7 +99,6 @@ namespace ft
         int UpdateAnimations(float elapsedSeconds);
         void UpdateExecItem(timeline_exec_item_t &item);
         void CheckInterrupting();
-        void CheckTermination();
         void IdentifyNextMotion();
         void IdentifyBlenders();
         void LimitCurrentBlender();

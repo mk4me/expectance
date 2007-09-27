@@ -35,6 +35,8 @@ void copyExecItem(timeline_exec_item_t &src, timeline_exec_item_t &dst)
 TimeLineExecutor::TimeLineExecutor(void)
 {
     LOCAL_DEBUG = true;
+    CHECK_EMPTY_FRAMES = false;
+    setState(EXEC_STATE_NOT_INITED);
     Reset();
 }
 
@@ -45,8 +47,6 @@ void TimeLineExecutor::Destroy(void)
 
 void TimeLineExecutor::Reset()
 {
-    setState(EXEC_STATE_NOT_INITED);
-
     clearExecItem(m_prevMotion);
     clearExecItem(m_currMotion);
     clearExecItem(m_nextMotion);
@@ -108,6 +108,7 @@ void TimeLineExecutor::EntryState(int state, int oldState)
     case EXEC_STATE_OVERLAP: EntryOverlapState(oldState); break;
     case EXEC_STATE_FADE_IN: EntryFadeInState(oldState); break;
     case EXEC_STATE_FADE_OUT: EntryFadeOutState(oldState); break;
+    case EXEC_STATE_TERMINATED: EntryTerminatedState(oldState); break;
     default: break;
     }
 }
@@ -124,12 +125,14 @@ void TimeLineExecutor::UpdateState(int state)
     case EXEC_STATE_OVERLAP: UpdateOverlapState(); break;
     case EXEC_STATE_FADE_IN: UpdateFadeInState(); break;
     case EXEC_STATE_FADE_OUT: UpdateFadeOutState(); break;
+    case EXEC_STATE_TERMINATED: UpdateTerminatedState(); break;
     default: break;
     }
 }
 
 void TimeLineExecutor::EntryWaitState(int oldState)
 {
+    Reset();
 }
 
 void TimeLineExecutor::EntrySingleState(int oldState)
@@ -177,6 +180,7 @@ void TimeLineExecutor::EntryTerminatedState(int oldState)
         else
             StopActionAnim();
     }
+    Reset();
 }
 
 
@@ -462,7 +466,7 @@ void TimeLineExecutor::ExchangeExecItems()
 void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
 {
 
-    if (!isTerminated() && CheckEpmtyFrame())  //check if there is no any animation in mixer
+    if (CHECK_EMPTY_FRAMES && !isTerminated() && CheckEpmtyFrame())  //check if there is no any animation in mixer
         cout << " WARN: empty frame !!!! " << endl;
 
     m_lastEvent = EXEC_EVENT_NONE;
@@ -479,11 +483,6 @@ void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
     LimitCurrentBlender();
 
     CheckInterrupting();
-
-    //if (getState() != EXEC_STATE_TERMINATED)
-    //{
-    //    CheckTermination();
-    //}   
 
     int previousState = getState();
 
@@ -511,10 +510,6 @@ void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
 
 }
 
-void TimeLineExecutor::CheckTermination()
-{
-}
-
 void TimeLineExecutor::UpdateContext()
 {
     
@@ -532,23 +527,6 @@ void TimeLineExecutor::UpdateContext()
     getCtx()->anim_new_cycle = m_animNewCycle;
 
 }
-
-
-//void UpdateTermination()
-//{
-//    if (m_currMotion.motion != NULL && m_currMotion.anim != NULL)
-//    {
-//        if (getCtx()->stop_immediate)
-//        {
-//            StopAnimImmediate();
-//        }
-//        else
-//        {
-//            setAnimToFinish(true);
-//        }
-//    }
-//}
-
 
 void TimeLineExecutor::UpdateExecItem(timeline_exec_item_t &item)
 {
@@ -842,33 +820,41 @@ void TimeLineExecutor::UpdateModifiers(const double elapsedSeconds)
 {
     // apply modifiers for current and prev motion 
 
-    // for curr motion
-    TimeLineMotion* motionWithModifier = m_currMotion.motion;
-
-    while (motionWithModifier != NULL)
+    if (getState() != EXEC_STATE_WAIT && getState() != EXEC_STATE_TERMINATED)
     {
-        UpdateModifiersForMotion(motionWithModifier, elapsedSeconds);
-        motionWithModifier = (TimeLineMotion*)motionWithModifier->getParent();
-    }
-
-    //for prev motion
-    if (m_prevMotion.motion != NULL)
-    {
-        motionWithModifier = m_prevMotion.motion;
+        // for curr motion
+        TimeLineMotion* motionWithModifier = m_currMotion.motion;
 
         while (motionWithModifier != NULL)
         {
-            if ( ! IsParent(m_currMotion.motion, motionWithModifier) )
+            UpdateModifiersForMotion(motionWithModifier, elapsedSeconds);
+            motionWithModifier = (TimeLineMotion*)motionWithModifier->getParent();
+        }
+
+        //for prev motion
+        if (m_prevMotion.motion != NULL)
+        {
+            motionWithModifier = m_prevMotion.motion;
+
+            while (motionWithModifier != NULL)
             {
-                UpdateModifiersForMotion(motionWithModifier, elapsedSeconds);
-                motionWithModifier = (TimeLineMotion*)motionWithModifier->getParent();
-            }
-            else
-            {
-                break;
+                if ( ! IsParent(m_currMotion.motion, motionWithModifier) )
+                {
+                    UpdateModifiersForMotion(motionWithModifier, elapsedSeconds);
+                    motionWithModifier = (TimeLineMotion*)motionWithModifier->getParent();
+                }
+                else
+                {
+                    break;
+                }
             }
         }
     }
+    else
+    {
+        UpdateModifiersForMotion(getTimeLine(), elapsedSeconds);
+    }
+
 }
 
 void TimeLineExecutor::UpdateModifiersForMotion(TimeLineMotion* motion, float elapsedSeconds)
