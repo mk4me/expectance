@@ -42,9 +42,5 @@ or in the near future). But it doesn't mean that this person is working on this 
 at the moment. To mark issue as being cuurently worked on the assigned person should change 
 its status to 'ASSIGNED'. 
 
------------------------------------------
-4. Batch Tools
-build_all.cmd - builds project without Visual Studio environment. Requires 2 parameters 1 - revision NUMBER, 2 - build type: render or release are allowed
-automatic_build.cmd - complex batch for taking revision from subversion server, building that and putting necessary files into deploy directory. It utilizes build_all.cmd for build process. It should start from directory level equal to revision directory location
 
 

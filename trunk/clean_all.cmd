@@ -17,6 +17,7 @@ del /F doc\generator.log
 del /F doc\generator.aux
 del /F doc\generator.out
 del /F doc\generator.toc
+del /F doc\generator.chm
 
 del /F bin\release\*.exp
 del /F bin\release\*.ilk 
@@ -30,4 +31,5 @@ del /F Generator.resharper
 del /F Generator.resharper.user
 del /F Cal3d.resharper
 del /F Cal3d.resharper.user
+del /F tools\build_all.log
 del /F null
