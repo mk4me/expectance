@@ -14,9 +14,11 @@ if "%1"=="" goto finish
 if "%2"=="" goto finish
 if "%3"=="" goto finish
 
+if "%3"=="abak" set compiler="VCSExpress.exe"
+if "%3"=="mka" set compiler="devenv.exe"
 
 @echo on
-
+echo %compiler%
 set hn=%computername%
 
 echo Hello it's automatic build time at %date% for generator files
@@ -39,10 +41,7 @@ else goto finish
 
 
 :debug
-if "%3"=="abak" "%VS80COMNTOOLS%..\IDE\VCSExpress.exe" %CD%\Generator.sln /build "FT Full Debug Max 6|Win32"  /out build_all.log 
-elseif "%2"=="mka" "%VS80COMNTOOLS%..\IDE\devenv.exe" %CD%\Generator.sln /build "FT Full Debug Max 6|Win32"  /out build_all.log  
-else goto finish
-
+"%VS80COMNTOOLS%..\IDE\%compiler%" %CD%\Generator.sln /build "FT Full Debug Max 6|Win32"  /out build_all.log  
 
 mkdir ..\deploy\tests\rev_%1\debug
 mkdir ..\deploy\tests\rev_%1\debug\data\
@@ -56,9 +55,7 @@ cd ..\..\..\..
 GOTO finish
 
 :release
-if "%3"=="abak" "%VS80COMNTOOLS%..\IDE\VCSExpress.exe" %CD%\Generator.sln /build "FT Full Release Max 6|Win32"  /out build_all.log 
-elseif "%2"=="mka" "%VS80COMNTOOLS%..\IDE\devenv.exe" %CD%\Generator.sln /build "FT Full Release Max 6|Win32"  /out build_all.log  
-else goto finish
+"%VS80COMNTOOLS%..\IDE\%compiler%" %CD%\Generator.sln /build "FT Full Release Max 6|Win32"  /out build_all.log  
 
 mkdir ..\deploy\tests\rev_%1\release
 mkdir ..\deploy\tests\rev_%1\release\data\
@@ -74,6 +71,9 @@ cd ..\..\..\..
 
 echo build finished at: %time% >> %hn%_report.%date%.txt
 echo ====================(end)====================== >> %hn%_report.%date%.txt
+
+set hn=
+set compiler=
 
 
 
