@@ -12,6 +12,8 @@ echo ...
 if "%1"=="" echo No parameters ... exit
 if "%1"=="" goto finish
 if "%2"=="" goto finish
+if "%3"=="" goto finish
+
 
 @echo on
 
@@ -24,7 +26,7 @@ echo started at: %time% >> %hn%_report.%date%.txt
 
 mkdir rev_%1
 rem get files from repository
-"C:\Program Files\TortoiseSVN\bin\TortoiseProc.exe" /command:checkout /url:"http://tools.assembla.com/svn/aErVZ6gMOr3lOqabIlDkbG/trunk" /path:"C:\Work\current\generator\rev_%1" /revision:%1 /closeonend:1 /notempfile
+"C:\Program Files\TortoiseSVN\bin\TortoiseProc.exe" /command:checkout /url:"http://tools.assembla.com/svn/aErVZ6gMOr3lOqabIlDkbG/trunk" /path:"%CD%\rev_%1" /revision:%1 /closeonend:1 /notempfile
 rem ___ copy build_all.cmd rev_%1
 cd rev_%1
 rem prepare build, deploy and try to run it
@@ -37,7 +39,10 @@ else goto finish
 
 
 :debug
-"%VS80COMNTOOLS%..\IDE\devenv.exe" %CD%\Generator.sln /build "FT Full Debug Max 6|Win32"  /out build_all.log 
+if "%3"=="abak" "%VS80COMNTOOLS%..\IDE\VCSExpress.exe" %CD%\Generator.sln /build "FT Full Debug Max 6|Win32"  /out build_all.log 
+elseif "%2"=="mka" "%VS80COMNTOOLS%..\IDE\devenv.exe" %CD%\Generator.sln /build "FT Full Debug Max 6|Win32"  /out build_all.log  
+else goto finish
+
 
 mkdir ..\deploy\tests\rev_%1\debug
 mkdir ..\deploy\tests\rev_%1\debug\data\
@@ -51,7 +56,9 @@ cd ..\..\..\..
 GOTO finish
 
 :release
-"%VS80COMNTOOLS%..\IDE\devenv.exe" %CD%\Generator.sln /build "FT Full Release Max 6|Win32"  /out build_all.log 
+if "%3"=="abak" "%VS80COMNTOOLS%..\IDE\VCSExpress.exe" %CD%\Generator.sln /build "FT Full Release Max 6|Win32"  /out build_all.log 
+elseif "%2"=="mka" "%VS80COMNTOOLS%..\IDE\devenv.exe" %CD%\Generator.sln /build "FT Full Release Max 6|Win32"  /out build_all.log  
+else goto finish
 
 mkdir ..\deploy\tests\rev_%1\release
 mkdir ..\deploy\tests\rev_%1\release\data\
