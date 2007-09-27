@@ -59,6 +59,9 @@ void InputManager::OnKey(unsigned char key, int x, int y)
     case 't':
       UpdateManager::getInstance()->SendMessage(new Message(MSG_TEST), true);
        break;     
+    case 'i':
+      UpdateManager::getInstance()->SendMessage(new Message(MSG_DUMP_STATE), true);
+       break;     
     // test for quit event
     case 27:
     case 'Q':

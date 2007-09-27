@@ -34,6 +34,8 @@ namespace ft
       static const int MSG_START_SIMULATION = 20;
       static const int MSG_RESTART_SIMULATION = 21;
 
+      static const int MSG_DUMP_STATE = 22;
+
 
 
 

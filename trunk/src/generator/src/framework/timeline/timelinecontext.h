@@ -21,6 +21,7 @@ namespace ft
     static const int EXEC_STATE_OVERLAP = 3;
     static const int EXEC_STATE_FADE_IN = 4;
     static const int EXEC_STATE_FADE_OUT = 5;
+    static const int EXEC_STATE_TERMINATED = 6;
 
 
 	/**

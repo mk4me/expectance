@@ -276,7 +276,7 @@ void MovableAvatar::Init()
   InitMotions();
   setTimeLine(new TimeLine());
   TimeLineContext* ctx = new TimeLineContext();
-  //ctx->stop_immediate = true;
+  ctx->stop_immediate = false;
 
   ctx->remove_after_execution = true;
 
@@ -343,7 +343,7 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
 void MovableAvatar::OnMessage(Message* msg)
 {
     Avatar::OnMessage(msg);
-    if (msg->getType() == MSG_TEST) 
+    if (msg->getType() == MSG_DUMP_STATE) 
     {
 
         this->Dump();

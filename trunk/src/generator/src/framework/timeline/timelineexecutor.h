@@ -98,6 +98,7 @@ namespace ft
         int UpdateAnimations(float elapsedSeconds);
         void UpdateExecItem(timeline_exec_item_t &item);
         void CheckInterrupting();
+        void CheckTermination();
         void IdentifyNextMotion();
         void IdentifyBlenders();
         void LimitCurrentBlender();
@@ -131,12 +132,14 @@ namespace ft
         void EntryOverlapState(int oldState);
         void EntryFadeInState(int oldState);
         void EntryFadeOutState(int oldState);
+        void EntryTerminatedState(int oldState);
 
         void UpdateWaitState();
         void UpdateSingleState();
         void UpdateOverlapState();
         void UpdateFadeInState();
         void UpdateFadeOutState();
+        void UpdateTerminatedState();
     };
 };
 

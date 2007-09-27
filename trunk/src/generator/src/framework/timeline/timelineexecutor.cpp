@@ -137,54 +137,65 @@ void TimeLineExecutor::EntrySingleState(int oldState)
     if (oldState != EXEC_STATE_FADE_IN && oldState != EXEC_STATE_OVERLAP)
     {
         StartNextMotion();
-        ExchangeExecItems();
     }
-    
 }
 
 void TimeLineExecutor::EntryOverlapState(int oldState)
 {
     StopLoopAnim();
     StartNextMotion();
-    ExchangeExecItems();
 }
 
 void TimeLineExecutor::EntryFadeInState(int oldState)
 {
     StartNextMotion();
-    ExchangeExecItems();
-}
-void TimeLineExecutor::EntryFadeOutState(int oldState)
-{
-    StopLoopAnim();
 }
 
-//void TimeLineExecutor::EntryTerminatedState()
-//{
-//    if (getCtx()->stop_immediate)
-//    {
-//
-//        if (m_prevMotion.motion != NULL && m_prevMotion.anim != NULL)
-//        {
-//                StopAnim(m_prevMotion);
-//        }
-//
-//        if (m_currMotion.motion != NULL && m_currMotion.anim != NULL)
-//        {
-//            
-//                StopAnimImmediate(m_currMotion);
-//        }
-//    }
-//}
+void TimeLineExecutor::EntryFadeOutState(int oldState)
+{
+   if (m_currMotion.motion->isAnimLoop())
+   {
+       StopLoopAnim();
+   }
+   else
+   {
+       //when is not terminated the action should finish automatically
+        if (isTerminated())
+        {
+            StopActionAnim();
+        }
+   }
+    
+}
+
+void TimeLineExecutor::EntryTerminatedState(int oldState)
+{
+    if (m_currMotion.motion !=NULL && m_currMotion.anim != NULL)
+    {
+        if (m_currMotion.motion->isAnimLoop())
+            StopLoopAnim();
+        else
+            StopActionAnim();
+    }
+}
+
+
 
 void TimeLineExecutor::UpdateWaitState()
 {
-    if (!isTerminated() && !getTimeLine()->isEmpty())
+    if (!isTerminated())
     {
-        if (m_currBlender > 0)
-            ChangeState(EXEC_STATE_FADE_IN);
-        else
-            ChangeState(EXEC_STATE_SINGLE);
+        if (!getTimeLine()->isEmpty())
+        {
+            if (m_currBlender > 0)
+                ChangeState(EXEC_STATE_FADE_IN);
+            else
+                ChangeState(EXEC_STATE_SINGLE);
+        }
+    }
+    else
+    {
+        ChangeState(EXEC_STATE_TERMINATED);
     }
 }
 
@@ -194,30 +205,64 @@ void TimeLineExecutor::UpdateSingleState()
     {
         if (m_currMotion.anim == NULL )
         {
-            if (m_nextMotion.motion != NULL)
+            if (!isTerminated())
             {
-                if (m_currBlender > 0)
-                    ChangeState(EXEC_STATE_FADE_IN);
+                if (m_nextMotion.motion != NULL)
+                {
+                    if (m_currBlender > 0)
+                        ChangeState(EXEC_STATE_FADE_IN);
+                    else
+                        ChangeState(EXEC_STATE_SINGLE);
+                }
                 else
-                    ChangeState(EXEC_STATE_SINGLE);
+                {
+                    ChangeState(EXEC_STATE_WAIT);
+                }
             }
             else
             {
-                ChangeState(EXEC_STATE_WAIT);
+                ChangeState(EXEC_STATE_TERMINATED); //anims (if still sterted) will be finished at entry to TERMINATED state
             }
         }
         else
         {
-            float animLeftTime = m_currMotion.animDuration - m_currMotion.animTime;
-
-            if (!m_currMotion.motion->isAnimLoop() || m_currMotion.lastStep)
+            if (!isTerminated())
             {
-                if (m_currBlender > 0 && m_currBlender >= animLeftTime)
+                float animLeftTime = m_currMotion.animDuration - m_currMotion.animTime;
+
+                if (!m_currMotion.motion->isAnimLoop() || m_currMotion.lastStep)
                 {
-                    if (m_nextMotion.motion != NULL)
-                        ChangeState(EXEC_STATE_OVERLAP);
-                    else
+                    if (m_currBlender > 0 && m_currBlender >= animLeftTime)
+                    {
+                        if (m_nextMotion.motion != NULL)
+                            ChangeState(EXEC_STATE_OVERLAP);
+                        else
+                            ChangeState(EXEC_STATE_FADE_OUT);
+                    }
+                }
+            }
+            else
+            {
+                bool toStopNow = false;
+                if (getCtx()->stop_immediate)
+                {
+                    toStopNow = true;
+                }
+                else
+                {
+                    float animLeftTime = m_currMotion.animDuration - m_currMotion.animTime;
+                    if (m_currBlender >= animLeftTime)
+                    {
+                        toStopNow = true;
+                    }
+                }
+
+                if (toStopNow)
+                {
+                    if (m_currBlender > 0)
                         ChangeState(EXEC_STATE_FADE_OUT);
+                    else
+                        ChangeState(EXEC_STATE_TERMINATED);
                 }
             }
         }
@@ -262,26 +307,52 @@ void TimeLineExecutor::UpdateFadeInState()
     }
 
 }
+
 void TimeLineExecutor::UpdateFadeOutState()
 {
     if (m_currMotion.motion != NULL)
     {
         if (m_currMotion.anim == NULL)
         {
-            if (m_nextMotion.motion != NULL)
+            if (!isTerminated())
             {
-                ChangeState(EXEC_STATE_SINGLE);
+                if (m_nextMotion.motion != NULL)
+                {
+                    ChangeState(EXEC_STATE_SINGLE);
+                }
+                else
+                {
+                    ChangeState(EXEC_STATE_WAIT);
+                }
             }
             else
             {
-                ChangeState(EXEC_STATE_WAIT);
+                ChangeState(EXEC_STATE_TERMINATED);
             }
         }
+    }
+    else
+    {
+        cout << " ERR: TimeLineExecutor::UpdateFadeOutState() " << " null motion for " 
+                            << _GET_STATE_NAME(getState()) << " !!! " << endl;
+    }
+}
+
+void TimeLineExecutor::UpdateTerminatedState()
+{
+    if (!isTerminated())
+    {
+        ChangeState(EXEC_STATE_WAIT);
     }
 }
 
 void TimeLineExecutor::StartNextMotion()
 {
+    if (isTerminated())
+    {
+        return;
+    }
+
     if (m_nextMotion.motion != NULL)
     {
         float fade_in = 0;
@@ -323,6 +394,7 @@ void TimeLineExecutor::StartNextMotion()
         m_prevBlender = m_currBlender;
         m_animChanged = true;
     }
+    ExchangeExecItems();
 }
 
 CalAnimation* TimeLineExecutor::FindAddedAnimInCal3d(int animType)
@@ -390,7 +462,7 @@ void TimeLineExecutor::ExchangeExecItems()
 void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
 {
 
-    if (CheckEpmtyFrame())  //check if there is no any animation in mixer
+    if (!isTerminated() && CheckEpmtyFrame())  //check if there is no any animation in mixer
         cout << " WARN: empty frame !!!! " << endl;
 
     m_lastEvent = EXEC_EVENT_NONE;
@@ -403,10 +475,15 @@ void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
 
     IdentifyNextMotion();
     IdentifyBlenders();
-//    if (getState() == EXEC_)
+
     LimitCurrentBlender();
 
     CheckInterrupting();
+
+    //if (getState() != EXEC_STATE_TERMINATED)
+    //{
+    //    CheckTermination();
+    //}   
 
     int previousState = getState();
 
@@ -432,6 +509,10 @@ void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
         }
     }
 
+}
+
+void TimeLineExecutor::CheckTermination()
+{
 }
 
 void TimeLineExecutor::UpdateContext()
@@ -899,6 +980,7 @@ std::string TimeLineExecutor::_GET_STATE_NAME(int state)
     case EXEC_STATE_OVERLAP: strState = "EXEC_STATE_OVERLAP"; break;
     case EXEC_STATE_FADE_IN: strState = "EXEC_STATE_FADE_IN"; break;
     case EXEC_STATE_FADE_OUT: strState = "EXEC_STATE_FADE_OUT"; break;
+    case EXEC_STATE_TERMINATED: strState = "EXEC_STATE_TERMINATED"; break;
     default: strState = "<unknown>"; break;
     }
     

@@ -174,5 +174,22 @@ void ControlAvatar::OnMessage(Message* msg)
             m_stepOrientation *= QuatToCalQuat(addRot);
         }
     }
+    else if (msg->getType() == MSG_TEST)
+    {
+        if (this->getTLExecutor() != NULL)
+        {
+            if (this->getTLExecutor()->isTerminated()) 
+            {
+                cout << " setTerminated ---------------------- false" << endl;
+                this->getTLExecutor()->setTerminated(false);
+            }
+            else
+            {
+                cout << " setTerminated ---------------------- true" << endl;
+                this->getTLExecutor()->setTerminated(true);
+            }
+        }
+    }
+
  }
 
