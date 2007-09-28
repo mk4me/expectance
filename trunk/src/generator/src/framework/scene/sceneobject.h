@@ -28,15 +28,28 @@ namespace ft
 		/// \brief virtual base for inherited objects for rendering shadows
 		virtual bool RenderShadow();
 		
-		/// \brief Sets object position by 3D vector
+		/// \brief Sets object position to given position value
 		SceneObject& setPosition(const CalVector &position);
-		/// \brief Sets object orientation by quaternion 
-		SceneObject& setOrientation(const CalQuaternion &orientation);
-		/// \brief Sets object direction by 3D unit vector
+		/// \brief Changes object position by given deltaPosition value
+		SceneObject& changePosition(const CalVector &deltaPosition);
+
+		/// \brief Sets object orientation to given rotation value
+		SceneObject& setOrientation(const CalQuaternion &rotation);
+		/// \brief Changes object orientation by given deltaRotation value
+		SceneObject& changeOrientation(const CalQuaternion &deltaRotation);
+
+		/// \brief Sets object direction to given direction value
 		SceneObject& setDirection(const CalVector &direction);
+		/// \brief Sets object direction to given direction value
+		SceneObject& setDirection(const CalQuaternion &direction);
+		/// \brief Changes object direction by given direction value
+		SceneObject& changeDirection(const CalVector &deltaDirection);
+		/// \brief Changes object direction by 3D unit vector
+		SceneObject& changeDirection(const CalQuaternion &deltaDirection);
 
 		/// \brief Sets object color by vector of RGB values 
 		SceneObject& setColor(const CalVector &color);
+
 		//! get the value of object position 
 		const CalVector& getPosition() const;
 		////! get the value of object orientation by quaternion
@@ -55,14 +68,12 @@ namespace ft
 		const bool isVisible() const;
 		/// \brief Prints general information about values of object properties  
 		const void PrintInfo(void) const;
-		
-		CalQuaternion m_stepOrientation; //for tmp use (lcs modifier and controlavatar)
 
 	protected:
 		bool m_visible;
-		CalVector m_position,         // position (x,y,z)
-			      m_direction;	      // direction of object (ux,uy,uz)
-		CalQuaternion m_orientation;  // rotation of object (axis of rotation and angle of rotation)
+		CalVector m_position,            // position (x,y,z)
+			      m_direction;	         // direction of object (ux,uy,uz)
+		CalQuaternion m_orientation;     // rotation of object (axis of rotation and angle of rotation)
 		CalVector m_color;
 		float m_alpha;
 	};

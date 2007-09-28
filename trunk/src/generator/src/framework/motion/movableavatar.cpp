@@ -276,7 +276,7 @@ void MovableAvatar::Init()
   InitMotions();
   setTimeLine(new TimeLine());
   TimeLineContext* ctx = new TimeLineContext();
-  ctx->stop_immediate = false;
+  ctx->stop_immediate = true;
 
   ctx->remove_after_execution = true;
 

@@ -14,8 +14,6 @@ SceneObject::SceneObject(void)
 	m_color.set(1.0,1.0,1.0); //white
 	m_alpha = 1;
 	m_visible = true;
-	m_stepOrientation = QuatToCalQuat(Quat(degToRad(0.0f), Vec(0,1,0))); // (zero angle around Y axis step rotation)
-
 }
 
 bool SceneObject::Render()
@@ -29,17 +27,26 @@ bool SceneObject::RenderShadow()
 }
 
 
-SceneObject& SceneObject::setPosition(const CalVector& pos)
+SceneObject& SceneObject::setPosition(const CalVector &position)
 {
-	m_position = pos;
+	m_position = position;
+	return *this;
+}
+SceneObject& SceneObject::changePosition(const CalVector &deltaPosition)
+{
+	m_position += deltaPosition;
 	return *this;
 }
 
-
-
-SceneObject& SceneObject::setOrientation(const CalQuaternion &orientation)
+SceneObject& SceneObject::setOrientation(const CalQuaternion &rotation)
 {
-	m_orientation = orientation;
+	m_orientation = rotation;
+	return *this;
+}
+
+SceneObject& SceneObject::changeOrientation(const CalQuaternion &deltaRotation)
+{
+	m_orientation *= deltaRotation;
 	return *this;
 }
 
@@ -48,6 +55,28 @@ SceneObject& SceneObject::setDirection(const CalVector &direction)
 	m_direction = direction;
 	return *this;
 }
+
+SceneObject& SceneObject::setDirection(const CalQuaternion &direction)
+{
+	// TODO	 verify practical sense of that
+	CalVector _originDirection = CalVector(0,0,1);
+	_originDirection*=direction;
+	m_direction = _originDirection;
+	return *this;
+}
+SceneObject& SceneObject::changeDirection(const CalVector &deltaDirection)
+{
+	m_direction += deltaDirection;
+	return *this;
+}
+
+SceneObject& SceneObject::changeDirection(const CalQuaternion &deltaDirection)
+{
+	m_direction *= deltaDirection;
+	return *this;
+}
+
+
 
 SceneObject& SceneObject::setColor(const CalVector& col)
 {

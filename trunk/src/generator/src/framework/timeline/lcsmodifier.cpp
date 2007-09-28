@@ -62,7 +62,8 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 
     //SET ROTATION ////////////////////
     CalQuaternion currRotatation = bone->getRotation();
-	currRotatation *= timeLineContext->getAvatar()->m_stepOrientation;
+	currRotatation *= timeLineContext->getAvatar()->getOrientation();
+	//currRotatation *= timeLineContext->getAvatar()->m_stepOrientation;
     bone->setRotation(currRotatation);
 
         
@@ -185,7 +186,8 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
     if (REST_TRANS_CALC)
        diff += restTrans; 
 
-    diff *= timeLineContext->getAvatar()->m_stepOrientation;
+    diff *= timeLineContext->getAvatar()->getOrientation();
+    //diff *= timeLineContext->getAvatar()->m_stepOrientation;
 
     
     m_vTranslation += diff;
@@ -206,7 +208,7 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 	
 	//set current parameters lcs to scene object
 	timeLineContext->getAvatar()->setPosition(m_vTranslation);
-	timeLineContext->getAvatar()->setOrientation(currRotatation);
+	//!timeLineContext->getAvatar()->setOrientation(currRotatation);
 
 }
 
