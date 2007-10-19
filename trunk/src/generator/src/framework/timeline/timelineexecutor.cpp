@@ -187,6 +187,7 @@ void TimeLineExecutor::EntryTerminatedState(int oldState)
 
 void TimeLineExecutor::UpdateWaitState()
 {
+    //return;  //uncomment it only for test without animation
     if (!isTerminated())
     {
         if (!getTimeLine()->isEmpty())

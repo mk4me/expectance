@@ -38,6 +38,12 @@ namespace ft
 		/// \brief Changes object orientation by given deltaRotation value
 		SceneObject& changeOrientation(const CalQuaternion &deltaRotation);
 
+		/// \brief Sets object global rotation offset to given rotation value
+		SceneObject& setGlobalRotationOffset(const CalQuaternion &rotation);
+		/// \brief Changes object global rotation offset by given deltaRotation value
+		SceneObject& changeGlobalRotationOffset(const CalQuaternion &deltaRotation);
+
+
 		/// \brief Sets object direction to given direction value
 		SceneObject& setDirection(const CalVector &direction);
 		/// \brief Sets object direction to given direction value
@@ -54,6 +60,8 @@ namespace ft
 		const CalVector& getPosition() const;
 		////! get the value of object orientation by quaternion
 		const CalQuaternion& getOrientation() const;
+		////! get the value of object orientation by quaternion
+		const CalQuaternion& getGlobalRotationOffset() const;
 		//! get the value of object direction by 3D vector 
 		const CalVector& getDirection() const;
 
@@ -74,6 +82,7 @@ namespace ft
 		CalVector m_position,            // position (x,y,z)
 			      m_direction;	         // direction of object (ux,uy,uz)
 		CalQuaternion m_orientation;     // rotation of object (axis of rotation and angle of rotation)
+        CalQuaternion m_globalRotationOffset;     // offset added to rotation of object 
 		CalVector m_color;
 		float m_alpha;
 	};

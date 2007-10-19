@@ -115,7 +115,8 @@ void Application::InitAvatars()
                 vStartPos.z += z_off;
             }
 
-            av->setStartPosition(vStartPos);
+            //av->setStartPosition(vStartPos);
+            av->setPosition(vStartPos);
             ControlManager::getInstance()->AddControlAvatar(av);
             if (i==0)
             {

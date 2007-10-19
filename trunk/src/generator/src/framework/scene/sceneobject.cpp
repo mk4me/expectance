@@ -10,7 +10,9 @@ SceneObject::SceneObject(void)
 {
 	m_position.set(0,0,0);
 	m_direction.set(0,0,1); // each scene object start direction according to positive Z axis (zero angle)
+                            // ABAK's note: doesn't true for avatar - avatar is originally oriented along positive X axis
 	m_orientation = QuatToCalQuat( Quat(degToRad(0.0f), Vec(0,1,0)) ); //global orientation (zero angle around Y axis for initial global rotation)
+    m_globalRotationOffset = CalQuaternion(); // no rotation
 	m_color.set(1.0,1.0,1.0); //white
 	m_alpha = 1;
 	m_visible = true;
@@ -47,6 +49,18 @@ SceneObject& SceneObject::setOrientation(const CalQuaternion &rotation)
 SceneObject& SceneObject::changeOrientation(const CalQuaternion &deltaRotation)
 {
 	m_orientation *= deltaRotation;
+	return *this;
+}
+
+SceneObject& SceneObject::setGlobalRotationOffset(const CalQuaternion &rotation)
+{
+	m_globalRotationOffset = rotation;
+	return *this;
+}
+
+SceneObject& SceneObject::changeGlobalRotationOffset(const CalQuaternion &deltaRotation)
+{
+	m_globalRotationOffset *= deltaRotation;
 	return *this;
 }
 
@@ -93,6 +107,12 @@ const CalQuaternion& SceneObject::getOrientation() const
 {
 	return m_orientation;
 }
+
+const CalQuaternion& SceneObject::getGlobalRotationOffset() const
+{
+	return m_globalRotationOffset;
+}
+
 
 const CalVector& SceneObject::getDirection() const
 {
