@@ -17,9 +17,7 @@ void WalkState::Init(MovableAvatar* avatar)
     {
         TimeLineMotion* timeLineMotion = new TimeLineMotion();
         timeLineMotion->setMotion(mot);
-        timeLineMotion->setLoopNumber(1);
         timeLineMotion->setInterupting(true);
-//        timeLineMotion->setAnimLoop(true);
         timeLineMotion->setBlender(new TimeLineBlender(0.25f));
         m_tlWalk->AddSubObject(timeLineMotion, ADD_OBJECT_AS_LAST);
     }
@@ -28,25 +26,18 @@ void WalkState::Init(MovableAvatar* avatar)
     if (mot != NULL)
     {
         TimeLineMotion* timeLineMotion = new TimeLineMotion();
-//        timeLineMotion->setLoopNumber(1);
         timeLineMotion->setAnimLoop(true);
-        timeLineMotion->setInterupting(true);
         timeLineMotion->setMotion(mot);
         timeLineMotion->setBlender(new TimeLineBlender(0.2f));
         m_tlWalk->AddSubObject(timeLineMotion);
     }
-
-    
 
     mot = avatar->GetMotion(MOTION_WALK_STOP);
     if (mot != NULL)
     {
         TimeLineMotion* timeLineMotion = new TimeLineMotion();
         timeLineMotion->setMotion(mot);
-//        timeLineMotion->setLoopNumber(1);
-        //timeLineMotion->setAnimLoop(true);
         timeLineMotion->setBlender(new TimeLineBlender(0.2f));
-        timeLineMotion->setInterupting(true);
         m_tlWalk->AddSubObject(timeLineMotion);
         m_tlStopWalk = timeLineMotion; 
     }
@@ -58,10 +49,7 @@ void WalkState::Entry(MovableAvatar* avatar, ControlState* oldState)
 {
     ControlState::Entry(avatar, oldState);
 
-//    Init(avatar);  //TODO: remove this line
-
     m_tlStopWalk->setInterupting(false);
-    //m_tlWalk->Reset(avatar->getTimeLineContext());
     avatar->getTimeLine()->AddSubObject(m_tlWalk);
 
     if (oldState->getId() == STATE_RUN_ID)
@@ -79,7 +67,6 @@ void WalkState::Exit(MovableAvatar* avatar, ControlState* newState)
 void WalkState::Reset(MovableAvatar* avatar)
 {
     ControlState::Reset(avatar);
-//    m_tlStopWalk->setInterupting(false);
 }
 
 std::string WalkState::toString()
