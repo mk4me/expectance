@@ -90,6 +90,7 @@ namespace ft
 
         int m_lastEvent;
         bool m_animChanged;
+        bool m_animStopped;
         bool m_animNewCycle;
 
         bool m_isTerminated;

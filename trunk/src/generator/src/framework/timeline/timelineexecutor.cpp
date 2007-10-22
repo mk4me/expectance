@@ -380,6 +380,10 @@ void TimeLineExecutor::StartNextMotion()
                 {
                     cout << "ERROR: TimeLineExecutor::StartNextMotion - no cycle anim extracted from Cal3d after adding motion " << endl;
                 }
+                else
+                {
+                    m_animChanged = true;
+                }
 
             }
             else
@@ -393,11 +397,13 @@ void TimeLineExecutor::StartNextMotion()
                 {
                     cout << "ERROR: TimeLineExecutor::StartNextMotion - no action anim extracted from Cal3d after adding motion " << endl;
                 }
-
+                else
+                {
+                    m_animChanged = true;
+                }
             }
         }
         m_prevBlender = m_currBlender;
-        m_animChanged = true;
     }
     ExchangeExecItems();
 }
@@ -473,6 +479,15 @@ void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
     m_lastEvent = EXEC_EVENT_NONE;
     m_animChanged = false;
     m_animNewCycle = false;
+    m_animStopped = false;
+
+    //test of anim stopped
+    bool currAnimStartedLastTime = false;
+    if (m_currMotion.motion != NULL && m_currMotion.anim != NULL)
+    {
+        currAnimStartedLastTime = true;
+    }
+
 
     UpdateExecItem(m_prevMotion);
     UpdateExecItem(m_currMotion);
@@ -494,6 +509,11 @@ void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
         m_lastEvent = EXEC_EVENT_STATE_CHANGED;
     }
 
+    //check if anim stopped at this update
+    if (currAnimStartedLastTime && ((m_currMotion.motion == NULL || m_currMotion.anim == NULL)))
+    {
+        m_animStopped = true;
+    }
 
     UpdateContext();
 
@@ -513,7 +533,6 @@ void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
 
 void TimeLineExecutor::UpdateContext()
 {
-    
     getCtx()->prevAnim = m_prevMotion.anim;
     getCtx()->currAnim = m_currMotion.anim;
     getCtx()->prevAnimTime = m_prevMotion.animTime;
@@ -525,6 +544,7 @@ void TimeLineExecutor::UpdateContext()
     getCtx()->exec_state = getState();
     getCtx()->exec_event = m_lastEvent;
     getCtx()->anim_changed = m_animChanged;
+    getCtx()->anim_stopped = m_animStopped;
     getCtx()->anim_new_cycle = m_animNewCycle;
 
 }

@@ -18,7 +18,6 @@ LCSModifier::LCSModifier()
      m_fAnimRot = 0;
      m_vLastAnimDir = CalVector(0,0,0);
 
-
     TRACE_TRANSLATION = false;
     TRACE_ANIM_ORIENT = false;
     TRACE_ROOT_ROTATION = false;
@@ -287,7 +286,6 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
         currPos = bone->getTranslation();
     }
 
-
     CalVector diff = currPos - m_vLastPos;
     float y_to_set = currPos.y;
 
@@ -412,8 +410,7 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 
 void LCSModifier::ApplyAnimDirectionToGlobalRotation(CalQuaternion& qGlobalRotOffset, CalVector currPos, TimeLineContext * timeLineContext)
 {
-    if (timeLineContext->anim_changed || timeLineContext->anim_new_cycle)
-        //|| TODO: add anim stopped
+    if (timeLineContext->anim_changed || timeLineContext->anim_new_cycle || timeLineContext->anim_stopped)
     {
 //        cout << " ---------- anim changed  ----  m_fAnimRot " << radToDeg(m_fAnimRot) << endl;
 
@@ -454,12 +451,6 @@ void LCSModifier::ApplyAnimDirectionToGlobalRotation(CalQuaternion& qGlobalRotOf
 
         m_vLastAnimDir = vCurrAnimDir;
     }
-    //else if () // no current anim
-    //{
-        //if anim stopped
-            //if (m_fAnimRot!=0)
-                //qGlobalRotOffset *= QuatToCalQuat( Quat(m_fAnimRot, Vec(0,1,0)));
-    //}
 }
 
 CalQuaternion LCSModifier::CalculateCurrentRootOrientAroundY(CalBone *rootBone)

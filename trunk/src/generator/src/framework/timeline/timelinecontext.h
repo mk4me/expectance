@@ -60,6 +60,7 @@ namespace ft
         int exec_event;
         bool anim_changed;
         bool anim_new_cycle;
+        bool anim_stopped;
     };
 };
 
