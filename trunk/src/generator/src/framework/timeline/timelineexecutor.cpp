@@ -162,11 +162,7 @@ void TimeLineExecutor::EntryFadeOutState(int oldState)
    }
    else
    {
-       //when is not terminated the action should finish automatically
-        if (isTerminated())
-        {
-            StopActionAnim();
-        }
+       //action should finish automatically
    }
     
 }
@@ -178,7 +174,7 @@ void TimeLineExecutor::EntryTerminatedState(int oldState)
         if (m_currMotion.motion->isAnimLoop())
             StopLoopAnim();
         else
-            StopActionAnim();
+            StopActionAnim(); //NOTE: there is no fade_out regerded for action at this case (not possible unexpected fade_out for action in Cla3d)
     }
     Reset();
 }
@@ -290,24 +286,17 @@ void TimeLineExecutor::UpdateFadeInState()
 {
     if (m_currMotion.motion != NULL)
     {
-        if (m_currMotion.anim == NULL)
-        {
-            if (m_nextMotion.motion != NULL)
-            {
-                ChangeState(EXEC_STATE_SINGLE);
-            }
-            else
-            {
-                ChangeState(EXEC_STATE_WAIT);
-            }
-        }
-        else
+        if (m_currMotion.anim != NULL)
         {
             float animLeftTime = m_currMotion.animDuration - m_currMotion.animTime;
             if (m_prevBlender > 0 && m_prevBlender >= animLeftTime)
             {
                 ChangeState(EXEC_STATE_SINGLE);
             }
+        }
+        else
+        {
+            cout << "ERROR: TimeLineExecutor::UpdateFadeInState():  m_currMotion.anim == NULL during FADE_IN state !!!" << endl;
         }
     }
 
