@@ -16,6 +16,7 @@ namespace ft
         CalAnimation* anim;  // reference to animation in Cal3d
         float animTime;  // time of animation in Cal3d
         float animDuration; // duration of animation in Cal3d
+        float coreAnimDuration; //duration of animation extracted from coreAnimation - NOTE that it can be different from animDuration (eg for cycles)
 
         float lastTime; // for cycle countin for cyclic animation
         bool  lastStep;
@@ -102,7 +103,8 @@ namespace ft
         void CheckInterrupting();
         void IdentifyNextMotion();
         void IdentifyBlenders();
-        void LimitCurrentBlender();
+        void LimitCurrBlenderForNextAnim();
+        void LimitCurrBlenderForCurrAnim();
         void UpdateContext();
 
         TimeLineMotion* GetSubMotionWithAnim(TimeLineMotion* motion);

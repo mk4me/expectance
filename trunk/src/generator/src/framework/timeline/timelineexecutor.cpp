@@ -13,6 +13,7 @@ void clearExecItem(timeline_exec_item_t &item)
     item.anim = NULL;
     item.animTime = 0;
     item.animDuration = 0;
+    item.coreAnimDuration = 0;
     item.lastStep= false;
     item.loopStep= 0;
     item.lastTime = 0;
@@ -24,6 +25,7 @@ void copyExecItem(timeline_exec_item_t &src, timeline_exec_item_t &dst)
     dst.anim = src.anim;
     dst.animTime = src.animTime;
     dst.animDuration = src.animDuration;
+    dst.coreAnimDuration = src.coreAnimDuration;
     dst.lastStep = src.lastStep;
     dst.loopStep = src.loopStep;
     dst.lastTime = src.lastTime;
@@ -189,7 +191,7 @@ void TimeLineExecutor::UpdateWaitState()
         if (!getTimeLine()->isEmpty())
         {
             if (m_currBlender > 0)
-                ChangeState(EXEC_STATE_FADE_IN);
+                ChangeState(EXEC_STATE_FADE_IN);  //NOTE(abak): no possible case in practice - no blender defined in WAIT state
             else
                 ChangeState(EXEC_STATE_SINGLE);
         }
@@ -210,8 +212,8 @@ void TimeLineExecutor::UpdateSingleState()
             {
                 if (m_nextMotion.motion != NULL)
                 {
-                    if (m_currBlender > 0)
-                        ChangeState(EXEC_STATE_FADE_IN);
+                    if (m_currBlender > 0)  
+                        ChangeState(EXEC_STATE_FADE_IN);  // NOTE(abak): is it resonable?
                     else
                         ChangeState(EXEC_STATE_SINGLE);
                 }
@@ -483,9 +485,12 @@ void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
 
 
     IdentifyNextMotion();
+    UpdateExecItem(m_nextMotion);
+
     IdentifyBlenders();
 
-    LimitCurrentBlender();
+    LimitCurrBlenderForNextAnim();
+    LimitCurrBlenderForCurrAnim();
 
     CheckInterrupting();
 
@@ -542,6 +547,17 @@ void TimeLineExecutor::UpdateExecItem(timeline_exec_item_t &item)
 {
     if (item.motion != NULL)
     {
+        //get params from core animation
+        if (item.motion->getMotion() != NULL)
+        {
+            CalCoreAnimation* coreAnim = getCtx()->getAvatar()->GetCalCoreModel()->getCoreAnimation(item.motion->getMotion()->getAnimID());
+            if (coreAnim != NULL)
+            {
+                item.coreAnimDuration = coreAnim->getDuration();
+            }
+        }
+
+        //get runtime param-s of animation
         if (item.anim != NULL)
         {
             //check if anim is still in Mixer
@@ -811,7 +827,26 @@ void TimeLineExecutor::IdentifyBlenders()
     }
 }
 
-void TimeLineExecutor::LimitCurrentBlender()
+void TimeLineExecutor::LimitCurrBlenderForNextAnim()
+{
+    if (m_nextMotion.motion != NULL && m_currBlender > 0)
+    {
+        float nextAnimCoreDuration = m_nextMotion.coreAnimDuration;
+        float fMARGIN = 0.5f; // to ensure that animDuration will be higher than fade_in
+
+        float oldBlenderVal = m_currBlender; //only for DEBUG
+
+        if (nextAnimCoreDuration < (m_currBlender + fMARGIN))
+        {
+            m_currBlender = nextAnimCoreDuration -  fMARGIN;
+            if (m_currBlender < 0)
+                m_currBlender = 0;
+            //cout << " Blender " << oldBlenderVal << " linimted to " << m_currBlender << " because of too short next anim -> " << nextAnimCoreDuration << endl;
+        }
+    }
+}
+
+void TimeLineExecutor::LimitCurrBlenderForCurrAnim()
 {
     if (m_currMotion.motion != NULL && m_currMotion.anim != NULL && m_currBlender > 0)
     {
@@ -822,8 +857,6 @@ void TimeLineExecutor::LimitCurrentBlender()
             m_currBlender = animLeftTime;
         }
     }
-
-
 }
 
 void TimeLineExecutor::UpdateModifiers(const double elapsedSeconds)
