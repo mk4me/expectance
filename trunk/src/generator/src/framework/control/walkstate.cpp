@@ -7,6 +7,7 @@
 using namespace ft;
 using namespace std;
 
+/// \brief Overriden method from ft::ControlState
 void WalkState::Init(MovableAvatar* avatar)
 {
     ControlState::Init(avatar);
@@ -45,6 +46,7 @@ void WalkState::Init(MovableAvatar* avatar)
     m_tlWalk->setBlender(new TimeLineBlender(0.20f));
 }
 
+/// \brief Overriden method from ft::ControlState
 void WalkState::Entry(MovableAvatar* avatar, ControlState* oldState)
 {
     ControlState::Entry(avatar, oldState);
@@ -58,17 +60,20 @@ void WalkState::Entry(MovableAvatar* avatar, ControlState* oldState)
     }
 }
 
+/// \brief Overriden method from ft::ControlState
 void WalkState::Exit(MovableAvatar* avatar, ControlState* newState)
 {
     ControlState::Exit(avatar, newState);
     m_tlStopWalk->setInterupting(true);
 }
 
+/// \brief Overriden method from ft::ControlState
 void WalkState::Reset(MovableAvatar* avatar)
 {
     ControlState::Reset(avatar);
 }
 
+/// \brief Overriden method from ft::ControlState
 std::string WalkState::toString()
 {
     return "<WalkState>";

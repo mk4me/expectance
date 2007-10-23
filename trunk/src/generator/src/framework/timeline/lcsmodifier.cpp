@@ -136,10 +136,14 @@ LCSModifier::~LCSModifier(void)
             VisualizationManager::getInstance()->RemoveObject(tracer_anim_orient);
         }
     }
-
 }
 
-//SOME help methods
+/**
+ * \brief Helper method which substracts some rotation component from Quaternion
+ * \param CalQuaternion& rot - rotation from which substraction will be done
+ * \param CalQuaternion& val - rotation component whic will be substracted from 'rot'
+ * \return CalQuaternion& - result of substraction
+ */
 CalQuaternion&  UTIL_diff_quats(CalQuaternion& rot, CalQuaternion& val)
 {
     //NOTE: inverted components     
@@ -153,7 +157,10 @@ CalQuaternion&  UTIL_diff_quats(CalQuaternion& rot, CalQuaternion& val)
     return rot;
 }
 
-// checks scope if is between -1 and 1
+/**
+ * \brief Helper method which tunes arccos argument to correct scope (-1,1)
+ * \param float arg - correct argument for arccos fucntion
+ */
 float UTIL_GetRightArgForArcCos(float arg)
 {
     if (arg > 1.0f)
@@ -163,8 +170,13 @@ float UTIL_GetRightArgForArcCos(float arg)
     return arg;
 }
 
-// returns sign of angle for rotation of oldDir to newDir
-// given vectors should be normalized
+/**
+ * \brief Helper method which determine sign of angle for rotation of oldDir to newDir
+ *      NOTE that passed vector arguments should be normalized
+ * \param CalVector& oldDir - vertor which is the base for angle sign determiation
+ * \param CalVector& newDir - vector for which angle sign in relation to oldDir
+ * \return float - value -1 or 1 representing sign
+ */
 float UTIL_GetSignForDirChange(CalVector& oldDir, CalVector& newDir)
 {
     CalVector rightDir = CalVector(0,1,0)%oldDir;
@@ -408,7 +420,13 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
     }
 }
 
-void LCSModifier::ApplyAnimDirectionToGlobalRotation(CalQuaternion& qGlobalRotOffset, CalVector currPos, TimeLineContext * timeLineContext)
+/**
+ * \brief Applies direction of current animation to global rotation offset
+ * \param CalQuaternion& qGlobalRotOffset - global rotation offset (will be modified in this methos)
+ * \param CalVector currPos - current posistion of root bone
+ * \param TimeLineContext * timeLineContext - current timeLineContext
+ */
+void LCSModifier::ApplyAnimDirectionToGlobalRotation(CalQuaternion& qGlobalRotOffset, CalVector& currPos, TimeLineContext * timeLineContext)
 {
     if (timeLineContext->anim_changed || timeLineContext->anim_new_cycle || timeLineContext->anim_stopped)
     {
@@ -453,6 +471,11 @@ void LCSModifier::ApplyAnimDirectionToGlobalRotation(CalQuaternion& qGlobalRotOf
     }
 }
 
+/**
+ * \brief Calculates orientation of root bone around Y axis
+ * \param CalBone *rootBone - root bone
+ * \return CalQuaternion - rotation around Y axis
+ */
 CalQuaternion LCSModifier::CalculateCurrentRootOrientAroundY(CalBone *rootBone)
 {
     static CalQuaternion qGlobalRot;
@@ -472,6 +495,15 @@ CalQuaternion LCSModifier::CalculateCurrentRootOrientAroundY(CalBone *rootBone)
     return qGlobalRot;
 }
 
+/**
+ * \brief Adds helper trace line for rendering
+ * \param TraceLine *traceLine - traceline object (should be created and added to ft::VisualizationManager before)
+ * \param  CalVector vBaseDir - base vector from which given rotation is defined
+ * \param CalVector pos - current position of origin of traceline
+ * \param CalQuaternion rot - rotation to visualize
+ * \param float line_length - lenght of traceline to draw
+ * \param CalVector vColor - collor of traceline
+ */
 void LCSModifier::TraceRotation(TraceLine *traceLine, CalVector vBaseDir, CalVector pos, CalQuaternion rot, float line_length, CalVector vColor)
 {
     traceLine->ClearTrace();
@@ -485,6 +517,14 @@ void LCSModifier::TraceRotation(TraceLine *traceLine, CalVector vBaseDir, CalVec
     traceLine->AddPoint(pos + vBaseDir);
 }
 
+/**
+ * \brief Adds helper trace line for rendering
+ * \param TraceLine *traceLine - traceline object (should be created and added to ft::VisualizationManager before)
+ * \param  CalVector vVector - vector to visualize
+ * \param CalVector pos - current position of origin of traceline
+ * \param float line_length - lenght of traceline to draw
+ * \param CalVector vColor - collor of traceline
+ */
 void LCSModifier::TraceVector(TraceLine *traceLine, CalVector vVector, CalVector pos, float line_length, CalVector vColor)
 {
     traceLine->ClearTrace();

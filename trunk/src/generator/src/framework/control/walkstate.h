@@ -12,7 +12,7 @@
 namespace ft
 {
 	/**
-	 * Class WalkState: class represents walk activity
+	 * Class WalkState: class represents WALK activity of avatar
      * 
      **/
     class WalkState : public ControlState

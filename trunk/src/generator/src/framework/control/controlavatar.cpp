@@ -33,6 +33,7 @@ void ControlAvatar::Destroy(void)
     DestroyStates();
 }
 
+/// \brief Initiates control layer for Avatar
 void ControlAvatar::Init()
 {
     MovableAvatar::Init();
@@ -41,6 +42,8 @@ void ControlAvatar::Init()
     SetState(IDLE_STATE);
 }
 
+/// \brief Sets another control state in Avatar
+/// \param ControlState *newState - new state
 void ControlAvatar::SetState(ControlState *newState)
 {
     cout << toString() << ": SetState( " << newState->toString() << ")" << endl;
@@ -62,6 +65,7 @@ void ControlAvatar::SetState(ControlState *newState)
     }
 }
 
+/// \brief Creates set of possible control states
 void ControlAvatar::CreateStates()
 {
     if (IDLE_STATE == NULL)
@@ -81,6 +85,7 @@ void ControlAvatar::CreateStates()
     }
 }
 
+/// \brief Releases all resources related to control states for this Avatar
 void ControlAvatar::DestroyStates()
 {
     if (IDLE_STATE != NULL)
@@ -101,6 +106,10 @@ void ControlAvatar::DestroyStates()
     
 }
 
+/// \brief Checks if transition from given state to another specific state is allowed
+/// \param ControlState *oldState - state from which the transition will be done
+/// \param ControlState *newState - target state of transition 
+/// \return bool - true if transition allowed, false otherwise
 bool ControlAvatar::IsTransitionAllowed(ControlState* oldState, ControlState* newState)
 {
     bool result = true;
@@ -113,6 +122,7 @@ bool ControlAvatar::IsTransitionAllowed(ControlState* oldState, ControlState* ne
     return result;
 }
 
+/// \brief Resets all parameters related to control layer for this avatar
 void ControlAvatar::Reset()
 {
     MovableAvatar::Reset();

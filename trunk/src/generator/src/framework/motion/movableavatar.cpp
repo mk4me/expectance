@@ -306,6 +306,9 @@ void MovableAvatar::OnUpdate(const double elapsedSeconds)
     }
 }
 
+/**
+ * \brief Resets all parameters of avatar with regard to motion layer
+*/
 void MovableAvatar::Reset()
 {
      cout << toString() << " MovableAvatar::Reset() " << std::endl;

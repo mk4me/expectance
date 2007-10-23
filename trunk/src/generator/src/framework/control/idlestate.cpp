@@ -7,6 +7,7 @@
 using namespace ft;
 using namespace std;
 
+/// \brief Overriden method from ft::ControlState
 void IdleState::Init(MovableAvatar* avatar)
 {
     ControlState::Init(avatar);
@@ -24,22 +25,26 @@ void IdleState::Init(MovableAvatar* avatar)
     }
 }
 
+/// \brief Overriden method from ft::ControlState
 void IdleState::Entry(MovableAvatar* avatar, ControlState* oldState)
 {
     ControlState::Entry(avatar, oldState);
     avatar->getTimeLine()->AddSubObject(m_tlIdle);
 }
 
+/// \brief Overriden method from ft::ControlState
 void IdleState::Exit(MovableAvatar* avatar, ControlState* newState)
 {
     ControlState::Exit(avatar, newState);
 }
 
+/// \brief Overriden method from ft::ControlState
 void IdleState::Reset(MovableAvatar* avatar)
 {
     ControlState::Reset(avatar);
 }
 
+/// \brief Overriden method from ft::ControlState
 std::string IdleState::toString()
 {
     return "<IdleState>";

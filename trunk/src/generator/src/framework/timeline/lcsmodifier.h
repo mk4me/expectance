@@ -38,7 +38,7 @@ namespace ft
         virtual void Reset(TimeLineContext * timeLineContext); // resets current object and its children
 
     private:
-        void ApplyAnimDirectionToGlobalRotation(CalQuaternion& qGlobalRotOffset, CalVector currPos, TimeLineContext * timeLineContext);
+        void ApplyAnimDirectionToGlobalRotation(CalQuaternion& qGlobalRotOffset, CalVector& currPos, TimeLineContext * timeLineContext);
         CalQuaternion CalculateCurrentRootOrientAroundY(CalBone *rootBone);
         void TraceRotation(TraceLine *traceLine, CalVector vBaseDir, CalVector pos, CalQuaternion rot, float line_length, CalVector vColor);
         void TraceVector(TraceLine *traceLine, CalVector vVector, CalVector pos, float line_length, CalVector vColor);

@@ -12,7 +12,7 @@
 namespace ft
 {
 	/**
-	 * Class ControlManager: responsible for control of avatars
+	 * Class ControlManager: responsible for control layer and manages list of control avatars
 	 **/
     class ControlManager : public UpdateObject
     {

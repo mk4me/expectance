@@ -12,7 +12,7 @@
 namespace ft
 {
 	/**
-	 * Class RunState: class represents activity when avatar is idle
+	 * Class RunState: class represents RUN activity of avatar 
      * 
      **/
     class RunState : public ControlState

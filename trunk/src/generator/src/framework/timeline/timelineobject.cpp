@@ -38,6 +38,13 @@ void TimeLineObject::Destroy(void)
     m_next=NULL;
 }
 
+/**
+ * \brief Adds subobject to this TimeLineObject
+ *
+ * \param TimeLineObject* object - subobject to add
+ * \param  int where_to_add - defines wher to add on the list (by default objects are added at the end of list)
+ * \return bool - true if subject added successfuly, false otherwise
+ **/
 bool TimeLineObject::AddSubObject(TimeLineObject* object, int where_to_add)
 {
     bool result = false;
@@ -72,6 +79,10 @@ bool TimeLineObject::AddSubObject(TimeLineObject* object, int where_to_add)
     return result;
 }
 
+/**
+ * \brief Return last object on the subobjects list
+ * \return TimeLineObject* - last object on the subobjects list
+ **/
 TimeLineObject* TimeLineObject::GetLastSubObject()
 {
     TimeLineObject* obj = m_first;
@@ -83,6 +94,11 @@ TimeLineObject* TimeLineObject::GetLastSubObject()
     return obj;
 }
 
+/**
+ * \brief Removes object from subobjects list
+ * \param TimeLineObject* obj_to_delete - object to delete
+ * \param bool deleteFromMemory - indicates if object should be deleted from memory after removing from subobjects list
+ **/
 void TimeLineObject::RemoveSubObject(TimeLineObject* obj_to_delete, bool deleteFromMemory)
 {
     if (obj_to_delete == m_first)
@@ -111,6 +127,9 @@ void TimeLineObject::RemoveSubObject(TimeLineObject* obj_to_delete, bool deleteF
     }
 }
 
+/**
+ * \brief Removes all objects from subobjects list
+ **/
 void TimeLineObject::ClearSubObjects()
 {
     TimeLineObject* obj = m_first;
@@ -125,6 +144,7 @@ void TimeLineObject::ClearSubObjects()
     m_first = NULL;
 }
 
+/// \brief Dumps subobjects list information
 void TimeLineObject::DumpSubObjects(int depth)
 {
     TimeLineObject* obj = m_first;

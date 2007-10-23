@@ -7,6 +7,7 @@
 using namespace ft;
 using namespace std;
 
+/// \brief Overriden method from ft::ControlState
 void RunState::Init(MovableAvatar* avatar)
 {
     ControlState::Init(avatar);
@@ -47,6 +48,7 @@ void RunState::Init(MovableAvatar* avatar)
     m_tlRun->setBlender(new TimeLineBlender(0.20f));
 }
 
+/// \brief Overriden method from ft::ControlState
 void RunState::Entry(MovableAvatar* avatar, ControlState* oldState)
 {
     ControlState::Entry(avatar, oldState);
@@ -63,17 +65,20 @@ void RunState::Entry(MovableAvatar* avatar, ControlState* oldState)
     avatar->getTimeLine()->AddSubObject(m_tlRun);
 }
 
+/// \brief Overriden method from ft::ControlState
 void RunState::Exit(MovableAvatar* avatar, ControlState* newState)
 {
     ControlState::Exit(avatar, newState);
     m_tlStopRun->setInterupting(true);
 }
 
+/// \brief Overriden method from ft::ControlState
 void RunState::Reset(MovableAvatar* avatar)
 {
     ControlState::Reset(avatar);
 }
 
+/// \brief Overriden method from ft::ControlState
 std::string RunState::toString()
 {
     return "<RunState>";

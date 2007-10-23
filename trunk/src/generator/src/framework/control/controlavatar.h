@@ -14,8 +14,8 @@
 namespace ft
 {
 	/**
-	 * Class ControlAvatar: this class is instantiated by avatars that contain and perform motions (animations)
-     * by avatar
+	 * Class ControlAvatar: this class is instantiated by avatar to define and performs actions (motions)
+     * 
      **/
     class ControlAvatar : public MovableAvatar                                 
     {

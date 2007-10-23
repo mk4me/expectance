@@ -15,7 +15,7 @@ namespace ft
     static const int STATE_WALK_ID = 1;
     static const int STATE_RUN_ID = 2;
 	/**
-	 * Class ControlState: base class for states of avatar
+	 * Class ControlState: base class for control states of avatar
      * 
      **/
     class ControlState

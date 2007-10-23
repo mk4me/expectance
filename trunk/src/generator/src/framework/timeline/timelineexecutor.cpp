@@ -7,6 +7,11 @@
 using namespace ft;
 using namespace std;
 
+/**
+ * \brief Helper fuction which clears parameters of timeline_exec_item_t struct
+ *
+ * \param timeline_exec_item_t &item - struct whose paramters are to clear
+ **/
 void clearExecItem(timeline_exec_item_t &item)
 {
     item.motion = NULL;
@@ -19,6 +24,12 @@ void clearExecItem(timeline_exec_item_t &item)
     item.lastTime = 0;
 }
 
+/**
+ * \brief Helper fuction which copies parameters of one timeline_exec_item_t struct to another
+ *
+ * \param timeline_exec_item_t &src - struct from which parameters will be copied
+ * \param timeline_exec_item_t &dst - struct to which parameters of src will be copied
+ **/
 void copyExecItem(timeline_exec_item_t &src, timeline_exec_item_t &dst)
 {
     dst.motion = src.motion;
@@ -47,6 +58,7 @@ void TimeLineExecutor::Destroy(void)
 {
 }
 
+/// \brief Resets all parameters of TimeLineExecutor
 void TimeLineExecutor::Reset()
 {
     clearExecItem(m_prevMotion);
@@ -60,6 +72,12 @@ void TimeLineExecutor::Reset()
     m_lastEvent = EXEC_EVENT_NONE;
 }
 
+/**
+ * \brief Inititiates parameters of this TimeLineExecutor
+ *
+ * \param TimeLine* timeLine - timeLine which is to execute by this TimeLineExecutor
+ * \param TimeLineContext* timeLineContext - contex that provides parametrs of timeLine execution
+ **/
 void TimeLineExecutor::Initiate(TimeLine* timeLine, TimeLineContext* timeLineContext)
 {
     setTimeLine(timeLine);
@@ -67,27 +85,49 @@ void TimeLineExecutor::Initiate(TimeLine* timeLine, TimeLineContext* timeLineCon
     ChangeState(EXEC_STATE_WAIT);
 }
 
+/**
+ * \brief Sets new state of executor
+ *
+ * \param int state - new state
+ **/
 void TimeLineExecutor::setState(int state)
 { 
     m_state = state; 
 }
 
+/**
+ * \brief Returns current state of executor
+ *
+ * \return int - current state of executor
+ **/
 int TimeLineExecutor::getState() 
 { 
     return m_state; 
 }
 
+/**
+ * \brief Starts execution of timeLine
+ **/
 void TimeLineExecutor::Start()
 {
     setTerminated(false);
 }
 
+/**
+ * \brief Requests stop of timeLine
+ **/
 void TimeLineExecutor::StopRequest()
 {
     setTerminated(true);
 }
 
 //////////////////// STATES ////////////////////
+
+/**
+ * \brief Change state to anothor
+ *
+ * \param int newState - new state
+ **/
 void TimeLineExecutor::ChangeState(int newState)
 {
     int oldState = getState();
@@ -100,6 +140,12 @@ void TimeLineExecutor::ChangeState(int newState)
     EntryState(newState, oldState);
 }
 
+/**
+ * \brief Method called when executor enterns into new state
+ *
+ * \param int state - new state
+ * \param int oldState - previous state
+ **/
 void TimeLineExecutor::EntryState(int state, int oldState)
 {
     switch(state)
@@ -115,6 +161,11 @@ void TimeLineExecutor::EntryState(int state, int oldState)
     }
 }
 
+/**
+ * \brief Method called at each update from ft::UpdateManager during timeLine execution
+ *
+ * \param int state - curent state of executor
+ **/
 void TimeLineExecutor::UpdateState(int state)
 {
     switch(state)
@@ -132,11 +183,21 @@ void TimeLineExecutor::UpdateState(int state)
     }
 }
 
+/**
+ * \brief Method called when executor enters to EXEC_STATE_WAIT state
+ *
+ * \param int oldState - previous state
+ **/
 void TimeLineExecutor::EntryWaitState(int oldState)
 {
     Reset();
 }
 
+/**
+ * \brief Method called when executor enters to EXEC_STATE_SINGLE state
+ *
+ * \param int oldState - previous state
+ **/
 void TimeLineExecutor::EntrySingleState(int oldState)
 {
     if (oldState != EXEC_STATE_FADE_IN && oldState != EXEC_STATE_OVERLAP)
@@ -145,17 +206,32 @@ void TimeLineExecutor::EntrySingleState(int oldState)
     }
 }
 
+/**
+ * \brief Method called when executor enters to EXEC_STATE_OVERLAP state
+ *
+ * \param int oldState - previous state
+ **/
 void TimeLineExecutor::EntryOverlapState(int oldState)
 {
     StopLoopAnim();
     StartNextMotion();
 }
 
+/**
+ * \brief Method called when executor enters to EXEC_STATE_FADE_IN state
+ *
+ * \param int oldState - previous state
+ **/
 void TimeLineExecutor::EntryFadeInState(int oldState)
 {
     StartNextMotion();
 }
 
+/**
+ * \brief Method called when executor enters to EXEC_STATE_FADE_OUT state
+ *
+ * \param int oldState - previous state
+ **/
 void TimeLineExecutor::EntryFadeOutState(int oldState)
 {
    if (m_currMotion.motion->isAnimLoop())
@@ -169,6 +245,11 @@ void TimeLineExecutor::EntryFadeOutState(int oldState)
     
 }
 
+/**
+ * \brief Method called when executor enters to EXEC_STATE_TERMINATED state
+ *
+ * \param int oldState - previous state
+ **/
 void TimeLineExecutor::EntryTerminatedState(int oldState)
 {
     if (m_currMotion.motion !=NULL && m_currMotion.anim != NULL)
@@ -181,8 +262,9 @@ void TimeLineExecutor::EntryTerminatedState(int oldState)
     Reset();
 }
 
-
-
+/**
+ * \brief Method called at each update from ft::UpdateManager when excutor is in EXEC_STATE_WAIT state
+ **/
 void TimeLineExecutor::UpdateWaitState()
 {
     //return;  //uncomment it only for test without animation
@@ -202,6 +284,9 @@ void TimeLineExecutor::UpdateWaitState()
     }
 }
 
+/**
+ * \brief Method called at each update from ft::UpdateManager when excutor is in EXEC_STATE_SINGLE state
+ **/
 void TimeLineExecutor::UpdateSingleState()
 {
     if (m_currMotion.motion != NULL)
@@ -272,6 +357,9 @@ void TimeLineExecutor::UpdateSingleState()
     }
 }
 
+/**
+ * \brief Method called at each update from ft::UpdateManager when excutor is in EXEC_STATE_OVERLAP state
+ **/
 void TimeLineExecutor::UpdateOverlapState()
 {
     if (m_prevMotion.motion != NULL)
@@ -284,6 +372,9 @@ void TimeLineExecutor::UpdateOverlapState()
     }
 }
 
+/**
+ * \brief Method called at each update from ft::UpdateManager when excutor is in EXEC_STATE_FADE_IN state
+ **/
 void TimeLineExecutor::UpdateFadeInState()
 {
     if (m_currMotion.motion != NULL)
@@ -304,6 +395,9 @@ void TimeLineExecutor::UpdateFadeInState()
 
 }
 
+/**
+ * \brief Method called at each update from ft::UpdateManager when excutor is in EXEC_STATE_FADE_OUT state
+ **/
 void TimeLineExecutor::UpdateFadeOutState()
 {
     if (m_currMotion.motion != NULL)
@@ -334,6 +428,9 @@ void TimeLineExecutor::UpdateFadeOutState()
     }
 }
 
+/**
+ * \brief Method called at each update from ft::UpdateManager when excutor is in EXEC_STATE_TERMINATED state
+ **/
 void TimeLineExecutor::UpdateTerminatedState()
 {
     if (!isTerminated())
@@ -342,6 +439,9 @@ void TimeLineExecutor::UpdateTerminatedState()
     }
 }
 
+/**
+ * \brief Starts next motion on the timeLine
+ **/
 void TimeLineExecutor::StartNextMotion()
 {
     if (isTerminated())
@@ -399,6 +499,11 @@ void TimeLineExecutor::StartNextMotion()
     ExchangeExecItems();
 }
 
+/**
+ * \brief Extracts last animation object added to Cal3d
+ * \param int animType - action or cycle
+ * \return CalAnimation* - animation object extracted from Cal3d or NULL if extraction failed
+ **/
 CalAnimation* TimeLineExecutor::FindAddedAnimInCal3d(int animType)
 {
     CalAnimation* anim = NULL;
@@ -423,6 +528,9 @@ CalAnimation* TimeLineExecutor::FindAddedAnimInCal3d(int animType)
     return anim;
 }
 
+/**
+ * \brief Stops currently played loop anim with fade_out defined by current blender
+ **/
 void TimeLineExecutor::StopLoopAnim()
 {
     if (m_currMotion.motion != NULL && m_currMotion.anim != NULL 
@@ -437,6 +545,9 @@ void TimeLineExecutor::StopLoopAnim()
     }
 }
 
+/**
+ * \brief Stops currently played action anim
+ **/
 void TimeLineExecutor::StopActionAnim()
 {
     if (m_currMotion.motion != NULL && m_currMotion.anim != NULL 
@@ -451,7 +562,9 @@ void TimeLineExecutor::StopActionAnim()
     }
 }
 
-
+/**
+ * \brief Exchenges paramters of prevMotion, currMotion and nextMotion of executor
+ **/
 void TimeLineExecutor::ExchangeExecItems()
 {
     copyExecItem(m_currMotion, m_prevMotion);
@@ -461,6 +574,10 @@ void TimeLineExecutor::ExchangeExecItems()
 
 //////////////////////////// end of STATES ////////////////////////
 
+/**
+ * \brief Method called at each update from ft::UpdateManager during execution of timeLine
+ * \param const double elapsedSeconds - time elapsed sonce last update
+ **/
 void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
 {
 
@@ -525,6 +642,9 @@ void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
 
 }
 
+/**
+ * \brief Updates timeLineContext reeted to this executor. It is call at each update from ft::UpdateManager
+ **/
 void TimeLineExecutor::UpdateContext()
 {
     getCtx()->prevAnim = m_prevMotion.anim;
@@ -543,6 +663,10 @@ void TimeLineExecutor::UpdateContext()
 
 }
 
+/**
+ * \brief Updates parameters of timeline_exec_item_t struct according to runtime state of Cal3d
+ * \param timeline_exec_item_t &item - struct to update
+ **/
 void TimeLineExecutor::UpdateExecItem(timeline_exec_item_t &item)
 {
     if (item.motion != NULL)
@@ -587,6 +711,9 @@ void TimeLineExecutor::UpdateExecItem(timeline_exec_item_t &item)
     }
 }
 
+/**
+ * \brief Check if currently played loop anim should be interrupted
+ **/
 void TimeLineExecutor::CheckInterrupting()
 {
     if (m_currMotion.motion != NULL && m_currMotion.anim != NULL && m_currMotion.motion->isAnimLoop())
@@ -596,6 +723,10 @@ void TimeLineExecutor::CheckInterrupting()
     }
 }
 
+/**
+ * \brief Sets parmeters of timeline_exec_item_t struct to values proper for stopped animation
+ * \param timeline_exec_item_t &item - struct to fill with proper parameters
+ **/
 void TimeLineExecutor::MarkAnimStopped(timeline_exec_item_t &item)
 {
     item.anim = NULL;
@@ -603,6 +734,9 @@ void TimeLineExecutor::MarkAnimStopped(timeline_exec_item_t &item)
     item.animDuration = 0;
 }
 
+/**
+ * \brief Indetifies next motion on currently being executed timeLine
+ **/
 void TimeLineExecutor::IdentifyNextMotion()
 {
     TimeLineMotion *nextMotion = NULL;
@@ -633,6 +767,10 @@ void TimeLineExecutor::IdentifyNextMotion()
     }
 }
 
+/**
+ * \brief Checks if given timeline_exec_item_t structs defines loop motion which should be stopped
+ * \param timeline_exec_item_t &item - struct to check
+ **/
 void TimeLineExecutor::CheckLoopAnimStop(timeline_exec_item_t &item)
 {
         if (item.motion!= NULL && item.anim!= NULL && item.motion->isAnimLoop())
@@ -660,7 +798,11 @@ void TimeLineExecutor::CheckLoopAnimStop(timeline_exec_item_t &item)
         }
 }
 
-
+/**
+ * \brief Checks if given animation is still being played in Cal3d
+ * \param CalAnimation* anim - animation object to check
+ * \return bool - true if animation is still being played, false otherwise
+ **/
 bool TimeLineExecutor::IsAnimStillActive(CalAnimation* anim)
 {
     bool result = false;
@@ -697,6 +839,11 @@ bool TimeLineExecutor::IsAnimStillActive(CalAnimation* anim)
     return result;
 }
 
+/**
+ * \brief Gets submotion of motion which has defined animation 
+ * \param TimeLineMotion* motion - motion whose subobjects will be checked
+ * \return TimeLineMotion* - submotion with anim or NULL if there is no such submotion
+ **/
 TimeLineMotion* TimeLineExecutor::GetSubMotionWithAnim(TimeLineMotion* motion)
 {
     TimeLineMotion* result = NULL;
@@ -720,7 +867,11 @@ TimeLineMotion* TimeLineExecutor::GetSubMotionWithAnim(TimeLineMotion* motion)
     return result;
 }
 
-
+/**
+ * \brief Gets parent motion (searching all higher motions in hierarchy) which contains next motion on the same level
+ * \param TimeLineMotion* motion - motion whose parents will be checked
+ * \return TimeLineMotion* - parent motion which has next motion on the same level
+ **/
 TimeLineMotion* TimeLineExecutor::GetParentWithNext(TimeLineMotion* motion)
 {
     TimeLineMotion* result = NULL;
@@ -745,7 +896,11 @@ TimeLineMotion* TimeLineExecutor::GetParentWithNext(TimeLineMotion* motion)
     return result;
 }
 
-//top parent in hierarchy but lower than TimeLine
+/**
+ * \brief Gets top parent motion (direct child of timeLine) for given motion
+ * \param TimeLineMotion* motion - motion whose top parent will be searched
+ * \return TimeLineMotion* - top parent of given
+ **/
 TimeLineMotion* TimeLineExecutor::GetTopParentInHierarchy(TimeLineMotion* motion)
 {
     TimeLineMotion* result = NULL;
@@ -770,6 +925,11 @@ TimeLineMotion* TimeLineExecutor::GetTopParentInHierarchy(TimeLineMotion* motion
     return result;
 }
 
+/**
+ * \brief Gets parent motion (searching all higher motions in hierarchy) which has defined blender
+ * \param TimeLineMotion* motion - motion whose parents will be checked
+ * \return TimeLineMotion* - parent motion which has defined blender
+ **/
 TimeLineMotion* TimeLineExecutor::GetParentWithBlender(TimeLineMotion* motion)
 {
     TimeLineMotion* result = NULL;
@@ -791,8 +951,9 @@ TimeLineMotion* TimeLineExecutor::GetParentWithBlender(TimeLineMotion* motion)
     return result;
 }
 
-
-
+/**
+ * \brief Identifies blender for current motion and blender for next motion
+ **/
 void TimeLineExecutor::IdentifyBlenders()
 {
     m_currBlender = 0;
@@ -827,6 +988,10 @@ void TimeLineExecutor::IdentifyBlenders()
     }
 }
 
+/**
+ * \brief Checks if current blender is not longer then next animation. If so it cut current blemder 
+ *         to be shorter from next motion about some margin
+ **/
 void TimeLineExecutor::LimitCurrBlenderForNextAnim()
 {
     if (m_nextMotion.motion != NULL && m_currBlender > 0)
@@ -846,6 +1011,10 @@ void TimeLineExecutor::LimitCurrBlenderForNextAnim()
     }
 }
 
+/**
+ * \brief Checks if current blender is not longer then time left to the end of current animation. If so it cut current blender 
+ *         to be the same as left time
+ **/
 void TimeLineExecutor::LimitCurrBlenderForCurrAnim()
 {
     if (m_currMotion.motion != NULL && m_currMotion.anim != NULL && m_currBlender > 0)
@@ -859,6 +1028,10 @@ void TimeLineExecutor::LimitCurrBlenderForCurrAnim()
     }
 }
 
+/**
+ * \brief Updates modifiers for current and previous motions (an their parent motions)
+ * \param const double elapsedSeconds - time elapsed since last update
+ **/
 void TimeLineExecutor::UpdateModifiers(const double elapsedSeconds)
 {
     // apply modifiers for current and prev motion 
@@ -900,6 +1073,11 @@ void TimeLineExecutor::UpdateModifiers(const double elapsedSeconds)
 
 }
 
+/**
+ * \brief Updates modifiers for given motion
+ * \param TimeLineMotion* motion - motion whose modifiers will be updated
+ * \param const double elapsedSeconds - time elapsed since last update
+ **/
 void TimeLineExecutor::UpdateModifiersForMotion(TimeLineMotion* motion, float elapsedSeconds)
 {
     if (motion->m_vModifiers.size() > 0)
@@ -912,6 +1090,11 @@ void TimeLineExecutor::UpdateModifiersForMotion(TimeLineMotion* motion, float el
 
 }
 
+/**
+ * \brief Checks if given motion is a parent of another motion (regarding all hierarchy)
+ * \param TimeLineMotion* motion - motion for which a parent is checked
+  * \param TimeLineMotion* parent - motion which will be checked to be a parent
+ **/
 bool TimeLineExecutor::IsParent(TimeLineObject* motion, TimeLineObject* parent)
 {
     bool result = false;
@@ -927,6 +1110,9 @@ bool TimeLineExecutor::IsParent(TimeLineObject* motion, TimeLineObject* parent)
     return result;
 }
 
+/**
+ * \brief Dumps significant information about this executor and its current state
+ **/
 void TimeLineExecutor::Dump()
 {
     TimeLineContext* tlCtx = getCtx();
@@ -945,6 +1131,9 @@ void TimeLineExecutor::Dump()
     cout<< " TimeLineExecutor.Dump for " << desc << " state: " << _GET_STATE_NAME(getState()) << endl;
 }
 
+/**
+ * \brief Removes motions from timeLine that were already executed
+ **/
 void TimeLineExecutor::RemoveExecutedMotions()
 {
     TimeLineObject* firstMotion = getTimeLine()->getFirstObject();
@@ -968,6 +1157,9 @@ void TimeLineExecutor::RemoveExecutedMotions()
     }
 }
 
+/**
+ * \brief Removes motions that were not executed yet
+ **/
 void TimeLineExecutor::RemoveUnexecutedMotions()
 {
     if (m_currMotion.motion != NULL)
@@ -983,7 +1175,9 @@ void TimeLineExecutor::RemoveUnexecutedMotions()
     }
 }
 
-
+/**
+ * \brief Check if avatar to which this excutor is connected has not an empty animation list at current update
+ **/
 bool TimeLineExecutor::CheckEpmtyFrame()
 {
     CalMixer* mixer = getCtx()->getAvatar()->GetCalModel()->getMixer();

@@ -10,11 +10,13 @@ using namespace std;
 
 ControlManager* ControlManager::m_instance = NULL;
 
+/// \brief Constructor
 ControlManager::ControlManager(void)
 {
     tracer_active_avatar = NULL;
 }
 
+/// \brief Destructor
 ControlManager::~ControlManager(void) 
 { 
     if (tracer_active_avatar != NULL)
@@ -70,11 +72,14 @@ void ControlManager::Init()
 
 }
 
+/// \brief Update callback called from ft::UpdateManager
+/// \param double elapsedSeconds - time interval elapsed since last update
 void ControlManager::OnUpdate(const double elapsedSeconds)
 {
     UpdateActiveAvatarMarker();
 }
 
+/// \brief Updates marker of active avatar
 void ControlManager::UpdateActiveAvatarMarker()
 {
     if (TRACE && tracer_active_avatar != NULL)
@@ -107,12 +112,17 @@ bool ControlManager::AddControlAvatar(ControlAvatar* av)
 	return true;
 }
 
+/// \brief Sets active avatar index in ControlManager
+/// \param int ind - index of avatar on the list of control avatars
 void ControlManager::setActiveAvatar(int ind)
 { 
     m_activeAvatarInd  = ind; 
     std::cout << "ControlManager.setActiveAvatar(" << ind << ")" << std::endl;
 }
 
+/// \brief Gets the active avatar set in ControlManager
+/// \return ControlAvatar* - active avatar or NULL if active avatar is not set (or if current active avatar index in ControlManager 
+///                           is out of scope of control avatar list)
 ControlAvatar* ControlManager::getActiveAvatar()
 {
     ControlAvatar*  activeAv = NULL;
