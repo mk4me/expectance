@@ -213,12 +213,11 @@ Zadany do wykonania TimeLine jest wype³niony obiektami typu \textit{ft::TimeLine
 Pomiêdzy kolejnymi obiektami TimeLineMotion mog¹ byæ zdefiniowane regu³y ³¹czenia. Regu³y ³¹czenia s¹ reprezentowane przez obiekty typu \textit{ft::TimeLineBlender}.
 
 Podczas wykonywania TimeLineMotion'a, ruch avatara mo¿e byæ modyfikowany w dowolny sposób przez jeden lub kilka modyfikatorów ruchu. Ka¿dy modyfikator jest opisany w obiekcie typu \textit{ft::TimeLineModifier}.
+\\
 
-
-Rozpoczêcie wykonywania TimeLine'a rozpoczyna siê w momencie wykonania na nim metody Start(). Wykonanie TimeLine'a polega na wykonaniu po kolei wszystkich jego sk³adowych TimeLineMotion'ow.   
-
-Obiekty typu TimeLine s¹ pochodnymi klasy TimeLineMotion, co oznacza ze ca³e TimeLine'y mog¹ byæ u¿yte jako sk³adowe innych TimeLine'ów, co zapewnia du¿¹ elastycznoœæ w definiowaniu i sterowaniu ruchem.
-
+Za wykonywanie TimeLine'ow odpowiedzialne sa obiekty typu typu \textit{ft::TimeLineExecutor}. Kazdy avatar posiada jeden obiekt typu \textit{ft::TimeLine} 
+oraz jeden obiekt typu \textit{ft::TimeLineExecutor}. Aby rozpoczac wykonywanie TimeLine'a przypisanego do danego avatara nalezy wywolac metode \textit{Start()}
+na TimeLineExecutor'ze tego avatara. Po wywo³aniu tej metody rozpoczyna siê wykonywania kolejno wszystkich elementów (ruchów) sk³adowych TimeLine'a.
 
 \subsection{Struktura TimeLine'a oraz relacje pomiêdzy jego sk³adowymi elementami}
  
@@ -240,6 +239,7 @@ Regu³y ³¹czenia definiuje siê dla konkretnego obiektu  TimeLineMotion i zostaje 
 Modyfikatory równie¿ definiuje siê dla obiektów typu  TimeLineMotion. W powy¿szym przyk³adzie \textit{TimeLineMotdifier\_1} jest zdefiniowany dla \textit{TimeLineMotion\_1}, natomiast \textit{TimeLineMotdifier\_2} dla \textit{TimeLine} (takie powi¹zanie jest mo¿liwe, poniewa¿ TimeLine jest specyficzn¹ odmian¹ TimeLineMotion'a).
 
 Ka¿dy TimeLineMotion mo¿e byæ zaznaczony jako obiekt cykliczny, co powoduje, ¿e bêdzie on wykonywany w pêtli, dopóki nie zostanie jawnie przerwany. Dopiero po jego przerwaniu zacznie byæ wykonywany jego nastêpnik. Istnieje równie¿ mo¿liwoœæ zdefiniowania liczby cyklów, po których wykonaniu ruch cykliczny zostanie przerwany automatycznie.
+
 \subsection{Struktura obiektów TimeLineMotion}
 Elementy sk³adowe obiektu TimeLineMotion przedstawione zosta³y na rysunku \ref{rys_6}.
 \begin{figure}[!h]
@@ -255,11 +255,61 @@ a) \textit{Motion (animacja)} – referencja do animacji, która ma byæ wykonana pr
 
 b) \textit{TimeLineBlender} – definicja ³¹czenia danego TimeLineMotion'a z jego nastêpnikiem. W najprostszym przypadku deiniuje on na ile przed koñcem wykonyania animacji aktualnego TimeLineMotion'a ma byæ wystartowana animacja z nastêpnego TimeLineMotion'a. Sama operacja \textit{blendowania} realizowana jest automatycznie przez engine Cal3d.
 
-c) \textit{Tracks} – mo¿e zawieraæ dodatkowe œcie¿ki ruchów, które bêd¹ wykonywane równolegle do TimeLineMotion'a. Ka¿da œcie¿ka ma postaæ obiektu TimeLineMotion.  Œcie¿ki mog¹ byæ wykorzystane do realizacji ruchów dla poszczególnych partii cia³a avatar'a. Zbiór œcie¿ek mo¿e byæ pusty – wtedy nie ma ¿adnego wp³ywu na ruch avatar'a.
-
-d) \textit{Submotions} – mo¿e zawieraæ sekwencje obiektów typu TimeLineMotion, które s¹ wykonywane podczas wykonywania danego TimeLineMotion'a (równoczeœnie z wykonywaniem jego animacji). Zbiór \textit{submotions} jest wykorzystywany do podzia³u danego TimeLineMotion'a na „krótsze” obiekty typu TimeLineMotion. Zbiór ten mo¿e byæ pusty – wtedy nie ma ¿adnego wp³ywu na ruch avatar'a.
+c) \textit{Submotions} – mo¿e zawieraæ sekwencje obiektów typu TimeLineMotion, które s¹ wykonywane podczas wykonywania danego TimeLineMotion'a (równoczeœnie z wykonywaniem jego animacji). Zbiór \textit{submotions} jest wykorzystywany do podzia³u danego TimeLineMotion'a na „krótsze” obiekty typu TimeLineMotion. Zbiór ten mo¿e byæ pusty – wtedy nie ma ¿adnego wp³ywu na ruch avatar'a.
  
-e) \textit{Modifiers} – zawiera zbiór modyfikatorów, które s¹ wykonywane w czasie wykonywania danego TimeLineMotion'a (od pocz¹tku jego wykonywania do zakoñczenia wykonywania). Ka¿dy modyfikator mo¿e byæ podzielony dodatkowo na sekwencje „krótszych” modyfikatorów na tej samej zasadzie, zgodnie z któr¹ mo¿na podzieliæ obiekt TimeLineMotion na zbiór submotions. Zbiór \textit{modifiers} mo¿e byæ pusty – wtedy nie ma ¿adnego wp³ywu na ruch avatar'a.
+d) \textit{Modifiers} – zawiera zbiór modyfikatorów, które s¹ wykonywane w czasie wykonywania danego TimeLineMotion'a (od pocz¹tku jego wykonywania do zakoñczenia wykonywania). Ka¿dy modyfikator mo¿e byæ podzielony dodatkowo na sekwencje „krótszych” modyfikatorów na tej samej zasadzie, zgodnie z któr¹ mo¿na podzieliæ obiekt TimeLineMotion na zbiór submotions. Zbiór \textit{modifiers} mo¿e byæ pusty – wtedy nie ma ¿adnego wp³ywu na ruch avatar'a.
+
+\subsection{Schemat TimeLineExecutor'a}
+
+W TimeLineExecutorze zdefiniowany jest zbior stanow, pomiêdzy którymi mo¿e on przechodziæ wykonuj¹c TimeLine'a. Na rysunku \ref{rys_7} przedstawione s¹ wszystkie 
+mo¿liwe stany jak i dozwolone przejscia pomiêdzy nimi.
+\\
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=1\textwidth]{./img/timeline_executor_states.png}
+  \end{center}
+  \caption{Schemat przejsc pomiedzy stanami TimeLineExecutor'a}
+  \label{rys_7}
+\end{figure}
+
+\textbf{Znaczenie poszczególnych stanów:}
+\begin{enumerate}
+\item 'NOT\_INITED' - poczatkowy stan w jakim pozostaje TimeLineExecutor do momentu inicjacji
+\item 'WAIT' - w tym stanie TimeLine nie zawiera zadnych ruchow do wykoniania (jest pusty lub wszystkie skladowe ruchy zosta³y ju¿ wykonane)
+\item 'FADE\_IN' - w tym stanie wykonywany jest jeden ruch (jedna animacja) przy czym jego  waga w Cal3d jest interpolowana od 0 do 1
+\item 'SINGLE' - pojedynczy ruch jest wykonywany
+\item 'OVERLAP' - stan ten reprezentuje "zadkladke" - czyli blending pomiêdzy dwoma kolejnymi ruchami
+\item 'FADE\_OUT' - wykonywany jest jeden ruch przy czym jego  waga w Cal3d jest interpolowana od 1 do 0
+\item 'TERMINATED' - ruch zosta³ nagle ztrzymany z zewn¹trz przez metode \textit{TimeLineExecutor::StopRequest()}. Aktualnie wykonywana animacja
+ jest zakonczona natychmiast lub z zakonczeniem aktualnej animacji (lub aktualnego cyklu dla animacji cyklicznych)
+\end{enumerate}  
+
+\subsection{Obiekt TimeLineContext}
+
+Podczas wykonywania TimeLine'a w TimeLineExecutorze zdefiniowany jest specjalny obiekt opisujacy aktualny stan wykonywania tzw. TimeLineContext. Parametry, które s¹ w nim zdefiniowane mog¹ byæ w ka¿dym odœwie¿eniu wykorzystane poza TimeLineExcutorem np. w modyfikatorach. Najbardziej istotne parmetry TimeLineContextu, które maj¹ funkcjê informacyjn¹, opisane s¹ poni¿ej:
+
+\begin{enumerate}
+\item prevAnim (\textit{CalAnimation*}) - animacja wykonywana poprzednio
+\item currAnim (\textit{CalAnimation*}) - animacja, która jest aktualnie wykonywana
+\item prevAnimTime (\textit{float}) - aktualny czas animacji poprzedniej (istotny na "zakladce", gry  poprzednia animacja ciagle trwa)
+\item prevAnimDuration ( \textit{float}) - ca³kowita d³ugoœæ (czas trwania) poprzedniej animacji
+\item currAnimTime (\textit{float}) - aktualny czas aktualnie wykonywanej animacji
+\item currAnimDuration (\textit{float}) - ca³kowita d³ugoœæ (czas trwania) aktualnie wykonywanej animacji
+\item prevOverlap (\textit{float}) - czas  \textit{blendingu} zastosowanego dla poprzedniej animacji
+\item currOverlap (\textit{float}) - czas  \textit{blendingu}, który bêdzie u¿yty pomiêdzy aktualna a nastêpn¹ animacj¹
+\item exec\_state (\textit{int}) - aktualny stan w jakim jest TimeLineExecutor
+\item exec\_event (\textit{int})  - informacja o ostatnim zdarzeniu wygenerowanym przez TimeLineExecutor (aktualnie s¹ mo¿liwe dwie wartoœci EXEC\_EVENT\_NONE lub EXEC\_EVENT\_STATE\_CHANGED
+\item anim\_changed (\textit{bool}) - ma wartoœæ  \textit{true} jeœli w aktualnym odœwie¿eniu zmieni³a siê animacja
+\item anim\_new\_cycle (\textit{bool}) - ma wartoœæ  \textit{true} jeœli w aktualnym odœwie¿eniu rozpocz¹³ siê nowy cykl jeœli w³aœnie wykonywana jest animacja cykliczna
+\item anim\_stopped (\textit{bool}) - ma wartoœæ  \textit{true} jeœli w aktualnym odœwie¿eniu animacja siê skoñczy³a  lub zosta³a zatrzymana
+\end{enumerate}  
+
+Oprócz parametrów informacyjnych TimeLineCOntext zawiera równie¿ parametry, które mo¿na ustawiæ z zewn¹trz:
+\begin{enumerate}
+\item stop\_immediate (\textit{bool}) - ustalenie czy zatrzymanie wykonywania TimeLine'a (przejscie do stanu TERMINATED) ma byæ wykonane natychmiast czy po zakoñczeniu aktualnej animacji (lub aktualnego cycklu dla animacji cyklicznych)
+\item remove\_after\_execution (\textit{bool}) - ustalenie czy obiekty TimeLineMotion maj¹ byæ usuwane z TimeLine'a po wykonaniu TimeLine'a
+\end{enumerate}  
 
 \section{Modu³ ControlManager}
 
@@ -271,7 +321,7 @@ ControlManager jest modu³em odpowiedzialnym za zarz¹dzanie warstw¹ 'Control'. Co
     \includegraphics[width=1\textwidth]{./img/control_manager.png}
   \end{center}
   \caption{powi¹zania pomiêdzy avatarami, stanami i ControlManager'em}
-  \label{rys_7}
+  \label{rys_8}
 \end{figure}
 
 \begin{figure}[!h]
@@ -279,17 +329,17 @@ ControlManager jest modu³em odpowiedzialnym za zarz¹dzanie warstw¹ 'Control'. Co
     \includegraphics[width=1\textwidth]{./img/control_states.png}
   \end{center}
   \caption{powi¹zania pomiêdzy avatarami, stanami i ControlManager'em}
-  \label{rys_8}
+  \label{rys_9}
 \end{figure}
 
 
 Wykonywanie akcji przez avatara polega na przechodzeniu pomiedzy poszczególnymi stanami (tzw. \textit{ControlState's}).  Ka¿dy avatar posiada w³asny i niezale¿ny zbiór stanów, pomiêdzy którymi mo¿e "przechodziæ". Ka¿dy stan ControlState posiada 3 metode, które wo³ane s¹ w momencie inicjacji stanu (\textit{Init()}), wejœcia do tego stanu (\textit{Entry()}) oraz wyjœcia ze stanu (\textit{Exit()}).
 \\
 
-Na rysunku \ref{rys_7} przedstawione s¹ powi¹zania pomiêdzy avatarami, stanami i ControlManager'em.
+Na rysunku \ref{rys_8} przedstawione s¹ powi¹zania pomiêdzy avatarami, stanami i ControlManager'em.
 \\
 
-Na rysunku \ref{rys_8} pokazany jest przyk³adowy schemat przejœæ pomiêdzy stanami dla jednego avatara.
+Na rysunku \ref{rys_9} pokazany jest przyk³adowy schemat przejœæ pomiêdzy stanami dla jednego avatara.
 \\
 
 
@@ -299,13 +349,13 @@ Na rysunku \ref{rys_8} pokazany jest przyk³adowy schemat przejœæ pomiêdzy stanam
 Wizualizacja nie jest g³ównym celem ca³ego systemu, i przez to nie jest wykonana w sposób kompleksowy i ca³kowicie uniwersalny. Jednak¿e mechanizmy do wizualizacji elementów systemu bazuj¹ na pewnych za³o¿eniach pozwalaj¹cych zaimplementowaæ je  ³atwo w innych systemach wizualizacji (np. OSG) lub przy pomocy dowolnego API (np. DirectX). Za³o¿ono niezale¿noœæ od standardów korporacyjnych (MS) i wybrano OpenGL API. Aby zminimalizowaæ wp³yw strumienia graficznego na ca³kowit¹ wydajnoœæ systemu,  przerzucono czêœæ operacji graficznych na procesor akceleratora graficznego przez u¿ycie sprzêtowego wspomagania (vertex shader).
 
 \subsection{Wizualizacja}
-Wizualizacja obiektów stanowi niezale¿ny mechanizm generatora i poprzez œciœle okreœlone regu³y i interfejsy dzia³a w sposób niezale¿ny od reszty implementacji. Generaln¹ ideê relacji pomiêdzy podstawowymi obiektami wizualizacji w systemie przedstawiono na rysunku \ref{rys_9}.
+Wizualizacja obiektów stanowi niezale¿ny mechanizm generatora i poprzez œciœle okreœlone regu³y i interfejsy dzia³a w sposób niezale¿ny od reszty implementacji. Generaln¹ ideê relacji pomiêdzy podstawowymi obiektami wizualizacji w systemie przedstawiono na rysunku \ref{rys_10}.
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=1\textwidth]{./img/collab.png}
   \end{center}
   \caption{Wzajemne relacje wspó³pracy obiektów wizualizacji}
-  \label{rys_9}
+  \label{rys_10}
 \end{figure}
 
 
@@ -320,14 +370,14 @@ Podstawowy obiekt graficzny. Realizuje bazowy interfejs obiektu sceny (kolor, po
 
 \subsubsection{ft::MenuItem}
 Podstawowy element menu graficznego, korzysta z bazowych w³asnoœci typu \textit{ft::SceneObject}
-Jego kszta³t i w³aœciwoœci mog¹ byæ dostosowane do specyficznych wymagañ poprzez w³asn¹ implementacjê metody \textit{Render}. MenuItem implementuje najprostsz¹ postaæ wzorca composite dziêki czemu mo¿e funkcjonowaæ jako struktura drzewiasta co pokazano na rysunku \ref{rys_10}.
+Jego kszta³t i w³aœciwoœci mog¹ byæ dostosowane do specyficznych wymagañ poprzez w³asn¹ implementacjê metody \textit{Render}. MenuItem implementuje najprostsz¹ postaæ wzorca composite dziêki czemu mo¿e funkcjonowaæ jako struktura drzewiasta co pokazano na rysunku \ref{rys_11}.
 
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=1\textwidth]{./img/menuItem.png}
   \end{center}
   \caption{Przyk³adowa implementacja wielopoziomowego menu przy pomocy obiektu \textit{ft::MenuItem}}
-  \label{rys_10}
+  \label{rys_11}
 \end{figure}
 
 \subsubsection{ft::Line}
@@ -337,14 +387,14 @@ Pozwala realizowaæ ró¿ne warianty linii lub strza³kê w trzech wymiarach. Obiekt 
 Pozwala realizowaæ liniê wielosegmentow¹ po³¹czon¹ markerami w trzech wymiarach poprzez zadawanie punktu w przestrzeni metod¹  \textit{ft::TraceLine::AddPoint}. Obiekt mo¿e wyœwietlaæ i ukrywaæ markery, ustawiaæ kolor ka¿dego segmentu. Doskonale nadaje siê do wizualizacji miejsc, w których trzeba œledziæ po³o¿enie przesuwaj¹cego siê obiektu. W obszarze renderowania implementuje w³asn¹ metodê \textit{Render}.
 
 \subsubsection{ft:Avatar}
-W kontekœcie wizualizacji jest to obiekt graficzny z najbardziej rozbudowan¹ struktur¹ renderowania. Obiekt \textit{ft::Avatar} posiada trzy mo¿liwoœci renderowania: renderowanie szkieletu, renderowanie ograniczeñ ka¿dej koœci lub renderowanie siatki modelu (mesha). Dodatkowo ze wzglêdu na z³o¿onoœæ siatki modelu wprowadzono mo¿liwoœæ sprzêtowego renderowania siatki modelu przy u¿yciu vertex shadera. Po wyborze metody renderowania Avatara dochodzi jeszcze renderowanie cienia obiektu, które jest realizowane przed renderowaniem ca³ego obiektu przez metodê \textit{RenderShadow} jako element globalnej metody renderowania cienia (np. przez \textit{ft::VisualizationManager}). Przep³yw potoku renderuj¹cego zwi¹zanego z renderowaniem avatara przedstawiono na rysunku \ref{rys_11}
+W kontekœcie wizualizacji jest to obiekt graficzny z najbardziej rozbudowan¹ struktur¹ renderowania. Obiekt \textit{ft::Avatar} posiada trzy mo¿liwoœci renderowania: renderowanie szkieletu, renderowanie ograniczeñ ka¿dej koœci lub renderowanie siatki modelu (mesha). Dodatkowo ze wzglêdu na z³o¿onoœæ siatki modelu wprowadzono mo¿liwoœæ sprzêtowego renderowania siatki modelu przy u¿yciu vertex shadera. Po wyborze metody renderowania Avatara dochodzi jeszcze renderowanie cienia obiektu, które jest realizowane przed renderowaniem ca³ego obiektu przez metodê \textit{RenderShadow} jako element globalnej metody renderowania cienia (np. przez \textit{ft::VisualizationManager}). Przep³yw potoku renderuj¹cego zwi¹zanego z renderowaniem avatara przedstawiono na rysunku \ref{rys_12}
 
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=1\textwidth]{./img/avatarPipeline.png}
   \end{center}
   \caption{Potok renderowania dla typu \textit{ft::Avatar}. Linie przerywane oznaczaj¹ œcie¿ki alternatywne potoku renderuj¹cego.}
-  \label{rys_11}
+  \label{rys_12}
 \end{figure}
 
 
