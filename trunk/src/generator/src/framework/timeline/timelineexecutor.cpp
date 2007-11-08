@@ -457,6 +457,16 @@ void TimeLineExecutor::StartNextMotion()
             fade_in = m_currBlender;
         if (m_nextBlender > 0)
             fade_out = m_nextBlender;
+        
+        //check if there is loop_number==0 for loop animation  (correction for bug #021)
+        //if loop_number==0 the effect will be as if loop_number was 1 (however warning will be thrown)
+        
+        if (m_nextMotion.motion->isAnimLoop() && (m_nextMotion.motion->getLoopNumber() == 0))
+        {
+            cout << " WARN: TimeLineExecutor::StartNextMotion() :  loop_number for loop animation is 0." 
+                << " To avoid inconsistency and potential problems the loop number will be set to 1!!!! " << endl;
+        }
+        
 
         if (!m_nextMotion.motion->getMotion()->isNullAnim())
         {
