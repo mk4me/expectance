@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="windows-1250"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
@@ -675,6 +675,14 @@
 			<Filter
 				Name="ai"
 				>
+				<File
+					RelativePath=".\src\framework\ai\aiavatar.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\ai\aiavatar.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="motion"
@@ -812,14 +820,6 @@
 				Name="control"
 				>
 				<File
-					RelativePath=".\src\framework\control\controlavatar.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\control\controlavatar.h"
-					>
-				</File>
-				<File
 					RelativePath=".\src\framework\control\controlmanager.cpp"
 					>
 				</File>
@@ -827,36 +827,60 @@
 					RelativePath=".\src\framework\control\controlmanager.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="action"
+				>
 				<File
-					RelativePath=".\src\framework\control\controlstate.cpp"
+					RelativePath=".\src\framework\action\action.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\control\controlstate.h"
+					RelativePath=".\src\framework\action\action.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\control\idlestate.cpp"
+					RelativePath=".\src\framework\action\actionavatar.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\control\idlestate.h"
+					RelativePath=".\src\framework\action\actionavatar.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\control\runstate.cpp"
+					RelativePath=".\src\framework\action\idleaction.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\control\runstate.h"
+					RelativePath=".\src\framework\action\idleaction.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\control\walkstate.cpp"
+					RelativePath=".\src\framework\action\runaction.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\control\walkstate.h"
+					RelativePath=".\src\framework\action\runaction.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\action\walkaction.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\action\walkaction.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="physics"
+				>
+				<File
+					RelativePath=".\src\framework\physics\physicsavatar.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\physics\physicsavatar.h"
 					>
 				</File>
 			</Filter>

@@ -85,7 +85,7 @@ void ControlManager::UpdateActiveAvatarMarker()
     if (TRACE && tracer_active_avatar != NULL)
     {
         tracer_active_avatar->ClearTrace();
-        ControlAvatar* av = getActiveAvatar();
+        ActionAvatar* av = getActiveAvatar();
         if (av != NULL)
         {
             CalSkeleton *skel = av->GetCalModel()->getSkeleton();
@@ -102,13 +102,13 @@ void ControlManager::UpdateActiveAvatarMarker()
 /**
  * \brief Adds avatar to list of controlled avatars
  *
- * \param ft::ControlAvatar* av - avatar to add
+ * \param ft::ActionAvatar* av - avatar to add
  * \return bool - true if modifier added successfuly
  **/
-bool ControlManager::AddControlAvatar(ControlAvatar* av)
+bool ControlManager::AddAvatar(ActionAvatar* av)
 {
-    std::cout << " AddControlAvatar " << av->toString() << " to ControlManager " << std::endl;
-    m_vControlAvatars.push_back(av);
+    std::cout << " AddAvatar " << av->toString() << " to ControlManager " << std::endl;
+    m_vAvatars.push_back(av);
 	return true;
 }
 
@@ -121,24 +121,24 @@ void ControlManager::setActiveAvatar(int ind)
 }
 
 /// \brief Gets the active avatar set in ControlManager
-/// \return ControlAvatar* - active avatar or NULL if active avatar is not set (or if current active avatar index in ControlManager 
+/// \return ActionAvatar* - active avatar or NULL if active avatar is not set (or if current active avatar index in ControlManager 
 ///                           is out of scope of control avatar list)
-ControlAvatar* ControlManager::getActiveAvatar()
+ActionAvatar* ControlManager::getActiveAvatar()
 {
-    ControlAvatar*  activeAv = NULL;
+    ActionAvatar*  activeAv = NULL;
 
-    int size = (int)m_vControlAvatars.size();
+    int size = (int)m_vAvatars.size();
     if (m_activeAvatarInd >=0 && m_activeAvatarInd < size)
     {
-        activeAv = m_vControlAvatars[m_activeAvatarInd];
+        activeAv = m_vAvatars[m_activeAvatarInd];
     }
     return activeAv;
 }
 
 
   
-//TODO: implement RemoveControlAvatar
-//bool  ControlManager::RemoveControlAvatar(ControlAvatar* av);
+//TODO: implement RemoveAvatar
+//bool  ControlManager::RemoveAvatar(Avatar* av);
 
 
 /**
@@ -168,7 +168,7 @@ void ControlManager::OnSpecial(int key, int x, int y)
     case GLUT_KEY_F1:
         if (m_activeAvatarInd >=0)
         {
-            int newAvtiveInd = (m_activeAvatarInd+1) % (int)m_vControlAvatars.size();
+            int newAvtiveInd = (m_activeAvatarInd+1) % (int)m_vAvatars.size();
             setActiveAvatar(newAvtiveInd);
         }
         else

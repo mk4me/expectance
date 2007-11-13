@@ -2,15 +2,15 @@
  * Copyright (c) 2007, FutureToday. All rights reserved.
  * author: abak
  */
-#include "walkstate.h"
+#include "walkaction.h"
 
 using namespace ft;
 using namespace std;
 
-/// \brief Overriden method from ft::ControlState
-void WalkState::Init(MovableAvatar* avatar)
+/// \brief Overriden method from ft::Action
+void WalkAction::Init(PhysicsAvatar* avatar)
 {
-    ControlState::Init(avatar);
+    Action::Init(avatar);
     m_tlWalk = new TimeLineMotion();
 
     Motion *mot = avatar->GetMotion(MOTION_WALK_START);
@@ -46,36 +46,36 @@ void WalkState::Init(MovableAvatar* avatar)
     m_tlWalk->setBlender(new TimeLineBlender(0.20f));
 }
 
-/// \brief Overriden method from ft::ControlState
-void WalkState::Entry(MovableAvatar* avatar, ControlState* oldState)
+/// \brief Overriden method from ft::Action
+void WalkAction::Entry(PhysicsAvatar* avatar, Action* oldAction)
 {
-    ControlState::Entry(avatar, oldState);
+    Action::Entry(avatar, oldAction);
 
     m_tlStopWalk->setInterupting(false);
     avatar->getTimeLine()->AddSubObject(m_tlWalk);
 
-    if (oldState->getId() == STATE_RUN_ID)
+    if (oldAction->getId() == ACTION_RUN_ID)
     {
         m_tlWalk->AddSubObject(m_tlStopWalk);
     }
 }
 
-/// \brief Overriden method from ft::ControlState
-void WalkState::Exit(MovableAvatar* avatar, ControlState* newState)
+/// \brief Overriden method from ft::Action
+void WalkAction::Exit(PhysicsAvatar* avatar, Action* newAction)
 {
-    ControlState::Exit(avatar, newState);
+    Action::Exit(avatar, newAction);
     m_tlStopWalk->setInterupting(true);
 }
 
-/// \brief Overriden method from ft::ControlState
-void WalkState::Reset(MovableAvatar* avatar)
+/// \brief Overriden method from ft::Action
+void WalkAction::Reset(PhysicsAvatar* avatar)
 {
-    ControlState::Reset(avatar);
+    Action::Reset(avatar);
 }
 
-/// \brief Overriden method from ft::ControlState
-std::string WalkState::toString()
+/// \brief Overriden method from ft::Action
+std::string WalkAction::toString()
 {
-    return "<WalkState>";
+    return "<WalkAction>";
 }
 

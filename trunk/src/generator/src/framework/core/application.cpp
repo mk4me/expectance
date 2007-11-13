@@ -95,7 +95,7 @@ void Application::InitAvatars()
         avatar_number = 1;
     }
 
-    ControlAvatar* av;
+    ActionAvatar* av;
     CalVector vStartPos(0,0,0);
     float x_off = -150, z_off = 0;
 
@@ -103,7 +103,7 @@ void Application::InitAvatars()
     for (int i=0; i<avatar_number; i++)
     {
         avNamePostfix = i;
-        av = dynamic_cast<ControlAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally.cfg", "Avatar" + avNamePostfix));
+        av = dynamic_cast<ActionAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally.cfg", "Avatar" + avNamePostfix));
         if (av != NULL)  
         {
             av->Init();
@@ -117,7 +117,7 @@ void Application::InitAvatars()
 
             //av->setStartPosition(vStartPos);
             av->setPosition(vStartPos);
-            ControlManager::getInstance()->AddControlAvatar(av);
+            ControlManager::getInstance()->AddAvatar(av);
             if (i==0)
             {
                 ControlManager::getInstance()->setActiveAvatar(0);
@@ -131,7 +131,7 @@ void Application::InitAvatars()
 }
 
 /**
- * \brief Sets active 'ThirdPersonCamera' to active ControlAvatar if any is set
+ * \brief Sets active 'ThirdPersonCamera' to active avatar if any is set
  */
 void Application::SetCameraToActiveAvatar()
 {

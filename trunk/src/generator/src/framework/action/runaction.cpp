@@ -2,15 +2,15 @@
  * Copyright (c) 2007, FutureToday. All rights reserved.
  * author: abak
  */
-#include "runstate.h"
+#include "runaction.h"
 
 using namespace ft;
 using namespace std;
 
-/// \brief Overriden method from ft::ControlState
-void RunState::Init(MovableAvatar* avatar)
+/// \brief Overriden method from ft::Action
+void RunAction::Init(PhysicsAvatar* avatar)
 {
-    ControlState::Init(avatar);
+    Action::Init(avatar);
     m_tlRun = new TimeLineMotion();
 
     Motion *mot = avatar->GetMotion(MOTION_RUN_START);
@@ -48,12 +48,12 @@ void RunState::Init(MovableAvatar* avatar)
     m_tlRun->setBlender(new TimeLineBlender(0.20f));
 }
 
-/// \brief Overriden method from ft::ControlState
-void RunState::Entry(MovableAvatar* avatar, ControlState* oldState)
+/// \brief Overriden method from ft::Action
+void RunAction::Entry(PhysicsAvatar* avatar, Action* oldAction)
 {
-    ControlState::Entry(avatar, oldState);
+    Action::Entry(avatar, oldAction);
 
-    if (oldState->getId() == STATE_WALK_ID)
+    if (oldAction->getId() == ACTION_WALK_ID)
     {
         if (avatar->getTLExecutor() != NULL)
         {
@@ -65,22 +65,22 @@ void RunState::Entry(MovableAvatar* avatar, ControlState* oldState)
     avatar->getTimeLine()->AddSubObject(m_tlRun);
 }
 
-/// \brief Overriden method from ft::ControlState
-void RunState::Exit(MovableAvatar* avatar, ControlState* newState)
+/// \brief Overriden method from ft::Action
+void RunAction::Exit(PhysicsAvatar* avatar, Action* newAction)
 {
-    ControlState::Exit(avatar, newState);
+    Action::Exit(avatar, newAction);
     m_tlStopRun->setInterupting(true);
 }
 
-/// \brief Overriden method from ft::ControlState
-void RunState::Reset(MovableAvatar* avatar)
+/// \brief Overriden method from ft::Action
+void RunAction::Reset(PhysicsAvatar* avatar)
 {
-    ControlState::Reset(avatar);
+    Action::Reset(avatar);
 }
 
-/// \brief Overriden method from ft::ControlState
-std::string RunState::toString()
+/// \brief Overriden method from ft::Action
+std::string RunAction::toString()
 {
-    return "<RunState>";
+    return "<RunAction>";
 }
 

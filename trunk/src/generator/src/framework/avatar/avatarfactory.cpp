@@ -4,7 +4,7 @@
  */
 
 #include "avatarfactory.h"
-#include "../control/controlavatar.h"
+#include "../ai/aiavatar.h"
 #include "../utility/debug.h"
 
 using namespace ft;
@@ -70,7 +70,7 @@ Avatar* AvatarFactory::CreateAvatar(const std::string modelName, std::string ava
     {
         newModel = new CalModel(coreModel);
         InitModelMeshes(coreModel, newModel);
-        newAvatar = new ControlAvatar(newModel, coreModel, avatarName);
+        newAvatar = new AIAvatar(newModel, coreModel, avatarName);
     
         std::cout << "AvatarFactory::CreateAvatar,new avatar " + avatarName + " created." << std::endl;
     }
