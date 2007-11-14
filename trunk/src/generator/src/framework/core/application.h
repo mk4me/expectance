@@ -6,7 +6,7 @@
 #ifndef _GEN_APPLICATION_H
 #define _GEN_APPLICATION_H
 
-#include "../avatar/avatarfactory.h"
+#include "../avatar/avatar.h"
 
 namespace ft
 {

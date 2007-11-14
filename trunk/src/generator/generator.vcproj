@@ -551,6 +551,22 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\framework\scene\meshobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\meshobject.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\meshobjectfactory.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\meshobjectfactory.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\scene\oglcontext.cpp"
 					>
 				</File>

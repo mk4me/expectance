@@ -63,7 +63,8 @@ bool Application::InitModules()
     DBG("Application::InitModules().");
 
     UpdateManager::getInstance()->Init();  //enforced creation of singleton
-    AvatarFactory::getInstance();   //enforced creation of singleton
+    MeshObjectFactory::getMeshObjectFactoryInstance();   //enforced creation of singleton
+    AvatarFactory::getAvatarFactoryInstance();   //enforced creation of singleton
     if (!VisualizationManager::getInstance()->Init()) //enforced creation of singleton
 	{
 		DBG("VisualizationManager::Init error");
@@ -151,7 +152,7 @@ void Application::SetCameraToActiveAvatar()
  **/
 Avatar* Application::CreateAvatarOnScene(const std::string& calCoreModel,const  std::string& name)
 {
-  Avatar* avatar = ft::AvatarFactory::getInstance()->CreateAvatar(calCoreModel, name);
+  Avatar* avatar = (Avatar*)ft::AvatarFactory::getAvatarFactoryInstance()->CreateMeshObject(calCoreModel, name);
   if (avatar != NULL)
   {
 	  VisualizationManager::getInstance()->AddObject(avatar); 
