@@ -54,6 +54,17 @@ void MeshObject::Destroy(void)
 }
 
 /**
+ * \brief This method is called when new frame is updated from ft::UpdateManager
+ *
+ * \param float elapsedSeconds - time elapsed sice last update
+ **/
+void MeshObject::OnUpdate(const double elapsedSeconds)
+{
+    m_calModel->update(elapsedSeconds);
+}
+
+
+/**
  * \brief Tries to reserve memory for object data in GPU memory and loads vertex and fragment program of shader from file
  *
  * \return bool - true if graphics accelerator suports vertex shader otherwise returns false

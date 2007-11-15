@@ -33,7 +33,7 @@ namespace ft
         void SetCalCoreModel(CalCoreModel* calCoreModel);
         CalCoreModel* GetCalCoreModel();
 
-
+        virtual void OnUpdate(const double elapsedSeconds);  // OVERRIDEN, updates by UpdateManager 
         void OnMessage(Message* msg);  // OVERRIDEN, receives a message from UpdateManager
 		virtual bool Render();
 		virtual bool RenderShadow();

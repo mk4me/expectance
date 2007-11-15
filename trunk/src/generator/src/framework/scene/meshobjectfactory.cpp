@@ -128,15 +128,16 @@ CalCoreModel* MeshObjectFactory::LoadCalCoreModel(const std::string modelName)
  * \param CalCoreModel * coreModel - core model object to fill with data from configuration file
  * \return bool - true if parsing succeed, false if parsing failed
  **/
-bool MeshObjectFactory::ParseModelConfiguration(const std::string& strFilename, CalCoreModel* coreModel)
+bool MeshObjectFactory::ParseModelConfiguration(const std::string& modelName, CalCoreModel* coreModel)
 {
   // open the model configuration file
+  std::string modelWorkDir = FT_MODELPATH + modelName + "\\";
   std::ifstream file;
-  std::string fn = FT_MODELPATH+strFilename;
+  std::string fn = modelWorkDir + modelName + ".cfg";
   file.open(fn.c_str(), std::ios::in | std::ios::binary);
   if(!file)
   {
-    std::cerr << "Failed to open model configuration file '" << strFilename << "'." << std::endl;
+    std::cerr << "Failed to open model configuration file '" << fn << "'." << std::endl;
     return false;
   }
 
@@ -154,7 +155,7 @@ bool MeshObjectFactory::ParseModelConfiguration(const std::string& strFilename, 
     // check if an error happend while reading from the file
     if(!file)
     {
-      std::cerr << "Error while reading from the model configuration file '" << strFilename << "'." << std::endl;
+      std::cerr << "Error while reading from the model configuration file '" << fn << "'." << std::endl;
       return false;
     }
 
@@ -177,7 +178,7 @@ bool MeshObjectFactory::ParseModelConfiguration(const std::string& strFilename, 
     pos = strBuffer.find_first_not_of(" \t", pos);
     if((pos == std::string::npos) || (strBuffer[pos] != '='))
     {
-      std::cerr << strFilename << "(" << line << "): Invalid syntax." << std::endl;
+      std::cerr << fn << "(" << line << "): Invalid syntax." << std::endl;
       return false;
     }
 
@@ -203,7 +204,7 @@ bool MeshObjectFactory::ParseModelConfiguration(const std::string& strFilename, 
     {
       // load core skeleton
       std::cout << "Loading skeleton '" << strData << "'..." << std::endl;
-      if(!coreModel->loadCoreSkeleton(FT_MODELPATH+strData))
+      if(!coreModel->loadCoreSkeleton(modelWorkDir + strData))
       {
         CalError::printLastError();
         return false;
@@ -213,7 +214,7 @@ bool MeshObjectFactory::ParseModelConfiguration(const std::string& strFilename, 
     {
       // load core animation
       std::cout << "Loading animation '" << strData << "'..." << std::endl;
-      if(coreModel->loadCoreAnimation(FT_MODELPATH+strData) == -1)
+      if(coreModel->loadCoreAnimation(modelWorkDir + strData) == -1)
       {
         CalError::printLastError();
         return false;
@@ -223,7 +224,7 @@ bool MeshObjectFactory::ParseModelConfiguration(const std::string& strFilename, 
     {
       // load core mesh
       std::cout << "Loading mesh '" << strData << "'..." << std::endl;
-      if(coreModel->loadCoreMesh(FT_MODELPATH+strData) == -1)
+      if(coreModel->loadCoreMesh(modelWorkDir + strData) == -1)
       {
         CalError::printLastError();
         return false;
@@ -233,7 +234,7 @@ bool MeshObjectFactory::ParseModelConfiguration(const std::string& strFilename, 
     {
       // load core material
       std::cout << "Loading material '" << strData << "'..." << std::endl;
-      if(coreModel->loadCoreMaterial(FT_MODELPATH+strData) == -1)
+      if(coreModel->loadCoreMaterial(modelWorkDir + strData) == -1)
       {
         CalError::printLastError();
         return false;
@@ -242,7 +243,7 @@ bool MeshObjectFactory::ParseModelConfiguration(const std::string& strFilename, 
     else
     {
       // everything else triggers an error message, but is ignored
-      std::cerr << strFilename << "(" << line << "): Invalid syntax." << std::endl;
+      std::cerr << fn << "(" << line << "): Invalid syntax." << std::endl;
     }
   }
 

@@ -22,6 +22,7 @@ namespace ft
         void InitConfig();
         bool InitModules();
         void InitAvatars();
+        void InitStaticObjects();
         void SetCameraToActiveAvatar();
 
         Avatar* CreateAvatarOnScene(const std::string& calCoreModel,const std::string& name);

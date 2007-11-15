@@ -300,7 +300,7 @@ void MovableAvatar::Init()
  **/
 void MovableAvatar::OnUpdate(const double elapsedSeconds)
 {
-     if(!m_bPaused)
+    if(!m_bPaused)
     {
         UpdateTimeLine(elapsedSeconds);
     }

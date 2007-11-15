@@ -7,19 +7,20 @@
 #define _GEN_MOTION_H
 
 #include <string>
+#include "../core/global.h"
 
 
 namespace ft
 {
     //NAMES of MOTIONS
-    static const std::string MOTION_WALK_START = "data\\cally\\cally_walkstart.CAF";  
-    static const std::string MOTION_WALK_LOOP = "data\\cally\\cally_walkloop.CAF";  
-    static const std::string MOTION_WALK_STOP = "data\\cally\\cally_walkstop.CAF";  
-    static const std::string MOTION_WALK_IDLE = "data\\cally\\cally_walkidle.CAF";  
-    static const std::string MOTION_RUN_START = "data\\cally\\cally_runstart.CAF";  
-    static const std::string MOTION_RUN_LOOP = "data\\cally\\cally_runloop.CAF";  
-    static const std::string MOTION_RUN_STOP = "data\\cally\\cally_runstop.CAF";  
-    static const std::string MOTION_DANCE = "data\\cally\\cally_ballerina.CAF";  
+    static const std::string MOTION_WALK_START = FT_MODELPATH + "cally\\cally_walkstart.CAF";  
+    static const std::string MOTION_WALK_LOOP = FT_MODELPATH + "cally\\cally_walkloop.CAF";  
+    static const std::string MOTION_WALK_STOP = FT_MODELPATH + "cally\\cally_walkstop.CAF";  
+    static const std::string MOTION_WALK_IDLE = FT_MODELPATH + "cally\\cally_walkidle.CAF";  
+    static const std::string MOTION_RUN_START = FT_MODELPATH + "cally\\cally_runstart.CAF";  
+    static const std::string MOTION_RUN_LOOP  = FT_MODELPATH + "cally\\cally_runloop.CAF";  
+    static const std::string MOTION_RUN_STOP  = FT_MODELPATH + "cally\\cally_runstop.CAF";  
+    static const std::string MOTION_DANCE     = FT_MODELPATH + "cally\\cally_ballerina.CAF";  
 
     /**
 	 * Class Motion: is main object represnting motion (animation) of avatar. 

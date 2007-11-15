@@ -104,17 +104,14 @@ void Application::InitAvatars()
     for (int i=0; i<avatar_number; i++)
     {
         avNamePostfix = i;
-        av = dynamic_cast<ActionAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally.cfg", "Avatar" + avNamePostfix));
+        av = dynamic_cast<ActionAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally", "Avatar" + avNamePostfix));
         if (av != NULL)  
         {
             av->Init();
             //av->Dump();
 
-            if (i>0)
-            {
-                vStartPos.x += x_off;
-                vStartPos.z += z_off;
-            }
+            vStartPos.x += x_off;
+            vStartPos.z += z_off;
 
             //av->setStartPosition(vStartPos);
             av->setPosition(vStartPos);
@@ -129,6 +126,23 @@ void Application::InitAvatars()
      ft::UpdateManager::getInstance()->Dump();
 
      UpdateManager::getInstance()->SendMessage(new Message(MSG_START_SIMULATION), true);
+}
+
+/**
+ * \brief Initializes static objects on scene
+ *
+ **/
+void Application::InitStaticObjects()
+{
+    MeshObject *table = MeshObjectFactory::getMeshObjectFactoryInstance()->CreateMeshObject("table","table01");
+    if (table != NULL)
+    {
+      VisualizationManager::getInstance()->AddObject(table); 
+      UpdateManager::getInstance()->AddUpdateObject(table);
+      CalVector vStartPos(200,0,200);
+      table->setPosition(vStartPos);
+    }
+
 }
 
 /**

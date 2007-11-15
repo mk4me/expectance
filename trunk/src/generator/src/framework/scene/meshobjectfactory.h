@@ -41,7 +41,7 @@ namespace ft
 
         void ReleaseCalCoreModels();
 
-        bool ParseModelConfiguration(const std::string& strFilename, CalCoreModel* coreModel);
+        bool ParseModelConfiguration(const std::string& modelName, CalCoreModel* coreModel);
 
         void InitCoreModelMaterials(CalCoreModel* coreModel);
 
