@@ -687,6 +687,14 @@
 					RelativePath=".\src\framework\utility\vec.h"
 					>
 				</File>
+				<File
+					RelativePath=".\src\framework\utility\vishelper.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\utility\vishelper.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="ai"
@@ -717,6 +725,14 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\motion\movableavatar.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\motion\timelinevisualizer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\motion\timelinevisualizer.h"
 					>
 				</File>
 			</Filter>

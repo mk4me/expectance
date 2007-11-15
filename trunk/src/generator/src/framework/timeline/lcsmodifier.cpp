@@ -5,6 +5,7 @@
 #include "lcsmodifier.h"
 //#include "cal3d/coreanimation.h"
 #include "cal3d/coretrack.h"
+#include "../utility/vishelper.h"
 #include <math.h>
 
 using namespace ft;
@@ -33,9 +34,9 @@ LCSModifier::LCSModifier()
     if (TRACE_TRANSLATION)
     {
         tracer_translation = new TraceLine(toString() + "Translation");
-        tracer_curr_pos = new TraceLine(toString() + "AnimPosition");
         VisualizationManager::getInstance()->AddObject(tracer_translation);
-        VisualizationManager::getInstance()->AddObject(tracer_curr_pos);
+        tracer_translation->HideMarker();
+        tracer_translation->setColor(VisualizationHelper::COLOR_BLUE);
     }	
 
     if (TRACE_ROOT_ROTATION)
@@ -82,12 +83,6 @@ LCSModifier::~LCSModifier(void)
     {
         tracer_translation->ClearTrace();
         VisualizationManager::getInstance()->RemoveObject(tracer_translation);
-    }
-
-    if (tracer_curr_pos != NULL)
-    {
-        tracer_curr_pos->ClearTrace();
-        VisualizationManager::getInstance()->RemoveObject(tracer_curr_pos);
     }
 
     if (tracer_root_orient!= NULL)
@@ -383,40 +378,39 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
     if (TRACE_TRANSLATION)
     {
         tracer_translation->AddPoint(vCurrAvatarPosition);
-        tracer_curr_pos->AddPoint(currPos + CalVector(0,50,0));
     }
 
     if (TRACE_ANIM_ORIENT)
     {
         CalVector lastAnimDirTmp = m_vLastAnimDir;
         lastAnimDirTmp *= qGlobalRotOffset;;
-        TraceVector(tracer_anim_orient, lastAnimDirTmp, vCurrAvatarPosition, 100, CalVector(255,255,255));
+        VisualizationHelper::TraceVector(tracer_anim_orient, lastAnimDirTmp, vCurrAvatarPosition, 100, VisualizationHelper::COLOR_SKYBLUE);
     }
 
     if (TRACE_ROOT_ROTATION)
     {
-        TraceRotation(tracer_root_orient, vOriginForward, vCurrAvatarPosition, bone->getRotation(), 150, CalVector(0,100,100));
+        VisualizationHelper::TraceRotation(tracer_root_orient, vOriginForward, vCurrAvatarPosition, bone->getRotation(), 150, VisualizationHelper::COLOR_WHITE);
     }
 
     if (TRACE_FINAL_ORIENT)
     {
-        TraceRotation(tracer_final_orient, vOriginForward, vCurrAvatarPosition, timeLineContext->getAvatar()->getOrientation(), 170, CalVector(255,255,0));
+        VisualizationHelper::TraceRotation(tracer_final_orient, vOriginForward, vCurrAvatarPosition, timeLineContext->getAvatar()->getOrientation(), 170, VisualizationHelper::COLOR_YELLOW);
     }
 
     if (TRACE_FINAL_DIR)
     {
-        TraceVector(tracer_final_dir, timeLineContext->getAvatar()->getDirection(), vCurrAvatarPosition, 100, CalVector(128, 0, 128));
+        VisualizationHelper::TraceVector(tracer_final_dir, timeLineContext->getAvatar()->getDirection(), vCurrAvatarPosition, 100, VisualizationHelper::COLOR_PINK);
     }
 
 
     if (TRACE_AXIS)
     {
         // X - axis 
-        TraceRotation(tracer_X, CalVector(1,0,0), vCurrAvatarPosition, CalQuaternion(), 100, CalVector(255,0,0));
+        VisualizationHelper::TraceRotation(tracer_X, CalVector(1,0,0), vCurrAvatarPosition, CalQuaternion(), 100, VisualizationHelper::COLOR_RED);
         //Y - axis 
-        TraceRotation(tracer_Y, CalVector(0,1,0), vCurrAvatarPosition, CalQuaternion(), 100, CalVector(0,255,0));
+        VisualizationHelper::TraceRotation(tracer_Y, CalVector(0,1,0), vCurrAvatarPosition, CalQuaternion(), 100, VisualizationHelper::COLOR_GREEN);
         //Z - axis 
-        TraceRotation(tracer_Z, CalVector(0,0,1), vCurrAvatarPosition, CalQuaternion(), 100, CalVector(0,0,255));
+        VisualizationHelper::TraceRotation(tracer_Z, CalVector(0,0,1), vCurrAvatarPosition, CalQuaternion(), 100, VisualizationHelper::COLOR_BLUE);
     }
 }
 
@@ -504,18 +498,18 @@ CalQuaternion LCSModifier::CalculateCurrentRootOrientAroundY(CalBone *rootBone)
  * \param float line_length - lenght of traceline to draw
  * \param CalVector vColor - collor of traceline
  */
-void LCSModifier::TraceRotation(TraceLine *traceLine, CalVector vBaseDir, CalVector pos, CalQuaternion rot, float line_length, CalVector vColor)
-{
-    traceLine->ClearTrace();
-
-    traceLine->setColor(vColor);
-    traceLine->AddPoint(pos);
-
-    vBaseDir *= line_length;
-    vBaseDir *= rot;
-
-    traceLine->AddPoint(pos + vBaseDir);
-}
+//void LCSModifier::TraceRotation(TraceLine *traceLine, CalVector vBaseDir, CalVector pos, CalQuaternion rot, float line_length, CalVector vColor)
+//{
+//    traceLine->ClearTrace();
+//
+//    traceLine->setColor(vColor);
+//    traceLine->AddPoint(pos);
+//
+//    vBaseDir *= line_length;
+//    vBaseDir *= rot;
+//
+//    traceLine->AddPoint(pos + vBaseDir);
+//}
 
 /**
  * \brief Adds helper trace line for rendering
@@ -525,21 +519,21 @@ void LCSModifier::TraceRotation(TraceLine *traceLine, CalVector vBaseDir, CalVec
  * \param float line_length - lenght of traceline to draw
  * \param CalVector vColor - collor of traceline
  */
-void LCSModifier::TraceVector(TraceLine *traceLine, CalVector vVector, CalVector pos, float line_length, CalVector vColor)
-{
-    traceLine->ClearTrace();
-
-    if (vVector.length() >0)
-    {
-        traceLine->setColor(vColor);
-        traceLine->AddPoint(pos);
-
-        vVector.normalize();
-        vVector*= line_length;
-
-        traceLine->AddPoint(pos + vVector);
-    }
-}
+//void LCSModifier::TraceVector(TraceLine *traceLine, CalVector vVector, CalVector pos, float line_length, CalVector vColor)
+//{
+//    traceLine->ClearTrace();
+//
+//    if (vVector.length() >0)
+//    {
+//        traceLine->setColor(vColor);
+//        traceLine->AddPoint(pos);
+//
+//        vVector.normalize();
+//        vVector*= line_length;
+//
+//        traceLine->AddPoint(pos + vVector);
+//    }
+//}
 
 
 
@@ -551,7 +545,6 @@ void LCSModifier::Reset(TimeLineContext * timeLineContext)
     if (TRACE_TRANSLATION)
     {
         tracer_translation->ClearTrace();
-        tracer_curr_pos->ClearTrace();
     }
 
     if (TRACE_ROOT_ROTATION)

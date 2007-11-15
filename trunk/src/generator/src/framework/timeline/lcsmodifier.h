@@ -40,8 +40,8 @@ namespace ft
     private:
         void ApplyAnimDirectionToGlobalRotation(CalQuaternion& qGlobalRotOffset, CalVector& currPos, TimeLineContext * timeLineContext);
         CalQuaternion CalculateCurrentRootOrientAroundY(CalBone *rootBone);
-        void TraceRotation(TraceLine *traceLine, CalVector vBaseDir, CalVector pos, CalQuaternion rot, float line_length, CalVector vColor);
-        void TraceVector(TraceLine *traceLine, CalVector vVector, CalVector pos, float line_length, CalVector vColor);
+//        void TraceRotation(TraceLine *traceLine, CalVector vBaseDir, CalVector pos, CalQuaternion rot, float line_length, CalVector vColor);
+//        void TraceVector(TraceLine *traceLine, CalVector vVector, CalVector pos, float line_length, CalVector vColor);
 
         CalVector m_vLastPos;
         CalVector m_vLastPrevPos;  //used only for OVERLAP state
@@ -50,7 +50,6 @@ namespace ft
         float m_fAnimRot;
 
 		TraceLine *tracer_translation;
-        TraceLine *tracer_curr_pos;
 
         TraceLine *tracer_X;
         TraceLine *tracer_Y;

@@ -5,6 +5,7 @@
 
 #include "movableavatar.h"
 #include "../timeline/lcsmodifier.h"
+#include "timelinevisualizer.h"
 #include "../utility/debug.h"
 
 using namespace ft;
@@ -332,6 +333,11 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
     {
         setLCSModifier(new LCSModifier());
         getTimeLine()->AddModifier(getLCSModifier());
+
+        if (TimeLineVisualizer::TRACK_ON)
+        {
+            getTimeLine()->AddModifier(new TimeLineVisualizer());
+        }
     
     }
 
