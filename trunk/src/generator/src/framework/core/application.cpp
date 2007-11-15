@@ -139,9 +139,19 @@ void Application::InitStaticObjects()
     {
       VisualizationManager::getInstance()->AddObject(table); 
       UpdateManager::getInstance()->AddUpdateObject(table);
+      CalVector vStartPos(0,0,0);
+      table->setPosition(vStartPos);
+    }
+
+    table = MeshObjectFactory::getMeshObjectFactoryInstance()->CreateMeshObject("table","table02");
+    if (table != NULL)
+    {
+      VisualizationManager::getInstance()->AddObject(table); 
+      UpdateManager::getInstance()->AddUpdateObject(table);
       CalVector vStartPos(200,0,200);
       table->setPosition(vStartPos);
     }
+
 
 }
 

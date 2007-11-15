@@ -61,6 +61,15 @@ void MeshObject::Destroy(void)
 void MeshObject::OnUpdate(const double elapsedSeconds)
 {
     m_calModel->update(elapsedSeconds);
+
+    //set position
+    CalSkeleton *skel = GetCalModel()->getSkeleton();
+    CalBone *bone = skel->getBone(0);
+    CalVector pos = getPosition();
+    bone->setTranslation(pos);
+
+    //TODO: set orientation 
+    bone->calculateState();
 }
 
 
