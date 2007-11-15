@@ -96,7 +96,6 @@ Menu jest struktur¹ drzewiast¹ omówion¹ dok³adnie w rozdziale dotycz¹cym typu \t
 \item zdefiniowanie menu g³ównego z list¹ parametrów : \textit{identyfikator\_menu = (lista identyfikatorów\_parametrów\_menu oddzielonych przecinkami)}
 \item zdefiniowanie ka¿dego prametru menu g³ównego w postaci: \textit{identyfikator\_parametru menu = (etykieta informacyjna, nazwa tekstury)}
 \end{enumerate}
-
 \textbf{Tworzenie definicji konfiguracji kamer}
 Definicja konfiguracji kamer jest dwuetapowa. W pierwszym kroku tworzy siê listê definicji w formacie: \textit{identyfikator = (lista identyfikatorów konfiguracji kamer oddzielona przecinkami)}. W drugim kroku dla ka¿dego identyfikatora konfiguracji kamery przypisuje siê nastêpuj¹ce parametry:
 \begin{enumerate}
@@ -107,20 +106,14 @@ Definicja konfiguracji kamer jest dwuetapowa. W pierwszym kroku tworzy siê listê
 \end{enumerate}
 
 \section{Modu³ UpdateManager}
-Modu³ UpdateManager jest jednym z bazowych modu³ów Generatora.  Do jego g³ównych zadañ nale¿y odœwie¿anie obiektów w ka¿dej klatce symulacji (frame) oraz rozsy³anie wiadomoœci do zainteresowanych obiektów.
-
-G³ówn¹ klas¹ modu³u jest \textit{UpdateManager}, która posiada tylko jedn¹ instancjê (Singleton).  
-
-Aby obiekty mog³y byæ odœwie¿anie przez \textit{UpdateManagera} lub odbieraæ wiadomoœci musz¹ byæ pochodnymi klasy \textit{UpdateObject} oraz byæ zarejestrowanie w UpdateManager'ze.
+Modu³ UpdateManager jest jednym z bazowych modu³ów Generatora.  Do jego g³ównych zadañ nale¿y odœwie¿anie obiektów w ka¿dej klatce symulacji (frame) oraz rozsy³anie wiadomoœci do zainteresowanych obiektów. G³ówn¹ klas¹ modu³u jest \textit{UpdateManager}, która posiada tylko jedn¹ instancjê (Singleton). Aby obiekty mog³y byæ odœwie¿anie przez \textit{UpdateManagera} lub odbieraæ wiadomoœci musz¹ byæ pochodnymi klasy \textit{UpdateObject} oraz byæ zarejestrowanie w UpdateManager'ze.
 
 \subsection{Odœwie¿anie obiektów}
 Aby dany obiekt  móg³ reagowaæ na odœwie¿enie w ka¿dej klatce animacji powinien pokryæ metodê \textit{OnUpdate (float elapsedTime)} z klasy bazowej UpdateObject.  Parametr \textit{elapsedTime} okreœla ile czasu minê³o od poprzedniego odœwie¿enia. UpdateManager bêdzie wywo³ywa³ metodê \textit{OnUpdate} na wszystkich zarejestrowanych obiektach zgodnie z parametrami okreœlonymi dla aktualnej symulacji (klasa \textit{ft::Simulation}). Klasa \textit{ft::Simulation} odczytuje czas przy pomocy metody \textit{getTick()}. W zale¿noœci od potrzeby mo¿na pobieraæ czas z dok³adnoœci¹ do mili albo mikrosekund.
 \subsection{Rozsy³anie wiadomoœci}
 UpdateManager rozsy³a wiadomoœci do zarejestrowanych obiektów za pomoc¹ obiektów klasy \textit{ft::Message}.  Wywo³uje w tym celu na obiektach funkcje \textit{OnMessage(Message* msg)}, która jest zdefiniowana w klasie \textit{UpdateObject}. Aby obiekt móg³ zareagowaæ na wiadomoœæ powinien on pokryæ metodê \textit{OnMessage} i zaimplementowaæ w niej rozpoznanie typu wiadomoœci oraz odpowiednie akcje.
 
-Ka¿dy obiekt w systemie mo¿e wys³aæ wiadomoœæ przez UpdateManager'a u¿ywaj¹c metody \textit{SendMessage(Message* msg, bool deleteAfterSent)}.  Jako parametr \textit{msg} nale¿y podstawiæ w³aœciwy obiekt typu \textit{Message}, natomiast \textit{deleteAfterSend} okreœla czy UpdateManager ma zwolniæ pamiêæ dla obiektu \textit{msg} po rozes³aniu go do zarejestrowanych obiektów.
-
-Ilustracja przep³ywu sterowania podczas rozsy³ania wiadomoœci znajduje siê na rysunku \ref{rys_1}.
+Ka¿dy obiekt w systemie mo¿e wys³aæ wiadomoœæ przez UpdateManager'a u¿ywaj¹c metody \textit{SendMessage(Message* msg, bool deleteAfterSent)}.  Jako parametr \textit{msg} nale¿y podstawiæ w³aœciwy obiekt typu \textit{Message}, natomiast \textit{deleteAfterSend} okreœla czy UpdateManager ma zwolniæ pamiêæ dla obiektu \textit{msg} po rozes³aniu go do zarejestrowanych obiektów. Ilustracja przep³ywu sterowania podczas rozsy³ania wiadomoœci znajduje siê na rysunku \ref{rys_1}.
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=1\textwidth]{./img/controlManager.png}
@@ -134,12 +127,8 @@ Ilustracja przep³ywu sterowania podczas rozsy³ania wiadomoœci znajduje siê na ry
 Podstawow¹ klas¹ reprezentuj¹c¹ animowan¹ postaæ jest Avatar. Mo¿na go dodawaæ do sceny oraz wykonywaæ na nim animacje. Obiekty typu Avatar bazuj¹ na modelach postaci z API Cal3d i mo¿na je traktowaæ jako odpowiedniki takich modeli z rozszerzona funkcjonalnoœci¹ na potrzeby Generatora.
 \subsection{Powi¹zania Avatar'ów z modelami w API Cal3D}
 Podstawowym bytem reprezentuj¹cym animowan¹ postaæ w API Cal3Dd jest obiekt CalModel. Obiekt CalModel mo¿e byæ utworzony na podstawie odpowiedniego typu. Definicj¹ takiego typu w Cal3d jest  obiekt CalCoreModel. 
-
 Ró¿nica pomiêdzy CalCoreModelem i CalModelem jest taka, ze CalCoreModel zawiera definicje mesh'y, animacji, materia³ów oraz szkieletu postaci. CalModel jest natomiast specyficzna instancj¹ CalCoreModelu i mo¿na go ustawiaæ na scenie oraz wykonywaæ na nim animacje. Dla ka¿dego takiego typu mo¿e istnieæ dowolna iloœæ obiektów klasy CalModel.
-
-Dla ka¿dego utworzonego obiektu klasy Avatar utworzony zostaje osobny obiekt  klasy CalModel w enginie Cal3d.   Ponadto obiekt Avatar zawiera referencjê do odpowiedniego obiektu CalCoreModel, na którego podstawie zosta³ utworzony jego CalModel. Dziêki temu z poziomu Avatar'a mo¿na odwo³ywaæ siê do definicji postaci.
-
-Na rysunku \ref{rys_2} znajduje siê ilustracja przyk³adowej struktury modeli.
+Dla ka¿dego utworzonego obiektu klasy Avatar utworzony zostaje osobny obiekt  klasy CalModel w enginie Cal3d. Ponadto obiekt Avatar zawiera referencjê do odpowiedniego obiektu CalCoreModel, na którego podstawie zosta³ utworzony jego CalModel. Dziêki temu z poziomu Avatar'a mo¿na odwo³ywaæ siê do definicji postaci. Na rysunku \ref{rys_2} znajduje siê ilustracja przyk³adowej struktury modeli.
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=1\textwidth]{./img/modelCal3D.png}
@@ -159,7 +148,6 @@ Dodatkowo  klasa AvatarFactory zapewnia zarz¹dzanie CalCoreModel'ami, tak aby ka
 
 \subsection{Przechowywanie ruchów (animacji) dla Avatarów}
 Animacje dla avatarów s¹ reprezentowane przez obiekty klasy \textit{Motion}. S¹ one kolekcjonowane w klasie \textit{MovableAvatar}, która jest pochodn¹ klasy \textit{Avatar}. Jeden obiekt klasy \textit{Motion} powi¹zany jest z dok³adnie jednym obiektem klasy \textit{CalCoreAnimation} w enginie Cal3d.  Animacja CalCoreAnimation jest w Cal3d sk³adow¹ CalCoreModel'u i jest wykonywana przez odpowiednie CalModel'e. 
-
 Ilustracja struktury powi¹zañ dotycz¹cych animacji znajduje sie na rysunku \ref{rys_3}.
 \begin{figure}[!h]
   \begin{center}
@@ -171,7 +159,7 @@ Ilustracja struktury powi¹zañ dotycz¹cych animacji znajduje sie na rysunku \ref{
 
 \section{Warstwy logiczne avatara}
 
-Strukture avatara mo¿na podzielic na kilka warstw logicznych. Hierarchia w kodzie tych warst zostala przedstawiona na rys \ref{rys_4}. W okolejnych podrozdzialach zostaly przedstana na rysunku X. W kolejnych podrozdzialach zostania opisane funkcjonalnosci jakie jest zwiazane z poszczegolnymi warstwami.
+Strukturê avatara mo¿na podzieliæ na kilka warstw logicznych. Hierarchia w kodzie tych warst zosta³a przedstawiona na rys \ref{rys_4}. W kolejnych podrozdzia³ach zostan¹ opisane funkcjonalnoœci jakie s¹ zwi¹zane z poszczególnymi warstwami.
 
 \begin{figure}[!h]
   \begin{center}
@@ -183,11 +171,11 @@ Strukture avatara mo¿na podzielic na kilka warstw logicznych. Hierarchia w kodzi
 
 \subsection{Warstwa danych 'Motion Capure'}
 
-Dane ruchów uzywane  przez Generator to dane motion capture skonwertowane do formatu Cal3d. Tylko w takim formacie dane te sa widoczne z modu³ów Generatora (nie ma mozliwosci dostêpu do oryginalnego formatu zawartego w plikach motion capture - np. BVH).
+Dane ruchów u¿ywane przez Generator to dane Motion Capture przekszta³cone do formatu Cal3d. Tylko w takim formacie dane te sa widoczne z modu³ów Generatora (nie ma mo¿liwoœci dostêpu do oryginalnego formatu zawartego w plikach motion capture - np. BVH).
 
 \subsection{Warstwa animacji Cal3d}
 
-Dane ruchu uzywane w Generatorze maja forme animacji Cal3d. Odgrywanie ruchów polega na odgrywaniu tych animacji przez API zdefinowane przez engine Cal3d. Dostep do szczego³owych danych dla poszczególnych koœci polega na pobieraniu œcie¿ek animacji (tzw track-ów) z animacji Cal3d.  Œcie¿ki te s¹ parametryzowane czasem - mo¿na wyci¹gn¹æ dowoln¹ klatkê animacji zadaj¹c odpowiedni czas t z zakresu od 0 do d³ugoœci (czasu trwania) tej animacji.  Dla poœrednich wartosci czasu t, które nie maja zdefiniowanych wartoœci w œcie¿ce, klatki sa wyliczane z u¿yciem interpolacji pomiêdzy najblizszymi zdefiniowanymi klatkami w œcie¿ce.
+Dane ruchu u¿ywane w Generatorze maj¹ formê animacji Cal3d. Odgrywanie ruchów polega na odgrywaniu tych animacji przez API zdefinowane przez engine Cal3d. Dostêp do szczegó³owych danych dla poszczególnych koœci polega na pobieraniu œcie¿ek animacji (tzw track-ów) z animacji Cal3d.  Œcie¿ki te s¹ parametryzowane czasem - mo¿na wyci¹gn¹æ dowoln¹ klatkê animacji zadaj¹c odpowiedni czas \textbf{t} z zakresu od 0 do d³ugoœci (czasu trwania) tej animacji.  Dla poœrednich wartoœci czasu \textbf{t}, które nie maj¹ zdefiniowanych wartoœci w œcie¿ce, klatki sa wyliczane z u¿yciem interpolacji pomiêdzy najblizszymi zdefiniowanymi klatkami w œcie¿ce.
 
 \subsection{Warstwa TimeLine'ów}
 
@@ -195,15 +183,15 @@ TimeLine'y u¿ywane s¹ do wygodnego definiowania œcie¿ki ruchu. Mo¿na tworzyæ z³o
 
 \subsection{Warstwa 'Physics modifiers'}
 
-W warstwie tej przewidziane jest tworzenie modyfikatorów, które dostosowuj¹ zdefinowan¹ TimeLine'ami sekwencje ruchów aby poprawiæ realizm i podtrzymanie poprawnoœci fizycznych aspektów ruchu np. eliminacja œlizgania siê stóp po pod³odze, poprawne stawianie kroków podczas skecania lub wykorzystanie kinematyki odwrotnej.
+W warstwie tej przewidziane jest tworzenie modyfikatorów, które dostosowuj¹ zdefinowan¹ TimeLine'ami sekwencjê ruchów aby poprawiæ realizm i podtrzymanie poprawnoœci fizycznych aspektów ruchu np. eliminacja œlizgania siê stóp po pod³odze, poprawne stawianie kroków podczas skrêcania lub wykorzystanie kinematyki odwrotnej.
 
 \subsection{Warstwa 'Control'}
 
-Warstwa 'Control' ma zapewniæ mo¿liwoœc definiowania akcji oraz powi¹zañ pomiêdzy akcjami na wy¿szym poziomie ni¿ sama definicja sekwencji ruchu. Akcje mog¹ byæ wykonywane zgodnie ze zdarzeniami pochodz¹cymi od u¿ytkownika lub zgodnie z algorytmami sztucznej inteligencji w warstwach wy¿szych.
+Warstwa 'Control' ma zapewniæ mo¿liwoœæ definiowania akcji oraz powi¹zañ pomiêdzy akcjami na wy¿szym poziomie ni¿ sama definicja sekwencji ruchu. Akcje mog¹ byæ wykonywane zgodnie ze zdarzeniami pochodz¹cymi od u¿ytkownika lub zgodnie z algorytmami sztucznej inteligencji w warstwach wy¿szych.
 
 \subsection{Warstwa 'Think'}
 
-W warstwie 'Think' przewidziana jest implementacja algorytmów sztucznej inteligencji, któe wprowadzaj¹ autnomiczne i inteligentne zachowanie avatarów np.: omijanie przeszkód czy  wyznaczanie œciezki do celu.
+W warstwie 'Think' przewidziana jest implementacja algorytmów sztucznej inteligencji, które wprowadzaj¹ autnomiczne i inteligentne zachowanie avatarów np.: omijanie przeszkód czy  wyznaczanie œcie¿ki do celu.
 
 \section{Sterowanie ruchem – TimeLine'y}
 Idea sterowania ruchem bazuje na pojêciu TimeLine'ow. TimeLine mo¿na traktowaæ jako œcie¿kê animacji, któr¹ avatar ma za zadanie wykonaæ. TimeLine reprezentowany jest przez obiekty typu \textit{ft::TimeLine}.
@@ -215,9 +203,8 @@ Pomiêdzy kolejnymi obiektami TimeLineMotion mog¹ byæ zdefiniowane regu³y ³¹czeni
 Podczas wykonywania TimeLineMotion'a, ruch avatara mo¿e byæ modyfikowany w dowolny sposób przez jeden lub kilka modyfikatorów ruchu. Ka¿dy modyfikator jest opisany w obiekcie typu \textit{ft::TimeLineModifier}.
 \\
 
-Za wykonywanie TimeLine'ow odpowiedzialne sa obiekty typu typu \textit{ft::TimeLineExecutor}. Kazdy avatar posiada jeden obiekt typu \textit{ft::TimeLine} 
-oraz jeden obiekt typu \textit{ft::TimeLineExecutor}. Aby rozpoczac wykonywanie TimeLine'a przypisanego do danego avatara nalezy wywolac metode \textit{Start()}
-na TimeLineExecutor'ze tego avatara. Po wywo³aniu tej metody rozpoczyna siê wykonywania kolejno wszystkich elementów (ruchów) sk³adowych TimeLine'a.
+Za wykonywanie TimeLine'ow odpowiedzialne s¹ obiekty typu typu \textit{ft::TimeLineExecutor}. Ka¿dy avatar posiada jeden obiekt typu \textit{ft::TimeLine} 
+oraz jeden obiekt typu \textit{ft::TimeLineExecutor}. Aby rozpocz¹æ wykonywanie TimeLine'a przypisanego do danego avatara nale¿y wywo³aæ metodê \textit{Start()} na TimeLineExecutor'ze tego avatara. Po wywo³aniu tej metody rozpoczyna siê wykonywanie kolejno wszystkich elementów (ruchów) sk³adowych TimeLine'a.
 
 \subsection{Struktura TimeLine'a oraz relacje pomiêdzy jego sk³adowymi elementami}
  
@@ -229,8 +216,7 @@ na TimeLineExecutor'ze tego avatara. Po wywo³aniu tej metody rozpoczyna siê wyko
   \label{rys_5}
 \end{figure}
 
-
-Schemat przyk³adowego TimeLine'a znajduje siê na rysunku \ref{rys_6}.Ilustruje on TimeLine-a sk³adaj¹cego siê z trzech obiektów sk³adowych: \textit{TimeLineMotion\_1}, \textit{TimeLineMotion\_2} oraz \textit{TimeLineMotion\_3}.  Pomiêdzy wszystkimi sk³adowymi obiektami zdefiniowane s¹ regu³y ³¹czenia:  \textit{TimeLineBlender\_1} oraz  \textit{TimeLineBlender\_2}.   Poza tym zdefiniowane s¹ dwa modyfikatory: \textit{TimeLineMotdifier\_1} (który modyfikuje ruch postaci jedynie w czasie wykonywania \textit{TimeLineMotion\_1}) oraz \textit{TimeLineModifier\_2} (który modyfikuje ruch podczas wykonywania ca³ego TimeLine'a).
+Schemat przyk³adowego TimeLine'a znajduje siê na rysunku \ref{rys_5}.Ilustruje on TimeLine-a sk³adaj¹cego siê z trzech obiektów sk³adowych: \textit{TimeLineMotion\_1}, \textit{TimeLineMotion\_2} oraz \textit{TimeLineMotion\_3}.  Pomiêdzy wszystkimi sk³adowymi obiektami zdefiniowane s¹ regu³y ³¹czenia:  \textit{TimeLineBlender\_1} oraz  \textit{TimeLineBlender\_2}.   Poza tym zdefiniowane s¹ dwa modyfikatory: \textit{TimeLineMotdifier\_1} (który modyfikuje ruch postaci jedynie w czasie wykonywania \textit{TimeLineMotion\_1}) oraz \textit{TimeLineModifier\_2} (który modyfikuje ruch podczas wykonywania ca³ego TimeLine'a).
 
 Wykonywanie TimeLine'a z przyk³adu polega na sekwencyjnym wykonaniu kolejno trzech zdefiniowanych TimeLineMotion'ów.   
 
@@ -261,54 +247,53 @@ d) \textit{Modifiers} – zawiera zbiór modyfikatorów, które s¹ wykonywane w czasi
 
 \subsection{Schemat TimeLineExecutor'a}
 
-W TimeLineExecutorze zdefiniowany jest zbior stanow, pomiêdzy którymi mo¿e on przechodziæ wykonuj¹c TimeLine'a. Na rysunku \ref{rys_7} przedstawione s¹ wszystkie 
-mo¿liwe stany jak i dozwolone przejscia pomiêdzy nimi.
+W TimeLineExecutorze zdefiniowany jest zbiór stanów, pomiêdzy którymi mo¿e on przechodziæ wykonuj¹c TimeLine'a. Na rysunku \ref{rys_7} przedstawione s¹ wszystkie mo¿liwe stany jak i dozwolone przejœcia pomiêdzy nimi.
 \\
 
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=1\textwidth]{./img/timeline_executor_states.png}
   \end{center}
-  \caption{Schemat przejsc pomiedzy stanami TimeLineExecutor'a}
+  \caption{Schemat przejœæ pomiêdzy stanami TimeLineExecutor'a}
   \label{rys_7}
 \end{figure}
 
 \textbf{Znaczenie poszczególnych stanów:}
 \begin{enumerate}
-\item 'NOT\_INITED' - poczatkowy stan w jakim pozostaje TimeLineExecutor do momentu inicjacji
-\item 'WAIT' - w tym stanie TimeLine nie zawiera zadnych ruchow do wykoniania (jest pusty lub wszystkie skladowe ruchy zosta³y ju¿ wykonane)
-\item 'FADE\_IN' - w tym stanie wykonywany jest jeden ruch (jedna animacja) przy czym jego  waga w Cal3d jest interpolowana od 0 do 1
-\item 'SINGLE' - pojedynczy ruch jest wykonywany
-\item 'OVERLAP' - stan ten reprezentuje "zadkladke" - czyli blending pomiêdzy dwoma kolejnymi ruchami
+\item 'NOT\_INITED' - pocz¹tkowy stan w jakim pozostaje TimeLineExecutor do momentu inicjacji
+\item 'WAIT' - w tym stanie TimeLine nie zawiera ¿adnych ruchów do wykoniania (jest pusty lub wszystkie sk³adowe ruchy zosta³y ju¿ wykonane)
+\item 'FADE\_IN' - w tym stanie wykonywany jest jeden ruch (jedna animacja) przy czym jego waga w Cal3d jest interpolowana od 0 do 1
+\item 'SINGLE' - wykonywany jest pojedynczy ruch
+\item 'OVERLAP' - stan ten reprezentuje "zadk³adkê" - czyli blending pomiêdzy dwoma kolejnymi ruchami
 \item 'FADE\_OUT' - wykonywany jest jeden ruch przy czym jego  waga w Cal3d jest interpolowana od 1 do 0
-\item 'TERMINATED' - ruch zosta³ nagle ztrzymany z zewn¹trz przez metode \textit{TimeLineExecutor::StopRequest()}. Aktualnie wykonywana animacja
- jest zakonczona natychmiast lub z zakonczeniem aktualnej animacji (lub aktualnego cyklu dla animacji cyklicznych)
+\item 'TERMINATED' - ruch zosta³ nagle zatrzymany z zewn¹trz przez metodê \textit{TimeLineExecutor::StopRequest()}. Aktualnie wykonywana animacja
+ jest zakoñczona natychmiast lub z zakonczeniem aktualnej animacji (lub aktualnego cyklu dla animacji cyklicznych)
 \end{enumerate}  
 
 \subsection{Obiekt TimeLineContext}
 
-Podczas wykonywania TimeLine'a w TimeLineExecutorze zdefiniowany jest specjalny obiekt opisujacy aktualny stan wykonywania tzw. TimeLineContext. Parametry, które s¹ w nim zdefiniowane mog¹ byæ w ka¿dym odœwie¿eniu wykorzystane poza TimeLineExcutorem np. w modyfikatorach. Najbardziej istotne parmetry TimeLineContextu, które maj¹ funkcjê informacyjn¹, opisane s¹ poni¿ej:
+Podczas wykonywania TimeLine'a w TimeLineExecutorze zdefiniowany jest specjalny obiekt opisuj¹cy aktualny stan wykonywania tzw. TimeLineContext. Parametry, które s¹ w nim zdefiniowane mog¹ byæ w ka¿dym odœwie¿eniu wykorzystane poza TimeLineExcutorem np. w modyfikatorach. Najbardziej istotne parmetry TimeLineContextu, które maj¹ funkcjê informacyjn¹:
 
 \begin{enumerate}
-\item prevAnim (\textit{CalAnimation*}) - animacja wykonywana poprzednio
-\item currAnim (\textit{CalAnimation*}) - animacja, która jest aktualnie wykonywana
-\item prevAnimTime (\textit{float}) - aktualny czas animacji poprzedniej (istotny na "zakladce", gry  poprzednia animacja ciagle trwa)
-\item prevAnimDuration ( \textit{float}) - ca³kowita d³ugoœæ (czas trwania) poprzedniej animacji
-\item currAnimTime (\textit{float}) - aktualny czas aktualnie wykonywanej animacji
-\item currAnimDuration (\textit{float}) - ca³kowita d³ugoœæ (czas trwania) aktualnie wykonywanej animacji
-\item prevOverlap (\textit{float}) - czas  \textit{blendingu} zastosowanego dla poprzedniej animacji
-\item currOverlap (\textit{float}) - czas  \textit{blendingu}, który bêdzie u¿yty pomiêdzy aktualna a nastêpn¹ animacj¹
-\item exec\_state (\textit{int}) - aktualny stan w jakim jest TimeLineExecutor
-\item exec\_event (\textit{int})  - informacja o ostatnim zdarzeniu wygenerowanym przez TimeLineExecutor (aktualnie s¹ mo¿liwe dwie wartoœci EXEC\_EVENT\_NONE lub EXEC\_EVENT\_STATE\_CHANGED
-\item anim\_changed (\textit{bool}) - ma wartoœæ  \textit{true} jeœli w aktualnym odœwie¿eniu zmieni³a siê animacja
-\item anim\_new\_cycle (\textit{bool}) - ma wartoœæ  \textit{true} jeœli w aktualnym odœwie¿eniu rozpocz¹³ siê nowy cykl jeœli w³aœnie wykonywana jest animacja cykliczna
-\item anim\_stopped (\textit{bool}) - ma wartoœæ  \textit{true} jeœli w aktualnym odœwie¿eniu animacja siê skoñczy³a  lub zosta³a zatrzymana
+\item \textbf{prevAnim} (\textit{CalAnimation*}) - animacja wykonywana poprzednio
+\item \textbf{currAnim} (\textit{CalAnimation*}) - animacja, która jest aktualnie wykonywana
+\item \textbf{prevAnimTime} (\textit{float}) - aktualny czas animacji poprzedniej (istotny na "zak³adce", gry  poprzednia animacja ci¹gle trwa)
+\item \textbf{prevAnimDuration} ( \textit{float}) - ca³kowita d³ugoœæ (czas trwania) poprzedniej animacji
+\item \textbf{currAnimTime} (\textit{float}) - aktualny czas aktualnie wykonywanej animacji
+\item \textbf{currAnimDuration} (\textit{float}) - ca³kowita d³ugoœæ (czas trwania) aktualnie wykonywanej animacji
+\item \textbf{prevOverlap} (\textit{float}) - czas  \textit{blendingu} zastosowanego dla poprzedniej animacji
+\item \textbf{currOverlap} (\textit{float}) - czas  \textit{blendingu}, który bêdzie u¿yty pomiêdzy aktualna a nastêpn¹ animacj¹
+\item \textbf{exec\_state} (\textit{int}) - aktualny stan w jakim jest TimeLineExecutor
+\item \textbf{exec\_event} (\textit{int})  - informacja o ostatnim zdarzeniu wygenerowanym przez TimeLineExecutor (aktualnie s¹ mo¿liwe dwie wartoœci EXEC\_EVENT\_NONE lub EXEC\_EVENT\_STATE\_CHANGED
+\item \textbf{anim\_changed} (\textit{bool}) - ma wartoœæ  \textit{true} jeœli w aktualnym odœwie¿eniu zmieni³a siê animacja
+\item \textbf{anim\_new\_cycle} (\textit{bool}) - ma wartoœæ  \textit{true} jeœli w aktualnym odœwie¿eniu rozpocz¹³ siê nowy cykl jeœli w³aœnie wykonywana jest animacja cykliczna
+\item \textbf{anim\_stopped} (\textit{bool}) - ma wartoœæ  \textit{true} jeœli w aktualnym odœwie¿eniu animacja siê skoñczy³a lub zosta³a zatrzymana
 \end{enumerate}  
 
-Oprócz parametrów informacyjnych TimeLineCOntext zawiera równie¿ parametry, które mo¿na ustawiæ z zewn¹trz:
+Oprócz parametrów informacyjnych TimeLineContext zawiera równie¿ parametry, które mo¿na ustawiæ z zewn¹trz:
 \begin{enumerate}
-\item stop\_immediate (\textit{bool}) - ustalenie czy zatrzymanie wykonywania TimeLine'a (przejscie do stanu TERMINATED) ma byæ wykonane natychmiast czy po zakoñczeniu aktualnej animacji (lub aktualnego cycklu dla animacji cyklicznych)
-\item remove\_after\_execution (\textit{bool}) - ustalenie czy obiekty TimeLineMotion maj¹ byæ usuwane z TimeLine'a po wykonaniu TimeLine'a
+\item \textbf{stop\_immediate} (\textit{bool}) - ustalenie czy zatrzymanie wykonywania TimeLine'a (przejœcie do stanu TERMINATED) ma byæ wykonane natychmiast czy po zakoñczeniu aktualnej animacji (lub aktualnego cycklu dla animacji cyklicznych)
+\item \textbf{remove\_after\_execution} (\textit{bool}) - ustalenie czy obiekty TimeLineMotion maj¹ byæ usuwane z TimeLine'a po wykonaniu TimeLine'a
 \end{enumerate}  
 
 \section{Modu³ ControlManager}
@@ -333,7 +318,7 @@ ControlManager jest modu³em odpowiedzialnym za zarz¹dzanie warstw¹ 'Control'. Co
 \end{figure}
 
 
-Wykonywanie akcji przez avatara polega na przechodzeniu pomiedzy poszczególnymi stanami (tzw. \textit{ControlState's}).  Ka¿dy avatar posiada w³asny i niezale¿ny zbiór stanów, pomiêdzy którymi mo¿e "przechodziæ". Ka¿dy stan ControlState posiada 3 metode, które wo³ane s¹ w momencie inicjacji stanu (\textit{Init()}), wejœcia do tego stanu (\textit{Entry()}) oraz wyjœcia ze stanu (\textit{Exit()}).
+Wykonywanie akcji przez avatara polega na przechodzeniu pomiêdzy poszczególnymi stanami (tzw. \textit{ControlState's}).  Ka¿dy avatar posiada w³asny i niezale¿ny zbiór stanów, pomiêdzy którymi mo¿e "przechodziæ". Ka¿dy stan ControlState posiada 3 metody, które wo³ane s¹ w momencie inicjacji stanu (\textit{Init()}), wejœcia do tego stanu (\textit{Entry()}) oraz wyjœcia ze stanu (\textit{Exit()}).
 \\
 
 Na rysunku \ref{rys_8} przedstawione s¹ powi¹zania pomiêdzy avatarami, stanami i ControlManager'em.
@@ -357,13 +342,11 @@ Wizualizacja obiektów stanowi niezale¿ny mechanizm generatora i poprzez œciœle o
   \caption{Wzajemne relacje wspó³pracy obiektów wizualizacji}
   \label{rys_10}
 \end{figure}
-
-
 \textbf{Zasady renderowania obiektów graficznych w systemie:}
 \begin{enumerate}
-\item 1.Ka¿dy obiekt który ma byæ w³¹czony do potoku renderuj¹cego musi implementowaæ interfejs (pokrywa metodê \textit{Render}) obiektu \textit{ft::SceneObject}.
-\item 2. Ka¿dy obiekt, który ma byæ w³¹czony do potoku renderuj¹cego jest musi byæ zarejestrowany przez obiekt \textit{ft::VisualizationManager} przy pomocy metody \textit{ft::VisualizationManager::AddObject} 
-\item 3.Obiekt \textit{ft::VisualizationManager} wywo³uje cyklicznie metodê \textit{ft::VisualizationManager::OnRender}, zsynchronizowan¹ z mechanizmem GLUT, i przetwarza wszystkie zarejestrowane obiekty wywo³uj¹c metodê Render ka¿dego z nich.
+\item Ka¿dy obiekt który ma byæ w³¹czony do potoku renderuj¹cego musi implementowaæ interfejs (pokrywa metodê \textit{Render}) obiektu \textit{ft::SceneObject}.
+\item Ka¿dy obiekt, który ma byæ w³¹czony do potoku renderuj¹cego jest musi byæ zarejestrowany przez obiekt \textit{ft::VisualizationManager} przy pomocy metody \textit{ft::VisualizationManager::AddObject} 
+\item Obiekt \textit{ft::VisualizationManager} wywo³uje cyklicznie, zsynchronizowan¹ z mechanizmem GLUT, metodê \textit{ft::VisualizationManager::OnRender}, i przetwarza wszystkie zarejestrowane obiekty wywo³uj¹c metodê Render ka¿dego z nich.
 \end{enumerate}  
 \subsubsection{ft::SceneObject}
 Podstawowy obiekt graficzny. Realizuje bazowy interfejs obiektu sceny (kolor, po³o¿enie, nazwa obiektu, aktywnoœæ) i udostêpnia interfejs renderowania obiektu - metoda \textit{Render} oraz  \textit{RenderShadow}.
@@ -447,11 +430,10 @@ Pozwala zmieniaæ wartoœci parametrów zdefiniowanych w systemie kamer i umo¿liwia
 \subsection{Renderowanie Sprzêtowe}
 Ka¿dy obiekt typu \textit{ft::SceneObject} mo¿e implementowaæ w³asne sprzêtowe renderowanie przy u¿yciu jêzyka assemblera ARB: \textit{ARB vertex program} oraz/lub \textit{ARB fragment program}. Aby zrealizowaæ sprzêtowe renderowanie wybranego obiektu nale¿y:
 \begin{enumerate}
-\item Utworzyæ pliki z kodem vertex shaderów i pixel shaderów dla fragmentów lub ca³ego obiektu graficznego w katalogu \textbf{shaders}. Shadery dla pixel shaderów (fragmentów programy) powinny mieæ rozszerzenie \textit{.frag} natomiast dla vertex shaderów (vertex programy) \textit{.vert}.
+\item Utworzyæ pliki z kodem vertex shaderów i pixel shaderów dla fragmentów lub ca³ego obiektu graficznego w katalogu \textbf{shaders}. Shadery dla pixel shaderów (fragment programy) maj¹ rozszerzenie \textit{.frag} natomiast dla vertex shaderów (vertex programy) rozszerzenie \textit{.vert}.
 \item Utworzyæ w kodzie obiektu graficznego metody do inicjalizacji i wczytywania shaderów oraz rezerwacji pamiêci, analogicznie do metod \textit{Avatar::InitHardwareAcceleration} i \textit{Avatar::loadBufferObject}.
 \item Utworzyæ w kodzie obiektu graficznego metodê renderuj¹c¹ obiekt przy pomocy sprzêtu analogiczn¹ do \textit{Avatar::HardwareRenderModelMesh}
 \end{enumerate}
-
 
 \flushright
 
