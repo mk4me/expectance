@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="windows-1250"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
@@ -515,6 +515,22 @@
 				Name="scene"
 				>
 				<File
+					RelativePath=".\src\framework\scene\cal3dobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\cal3dobject.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\cal3dobjectfactory.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\scene\cal3dobjectfactory.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\scene\camera.cpp"
 					>
 				</File>
@@ -548,22 +564,6 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\scene\line.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\meshobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\meshobject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\meshobjectfactory.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\meshobjectfactory.h"
 					>
 				</File>
 				<File

@@ -3,19 +3,19 @@
  * author: abak, mka
  */
 
-#include "meshobject.h"
+#include "cal3dobject.h"
 #include "../utility/debug.h"
 
 using namespace ft;
 
 /**
- * \brief Constructor for MeshObject
+ * \brief Constructor for Cal3DObject
  *
  * \param CalModel * calModel - model in Cal3d which is referenced by this mesh object
  * \param CalCoreModel * calCoreModel - type defined in Cal3d that has been used to create CalModel for this mesh object
  * \param const std::string modelName - name defined in ft::BaseObject which is the base class for mesh object
  **/
-MeshObject::MeshObject(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName):
+Cal3DObject::Cal3DObject(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName):
 m_renderMethod(0), 
 m_shadow(true)
 {
@@ -34,7 +34,7 @@ m_shadow(true)
  * \brief Destructor
  *
  **/
-MeshObject::~MeshObject()
+Cal3DObject::~Cal3DObject()
 {
 	delete m_calHardwareModel;
 	delete m_calModel;
@@ -47,8 +47,8 @@ MeshObject::~MeshObject()
 	}
 }
 
-/// \brief Releases all resources and objects related to this MeshObject
-void MeshObject::Destroy(void)
+/// \brief Releases all resources and objects related to this Cal3DObject
+void Cal3DObject::Destroy(void)
 {
     
 }
@@ -58,7 +58,7 @@ void MeshObject::Destroy(void)
  *
  * \param float elapsedSeconds - time elapsed sice last update
  **/
-void MeshObject::OnUpdate(const double elapsedSeconds)
+void Cal3DObject::OnUpdate(const double elapsedSeconds)
 {
     m_calModel->update(elapsedSeconds);
 
@@ -78,7 +78,7 @@ void MeshObject::OnUpdate(const double elapsedSeconds)
  *
  * \return bool - true if graphics accelerator suports vertex shader otherwise returns false
  **/
-bool MeshObject::InitHardwareAcceleration()
+bool Cal3DObject::InitHardwareAcceleration()
 {
 
 	if(!loadBufferObject())
@@ -105,7 +105,7 @@ bool MeshObject::InitHardwareAcceleration()
  *
  * \param CalModel * calModel - Cal3d object
  **/
-void MeshObject::SetCalModel(CalModel* calModel)
+void Cal3DObject::SetCalModel(CalModel* calModel)
 {
     m_calModel = calModel;
 }
@@ -115,7 +115,7 @@ void MeshObject::SetCalModel(CalModel* calModel)
  *
  * \return CalModel * Cal3d model
  **/
-CalModel* MeshObject::GetCalModel()
+CalModel* Cal3DObject::GetCalModel()
 {
     return m_calModel;
 }
@@ -125,7 +125,7 @@ CalModel* MeshObject::GetCalModel()
  *
  * \param CalCoreModel * calCoreModel - object representing type of CalModel
  **/
-void MeshObject::SetCalCoreModel(CalCoreModel* calCoreModel)
+void Cal3DObject::SetCalCoreModel(CalCoreModel* calCoreModel)
 {
     m_calCoreModel = calCoreModel;
 }
@@ -135,7 +135,7 @@ void MeshObject::SetCalCoreModel(CalCoreModel* calCoreModel)
  *
  * \return CalCoreModel * - object representing type of CalModel
  **/
-CalCoreModel* MeshObject::GetCalCoreModel()
+CalCoreModel* Cal3DObject::GetCalCoreModel()
 {
     return m_calCoreModel;
 }
@@ -145,7 +145,7 @@ CalCoreModel* MeshObject::GetCalCoreModel()
  *
  * \param ft::Message * msg - message from ft::UpdateManager
  **/
-void MeshObject::OnMessage(Message* msg)
+void Cal3DObject::OnMessage(Message* msg)
 {
     if (DEBUG_MESSAGES)
         std::cout << toString() << " received message: " << Message::_GET_MSG_NAME(msg->getType()) << std::endl;
@@ -166,9 +166,9 @@ void MeshObject::OnMessage(Message* msg)
 
 
 /**
- * \brief Main rendering routine for MeshObject
+ * \brief Main rendering routine for Cal3DObject
  **/
-bool MeshObject::Render()
+bool Cal3DObject::Render()
 {
 	// draw the object that casts the shadow
 	glEnable(GL_DEPTH_TEST);
@@ -191,9 +191,9 @@ bool MeshObject::Render()
 }
 
 /**
- * \brief Main rendering routine for MeshObject's shadow
+ * \brief Main rendering routine for Cal3DObject's shadow
  **/
-bool MeshObject::RenderShadow()
+bool Cal3DObject::RenderShadow()
 {
 	if (m_shadow) //draw the shadow
 	{
@@ -214,7 +214,7 @@ bool MeshObject::RenderShadow()
  * \brief Changes between three rendering methods: Mesh Skeleton and BoundingBox consecutivevely  
  *
  **/
-void MeshObject::ChangeRenderMethod()
+void Cal3DObject::ChangeRenderMethod()
 {
     m_renderMethod = (m_renderMethod+1) % 3;
 }
@@ -224,7 +224,7 @@ void MeshObject::ChangeRenderMethod()
  *
  * \param const int renderMethod: 0 - Mesh, 1 - Skeleton, 2 - BoundingBox
  **/
-void MeshObject::setRenderMethod(const int renderMethod)
+void Cal3DObject::setRenderMethod(const int renderMethod)
 {
 	m_renderMethod = renderMethod;
 }
@@ -233,7 +233,7 @@ void MeshObject::setRenderMethod(const int renderMethod)
  * \brief Switches shadow on when it is off or switches shadow off when it is on.
  *
  **/
-void MeshObject::ChangeShadow()
+void Cal3DObject::ChangeShadow()
 {
     m_shadow = !m_shadow;
 }
@@ -243,18 +243,18 @@ void MeshObject::ChangeShadow()
  *
  * \param const bool - defines if shadow should be swithced on or off
  **/
-void MeshObject::setShadow(const bool shadow)
+void Cal3DObject::setShadow(const bool shadow)
 {
 	m_shadow = shadow;
 }
 
 /**
- * \brief Renders MeshObject taking into consideration specific parameters 
+ * \brief Renders Cal3DObject taking into consideration specific parameters 
  *
  * \param const int renderMethod: 0 - Mesh, 1 - Skeleton, 2 - BoundingBox
  * \param const bool shadow: true - render with shadow, otherwise without shadow
  **/
-void MeshObject::RenderMeshObject(const int renderMethod, const bool shadow)
+void Cal3DObject::RenderMeshObject(const int renderMethod, const bool shadow)
 {
 	if (renderMethod == 0) 
 	{
@@ -276,11 +276,11 @@ void MeshObject::RenderMeshObject(const int renderMethod, const bool shadow)
 
 
 /**
- * \brief Renders MeshObject Mesh using software rendering method
+ * \brief Renders Cal3DObject Mesh using software rendering method
  *
  * \param const bool shadow: true - render with shadow, otherwise without shadow
  **/
-void MeshObject::SoftwareRenderModelMesh(const bool shadow)
+void Cal3DObject::SoftwareRenderModelMesh(const bool shadow)
 {
 	// get the renderer of the model
 	CalRenderer *pCalRenderer = m_calModel->getRenderer();
@@ -404,11 +404,11 @@ void MeshObject::SoftwareRenderModelMesh(const bool shadow)
 }
 
 /**
- * \brief Renders MeshObject Mesh using hardware rendering method
+ * \brief Renders Cal3DObject Mesh using hardware rendering method
  *
  * \param const bool shadow: true - render with shadow, otherwise without shadow
  **/
-void MeshObject::HardwareRenderModelMesh(const bool shadow)
+void Cal3DObject::HardwareRenderModelMesh(const bool shadow)
 {
 	glBindProgramARB( GL_VERTEX_PROGRAM_ARB, m_vertexProgramId );
     //glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, m_fragmentProgramId ); // mka 2007-08-29
@@ -525,11 +525,11 @@ void MeshObject::HardwareRenderModelMesh(const bool shadow)
 }
 
 /**
- * \brief Renders MeshObject Skeleton using software rendering method
+ * \brief Renders Cal3DObject Skeleton using software rendering method
  *
  * \param const bool shadow: true - render with shadow, otherwise without shadow
  **/
-void MeshObject::RenderModelSkeleton(const bool shadow)
+void Cal3DObject::RenderModelSkeleton(const bool shadow)
 {
 	glEnable(GL_COLOR_MATERIAL);
 
@@ -574,11 +574,11 @@ void MeshObject::RenderModelSkeleton(const bool shadow)
 }
 
 /**
- * \brief Renders MeshObject BoundingBox using software rendering method
+ * \brief Renders Cal3DObject BoundingBox using software rendering method
  *
  * \param const bool shadow: true - render with shadow, otherwise without shadow
  **/
-void MeshObject::RenderModelBoundingBox(const bool shadow)
+void Cal3DObject::RenderModelBoundingBox(const bool shadow)
 {
 	CalSkeleton *pCalSkeleton = m_calModel->getSkeleton();
 
@@ -646,11 +646,11 @@ void MeshObject::RenderModelBoundingBox(const bool shadow)
  *
  * \param float level - level of details
  **/
-void MeshObject::SetLodLevel(float level)
+void Cal3DObject::SetLodLevel(float level)
 {
     if (m_calModel != NULL)
     {
-        std::cout << "MeshObject<" << getID() <<"> SetLodLevel " << level << std::endl;
+        std::cout << "Cal3DObject<" << getID() <<"> SetLodLevel " << level << std::endl;
         m_calModel->setLodLevel(level);
     }
 }
@@ -661,7 +661,7 @@ void MeshObject::SetLodLevel(float level)
  *
  * \return bool - if allocation problems return false
  **/
-bool MeshObject::loadBufferObject()
+bool Cal3DObject::loadBufferObject()
 {
 
   float *pVertexBuffer = (float*)malloc(30000*3*sizeof(float));

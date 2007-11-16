@@ -15,15 +15,15 @@
 
 namespace ft
 {
-	/* A MeshObject class 
+	/* A Cal3DObject class 
 	 *! Base class for all objects that has refernce in Cal3d (which contain meshes, materials, skeleton and animations)
-     * \param CalModel * calModel -- model in Cal3d which is referenced by this MeshObject
+     * \param CalModel * calModel -- model in Cal3d which is referenced by this Cal3DObject
 	 **/
-    class MeshObject : public UpdateObject, public SceneObject
+    class Cal3DObject : public UpdateObject, public SceneObject
     {
     public:
-		MeshObject(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
-	    virtual ~MeshObject(void);
+		Cal3DObject(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
+	    virtual ~Cal3DObject(void);
         virtual void Destroy(void);
 
 		bool InitHardwareAcceleration();

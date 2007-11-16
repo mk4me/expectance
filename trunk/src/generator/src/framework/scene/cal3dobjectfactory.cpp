@@ -3,32 +3,32 @@
  * author: abak, mka
  */
 
-#include "meshobjectfactory.h"
+#include "cal3dobjectfactory.h"
 #include "../utility/debug.h"
 
 using namespace ft;
 
-MeshObjectFactory* MeshObjectFactory::m_instance = NULL;
+Cal3DObjectFactory* Cal3DObjectFactory::m_instance = NULL;
 
 
 /**
- * \brief Returns the only instance of ft::MeshObjectFactory (creates it at first call to this method)
+ * \brief Returns the only instance of ft::Cal3DObjectFactory (creates it at first call to this method)
  *
- * \return ft::MeshObjectFactory * the only instance of MeshObjectFactory
+ * \return ft::Cal3DObjectFactory * the only instance of Cal3DObjectFactory
  **/
-MeshObjectFactory* MeshObjectFactory::getMeshObjectFactoryInstance()
+Cal3DObjectFactory* Cal3DObjectFactory::getMeshObjectFactoryInstance()
 {
     if (m_instance == NULL)
     {
-        DBG("MeshObjectFactory::getMeshObjectFactoryInstance(): instance of MeshObjectFactory created ");
-        m_instance = new MeshObjectFactory();
+        DBG("Cal3DObjectFactory::getMeshObjectFactoryInstance(): instance of Cal3DObjectFactory created ");
+        m_instance = new Cal3DObjectFactory();
     }
 
     return m_instance;
 }
 
 /// \brief Releases all resources related to this factory
-void MeshObjectFactory::DestroyInstance()
+void Cal3DObjectFactory::DestroyInstance()
 {
     if (m_instance != NULL)
     {
@@ -42,11 +42,11 @@ void MeshObjectFactory::DestroyInstance()
  *
  * \param const std::string modelName - unique string which is used for indexing appriopriate CalCoreModel in factory
  * \param const std::string objectName - name of object
- * \return ft::MeshObject* - new mesh object instance
+ * \return ft::Cal3DObject* - new mesh object instance
  **/
-MeshObject* MeshObjectFactory::CreateMeshObjectInstance(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName)
+Cal3DObject* Cal3DObjectFactory::CreateMeshObjectInstance(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName)
 {
-    return new MeshObject(calModel, calCoreModel, modelName);
+    return new Cal3DObject(calModel, calCoreModel, modelName);
 }
 
 /**
@@ -54,13 +54,13 @@ MeshObject* MeshObjectFactory::CreateMeshObjectInstance(CalModel* calModel, CalC
  *
  * \param const std::string modelName - unique string which is used for indexing appriopriate CalCoreModel in factory
  * \param const std::string objectName - name of object
- * \return ft::MeshObject* - new mesh object or NULL if creation failed
+ * \return ft::Cal3DObject* - new mesh object or NULL if creation failed
  **/
-MeshObject* MeshObjectFactory::CreateMeshObject(const std::string modelName, std::string objectName)
+Cal3DObject* Cal3DObjectFactory::CreateMeshObject(const std::string modelName, std::string objectName)
 {
-    std::cout << "MeshObjectFactory::CreateAvatar, for model: " + modelName + " with new name: " + objectName << std::endl; 
+    std::cout << "Cal3DObjectFactory::CreateAvatar, for model: " + modelName + " with new name: " + objectName << std::endl; 
 
-    MeshObject *newObject = NULL;
+    Cal3DObject *newObject = NULL;
     CalModel* newModel= NULL;
     CalCoreModel* coreModel = NULL;
 
@@ -83,10 +83,10 @@ MeshObject* MeshObjectFactory::CreateMeshObject(const std::string modelName, std
         InitModelMeshes(coreModel, newModel);
         newObject = CreateMeshObjectInstance(newModel, coreModel, objectName);
     
-        std::cout << "MeshObjectFactory::CreateMeshObject,new mesh object " + objectName + " created." << std::endl;
+        std::cout << "Cal3DObjectFactory::CreateMeshObject,new mesh object " + objectName + " created." << std::endl;
     }
     else
-        std::cout << "MeshObjectFactory::CreateMeshObject,cration of object " + objectName + " failed." << std::endl;
+        std::cout << "Cal3DObjectFactory::CreateMeshObject,cration of object " + objectName + " failed." << std::endl;
 
     return newObject;
 }
@@ -97,9 +97,9 @@ MeshObject* MeshObjectFactory::CreateMeshObject(const std::string modelName, std
  * \param const std::string modelName - name of model which responds to appriopriate configuration file
  * \return CalCoreModel * - loaded core model or NULL if loading failed
  **/
-CalCoreModel* MeshObjectFactory::LoadCalCoreModel(const std::string modelName)
+CalCoreModel* Cal3DObjectFactory::LoadCalCoreModel(const std::string modelName)
 {
-    std::cout << "MeshObjectFactory::LoadCalCoreModel, for model: " + modelName  << std::endl;
+    std::cout << "Cal3DObjectFactory::LoadCalCoreModel, for model: " + modelName  << std::endl;
 
     CalCoreModel* coreModel = new CalCoreModel("dummy");
     
@@ -109,7 +109,7 @@ CalCoreModel* MeshObjectFactory::LoadCalCoreModel(const std::string modelName)
         // it must be done before access to bounding boxes by mka 2007.06.10
         coreModel->getCoreSkeleton()->calculateBoundingBoxes(coreModel);
 
-        std::cout << "MeshObjectFactory::LoadCalCoreModel, model " << modelName << " loaded. " << std::endl;
+        std::cout << "Cal3DObjectFactory::LoadCalCoreModel, model " << modelName << " loaded. " << std::endl;
     }
     else
     {
@@ -128,7 +128,7 @@ CalCoreModel* MeshObjectFactory::LoadCalCoreModel(const std::string modelName)
  * \param CalCoreModel * coreModel - core model object to fill with data from configuration file
  * \return bool - true if parsing succeed, false if parsing failed
  **/
-bool MeshObjectFactory::ParseModelConfiguration(const std::string& modelName, CalCoreModel* coreModel)
+bool Cal3DObjectFactory::ParseModelConfiguration(const std::string& modelName, CalCoreModel* coreModel)
 {
   // open the model configuration file
   std::string modelWorkDir = FT_MODELPATH + modelName + "\\";
@@ -261,7 +261,7 @@ bool MeshObjectFactory::ParseModelConfiguration(const std::string& modelName, Ca
  *		  thing we can do here.
  * \param CalCoreModel * coreModel - core model for which materials should be initialized
  **/
-void MeshObjectFactory::InitCoreModelMaterials(CalCoreModel* coreModel)
+void Cal3DObjectFactory::InitCoreModelMaterials(CalCoreModel* coreModel)
 {
   int materialId;
   for(materialId = 0; materialId < coreModel->getCoreMaterialCount(); materialId++)
@@ -301,7 +301,7 @@ void MeshObjectFactory::InitCoreModelMaterials(CalCoreModel* coreModel)
  * \param CalCoreModel * coreModel - core model that was used to create given CalModel
  * \param CalModel * model - model in Cal3d for which materials should be initialized
  **/
-void MeshObjectFactory::InitModelMeshes(CalCoreModel* coreModel, CalModel* model)
+void Cal3DObjectFactory::InitModelMeshes(CalCoreModel* coreModel, CalModel* model)
 {	
  
   
@@ -329,7 +329,7 @@ void MeshObjectFactory::InitModelMeshes(CalCoreModel* coreModel, CalModel* model
 
 }
 /// \brief Releases all CalCoreModel-s created by this factory
-void MeshObjectFactory::ReleaseCalCoreModels()
+void Cal3DObjectFactory::ReleaseCalCoreModels()
 {
     //TODO: add releasing models
     // - delete each memeber of map
@@ -345,7 +345,7 @@ void MeshObjectFactory::ReleaseCalCoreModels()
 /// \brief Loads and creates a texture from a given file 
 /// \param const std::string & strFilename - name of file with texture
 /// \return GLuint - texture id of loaded texture
-GLuint MeshObjectFactory::LoadTexture(const std::string& strFilename)
+GLuint Cal3DObjectFactory::LoadTexture(const std::string& strFilename)
 {
   GLuint textureId=0;
   if(_stricmp(strrchr(strFilename.c_str(),'.'),".raw")==0)

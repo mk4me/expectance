@@ -16,7 +16,7 @@ using namespace ft;
  * \param const std::string modelName - name defined in ft::BaseObject which is the base class for Avatar
  **/
 Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName):
-MeshObject(calModel, calCoreModel, modelName)
+Cal3DObject(calModel, calCoreModel, modelName)
 {
     //empty
 }
@@ -33,5 +33,5 @@ Avatar::~Avatar()
 /// \brief Releases all resources and objects related to this Avatar
 void Avatar::Destroy(void)
 {
-    MeshObject::Destroy();
+    Cal3DObject::Destroy();
 }

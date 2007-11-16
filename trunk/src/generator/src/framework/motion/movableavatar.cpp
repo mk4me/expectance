@@ -333,8 +333,8 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
     {
         setLCSModifier(new LCSModifier());
         getTimeLine()->AddModifier(getLCSModifier());
-
-        if (TimeLineVisualizer::TRACK_ON)
+		
+        if ((Config::getInstance()->IsKey("track_on")) && (Config::getInstance()->GetIntVal("track_on")==1))
         {
             getTimeLine()->AddModifier(new TimeLineVisualizer());
         }

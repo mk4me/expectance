@@ -29,9 +29,9 @@ AvatarFactory* AvatarFactory::getAvatarFactoryInstance()
 
 
 /**
- * \brief Overriden from ft::MeshObjectFactory
+ * \brief Overriden from ft::Cal3DObjectFactory
  **/
-MeshObject* AvatarFactory::CreateMeshObjectInstance(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName)
+Cal3DObject* AvatarFactory::CreateMeshObjectInstance(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName)
 {
     return new AIAvatar(calModel, calCoreModel, modelName);
 }

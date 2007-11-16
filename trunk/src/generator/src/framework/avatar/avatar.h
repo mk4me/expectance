@@ -6,7 +6,7 @@
 #ifndef _GEN_AVATAR_H
 #define _GEN_AVATAR_H
 
-#include "../scene/meshobject.h"
+#include "../scene/cal3dobject.h"
 
 namespace ft
 {
@@ -14,7 +14,7 @@ namespace ft
 	 * Base class for all humanoid characters managed by Generator
      * \param CalModel * calModel -- model in Cal3d which is referenced by this avatar
 	 */
-    class Avatar : public MeshObject
+    class Avatar : public Cal3DObject
     {
     public:
 		Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);

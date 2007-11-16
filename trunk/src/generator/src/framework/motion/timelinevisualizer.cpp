@@ -7,12 +7,13 @@
 
 using namespace ft;
 
-bool TimeLineVisualizer::TRACK_ON = true;
+
 
 /// \brief constructor
 TimeLineVisualizer::TimeLineVisualizer()
 {
-    TRACK_TIMELINE_STATES = false;
+
+	bool _checkTrack = (Config::getInstance()->IsKey("track_timeline_states")) && (Config::getInstance()->GetIntVal("track_timeline_states")==1);		(_checkTrack)? TRACK_TIMELINE_STATES = true : TRACK_TIMELINE_STATES = false;
 
     if (TRACK_TIMELINE_STATES)
     {

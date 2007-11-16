@@ -8,32 +8,32 @@
 
 
 #include "../core/global.h"
-#include "meshobject.h"
+#include "cal3dobject.h"
 #include <map>
 
 namespace ft
 {
 	/**
-	 * Class MeshObjectFactory: is responsible for creation of meshobjects. It is also responsible for creation 
-     * and use of CalModel-s and CalCoreModel-s to which specific meshobject refers.
+	 * Class Cal3DObjectFactory: is responsible for creation of meshobjects. It is also responsible for creation 
+     * and use of CalModel-s and CalCoreModel-s to which specific cal3dobject refers.
      * 
 	 **/
-    class MeshObjectFactory
+    class Cal3DObjectFactory
     {
     public:
-        MeshObjectFactory (void) { /*empty*/ }
-	    virtual ~MeshObjectFactory (void) { /*empty*/ }
+        Cal3DObjectFactory (void) { /*empty*/ }
+	    virtual ~Cal3DObjectFactory (void) { /*empty*/ }
 
-        static MeshObjectFactory * getMeshObjectFactoryInstance();
+        static Cal3DObjectFactory * getMeshObjectFactoryInstance();
         static void DestroyInstance();
 
-        MeshObject* CreateMeshObject(const std::string modelName, const std::string objectName);
+        Cal3DObject* CreateMeshObject(const std::string modelName, const std::string objectName);
 
     protected:
-        virtual MeshObject* CreateMeshObjectInstance(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
+        virtual Cal3DObject* CreateMeshObjectInstance(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
 
     private:
-        static MeshObjectFactory* m_instance;
+        static Cal3DObjectFactory* m_instance;
         
         std::map<std::string,CalCoreModel*> m_coreModels;
 

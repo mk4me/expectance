@@ -63,7 +63,7 @@ bool Application::InitModules()
     DBG("Application::InitModules().");
 
     UpdateManager::getInstance()->Init();  //enforced creation of singleton
-    MeshObjectFactory::getMeshObjectFactoryInstance();   //enforced creation of singleton
+    Cal3DObjectFactory::getMeshObjectFactoryInstance();   //enforced creation of singleton
     AvatarFactory::getAvatarFactoryInstance();   //enforced creation of singleton
     if (!VisualizationManager::getInstance()->Init()) //enforced creation of singleton
 	{
@@ -135,7 +135,7 @@ void Application::InitAvatars()
  **/
 void Application::InitStaticObjects()
 {
-    MeshObject *table = MeshObjectFactory::getMeshObjectFactoryInstance()->CreateMeshObject("table","table01");
+    Cal3DObject *table = Cal3DObjectFactory::getMeshObjectFactoryInstance()->CreateMeshObject("table","table01");
     if (table != NULL)
     {
       VisualizationManager::getInstance()->AddObject(table); 
@@ -144,7 +144,7 @@ void Application::InitStaticObjects()
       table->setPosition(vStartPos);
     }
 
-    table = MeshObjectFactory::getMeshObjectFactoryInstance()->CreateMeshObject("table","table02");
+    table = Cal3DObjectFactory::getMeshObjectFactoryInstance()->CreateMeshObject("table","table02");
     if (table != NULL)
     {
       VisualizationManager::getInstance()->AddObject(table); 
