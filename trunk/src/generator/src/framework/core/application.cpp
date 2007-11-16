@@ -100,11 +100,12 @@ void Application::InitAvatars()
     CalVector vStartPos(0,0,0);
     float x_off = -150, z_off = 0;
 
-    std::string avNamePostfix;
+    string _nameHelper;
     for (int i=0; i<avatar_number; i++)
     {
-        avNamePostfix = i;
-        av = dynamic_cast<ActionAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally", "Avatar" + avNamePostfix));
+		_nameHelper.empty();
+		_nameHelper = "Avatar" + StringHelper::itos(i);
+        av = dynamic_cast<ActionAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally", _nameHelper));
         if (av != NULL)  
         {
             av->Init();

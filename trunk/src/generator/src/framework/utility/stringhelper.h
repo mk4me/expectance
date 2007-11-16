@@ -31,6 +31,7 @@ namespace ft
 		static string ClearDelimiters(const string& str, const char start_bracket, const char end_bracket);
 		static string RemoveChar(const string& str, const char character);
 		template <typename T> static T FromStringEx( const std::string& s, bool& bSuccess);
+		static string itos(int i);
 	};
 };
 

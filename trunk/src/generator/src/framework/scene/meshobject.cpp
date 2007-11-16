@@ -92,10 +92,10 @@ bool MeshObject::InitHardwareAcceleration()
 	  std::cerr << "Error loading vertex program." << std::endl;
 	  return false;
 	}
-	if ((m_fragmentProgramId = OGLContext::getInstance()->loadFragmentProgram(FT_SHADERPATH + Config::getInstance()->GetStrVal("mesh_fragment_program"))) == 0)
-	{
-	  std::cerr << "Error loading fragment program." << std::endl;
-	}
+	//if ((m_fragmentProgramId = OGLContext::getInstance()->loadFragmentProgram(FT_SHADERPATH + Config::getInstance()->GetStrVal("mesh_fragment_program"))) == 0)
+	//{
+	//  std::cerr << "Error loading fragment program." << std::endl;
+	//}
 
 	return true;
 }
@@ -171,7 +171,6 @@ void MeshObject::OnMessage(Message* msg)
 bool MeshObject::Render()
 {
 	// draw the object that casts the shadow
-
 	glEnable(GL_DEPTH_TEST);
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_LIGHTING);
@@ -183,8 +182,8 @@ bool MeshObject::Render()
 	glPopMatrix();
 
 	// clear light
-	glDisable(GL_LIGHT0);
 	glDisable(GL_LIGHTING);
+	glDisable(GL_LIGHT0);
 	glDisable(GL_DEPTH_TEST);
 
 
@@ -412,16 +411,18 @@ void MeshObject::SoftwareRenderModelMesh(const bool shadow)
 void MeshObject::HardwareRenderModelMesh(const bool shadow)
 {
 	glBindProgramARB( GL_VERTEX_PROGRAM_ARB, m_vertexProgramId );
-    glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, m_fragmentProgramId ); // mka 2007-08-29
+    //glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, m_fragmentProgramId ); // mka 2007-08-29
 
 	glEnableVertexAttribArrayARB(0);
 	glEnableVertexAttribArrayARB(1);
     glEnableVertexAttribArrayARB(2);
 	glEnableVertexAttribArrayARB(3);
     glEnableVertexAttribArrayARB(8);
-
+	
+	glEnable(GL_TEXTURE_2D);
+	
 	glEnable(GL_VERTEX_PROGRAM_ARB);
-    if (m_fragmentProgramId) glEnable(GL_FRAGMENT_PROGRAM_ARB);
+    //if (m_fragmentProgramId) glEnable(GL_FRAGMENT_PROGRAM_ARB);
 
 
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_bufferObject[0]);
@@ -517,9 +518,9 @@ void MeshObject::HardwareRenderModelMesh(const bool shadow)
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
 	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
 
-	glDisable(GL_FRAGMENT_PROGRAM_ARB);
+	//glDisable(GL_FRAGMENT_PROGRAM_ARB);
 	glDisable(GL_VERTEX_PROGRAM_ARB);
-	glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, 0 );
+	//glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, 0 );
 	glBindProgramARB( GL_VERTEX_PROGRAM_ARB, 0 );
 }
 

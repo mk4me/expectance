@@ -302,24 +302,30 @@ void MeshObjectFactory::InitCoreModelMaterials(CalCoreModel* coreModel)
  * \param CalModel * model - model in Cal3d for which materials should be initialized
  **/
 void MeshObjectFactory::InitModelMeshes(CalCoreModel* coreModel, CalModel* model)
-{
+{	
  
   
-  // attach all meshes to the model
-  for(int meshId = 0; meshId < coreModel->getCoreMeshCount(); meshId++)
-  {
-    model->attachMesh(meshId);
-  }
+	// attach all meshes to the model
+	for(int meshId = 0; meshId < coreModel->getCoreMeshCount(); meshId++)
+	{
+		model->attachMesh(meshId);
+	}
 
-  // set the material set of the whole model
-  model->setMaterialSet(0);
+	// set the material set of the whole model
+	model->setMaterialSet(0);
 
 
-  // Disable internal data
-  // this disable spring system necessary for video hardware acceleration
+	// Disable internal data if hardware acceleration has been activated
+	// this disable spring system necessary for video hardware acceleration
 
-  std::cout << "Disable internal." << std::endl;
-  model->disableInternalData();
+	if(Config::getInstance()->IsKey("hardware_acceleration"))	
+	{
+		if (Config::getInstance()->GetIntVal("hardware_acceleration")==1)
+		{
+		  std::cout << "Disable internal (spring system for hardware acceleration)." << std::endl;
+		  model->disableInternalData();
+		}
+	}
 
 }
 /// \brief Releases all CalCoreModel-s created by this factory

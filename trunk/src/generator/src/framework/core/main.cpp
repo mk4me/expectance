@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
     if (!Application::getInstance()->InitModules())
 	{
 		DBG("Application::InitModules error");
-		return 0;
+		return -1;
 	}
 
 	VisualizationManager::getInstance()->AddObject(new TraceLine("TL1")); //lines for tracing

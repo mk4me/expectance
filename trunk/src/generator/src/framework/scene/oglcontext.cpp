@@ -55,29 +55,6 @@ void OGLContext::setWindowSize(int width, int height)
 
 bool OGLContext::Init()
 {
-	if(Config::getInstance()->IsKey("hardware_acceleration"))
-	{
-		HardwareAcceleration = Config::getInstance()->GetIntVal("hardware_acceleration");
-	}
-	else
-		HardwareAcceleration = 0; // no config settings
-
-	if (HardwareAcceleration == 1)
-	{
-		glewInit();
-
-		if (!GLEW_ARB_vertex_program)
-		{
-		  std::cerr << "Error ARB_vertex_program OpenGL extension not found." << std::endl;
-		  return false;
-		}
-
-		if (!GLEW_ARB_vertex_buffer_object)
-		{
-		  std::cerr << "Error ARB_vertex_buffer_object OpenGL extension not found." << std::endl;
-		  return false;
-		}
-	}
 
 	m_width = glutGet (GLUT_SCREEN_WIDTH);
 	m_height = (glutGet (GLUT_SCREEN_HEIGHT))/2;
@@ -109,6 +86,32 @@ bool OGLContext::Init()
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
+
+
+	// check hardware acceleration possibility
+	if(Config::getInstance()->IsKey("hardware_acceleration"))
+	{
+		HardwareAcceleration = Config::getInstance()->GetIntVal("hardware_acceleration");
+	}
+	else
+		HardwareAcceleration = 0; // no config settings
+
+	if (HardwareAcceleration == 1)
+	{
+		glewInit();
+
+		if (!GLEW_ARB_vertex_program)
+		{
+		  std::cerr << "Error ARB_vertex_program OpenGL extension not found." << std::endl;
+		  return false;
+		}
+
+		if (!GLEW_ARB_vertex_buffer_object)
+		{
+		  std::cerr << "Error ARB_vertex_buffer_object OpenGL extension not found." << std::endl;
+		  return false;
+		}
+	}
 
 	return true;
 }
@@ -557,9 +560,9 @@ GLuint OGLContext::loadVertexProgram(const std::string fn)
    {
       return false;
    }
-
-   printf("\nLoading vertex program: '%s'\n", fn);
-
+   
+   std::cout << "Loading vertex program: " << fn << std::endl;
+   
    fseek(fp, 0, SEEK_END);
    length = ftell(fp);
    fseek(fp, 0, SEEK_SET);
