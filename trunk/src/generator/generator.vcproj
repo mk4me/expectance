@@ -747,6 +747,18 @@
 					RelativePath=".\src\framework\ai\goalmanager.h"
 					>
 				</File>
+				<Filter
+					Name="goals"
+					>
+					<File
+						RelativePath=".\src\framework\ai\goals\randommovegoal.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\framework\ai\goals\randommovegoal.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="motion"

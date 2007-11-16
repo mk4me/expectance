@@ -38,6 +38,8 @@ namespace ft
 
         void OnUpdate(const double elapsedSeconds);  // OVERRIDEN, updates by UpdateManager 
 
+        void UpadateAvatarGoals();
+
     private:
         static AIManager* m_instance;
 

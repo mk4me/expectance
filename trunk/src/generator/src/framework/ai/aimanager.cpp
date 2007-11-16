@@ -63,8 +63,24 @@ void AIManager::OnUpdate(const double elapsedSeconds)
 {
     if (m_bThink)
     {
-        //cout << " AIManager  :  think update ..." << endl;
+        UpadateAvatarGoals();
     }
+}
+
+/**
+ * \brief Update goals for all registered avatars
+ *
+ **/
+void AIManager::UpadateAvatarGoals()
+{
+    if (m_vAvatars.size() > 0)
+    {
+        for (int m=0; m<(int)m_vAvatars.size(); m++)
+        {
+            GoalManager::getInstance()->UpdateAvatarGoal((AIAvatar*)m_vAvatars[m]); 
+        }
+    }
+
 }
 
 

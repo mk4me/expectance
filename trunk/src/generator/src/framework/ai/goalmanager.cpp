@@ -105,6 +105,57 @@ bool GoalManager::RemoveGoal(Goal* pGoal)
 }
 
 /**
+ * \brief Update goal for a given avatar
+ *
+ * \param ft::AIAvatar* av - avatar for which a goal is to update
+ *
+ **/
+void GoalManager::UpdateAvatarGoal(AIAvatar *av)
+{
+    std::vector<Goal*> vPossibleGoals;
+    FindPossibleGoals(vPossibleGoals, av);
+    EsimateGoalsValue(vPossibleGoals, av);
+
+    Goal* selectedGoal = SelectGoal(vPossibleGoals, av);
+
+    if (selectedGoal != NULL)
+    {
+        if (selectedGoal->getID().compare(selectedGoal->getID()) != 0)
+        {
+            ExecuteGoal(selectedGoal, av);
+        }
+    }
+
+    //cout << " size " << vPossibleGoals.size() << endl; 
+    //for (int m=0; m<(int)vPossibleGoals.size(); m++)
+    //{
+    //    cout << (Goal*)vPossibleGoals[m] << endl; 
+    //}
+
+}
+
+void GoalManager::FindPossibleGoals(std::vector<Goal*> &vPossibleGoals, AIAvatar *av)
+{
+    //only for test
+    if (vPossibleGoals.size() == 0)
+        vPossibleGoals.push_back(new Goal());
+}
+
+void GoalManager::EsimateGoalsValue(std::vector<Goal*> &vPossibleGoals, AIAvatar *av)
+{
+
+}
+
+Goal* GoalManager::SelectGoal(std::vector<Goal*> &vPossibleGoals, AIAvatar *av)
+{
+    return NULL;
+}
+
+void GoalManager::ExecuteGoal(Goal* goal, AIAvatar *av)
+{
+}
+
+/**
  * \brief Prints debug information describing GoalManager on output console
  *
  **/

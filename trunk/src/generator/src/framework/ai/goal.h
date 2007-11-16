@@ -8,7 +8,6 @@
 
 #include "../core/baseobject.h"
 
-
 namespace ft
 {
 	/**
