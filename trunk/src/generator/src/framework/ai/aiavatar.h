@@ -7,6 +7,8 @@
 #define _GEN_AI_AVATAR_H
 
 #include "../action/actionavatar.h"
+#include "goal.h"
+#include "aicontroller.h"
 
 namespace ft
 {
@@ -20,10 +22,19 @@ namespace ft
         AIAvatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
         virtual ~AIAvatar(void);
         virtual void Destroy(void);
-
         void Init();
-
         virtual void Reset();
+
+        void setCurrGoal(Goal* goal) { m_currGoal = goal; }
+        Goal* getCurrGoal() { return m_currGoal; }
+
+        void setGoalController(AIController* controller) { m_currGoalController = controller; }
+        AIController* getGoalController() { return m_currGoalController; }
+
+
+    private:
+        Goal* m_currGoal;
+        AIController* m_currGoalController;
     };
 };
 

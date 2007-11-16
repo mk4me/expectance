@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="windows-1250"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
@@ -705,6 +705,46 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\ai\aiavatar.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\ai\aicontroller.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\ai\aicontroller.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\ai\aimanager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\ai\aimanager.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\ai\constraint.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\ai\constraint.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\ai\goal.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\ai\goal.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\ai\goalmanager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\ai\goalmanager.h"
 					>
 				</File>
 			</Filter>

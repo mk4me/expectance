@@ -125,6 +125,7 @@ int main(int argc, char *argv[])
     Application::getInstance()->InitAvatars();
     Application::getInstance()->SetCameraToActiveAvatar();
     Application::getInstance()->InitStaticObjects();
+    Application::getInstance()->StartAISimulation();
 	
 
 

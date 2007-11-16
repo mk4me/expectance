@@ -7,6 +7,7 @@
 #include "config.h"
 #include "UpdateManager.h"
 #include "../control/controlmanager.h"
+#include "../ai/aimanager.h"
 #include "../avatar/avatarfactory.h"
 #include "../scene/visualizationmanager.h"
 #include "../timeline/timelinefactory.h"
@@ -73,8 +74,12 @@ bool Application::InitModules()
     TimeLineFactory::getInstance(); //enforced creation of singleton
 
     ControlManager::getInstance()->Init(); //enforced creation of singleton
+    AIManager::getInstance()->Init();  //enforced creation of singleton
+
     UpdateManager::getInstance()->AddUpdateObject(ControlManager::getInstance());
 	UpdateManager::getInstance()->AddUpdateObject(CameraManager::getInstance()); //synchronize cameramanager from global timer
+    UpdateManager::getInstance()->AddUpdateObject(AIManager::getInstance());
+
 	return true;
 }
 
@@ -182,7 +187,13 @@ Avatar* Application::CreateAvatarOnScene(const std::string& calCoreModel,const  
   {
 	  VisualizationManager::getInstance()->AddObject(avatar); 
       UpdateManager::getInstance()->AddUpdateObject(avatar);
+      AIManager::getInstance()->AddAvatar((AIAvatar*)avatar);
   }
 
   return avatar;
+}
+
+void Application::StartAISimulation()
+{
+    AIManager::getInstance()->StartThinking();
 }
