@@ -22,3 +22,8 @@ Goal::~Goal()
 void Goal::Destroy(void)
 {
 }
+
+int Goal::getActionToPerform()
+{
+    return -1;
+}

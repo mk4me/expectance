@@ -14,7 +14,8 @@ using namespace std;
 AIAvatar::AIAvatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName)
 :ActionAvatar(calModel, calCoreModel, modelName)
 {
-    //implement
+    m_currGoal = NULL;
+    m_currGoalController = NULL;
 }
 
 // \brief Destructor

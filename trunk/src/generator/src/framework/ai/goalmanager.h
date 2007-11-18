@@ -35,6 +35,7 @@ namespace ft
         void Dump();
 
     private:
+        void CheckCurrGoalReached(AIAvatar *av);
         void FindPossibleGoals(std::vector<Goal*> &vPossibleGoals, AIAvatar *av);
         void EsimateGoalsValue(std::vector<Goal*> &vPossibleGoals, AIAvatar *av);
         Goal* SelectGoal(std::vector<Goal*> &vPossibleGoals, AIAvatar *av);

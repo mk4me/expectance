@@ -7,6 +7,7 @@
 #define _GEN_AI_GOAL_H
 
 #include "../core/baseobject.h"
+#include "../action/action.h"
 
 namespace ft
 {
@@ -20,6 +21,8 @@ namespace ft
         Goal();
         virtual ~Goal(void);
         virtual void Destroy(void);
+
+         virtual int getActionToPerform();
     };
 };
 

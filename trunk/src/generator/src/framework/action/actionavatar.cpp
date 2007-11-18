@@ -39,14 +39,14 @@ void ActionAvatar::Init()
     PhysicsAvatar::Init();
     CreateActions(); //create timelines for actions
 
-    SetAction(ACTION_IDLE);
+    SetActionById(ACTION_IDLE_ID);
 }
 
 /// \brief Sets another action in Avatar
 /// \param Action *newAction - new action
-void ActionAvatar::SetAction(Action *newAction)
+void ActionAvatar::SetCurrAction(Action *newAction)
 {
-    cout << toString() << ": SetAction( " << newAction->toString() << ")" << endl;
+    cout << toString() << ": SetCurrAction( " << newAction->toString() << ")" << endl;
 
     if (IsTransitionAllowed(m_action, newAction))
     {
@@ -63,6 +63,45 @@ void ActionAvatar::SetAction(Action *newAction)
     {
         cout << toString() << ":SetAction: not allowed transition from " + m_action->toString() + " to " + newAction->toString() << endl;
     }
+}
+
+/// \brief Sets another action in Avatar using id of action
+/// \param int id - id of target action
+/// \return Action* - pointer to set action or NULL if the re is no action for given id
+Action* ActionAvatar::SetActionById(int id)
+{
+    Action* action = getActionById(id);
+
+    if (action != NULL)
+    {
+        SetCurrAction(action);
+    }
+
+    return action;
+}
+
+/// \brief Returns action for given action id 
+/// \param int id - id of action 
+/// \return Action* - pointer to set action or NULL if the re is no action for given id
+Action* ActionAvatar::getActionById(int id)
+{
+    Action* result = NULL;
+    switch(id)
+    {
+    case ACTION_IDLE_ID:
+        result = ACTION_IDLE;
+        break;
+    case ACTION_WALK_ID:
+        result = ACTION_WALK;
+        break;
+    case ACTION_RUN_ID:
+        result = ACTION_RUN;
+        break;
+    default:
+        break;
+    }
+
+    return result;
 }
 
 /// \brief Creates set of possible actions
@@ -145,10 +184,10 @@ void ActionAvatar::OnMessage(Message* msg)
     {
         if (msg->getParam() == NULL || (getName().compare(msg->getParam()->getStrValue()) == 0))
         {
-            if (getAction() == ACTION_WALK)
-                SetAction(ACTION_RUN);
-            else if (getAction() == ACTION_IDLE)
-                SetAction(ACTION_WALK);
+            if (getCurrAction() == ACTION_WALK)
+                SetActionById(ACTION_RUN_ID);
+            else if (getCurrAction() == ACTION_IDLE)
+                SetActionById(ACTION_WALK_ID);
         }
     }
     else if (msg->getType() == MSG_CONTROL_STOP)
@@ -157,10 +196,10 @@ void ActionAvatar::OnMessage(Message* msg)
         {
             //cout << "PhysicsAvatar : will stop TimeLine "<< std::endl;
             //StopTimeLine();
-           if (getAction() == ACTION_WALK)
-                SetAction(ACTION_IDLE);
-           else if (getAction() == ACTION_RUN)
-                SetAction(ACTION_WALK);
+           if (getCurrAction() == ACTION_WALK)
+                SetActionById(ACTION_IDLE_ID);
+           else if (getCurrAction() == ACTION_RUN)
+                SetActionById(ACTION_WALK_ID);
         }
     }
     else if (msg->getType() == MSG_CONTROL_TURN_LEFT)

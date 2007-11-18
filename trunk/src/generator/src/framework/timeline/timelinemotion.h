@@ -31,7 +31,7 @@ namespace ft
         TimeLineBlender* getBlender() { return m_blender; }
 
         bool AddModifier(TimeLineModifier* modifier);
-//        bool  RemoveMdofier(TimeLineModifier* modfier);
+        bool RemoveModifier(TimeLineModifier* modifier);
 //        TimeLineModifier* GetModifier(int);
 
         void setAnimLoop(bool set) { m_animLoop = set; }

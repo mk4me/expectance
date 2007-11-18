@@ -19,6 +19,11 @@ namespace ft
     public:
         RandomMoveGoal();
         virtual ~RandomMoveGoal(void);
+
+        int getActionToPerform();
+
+    private:
+        int counter;
     };
 };
 

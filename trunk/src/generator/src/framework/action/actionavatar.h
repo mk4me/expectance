@@ -28,8 +28,10 @@ namespace ft
 
         void OnMessage(Message* msg);
     
-        void SetAction(Action *newAction);
-        Action* getAction() { return m_action; }
+        Action* getCurrAction() { return m_action; }
+
+        Action* SetActionById(int id);
+        Action* getActionById(int id);
 
         void CreateActions();
         void DestroyActions();
@@ -43,6 +45,8 @@ namespace ft
         RunAction *ACTION_RUN;
 
     private:
+        void SetCurrAction(Action *newAction);
+
         Action* m_action;
         
     };

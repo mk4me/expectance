@@ -195,5 +195,5 @@ Avatar* Application::CreateAvatarOnScene(const std::string& calCoreModel,const  
 
 void Application::StartAISimulation()
 {
-    AIManager::getInstance()->StartThinking();
+    //AIManager::getInstance()->StartThinking();  //TODO: (abak 2007-11-18) uncomment it if AI is working correctly
 }

@@ -46,7 +46,30 @@ bool TimeLineMotion::AddModifier(TimeLineModifier* modifier)
     modifier->setParentMotion(this);
 	return true;
 }
-//        bool  TimeLineMotion::RemoveMdofier(TimeLineModifier* modfier);
+
+bool  TimeLineMotion::RemoveModifier(TimeLineModifier* modifier)
+{
+    bool result = false;
+
+    std::vector<TimeLineModifier*>::iterator iteratorModifier;
+    iteratorModifier = m_vModifiers.begin();
+
+    while(iteratorModifier != m_vModifiers.end())
+    {
+        // find the specified action and remove it
+        if((*iteratorModifier) == modifier)
+        {
+            // found, so remove
+            m_vModifiers.erase(iteratorModifier);
+            result = true;
+            break;
+        }
+        iteratorModifier++;
+    }
+
+    return result;
+}
+
 //        TimeLineModifier* TimeLineMotion::GetModifier(int);
 
 /**
