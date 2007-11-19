@@ -672,6 +672,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\framework\utility\randomgen.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\utility\randomgen.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\utility\stringhelper.cpp"
 					>
 				</File>

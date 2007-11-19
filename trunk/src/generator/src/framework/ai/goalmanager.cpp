@@ -210,14 +210,11 @@ void GoalManager::ExecuteGoal(Goal* goal, AIAvatar *av)
     av->getGoalController()->setControlledGoal(goal);
     av->getTimeLine()->AddModifier(av->getGoalController());
 
-    int actionId = goal->getActionToPerform();
-    if (actionId != -1)
+    bool actionExecuted = goal->ExecuteAction(av);
+
+    if (!actionExecuted)
     {
-        Action* action = av->SetActionById(actionId);
-        if (action == NULL)
-        {
-            cout << " ERR: GoalManager::ExecuteGoal - execution of action needed to Goal realization failed. " << endl;
-        }
+        cout << " ERR: GoalManager::ExecuteGoal - execution of action needed to Goal realization failed. " << endl;
     }
 }
 

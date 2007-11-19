@@ -23,6 +23,25 @@ void Goal::Destroy(void)
 {
 }
 
+bool Goal::ExecuteAction(ActionAvatar *av)
+{
+    bool result = false;
+    int actionId = getActionToPerform();
+    if (actionId != -1)
+    {
+        Action* action = av->SetActionById(actionId);
+        if (action == NULL)
+        {
+            cout << " ERR: Goal::ExecuteAction - action id not correct:" << actionId << endl;
+        }
+        else
+        {
+            result = true;
+        }
+    }
+    return result;
+}
+
 int Goal::getActionToPerform()
 {
     return -1;

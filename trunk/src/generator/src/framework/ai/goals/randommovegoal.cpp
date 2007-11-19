@@ -3,8 +3,10 @@
  * author: abak
  */
 #include "randommovegoal.h"
+#include "../../utility/randomgen.h"
 
 using namespace ft;
+using namespace std;
 
 /// \brief Constructor
 RandomMoveGoal::RandomMoveGoal()
@@ -20,23 +22,6 @@ RandomMoveGoal::~RandomMoveGoal()
 
 int RandomMoveGoal::getActionToPerform()
 {
-    int action_id = 0;
-    if (counter ==0)
-    {
-        action_id = ACTION_WALK_ID;
-    }
-
-    if (counter == 1)
-    {
-        action_id = ACTION_RUN_ID;
-    }
-
-    //if (counter == 2)
-    //{
-    //    action_id = ACTION_IDLE_ID;
-    //}
-
-    counter = (counter+1)%2;
-
+    int action_id = RandomGenerator::RanIntValue(3);
     return action_id;
 }
