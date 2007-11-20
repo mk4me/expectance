@@ -2,25 +2,21 @@
  * Copyright (c) 2007, FutureToday. All rights reserved.
  * author: abak
  */
-#include "constraint.h"
+#include "limitedareaconstraint.h"
 
 using namespace ft;
+using namespace std;
 
 /// \brief Constructor
-Constraint::Constraint()
+LimitedAreaConstraint::LimitedAreaConstraint()
 {
     //empty
 }
 
 // \brief Destructor
-Constraint::~Constraint()
+LimitedAreaConstraint::~LimitedAreaConstraint()
 {
     //empty
-}
-
-/// \brief Releases all resources and objects related to this object
-void Constraint::Destroy(void)
-{
 }
 
 /**
@@ -28,7 +24,15 @@ void Constraint::Destroy(void)
  *
  * \return bool - true if the constraint is satisfied, false otherwise (in this case the proper action should be taken)
  **/
-bool Constraint::Check(ActionAvatar *av)
+bool LimitedAreaConstraint::Check(ActionAvatar *av)
 {
-    return true;
+    bool result = true;
+    float dist = av->getPosition().length();
+    if (dist > 1200)
+        result = false;
+    else
+        result = true;
+
+    return result;
 }
+

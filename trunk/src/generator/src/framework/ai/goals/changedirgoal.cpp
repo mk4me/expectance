@@ -9,19 +9,18 @@ using namespace ft;
 using namespace std;
 
 /// \brief constructor
-/// \param CalVector &avDir - current orientation of avatar
 ChangeDirController::ChangeDirController(float minAngle, float maxAngle)
 {
     int changingDir = RandomGenerator::RanIntValue(2);
     m_changeToLeft = (changingDir==0) ? true : false;
-    m_changeSpeed = 0.4f;
+    m_changeSpeed = 1;
 
     int scope = maxAngle - minAngle;
     int angle = RandomGenerator::RanIntValue(scope);
 
     m_fAngle = minAngle + angle;
 
-    cout << "  ------------ Random  angle -------- " <<  m_fAngle;
+    //cout << "  ------------ Random  angle -------- " <<  m_fAngle;
 }
 
 /// \brief destructor

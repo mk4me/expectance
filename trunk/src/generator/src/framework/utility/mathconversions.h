@@ -15,6 +15,9 @@
 using ft::Vec;
 using ft::Quat;
 
+#ifndef _GEN_MATHCONVERSIONS_H
+#define _GEN_MATHCONVERSIONS_H
+
 namespace ft
 {
 	//! convert vector from Cal3D to ft::Vec representation  
@@ -98,3 +101,5 @@ namespace ft
 	//! convert and angle in radians to degrees
 	inline float radToDeg(float angle){return angle*180.0f/Pi;};
 };
+
+#endif //_GEN_MATHCONVERSIONS_H

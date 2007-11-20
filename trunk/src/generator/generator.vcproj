@@ -656,6 +656,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\framework\utility\mathutil.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\utility\mathutil.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\utility\mtxlib.cpp"
 					>
 				</File>
@@ -755,6 +763,14 @@
 					RelativePath=".\src\framework\ai\goalmanager.h"
 					>
 				</File>
+				<File
+					RelativePath=".\src\framework\ai\rule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\ai\rule.h"
+					>
+				</File>
 				<Filter
 					Name="goals"
 					>
@@ -767,11 +783,31 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\framework\ai\goals\limitedareagoal.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\framework\ai\goals\limitedareagoal.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\framework\ai\goals\randommovegoal.cpp"
 						>
 					</File>
 					<File
 						RelativePath=".\src\framework\ai\goals\randommovegoal.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="constraints"
+					>
+					<File
+						RelativePath=".\src\framework\ai\constraints\limitedareaconstraint.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\framework\ai\constraints\limitedareaconstraint.h"
 						>
 					</File>
 				</Filter>

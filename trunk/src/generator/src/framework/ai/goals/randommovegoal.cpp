@@ -68,7 +68,8 @@ RandomMoveGoal::~RandomMoveGoal()
 
 int RandomMoveGoal::getActionToPerform()
 {
-    int action_id = RandomGenerator::RanIntValue(3);
+    int action_id = RandomGenerator::RanIntValue(2);
+    action_id++;
     return action_id;
 }
 

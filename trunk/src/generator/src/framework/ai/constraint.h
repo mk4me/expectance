@@ -6,6 +6,8 @@
 #ifndef _GEN_AI_CONSTRAINT_H
 #define _GEN_AI_CONSTRAINT_H
 
+#include "../action/actionavatar.h"
+
 namespace ft
 {
 	/**
@@ -18,6 +20,8 @@ namespace ft
         Constraint();
         virtual ~Constraint(void);
         virtual void Destroy(void);
+        
+        virtual bool Check(ActionAvatar *av);
     };
 };
 

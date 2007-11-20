@@ -80,7 +80,6 @@ void AIManager::UpadateAvatarGoals()
             GoalManager::getInstance()->UpdateAvatarGoal((AIAvatar*)m_vAvatars[m]); 
         }
     }
-
 }
 
 
@@ -88,7 +87,7 @@ void AIManager::UpadateAvatarGoals()
  * \brief Adds avatar to list of controlled avatars
  *
  * \param ft::AIAvatar* av - avatar to add
- * \return bool - true if modifier added successfuly
+ * \return bool - true if avatar added successfuly
  **/
 bool AIManager::AddAvatar(AIAvatar* av)
 {
@@ -98,7 +97,7 @@ bool AIManager::AddAvatar(AIAvatar* av)
 	return true;
 }
 
-  
+
 //TODO: implement RemoveAvatar
 //bool  AIManager::RemoveAvatar(AIAvatar* av);
 

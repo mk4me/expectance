@@ -6,7 +6,11 @@
 #include "../utility/debug.h"
 #include "goals/randommovegoal.h"
 #include "goals/changedirgoal.h"
+#include "goals/limitedareagoal.h"
+#include "constraints/limitedareaconstraint.h"
 #include "../utility/randomgen.h"
+#include "rule.h"
+
 
 using namespace ft;
 using namespace std;
@@ -62,6 +66,9 @@ void GoalManager::Init()
 
     goal = new ChangeDirGoal();
     AddGoal(goal);
+
+    Rule* rule = new Rule(new LimitedAreaConstraint(), new LimitedAreaGoal());
+    AddRule(rule);
 }   
 
 
@@ -113,6 +120,19 @@ bool GoalManager::RemoveGoal(Goal* pGoal)
 }
 
 /**
+ * \brief Adds rule to list of rules
+ *
+ * \param ft::Rule* rule - rule to add
+ * \return bool - true if rule added successfuly
+ **/
+bool GoalManager::AddRule(Rule* rule)
+{
+    std::cout << " AddRule " << rule->toString() << " to AIManager " << std::endl;
+    m_vRules.push_back(rule);
+	return true;
+}
+
+/**
  * \brief Update goal for a given avatar
  *
  * \param ft::AIAvatar* av - avatar for which a goal is to update
@@ -124,10 +144,11 @@ void GoalManager::UpdateAvatarGoal(AIAvatar *av)
 
     if (av->isThink())
     {
-        if (av->getCurrGoal() == NULL)
+        std::vector<Goal*> vPossibleGoals;
+        int heighest_priority = FindPossibleGoals(vPossibleGoals, av);
+
+        if (av->getCurrGoal() == NULL || heighest_priority > av->getCurrGoal()->getPriority())
         {
-            std::vector<Goal*> vPossibleGoals;
-            FindPossibleGoals(vPossibleGoals, av);
             EsimateGoalsValue(vPossibleGoals, av);
 
             Goal* selectedGoal = SelectGoal(vPossibleGoals, av);
@@ -149,35 +170,51 @@ void GoalManager::CheckCurrGoalReached(AIAvatar *av)
     AIController* currGoalController = av->getGoalController();
     if (currGoalController != NULL && currGoalController->isGoalReached())
     {
-//        if (currGoalController->getControlledGoal() == av->getCurrGoal())
-//        {
-            av->setCurrGoal(NULL); 
-            av->setGoalController(NULL);
-            bool deleted = av->getTimeLine()->RemoveModifier(currGoalController);
-            if (deleted)
-            {
-                delete currGoalController;
-            }
-            else
-            {
-                cout << "ERR: GoalManager::CheckCurrGoalReached: removing aicontroller " << currGoalController 
-                    << " from timeline of " << av->toString() << " failed !!!! " << endl;
-            }
-        //}
-        //else
-        //{
-        //    cout << "ERR: GoalManager::CheckCurrGoalReached:  goal referenced by controller " << currGoalController->getControlledGoal()
-        //        << " differs from goals referenced by " << av->toString() << " (" << av->getCurrGoal() << ")" << endl;
-        //}
-
+        av->setCurrGoal(NULL); 
+        av->setGoalController(NULL);
+        bool deleted = av->getTimeLine()->RemoveModifier(currGoalController);
+        if (deleted)
+        {
+            delete currGoalController;
+        }
+        else
+        {
+            cout << "ERR: GoalManager::CheckCurrGoalReached: removing aicontroller " << currGoalController 
+                << " from timeline of " << av->toString() << " failed !!!! " << endl;
+        }
     }
 
 }
 
-void GoalManager::FindPossibleGoals(std::vector<Goal*> &vPossibleGoals, AIAvatar *av)
+/**
+ * \brief Fills given vector with possible goals for particular avatar
+ *
+ * \return int - the highest priority among possible goals
+ **/
+int GoalManager::FindPossibleGoals(std::vector<Goal*> &vPossibleGoals, AIAvatar *av)
 {
-    // find the heighest priority
     int heighest_priority = PRIORITY_LOW;
+
+    int size = (int)m_vRules.size();
+    for (int i=0; i<size; i++)
+    {
+        Rule* rule = m_vRules[i];
+        if (av->getCurrGoal() == NULL || av->getCurrGoal() != rule->getGoal())
+        {
+            if (! rule->getConstraint()->Check(av))
+            {
+                vPossibleGoals.push_back(rule->getGoal());
+                if (rule->getGoal()->getPriority() > heighest_priority)
+                {
+                    heighest_priority = rule->getGoal()->getPriority();
+                }
+
+            }
+        }
+    }
+
+    // find the heighest priority -----------
+    
   	std::map<std::string,Goal*>::iterator it=m_goals.begin();
 	for( ; it != m_goals.end(); ++it )
     {
@@ -198,9 +235,10 @@ void GoalManager::FindPossibleGoals(std::vector<Goal*> &vPossibleGoals, AIAvatar
             vPossibleGoals.push_back(it->second);
         }
     }
-    //only for test
-//    if (vPossibleGoals.size() == 0)
-//        vPossibleGoals.push_back(new Goal());
+
+    //cout << " Highest priority ------------------- " << heighest_priority << endl;
+
+    return heighest_priority;
 }
 
 void GoalManager::EsimateGoalsValue(std::vector<Goal*> &vPossibleGoals, AIAvatar *av)
