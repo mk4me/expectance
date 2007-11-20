@@ -16,7 +16,12 @@ ChangeDirController::ChangeDirController(float minAngle, float maxAngle)
     m_changeToLeft = (changingDir==0) ? true : false;
     m_changeSpeed = 0.4f;
 
-    m_fAngle = minAngle;  //TODO: set random value
+    int scope = maxAngle - minAngle;
+    int angle = RandomGenerator::RanIntValue(scope);
+
+    m_fAngle = minAngle + angle;
+
+    cout << "  ------------ Random  angle -------- " <<  m_fAngle;
 }
 
 /// \brief destructor
@@ -98,6 +103,6 @@ int ChangeDirGoal::getActionToPerform()
 
 AIController* ChangeDirGoal::CreateController(ActionAvatar *av)
 {
-    return new ChangeDirController(90, 180);
+    return new ChangeDirController(45, 180);
 }
 
