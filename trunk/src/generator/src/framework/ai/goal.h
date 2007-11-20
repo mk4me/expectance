@@ -8,6 +8,7 @@
 
 #include "../core/baseobject.h"
 #include "../action/actionavatar.h"
+#include "aicontroller.h"
 
 namespace ft
 {
@@ -25,6 +26,7 @@ namespace ft
         virtual bool ExecuteAction(ActionAvatar *av);
 
         virtual int getActionToPerform();
+        virtual AIController* CreateController(ActionAvatar *av);
     };
 };
 

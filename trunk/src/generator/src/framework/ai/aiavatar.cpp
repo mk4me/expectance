@@ -16,6 +16,7 @@ AIAvatar::AIAvatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::st
 {
     m_currGoal = NULL;
     m_currGoalController = NULL;
+    SetThink(false);
 }
 
 // \brief Destructor
@@ -45,3 +46,29 @@ void AIAvatar::Reset()
     cout << toString() << " AIAvatar::Reset() " << std::endl;
 }
 
+void AIAvatar::SetThink(boolean set)
+{
+    if (set)
+    {
+        if (!m_bThink)
+        {
+            m_bThink = true;
+        }
+    }
+    else
+    {
+        if (m_bThink)
+        {
+            if (getGoalController() != NULL)
+            {
+                getGoalController()->setGoalReached(true);
+            }
+            if (getCurrGoal() != NULL)
+            {
+                setCurrGoal(NULL);
+            }
+            m_bThink=false;
+        }
+    }
+
+}

@@ -759,11 +759,11 @@
 					Name="goals"
 					>
 					<File
-						RelativePath=".\src\framework\ai\goals\randommovecontroller.cpp"
+						RelativePath=".\src\framework\ai\goals\changedirgoal.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\framework\ai\goals\randommovecontroller.h"
+						RelativePath=".\src\framework\ai\goals\changedirgoal.h"
 						>
 					</File>
 					<File

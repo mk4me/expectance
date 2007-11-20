@@ -9,6 +9,7 @@ using namespace ft;
 /// \brief constructor
 AIController::AIController()
 {
+    setGoalReached(false);
 }
 
 /// \brief destructor
@@ -32,5 +33,6 @@ void AIController::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
 void AIController::Reset(TimeLineContext * timeLineContext)
 {
     TimeLineObject::Reset(timeLineContext);
+    setGoalReached(false);
 }
 

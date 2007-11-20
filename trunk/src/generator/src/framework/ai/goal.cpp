@@ -46,3 +46,9 @@ int Goal::getActionToPerform()
 {
     return -1;
 }
+
+AIController* Goal::CreateController(ActionAvatar *av)
+{
+    return new AIController();
+}
+

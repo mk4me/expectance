@@ -94,6 +94,7 @@ bool AIManager::AddAvatar(AIAvatar* av)
 {
     std::cout << " AddAvatar " << av->toString() << " to AIManager " << std::endl;
     m_vAvatars.push_back(av);
+    av->SetThink(true);
 	return true;
 }
 

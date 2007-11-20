@@ -85,7 +85,7 @@ void ControlManager::UpdateActiveAvatarMarker()
     if (TRACE && tracer_active_avatar != NULL)
     {
         tracer_active_avatar->ClearTrace();
-        ActionAvatar* av = getActiveAvatar();
+        AIAvatar* av = getActiveAvatar();
         if (av != NULL)
         {
             CalSkeleton *skel = av->GetCalModel()->getSkeleton();
@@ -102,10 +102,10 @@ void ControlManager::UpdateActiveAvatarMarker()
 /**
  * \brief Adds avatar to list of controlled avatars
  *
- * \param ft::ActionAvatar* av - avatar to add
+ * \param ft::AIAvatar* av - avatar to add
  * \return bool - true if modifier added successfuly
  **/
-bool ControlManager::AddAvatar(ActionAvatar* av)
+bool ControlManager::AddAvatar(AIAvatar* av)
 {
     std::cout << " AddAvatar " << av->toString() << " to ControlManager " << std::endl;
     m_vAvatars.push_back(av);
@@ -116,16 +116,29 @@ bool ControlManager::AddAvatar(ActionAvatar* av)
 /// \param int ind - index of avatar on the list of control avatars
 void ControlManager::setActiveAvatar(int ind)
 { 
+    AIAvatar* currAvatar = getActiveAvatar();
+    if (currAvatar != NULL)
+    {
+        currAvatar->SetThink(true);
+    }
+
     m_activeAvatarInd  = ind; 
     std::cout << "ControlManager.setActiveAvatar(" << ind << ")" << std::endl;
+
+    currAvatar = getActiveAvatar();
+    if (currAvatar != NULL)
+    {
+        currAvatar->SetThink(false);
+    }
+
 }
 
 /// \brief Gets the active avatar set in ControlManager
-/// \return ActionAvatar* - active avatar or NULL if active avatar is not set (or if current active avatar index in ControlManager 
+/// \return AIAvatar* - active avatar or NULL if active avatar is not set (or if current active avatar index in ControlManager 
 ///                           is out of scope of control avatar list)
-ActionAvatar* ControlManager::getActiveAvatar()
+AIAvatar* ControlManager::getActiveAvatar()
 {
-    ActionAvatar*  activeAv = NULL;
+    AIAvatar*  activeAv = NULL;
 
     int size = (int)m_vAvatars.size();
     if (m_activeAvatarInd >=0 && m_activeAvatarInd < size)

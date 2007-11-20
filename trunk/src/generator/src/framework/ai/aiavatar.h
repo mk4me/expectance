@@ -31,10 +31,14 @@ namespace ft
         void setGoalController(AIController* controller) { m_currGoalController = controller; }
         AIController* getGoalController() { return m_currGoalController; }
 
+        void SetThink(boolean set);
+        bool isThink() { return m_bThink; }
 
     private:
         Goal* m_currGoal;
         AIController* m_currGoalController;
+
+        bool m_bThink;
     };
 };
 

@@ -11,12 +11,19 @@ using namespace ft;
 
 int RandomGenerator::RanIntValue(int scope)
 {
+    //static int counter = 100;
     static bool inited = false;
     if (!inited)
-    {
-        srand(NULL);
+    {   
+        time_t t = clock();
+        srand((unsigned)t);
         inited = true;
+        //counter--;
     }
+    //else
+    //{
+    //    counter = 100;
+    //}
 
     scope = scope>0 ? scope:1;
 

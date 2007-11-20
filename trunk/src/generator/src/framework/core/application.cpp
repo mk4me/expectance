@@ -101,7 +101,7 @@ void Application::InitAvatars()
         avatar_number = 1;
     }
 
-    ActionAvatar* av;
+    AIAvatar* av;
     CalVector vStartPos(0,0,0);
     float x_off = -150, z_off = 0;
 
@@ -110,7 +110,7 @@ void Application::InitAvatars()
     {
 		_nameHelper.empty();
 		_nameHelper = "Avatar" + StringHelper::itos(i);
-        av = dynamic_cast<ActionAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally", _nameHelper));
+        av = dynamic_cast<AIAvatar*>(Application::getInstance()->CreateAvatarOnScene("cally", _nameHelper));
         if (av != NULL)  
         {
             av->Init();
@@ -195,5 +195,5 @@ Avatar* Application::CreateAvatarOnScene(const std::string& calCoreModel,const  
 
 void Application::StartAISimulation()
 {
-    //AIManager::getInstance()->StartThinking();  //TODO: (abak 2007-11-18) uncomment it if AI is working correctly
+    AIManager::getInstance()->StartThinking();  //TODO: (abak 2007-11-18) uncomment it if AI is working correctly
 }

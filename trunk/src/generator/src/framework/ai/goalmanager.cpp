@@ -5,7 +5,8 @@
 #include "goalmanager.h"
 #include "../utility/debug.h"
 #include "goals/randommovegoal.h"
-#include "goals/randommovecontroller.h"
+#include "goals/changedirgoal.h"
+#include "../utility/randomgen.h"
 
 using namespace ft;
 using namespace std;
@@ -57,6 +58,9 @@ void GoalManager::DestroyInstance()
 void GoalManager::Init()
 {
     Goal* goal = new RandomMoveGoal();
+    AddGoal(goal);
+
+    goal = new ChangeDirGoal();
     AddGoal(goal);
 }   
 
@@ -118,30 +122,26 @@ void GoalManager::UpdateAvatarGoal(AIAvatar *av)
 {
     CheckCurrGoalReached(av);
 
-    std::vector<Goal*> vPossibleGoals;
-    FindPossibleGoals(vPossibleGoals, av);
-    EsimateGoalsValue(vPossibleGoals, av);
-
-    Goal* selectedGoal = SelectGoal(vPossibleGoals, av);
-
-    if (selectedGoal != NULL)
+    if (av->isThink())
     {
-        //Goal* currGoal = av->getCurrGoal();
-        //std::string id = av->getCurrGoal()->getID();
-        //cout << " Selected goal is " << selectedGoal->getID() << endl;
-        if (av->getCurrGoal() == NULL || (av->getCurrGoal()->getID().compare(selectedGoal->getID()) != 0))
+        if (av->getCurrGoal() == NULL)
         {
-            ExecuteGoal(selectedGoal, av);
+            std::vector<Goal*> vPossibleGoals;
+            FindPossibleGoals(vPossibleGoals, av);
+            EsimateGoalsValue(vPossibleGoals, av);
+
+            Goal* selectedGoal = SelectGoal(vPossibleGoals, av);
+
+            if (selectedGoal != NULL)
+            {
+                if (av->getCurrGoal() == NULL || (av->getCurrGoal()->getID().compare(selectedGoal->getID()) != 0))
+                {
+                    ExecuteGoal(selectedGoal, av);
+                }
+            }
+            vPossibleGoals.clear();
         }
     }
-
-    //cout << " size " << vPossibleGoals.size() << endl; 
-    //for (int m=0; m<(int)vPossibleGoals.size(); m++)
-    //{
-    //    cout << (Goal*)vPossibleGoals[m] << endl; 
-    //}
-
-    vPossibleGoals.clear();
 }
 
 void GoalManager::CheckCurrGoalReached(AIAvatar *av)
@@ -149,8 +149,8 @@ void GoalManager::CheckCurrGoalReached(AIAvatar *av)
     AIController* currGoalController = av->getGoalController();
     if (currGoalController != NULL && currGoalController->isGoalReached())
     {
-        if (currGoalController->getControlledGoal() == av->getCurrGoal())
-        {
+//        if (currGoalController->getControlledGoal() == av->getCurrGoal())
+//        {
             av->setCurrGoal(NULL); 
             av->setGoalController(NULL);
             bool deleted = av->getTimeLine()->RemoveModifier(currGoalController);
@@ -163,12 +163,12 @@ void GoalManager::CheckCurrGoalReached(AIAvatar *av)
                 cout << "ERR: GoalManager::CheckCurrGoalReached: removing aicontroller " << currGoalController 
                     << " from timeline of " << av->toString() << " failed !!!! " << endl;
             }
-        }
-        else
-        {
-            cout << "ERR: GoalManager::CheckCurrGoalReached:  goal referenced by controller " << currGoalController->getControlledGoal()
-                << " differs from goals referenced by " << av->toString() << " (" << av->getCurrGoal() << ")" << endl;
-        }
+        //}
+        //else
+        //{
+        //    cout << "ERR: GoalManager::CheckCurrGoalReached:  goal referenced by controller " << currGoalController->getControlledGoal()
+        //        << " differs from goals referenced by " << av->toString() << " (" << av->getCurrGoal() << ")" << endl;
+        //}
 
     }
 
@@ -195,19 +195,32 @@ Goal* GoalManager::SelectGoal(std::vector<Goal*> &vPossibleGoals, AIAvatar *av)
 {
     Goal* selectedGoal = NULL;
 
-    if (m_goals.size()>0)
+    int sumCounter = m_goals.size();
+    int selectedGoalNo = RandomGenerator::RanIntValue(sumCounter);
+
+    //cout << " ---------------- selectedGoalNo -- " << selectedGoalNo << " from " << sumCounter << endl;
+
+    int i = 0;
+   	std::map<std::string,Goal*>::iterator it=m_goals.begin();
+	for( ; it != m_goals.end(); ++it )
     {
-        selectedGoal = (Goal*)(m_goals.begin()->second);
+        if (i==selectedGoalNo)
+        {
+            selectedGoal = (Goal*)(it->second);
+        }
+        i++;
     }
-    
+
     return selectedGoal;
 }
 
 void GoalManager::ExecuteGoal(Goal* goal, AIAvatar *av)
 {
+//    cout << av->toString() << " ----------- GoalManager::ExecuteGoal: " << goal->toString() << endl;
+
     av->setCurrGoal(goal);
-    av->setGoalController(new RandomMoveController(3));
-    av->getGoalController()->setControlledGoal(goal);
+    av->setGoalController(goal->CreateController(av));
+//    av->getGoalController()->setControlledGoal(goal);
     av->getTimeLine()->AddModifier(av->getGoalController());
 
     bool actionExecuted = goal->ExecuteAction(av);
@@ -234,17 +247,3 @@ void GoalManager::Dump()
     }
 }
 
-/**
- * \brief ??
- *
- **/
-//void GoalManager::UpdateObjects(const double elapsedSeconds)
-//{
-//    //TODO: abak:  this update should be synchronized with adding and removing goals
-//
-//   	std::map<std::string,Goal*>::iterator it=m_goals.begin();
-//	for( ; it != m_objects.end(); ++it )
-//    {
-//        it->second->OnUpdate(elapsedSeconds);
-//    }
-//}

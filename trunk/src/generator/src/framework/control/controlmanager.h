@@ -6,7 +6,7 @@
 #ifndef _GEN_CONTROL_MANAGER_H
 #define _GEN_CONTROL_MANAGER_H
 
-#include "../action/actionavatar.h"
+#include "../ai/aiavatar.h"
 #include "../scene/cameramanager.h"
 
 namespace ft
@@ -29,12 +29,12 @@ namespace ft
         void Init();
 
         void setActiveAvatar(int ind);
-        ActionAvatar* getActiveAvatar();
+        AIAvatar* getActiveAvatar();
 
-        bool AddAvatar(ActionAvatar* av);
+        bool AddAvatar(AIAvatar* av);
 
         //TODO: uncommnet it when RemoveAvatar is implemented
-        //bool  RemoveAvatar(ActionAvatar* av);
+        //bool  RemoveAvatar(AIAvatar* av);
 
         void OnUpdate(const double elapsedSeconds);  // OVERRIDEN, updates by UpdateManager 
 
@@ -43,7 +43,7 @@ namespace ft
     private:
         static ControlManager* m_instance;
 
-        std::vector<ActionAvatar*> m_vAvatars;
+        std::vector<AIAvatar*> m_vAvatars;
 
         int m_activeAvatarInd;
 
