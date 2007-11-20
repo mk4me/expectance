@@ -9,7 +9,7 @@ using namespace ft;
 /// \brief Constructor
 Goal::Goal()
 {
-    //empty
+    setPriority(PRIORITY_MEDIUM);
 }
 
 // \brief Destructor

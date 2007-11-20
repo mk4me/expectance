@@ -176,10 +176,27 @@ void GoalManager::CheckCurrGoalReached(AIAvatar *av)
 
 void GoalManager::FindPossibleGoals(std::vector<Goal*> &vPossibleGoals, AIAvatar *av)
 {
-   	std::map<std::string,Goal*>::iterator it=m_goals.begin();
+    // find the heighest priority
+    int heighest_priority = PRIORITY_LOW;
+  	std::map<std::string,Goal*>::iterator it=m_goals.begin();
 	for( ; it != m_goals.end(); ++it )
     {
-        vPossibleGoals.push_back(it->second);
+        Goal* goal = (Goal*)it->second;
+        if (goal->getPriority() > heighest_priority)
+        {
+            heighest_priority = goal->getPriority();
+        }
+    }
+
+    //add possible goals with priority at least equal to heighest_priority
+   	it=m_goals.begin();
+	for( ; it != m_goals.end(); ++it )
+    {
+        Goal* goal = (Goal*)it->second;
+        if (goal->getPriority() >= heighest_priority)
+        {
+            vPossibleGoals.push_back(it->second);
+        }
     }
     //only for test
 //    if (vPossibleGoals.size() == 0)
@@ -195,20 +212,19 @@ Goal* GoalManager::SelectGoal(std::vector<Goal*> &vPossibleGoals, AIAvatar *av)
 {
     Goal* selectedGoal = NULL;
 
-    int sumCounter = m_goals.size();
+    int sumCounter = vPossibleGoals.size();
     int selectedGoalNo = RandomGenerator::RanIntValue(sumCounter);
 
     //cout << " ---------------- selectedGoalNo -- " << selectedGoalNo << " from " << sumCounter << endl;
 
-    int i = 0;
-   	std::map<std::string,Goal*>::iterator it=m_goals.begin();
-	for( ; it != m_goals.end(); ++it )
+    int size = (int)vPossibleGoals.size();
+    for (int i=0; i<size; i++)
     {
         if (i==selectedGoalNo)
         {
-            selectedGoal = (Goal*)(it->second);
+            selectedGoal = vPossibleGoals[i];
+            break;
         }
-        i++;
     }
 
     return selectedGoal;
