@@ -485,6 +485,8 @@ void TimeLineExecutor::StartNextMotion()
                 else
                 {
                     m_animChanged = true;
+                    cout << "New loop animation " << m_nextMotion.anim->getCoreAnimation()->getFilename() << " length: " 
+                        << m_nextMotion.anim->getCoreAnimation()->getDuration() << endl;
                 }
 
             }
@@ -502,6 +504,9 @@ void TimeLineExecutor::StartNextMotion()
                 else
                 {
                     m_animChanged = true;
+                    cout << "New action animation " << m_nextMotion.anim->getCoreAnimation()->getFilename() << " length: " 
+                        << m_nextMotion.anim->getCoreAnimation()->getDuration() << endl;
+
                 }
             }
         }
@@ -1009,7 +1014,7 @@ void TimeLineExecutor::LimitCurrBlenderForNextAnim()
     if (m_nextMotion.motion != NULL && m_currBlender > 0)
     {
         float nextAnimCoreDuration = m_nextMotion.coreAnimDuration;
-        float fMARGIN = 0.5f; // to ensure that animDuration will be higher than fade_in
+        float fMARGIN = 0.3f; // to ensure that animDuration will be higher than fade_in
 
         float oldBlenderVal = m_currBlender; //only for DEBUG
 
