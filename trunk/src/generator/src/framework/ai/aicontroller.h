@@ -25,15 +25,10 @@ namespace ft
 
         virtual void Reset(TimeLineContext * timeLineContext); // resets current object and its children    
 
-        //void setControlledGoal(Goal* goal) { m_controlledGoal = goal; }
-        //Goal* getControlledGoal() { return m_controlledGoal; }
-
         void setGoalReached(bool isReached) { m_goalReached = isReached; }
         bool isGoalReached() { return m_goalReached; } 
 
     private:
-//        Goal* m_controlledGoal;
-
         bool m_goalReached;
     };
 };

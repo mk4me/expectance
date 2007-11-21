@@ -138,6 +138,7 @@ void TimeLineExecutor::ChangeState(int newState)
     
     setState(newState);
     EntryState(newState, oldState);
+    m_changedStateMarker = true;
 }
 
 /**
@@ -621,11 +622,12 @@ void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
 
     CheckInterrupting();
 
+    m_changedStateMarker = false;
     int previousState = getState();
 
     UpdateState(getState());
 
-    if (previousState!=getState())
+    if (m_changedStateMarker)
     {
         m_lastEvent = EXEC_EVENT_STATE_CHANGED;
     }

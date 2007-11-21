@@ -94,6 +94,8 @@ namespace ft
         bool m_animStopped;
         bool m_animNewCycle;
 
+        bool m_changedStateMarker;
+
         bool m_isTerminated;
 
         void RemoveExecutedMotions();
