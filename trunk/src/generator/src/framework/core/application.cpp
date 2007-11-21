@@ -26,7 +26,7 @@ Application* Application::getInstance()
 {
     if (m_instance == NULL)
     {
-        DBG("Application::getInstace(): instance of Application created ");
+        cout << "Application::getInstace(): instance of Application created " << endl;;
         m_instance = new Application();
     }
 
@@ -41,7 +41,7 @@ void Application::DestroyInstance()
 {
     if (m_instance != NULL)
         delete m_instance;
-    DBG("Application::getInstace(): instance of Application destroyed  ");
+    cout << "Application::getInstace(): instance of Application destroyed  " << endl;
 }
 
 /**
@@ -50,7 +50,7 @@ void Application::DestroyInstance()
  **/
 void Application::InitConfig()
 {
-    DBG("Application::InitConfig().");
+    cout << "Application::InitConfig()." << endl;
     Config::getInstance()->LoadConfigFile();  //with creation of singleton in getInstance()
     Config::TEST_CONFIG();
 }
@@ -61,14 +61,15 @@ void Application::InitConfig()
  **/
 bool Application::InitModules()
 {
-    DBG("Application::InitModules().");
+    cout << "Application::InitModules()." << endl;
 
+    Debug::LoadLevelsFromConfig();
     UpdateManager::getInstance()->Init();  //enforced creation of singleton
     Cal3DObjectFactory::getMeshObjectFactoryInstance();   //enforced creation of singleton
     AvatarFactory::getAvatarFactoryInstance();   //enforced creation of singleton
     if (!VisualizationManager::getInstance()->Init()) //enforced creation of singleton
 	{
-		DBG("VisualizationManager::Init error");
+		cout << "VisualizationManager::Init error" << endl;
 		return 0;
 	}
     TimeLineFactory::getInstance(); //enforced creation of singleton
@@ -89,7 +90,7 @@ bool Application::InitModules()
  **/
 void Application::InitAvatars()
 {
-    DBG("Application::InitSceneObjects().");
+    cout << "Application::InitSceneObjects()." << endl;
 
     int avatar_number = -1;
     if (Config::getInstance()->IsKey("avatars_number"))

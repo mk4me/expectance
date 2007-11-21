@@ -13,7 +13,7 @@ VisualizationManager* VisualizationManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        DBG("VisualizationManager::getInstace(): instance of VisualizationManager created ");
+        cout << "VisualizationManager::getInstace(): instance of VisualizationManager created " << endl;
         m_instance = new VisualizationManager();
 		
 		TextureManager::getInstance();  // enforced creation of singleton

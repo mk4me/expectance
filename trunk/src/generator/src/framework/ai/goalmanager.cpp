@@ -38,7 +38,7 @@ GoalManager* GoalManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        DBG("GoalManager::getInstace(): instance of GoalManager created ");
+        cout << "GoalManager::getInstace(): instance of GoalManager created " << endl;
         m_instance = new GoalManager();
     }
 

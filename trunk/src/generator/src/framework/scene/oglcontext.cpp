@@ -12,7 +12,7 @@ OGLContext* OGLContext::getInstance()
 {
     if (m_instance == NULL)
     {
-        DBG("OGLContext::getInstace(): instance of OGLContext created ");
+        cout << "OGLContext::getInstace(): instance of OGLContext created " << endl;
         m_instance = new OGLContext();
     }
 

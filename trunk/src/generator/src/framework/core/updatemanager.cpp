@@ -21,7 +21,7 @@ UpdateManager* UpdateManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        DBG("UpdateManager::getInstace(): instance of UpdateManager created ");
+        cout << "UpdateManager::getInstace(): instance of UpdateManager created " << endl;
         m_instance = new UpdateManager();
     }
 

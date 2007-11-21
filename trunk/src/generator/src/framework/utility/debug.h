@@ -23,8 +23,13 @@ namespace ft
     class Debug
     {
     public:
-		//! write out information. Used for tracing program.  
-        static void out(std::string text);
+        static bool ON;
+        static bool WARN;
+        static bool ERR;
+
+        static int APP;
+
+        static void LoadLevelsFromConfig();
 
     };
 };

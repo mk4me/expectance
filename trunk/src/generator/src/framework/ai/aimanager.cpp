@@ -31,7 +31,7 @@ AIManager* AIManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        DBG("AIManager::getInstace(): instance of AIManager created ");
+        cout << "AIManager::getInstace(): instance of AIManager created " << endl;;
         m_instance = new AIManager();
     }
 

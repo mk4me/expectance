@@ -20,7 +20,7 @@ Cal3DObjectFactory* Cal3DObjectFactory::getMeshObjectFactoryInstance()
 {
     if (m_instance == NULL)
     {
-        DBG("Cal3DObjectFactory::getMeshObjectFactoryInstance(): instance of Cal3DObjectFactory created ");
+        cout << "Cal3DObjectFactory::getMeshObjectFactoryInstance(): instance of Cal3DObjectFactory created " << endl;
         m_instance = new Cal3DObjectFactory();
     }
 

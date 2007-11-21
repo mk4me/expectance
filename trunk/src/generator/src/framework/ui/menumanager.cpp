@@ -13,7 +13,7 @@ MenuManager* MenuManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        DBG("MenuManager::getInstace(): instance of MenuManager created ");
+        cout << "MenuManager::getInstace(): instance of MenuManager created " << endl;
         m_instance = new MenuManager();
     }
 

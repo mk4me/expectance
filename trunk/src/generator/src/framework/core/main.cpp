@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
 
     if (!Application::getInstance()->InitModules())
 	{
-		DBG("Application::InitModules error");
+		cout << "Application::InitModules error" << endl;
 		return -1;
 	}
 

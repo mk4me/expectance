@@ -22,7 +22,7 @@ Config* Config::getInstance()
 {
     if (m_instance == NULL)
     {
-        DBG("Config::getInstace(): instance of Config created ");
+        std::cout << "Config::getInstace(): instance of Config created " << std::endl;
         m_instance = new Config();
     }
 
@@ -126,7 +126,7 @@ bool Config::LoadConfigFile()
  **/
 bool Config::ReloadConfigFile()
 {
-    DBG("Config::ReloadConfigFile()");
+    std::cout << "Config::ReloadConfigFile()" << std::endl;
     ClearEntries();
     return LoadConfigFile();
 }

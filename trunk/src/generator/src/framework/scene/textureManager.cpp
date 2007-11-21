@@ -27,7 +27,7 @@ TextureManager* TextureManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        DBG("TextureManager::getInstace(): instance of TextureManager created ");
+        std::cout << "TextureManager::getInstace(): instance of TextureManager created " << std::endl;
         m_instance = new TextureManager();
     }
 

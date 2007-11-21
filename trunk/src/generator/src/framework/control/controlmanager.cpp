@@ -36,7 +36,7 @@ ControlManager* ControlManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        DBG("ControlManager::getInstace(): instance of ControlManager created ");
+        cout << "ControlManager::getInstace(): instance of ControlManager created " << endl;
         m_instance = new ControlManager();
     }
 

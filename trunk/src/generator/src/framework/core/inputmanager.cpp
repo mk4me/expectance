@@ -19,7 +19,7 @@ InputManager* InputManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        DBG("InputManager::getInstace(): instance of InputManager created ");
+        cout << "InputManager::getInstace(): instance of InputManager created " << endl;
         m_instance = new InputManager();
     }
 
