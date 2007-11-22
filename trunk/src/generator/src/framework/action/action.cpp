@@ -11,7 +11,8 @@ using namespace ft;
 /// \param PhysicsAvatar* avatar - avatar to which this action will be connected
 void Action::Init(PhysicsAvatar* avatar)
 {
-    std::cout << toString() << ": Init " << std::endl;
+    if (Debug::ACTION)
+        std::cout << toString() << ": Init " << std::endl;
 }
 
 /// \brief Callback method called when related Avatar gets to this action
@@ -19,7 +20,8 @@ void Action::Init(PhysicsAvatar* avatar)
 /// \param Action* oldAction - previous action in which was Avatar before it gets into this action
 void Action::Entry(PhysicsAvatar* avatar, Action* oldAction)
 {
-    std::cout << toString() << ": Entry " << std::endl;
+    if (Debug::ACTION)
+        std::cout << toString() << ": Entry " << std::endl;
 }
 
 /// \brief Callback method called when related Avatar exits from this action to another action
@@ -27,14 +29,16 @@ void Action::Entry(PhysicsAvatar* avatar, Action* oldAction)
 /// \param Action* newAction - next action to which releted Avatar is going to get from this action
 void Action::Exit(PhysicsAvatar* avatar, Action* newAction)
 {
-    std::cout << toString() << ": Exit " << std::endl;
+    if (Debug::ACTION)
+        std::cout << toString() << ": Exit " << std::endl;
 }
 
 /// \brief Resets all paremeters releated to this action
 /// \param PhysicsAvatar* avatar - avatar to which this action is connected
 void Action::Reset(PhysicsAvatar* avatar)
 {
-    std::cout << toString() << ": Reset " << std::endl;
+    if (Debug::ACTION)
+        std::cout << toString() << ": Reset " << std::endl;
 }
 
 /// \brief Returns string representation of this action

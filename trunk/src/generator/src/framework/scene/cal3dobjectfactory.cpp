@@ -20,7 +20,9 @@ Cal3DObjectFactory* Cal3DObjectFactory::getMeshObjectFactoryInstance()
 {
     if (m_instance == NULL)
     {
-        cout << "Cal3DObjectFactory::getMeshObjectFactoryInstance(): instance of Cal3DObjectFactory created " << endl;
+        if (Debug::MODEL_LOADING)
+            cout << "Cal3DObjectFactory::getMeshObjectFactoryInstance(): instance of Cal3DObjectFactory created " << endl;
+
         m_instance = new Cal3DObjectFactory();
     }
 
@@ -58,7 +60,8 @@ Cal3DObject* Cal3DObjectFactory::CreateMeshObjectInstance(CalModel* calModel, Ca
  **/
 Cal3DObject* Cal3DObjectFactory::CreateMeshObject(const std::string modelName, std::string objectName)
 {
-    std::cout << "Cal3DObjectFactory::CreateAvatar, for model: " + modelName + " with new name: " + objectName << std::endl; 
+    if (Debug::MODEL_LOADING)
+        std::cout << "Cal3DObjectFactory::CreateAvatar, for model: " + modelName + " with new name: " + objectName << std::endl; 
 
     Cal3DObject *newObject = NULL;
     CalModel* newModel= NULL;
@@ -83,10 +86,14 @@ Cal3DObject* Cal3DObjectFactory::CreateMeshObject(const std::string modelName, s
         InitModelMeshes(coreModel, newModel);
         newObject = CreateMeshObjectInstance(newModel, coreModel, objectName);
     
-        std::cout << "Cal3DObjectFactory::CreateMeshObject,new mesh object " + objectName + " created." << std::endl;
+        if (Debug::MODEL_LOADING)
+            std::cout << "Cal3DObjectFactory::CreateMeshObject,new mesh object " + objectName + " created." << std::endl;
     }
     else
-        std::cout << "Cal3DObjectFactory::CreateMeshObject,cration of object " + objectName + " failed." << std::endl;
+    {
+        if (Debug::MODEL_LOADING)
+            std::cout << "Cal3DObjectFactory::CreateMeshObject,cration of object " + objectName + " failed." << std::endl;
+    }
 
     return newObject;
 }
@@ -99,7 +106,8 @@ Cal3DObject* Cal3DObjectFactory::CreateMeshObject(const std::string modelName, s
  **/
 CalCoreModel* Cal3DObjectFactory::LoadCalCoreModel(const std::string modelName)
 {
-    std::cout << "Cal3DObjectFactory::LoadCalCoreModel, for model: " + modelName  << std::endl;
+    if (Debug::MODEL_LOADING)
+        std::cout << "Cal3DObjectFactory::LoadCalCoreModel, for model: " + modelName  << std::endl;
 
     CalCoreModel* coreModel = new CalCoreModel("dummy");
     
@@ -109,7 +117,8 @@ CalCoreModel* Cal3DObjectFactory::LoadCalCoreModel(const std::string modelName)
         // it must be done before access to bounding boxes by mka 2007.06.10
         coreModel->getCoreSkeleton()->calculateBoundingBoxes(coreModel);
 
-        std::cout << "Cal3DObjectFactory::LoadCalCoreModel, model " << modelName << " loaded. " << std::endl;
+        if (Debug::MODEL_LOADING)
+            std::cout << "Cal3DObjectFactory::LoadCalCoreModel, model " << modelName << " loaded. " << std::endl;
     }
     else
     {
@@ -137,7 +146,9 @@ bool Cal3DObjectFactory::ParseModelConfiguration(const std::string& modelName, C
   file.open(fn.c_str(), std::ios::in | std::ios::binary);
   if(!file)
   {
-    std::cerr << "Failed to open model configuration file '" << fn << "'." << std::endl;
+    if (Debug::ERR)
+        std::cout << Debug::ERR_STR << "Failed to open model configuration file '" << fn << "'." << std::endl;
+
     return false;
   }
 
@@ -155,7 +166,8 @@ bool Cal3DObjectFactory::ParseModelConfiguration(const std::string& modelName, C
     // check if an error happend while reading from the file
     if(!file)
     {
-      std::cerr << "Error while reading from the model configuration file '" << fn << "'." << std::endl;
+      if (Debug::ERR)
+          std::cout<< Debug::ERR_STR << "Error while reading from the model configuration file '" << fn << "'." << std::endl;
       return false;
     }
 
@@ -178,7 +190,8 @@ bool Cal3DObjectFactory::ParseModelConfiguration(const std::string& modelName, C
     pos = strBuffer.find_first_not_of(" \t", pos);
     if((pos == std::string::npos) || (strBuffer[pos] != '='))
     {
-      std::cerr << fn << "(" << line << "): Invalid syntax." << std::endl;
+      if (Debug::ERR)
+          std::cout <<  Debug::ERR_STR << fn << "(" << line << "): Invalid syntax." << std::endl;
       return false;
     }
 
@@ -203,7 +216,9 @@ bool Cal3DObjectFactory::ParseModelConfiguration(const std::string& modelName, C
     else if(strKey == "skeleton")
     {
       // load core skeleton
-      std::cout << "Loading skeleton '" << strData << "'..." << std::endl;
+      if (Debug::MODEL_LOADING)
+        std::cout << "Loading skeleton '" << strData << "'..." << std::endl;
+
       if(!coreModel->loadCoreSkeleton(modelWorkDir + strData))
       {
         CalError::printLastError();
@@ -213,7 +228,9 @@ bool Cal3DObjectFactory::ParseModelConfiguration(const std::string& modelName, C
     else if(strKey == "animation")
     {
       // load core animation
-      std::cout << "Loading animation '" << strData << "'..." << std::endl;
+      if (Debug::MODEL_LOADING)
+        std::cout << "Loading animation '" << strData << "'..." << std::endl;
+
       if(coreModel->loadCoreAnimation(modelWorkDir + strData) == -1)
       {
         CalError::printLastError();
@@ -223,7 +240,9 @@ bool Cal3DObjectFactory::ParseModelConfiguration(const std::string& modelName, C
     else if(strKey == "mesh")
     {
       // load core mesh
-      std::cout << "Loading mesh '" << strData << "'..." << std::endl;
+      if (Debug::MODEL_LOADING)
+        std::cout << "Loading mesh '" << strData << "'..." << std::endl;
+
       if(coreModel->loadCoreMesh(modelWorkDir + strData) == -1)
       {
         CalError::printLastError();
@@ -233,7 +252,9 @@ bool Cal3DObjectFactory::ParseModelConfiguration(const std::string& modelName, C
     else if(strKey == "material")
     {
       // load core material
-      std::cout << "Loading material '" << strData << "'..." << std::endl;
+      if (Debug::MODEL_LOADING)
+        std::cout << "Loading material '" << strData << "'..." << std::endl;
+
       if(coreModel->loadCoreMaterial(modelWorkDir + strData) == -1)
       {
         CalError::printLastError();
@@ -243,7 +264,8 @@ bool Cal3DObjectFactory::ParseModelConfiguration(const std::string& modelName, C
     else
     {
       // everything else triggers an error message, but is ignored
-      std::cerr << fn << "(" << line << "): Invalid syntax." << std::endl;
+      if (Debug::ERR)
+          std::cout << Debug::ERR_STR << fn << "(" << line << "): Invalid syntax." << std::endl;
     }
   }
 
@@ -322,7 +344,9 @@ void Cal3DObjectFactory::InitModelMeshes(CalCoreModel* coreModel, CalModel* mode
 	{
 		if (Config::getInstance()->GetIntVal("hardware_acceleration")==1)
 		{
-		  std::cout << "Disable internal (spring system for hardware acceleration)." << std::endl;
+          if (Debug::MODEL_LOADING)
+		    std::cout << "Disable internal (spring system for hardware acceleration)." << std::endl;
+
 		  model->disableInternalData();
 		}
 	}
@@ -356,7 +380,9 @@ GLuint Cal3DObjectFactory::LoadTexture(const std::string& strFilename)
      file.open(strFilename.c_str(), std::ios::in | std::ios::binary);
      if(!file)
      {
-       std::cerr << "Texture file '" << strFilename << "' not found." << std::endl;
+       if (Debug::ERR)
+           std::cout << Debug::ERR_STR << "Texture file '" << strFilename << "' not found." << std::endl;
+
        return 0;
      }
 
@@ -373,7 +399,9 @@ GLuint Cal3DObjectFactory::LoadTexture(const std::string& strFilename)
      pBuffer = new unsigned char[2 * width * height * depth];
      if(pBuffer == 0)
      {
-       std::cerr << "Memory allocation for texture '" << strFilename << "' failed." << std::endl;
+       if (Debug::ERR)
+           std::cout << Debug::ERR_STR << "Memory allocation for texture '" << strFilename << "' failed." << std::endl;
+
        return 0;
      }
 

@@ -85,13 +85,19 @@ bool MovableAvatar::AddMotion(Motion* motion)
 	{
 	 	std::map<std::string,Motion*>::iterator it = m_motions.find(_id);
 
-		if ( it!=m_motions.end()) { 
-            cout << "ERR: MovableAvatar::AddMotion motion " << _id << " already added to Avatar " << std::endl;
+		if ( it!=m_motions.end())
+        { 
+            if (Debug::ERR)
+                cout << Debug::ERR_STR << "MovableAvatar::AddMotion motion " << _id << " already added to Avatar " << std::endl;
+
 			return false;
 		}
 	    m_motions.insert( std::make_pair( std::string(_id), motion) );
 	}
-    cout << " MovableAvatar::AddMotion motion " << _id << " added to avatar " << std::endl;
+
+    if (Debug::MOTION>0)
+        cout << " MovableAvatar::AddMotion motion " << _id << " added to avatar " << std::endl;
+
 	return true;
 }
 /**
@@ -109,12 +115,17 @@ bool  MovableAvatar::RemoveMotion(Motion* motion)
 	 	std::map<std::string,Motion*>::iterator it = m_motions.find(_id);
 		if ( it!=m_motions.end()) { 
             m_motions.erase(it);
-            cout << "MovableAvatar::AddMotion motion " << _id << " removed form avatar " << std::endl;
+
+            if (Debug::MOTION>0)
+                cout << "MovableAvatar::AddMotion motion " << _id << " removed form avatar " << std::endl;
+
 			return true;
 		}
 	    m_motions.insert( std::make_pair( std::string(_id), motion) );
 	}
-    cout << "ERR: MovableAvatar::AddMotion motion " << _id << " not found in Avatar " << std::endl;
+
+    if (Debug::ERR)
+        cout << Debug::ERR_STR << "MovableAvatar::AddMotion motion " << _id << " not found in Avatar " << std::endl;
 	return false;
 }
 
@@ -165,7 +176,8 @@ bool MovableAvatar::setTimeLine(TimeLine* timeLine)
     }
     else
     {
-        cout << "ERR: MovableAvatar::setTimeLine - timeline is already set for avatar " + toString();
+        if (Debug::ERR)
+            cout << Debug::ERR_STR << "MovableAvatar::setTimeLine - timeline is already set for avatar " + toString();
     }
 
     return result;
@@ -199,7 +211,9 @@ bool MovableAvatar::AddTimeLineMotion(TimeLineMotion *timeLineMotion)
  **/
 void MovableAvatar::StartTimeLine()
 {
-    cout << toString() << "StartTimeLine()" << endl;
+    if (Debug::TIMELINE>0)
+        cout << toString() << "StartTimeLine()" << endl;
+
     if (m_timeLine != NULL)
     {
         if (m_tlExecutor != NULL)
@@ -312,7 +326,9 @@ void MovableAvatar::OnUpdate(const double elapsedSeconds)
 */
 void MovableAvatar::Reset()
 {
-     cout << toString() << " MovableAvatar::Reset() " << std::endl;
+    if (Debug::MOTION>0)
+        cout << toString() << " MovableAvatar::Reset() " << std::endl;
+
     if (getTimeLine() != NULL)
     {
         getTimeLine()->Reset(getTimeLineContext());
@@ -363,7 +379,9 @@ void MovableAvatar::OnMessage(Message* msg)
     } 
     else if (msg->getType() == MSG_START_SIMULATION)
     {
-        cout << toString() << " start simulation .. " << std::endl;
+        if (Debug::MOTION>0)
+            cout << toString() << " start simulation .. " << std::endl;
+
         if (!getTimeLine()->isStarted())
         {
             StartTimeLine();

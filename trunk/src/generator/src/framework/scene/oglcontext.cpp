@@ -561,7 +561,8 @@ GLuint OGLContext::loadVertexProgram(const std::string fn)
       return false;
    }
    
-   std::cout << "Loading vertex program: " << fn << std::endl;
+   if (Debug::RENDER>0)
+        std::cout << "Loading vertex program: " << fn << std::endl;
    
    fseek(fp, 0, SEEK_END);
    length = ftell(fp);
@@ -587,7 +588,9 @@ GLuint OGLContext::loadVertexProgram(const std::string fn)
    }
    else
    {
-      printf(" Vertex Program - Load succeeded\n");
+      if (Debug::RENDER>0)
+        printf(" Vertex Program - Load succeeded\n");
+
 	  glBindProgramARB( GL_VERTEX_PROGRAM_ARB, 0 );
    }
 

@@ -41,7 +41,9 @@ void TimeLineMotion::Destroy(void)
  **/
 bool TimeLineMotion::AddModifier(TimeLineModifier* modifier)
 {
-    std::cout << " AddModifier " << modifier->toString() << " to " << toString() << std::endl;
+    if (Debug::TIMELINE>0)
+        std::cout << " AddModifier " << modifier->toString() << " to " << toString() << std::endl;
+
     m_vModifiers.push_back(modifier);
     modifier->setParentMotion(this);
 	return true;

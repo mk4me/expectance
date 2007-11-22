@@ -32,7 +32,8 @@ bool Goal::ExecuteAction(ActionAvatar *av)
         Action* action = av->SetActionById(actionId);
         if (action == NULL)
         {
-            cout << " ERR: Goal::ExecuteAction - action id not correct:" << actionId << endl;
+            if (Debug::ERR)
+                cout << Debug::ERR_STR << "Goal::ExecuteAction - action id not correct:" << actionId << endl;
         }
         else
         {

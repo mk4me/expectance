@@ -26,7 +26,9 @@ Application* Application::getInstance()
 {
     if (m_instance == NULL)
     {
-        cout << "Application::getInstace(): instance of Application created " << endl;;
+        if (Debug::APP>0)
+            cout << "Application::getInstace(): instance of Application created " << endl;;
+
         m_instance = new Application();
     }
 
@@ -41,7 +43,9 @@ void Application::DestroyInstance()
 {
     if (m_instance != NULL)
         delete m_instance;
-    cout << "Application::getInstace(): instance of Application destroyed  " << endl;
+
+    if (Debug::APP>0)
+        cout << "Application::getInstace(): instance of Application destroyed  " << endl;
 }
 
 /**
@@ -50,7 +54,9 @@ void Application::DestroyInstance()
  **/
 void Application::InitConfig()
 {
-    cout << "Application::InitConfig()." << endl;
+    if (Debug::APP>0)
+        cout << "Application::InitConfig()." << endl;
+
     Config::getInstance()->LoadConfigFile();  //with creation of singleton in getInstance()
     Config::TEST_CONFIG();
 }
@@ -61,7 +67,8 @@ void Application::InitConfig()
  **/
 bool Application::InitModules()
 {
-    cout << "Application::InitModules()." << endl;
+    if (Debug::APP>0)
+        cout << "Application::InitModules()." << endl;
 
     Debug::LoadLevelsFromConfig();
     UpdateManager::getInstance()->Init();  //enforced creation of singleton
@@ -69,7 +76,9 @@ bool Application::InitModules()
     AvatarFactory::getAvatarFactoryInstance();   //enforced creation of singleton
     if (!VisualizationManager::getInstance()->Init()) //enforced creation of singleton
 	{
-		cout << "VisualizationManager::Init error" << endl;
+        if (Debug::APP>0)
+    		cout << "VisualizationManager::Init error" << endl;
+
 		return 0;
 	}
     TimeLineFactory::getInstance(); //enforced creation of singleton
@@ -90,7 +99,8 @@ bool Application::InitModules()
  **/
 void Application::InitAvatars()
 {
-    cout << "Application::InitSceneObjects()." << endl;
+    if (Debug::APP>0)
+        cout << "Application::InitSceneObjects()." << endl;
 
     int avatar_number = -1;
     if (Config::getInstance()->IsKey("avatars_number"))
@@ -130,9 +140,7 @@ void Application::InitAvatars()
         }
     }
 
-     ft::UpdateManager::getInstance()->Dump();
-
-     UpdateManager::getInstance()->SendMessage(new Message(MSG_START_SIMULATION), true);
+    UpdateManager::getInstance()->SendMessage(new Message(MSG_START_SIMULATION), true);
 }
 
 /**

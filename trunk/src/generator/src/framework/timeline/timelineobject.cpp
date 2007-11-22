@@ -23,7 +23,8 @@ TimeLineObject::TimeLineObject()
  **/
 void TimeLineObject::Destroy(void)
 {
-    std::cout << toString() << " Destroy() " << std::endl;
+    if (Debug::TIMELINE>0)
+        std::cout << toString() << " Destroy() " << std::endl;
     
     TimeLineObject* obj = m_first;
     while(obj != NULL)
@@ -193,12 +194,3 @@ void TimeLineObject::Dump(int depth)
     DumpSubObjects(depth);
 }
 
-/**
- * \brief Prints debug info for this object
- *
- * \param const std::string & text - text to display
- **/
-void TimeLineObject::PrintDebug(const std::string& text)
-{
-    std::cout << toString()<< ":" << text << std::endl;
-}

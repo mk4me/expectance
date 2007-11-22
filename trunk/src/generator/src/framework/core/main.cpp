@@ -12,6 +12,7 @@
 #include "config.h"
 #include "inputmanager.h"
 #include "../scene/visualizationmanager.h"
+#include "../utility/debug.h"
 
 
 using namespace ft;
@@ -114,7 +115,7 @@ int main(int argc, char *argv[])
 
     if (!Application::getInstance()->InitModules())
 	{
-		cout << "Application::InitModules error" << endl;
+        cout << Debug::ERR_STR << "Application::InitModules error" << endl;
 		return -1;
 	}
 

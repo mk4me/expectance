@@ -46,7 +46,8 @@ void ActionAvatar::Init()
 /// \param Action *newAction - new action
 void ActionAvatar::SetCurrAction(Action *newAction)
 {
-    cout << toString() << ": SetCurrAction( " << newAction->toString() << ")" << endl;
+    if (Debug::ACTION)
+        cout << toString() << ": SetCurrAction( " << newAction->toString() << ")" << endl;
 
     if (IsTransitionAllowed(m_action, newAction))
     {
@@ -61,7 +62,8 @@ void ActionAvatar::SetCurrAction(Action *newAction)
     }
     else
     {
-        cout << toString() << ":SetAction: not allowed transition from " + m_action->toString() + " to " + newAction->toString() << endl;
+        if (Debug::ACTION)
+            cout << toString() << ":SetAction: not allowed transition from " + m_action->toString() + " to " + newAction->toString() << endl;
     }
 }
 
@@ -165,7 +167,10 @@ bool ActionAvatar::IsTransitionAllowed(Action* oldAction, Action* newAction)
 void ActionAvatar::Reset()
 {
     PhysicsAvatar::Reset();
-    cout << toString() << " ActionAvatar::Reset() " << std::endl;
+
+    if (Debug::ACTION)
+        cout << toString() << " ActionAvatar::Reset() " << std::endl;
+
     ACTION_IDLE->Reset(this);
     ACTION_WALK->Reset(this);
     ACTION_RUN->Reset(this);
@@ -230,12 +235,16 @@ void ActionAvatar::OnMessage(Message* msg)
         {
             if (this->getTLExecutor()->isTerminated()) 
             {
-                cout << " setTerminated ---------------------- false" << endl;
+                if (Debug::ACTION>0)
+                    cout << " setTerminated ---------------------- false" << endl;
+
                 this->getTLExecutor()->setTerminated(false);
             }
             else
             {
-                cout << " setTerminated ---------------------- true" << endl;
+                if (Debug::ACTION>0)
+                    cout << " setTerminated ---------------------- true" << endl;
+
                 this->getTLExecutor()->setTerminated(true);
             }
         }

@@ -67,8 +67,6 @@ namespace ft
         TimeLineObject* m_next;
 
         TimeLineObject* m_parent;
-
-        void PrintDebug(const std::string& text);
     };
 };
 

@@ -20,7 +20,9 @@ AvatarFactory* AvatarFactory::getAvatarFactoryInstance()
 {
     if (m_avatarFactoryInstance == NULL)
     {
-        cout << "AvatarFactory::getAvatarFactoryInstance(): instance of AvatarFactory created " << endl;
+        if (Debug::MODEL_LOADING)
+            cout << "AvatarFactory::getAvatarFactoryInstance(): instance of AvatarFactory created " << endl;
+
         m_avatarFactoryInstance = new AvatarFactory();
     }
 

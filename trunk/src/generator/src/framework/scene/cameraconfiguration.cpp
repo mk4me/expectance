@@ -50,7 +50,8 @@ bool CameraConfiguration::Init()
 			CameraMode _camMode = GETCameraMode(_cameraParameters[2]);
 			CameraLocation _camLocation = GETCameraLocation(_cameraParameters[3]);
 
-			std::cout << _cameraParameters[0] <<", "<< _cameraParameters[1] <<", "<< _cameraParameters[2] <<", "<< _cameraParameters[3] << "\n";
+            if (Debug::CAMERA)
+			    std::cout << _cameraParameters[0] <<", "<< _cameraParameters[1] <<", "<< _cameraParameters[2] <<", "<< _cameraParameters[3] << "\n";
 
 			//3. add option to menu
 			AddConfiguration(_key, _camType, _camMode, _camLocation);

@@ -166,7 +166,7 @@ unsigned int TextureManager::LoadTexture(const std::string filename,bool compres
 			return 0;
 	}
 	else {
-		std::cerr << "Unsupported image format\n";
+		std::cout << "Unsupported image format\n";
 		return 0;
 	}
 

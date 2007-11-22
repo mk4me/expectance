@@ -229,7 +229,8 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
             }
             else
             {
-                cout << " ERR: LCSModifier::Apply(): no prev anim for OVERLAP !!! " << endl;
+                if (Debug::ERR)
+                    cout << Debug::ERR_STR << "LCSModifier::Apply(): no prev anim for OVERLAP !!! " << endl;
             }
         }
 

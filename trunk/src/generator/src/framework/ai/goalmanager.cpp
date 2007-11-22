@@ -38,7 +38,9 @@ GoalManager* GoalManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        cout << "GoalManager::getInstace(): instance of GoalManager created " << endl;
+        if (Debug::AI>0)
+            cout << "GoalManager::getInstace(): instance of GoalManager created " << endl;
+
         m_instance = new GoalManager();
     }
 
@@ -86,12 +88,18 @@ bool GoalManager::AddGoal(Goal* pGoal)
 	 	std::map<std::string,Goal*>::iterator it = m_goals.find(_id);
 
 		if ( it!=m_goals.end()) { 
-            cout << "ERR: GoalManager::AddGoal goal " << _id << " already added to GoalManager " << std::endl;
+
+            if (Debug::ERR)
+                cout << Debug::ERR_STR << "GoalManager::AddGoal goal " << _id << " already added to GoalManager " << std::endl;
+
 			return false;
 		}
 	    m_goals.insert( std::make_pair( std::string(_id), pGoal) );
 	}
-    cout << " GoalManager::AddGoal goal " << _id << " added to GoalManager " << std::endl;
+
+    if (Debug::AI>0)
+        cout << " GoalManager::AddGoal goal " << _id << " added to GoalManager " << std::endl;
+
 	return true;
 }
 
@@ -110,12 +118,17 @@ bool GoalManager::RemoveGoal(Goal* pGoal)
 	 	std::map<std::string,Goal*>::iterator it = m_goals.find(_id);
 		if ( it!=m_goals.end()) { 
             m_goals.erase(it);
-            cout << "GoalManager::RemoveGoal object " << _id << " removed form GoalManager " << std::endl;
+            
+            if (Debug::AI>0)
+                cout << "GoalManager::RemoveGoal object " << _id << " removed form GoalManager " << std::endl;
+
 			return true;
 		}
 	    m_goals.insert( std::make_pair( std::string(_id), pGoal) );
 	}
-    cout << "ERR: GoalManager::RemoveGoal object " << _id << " not found in CGoalManager " << std::endl;
+
+    if (Debug::ERR)
+        cout << Debug::ERR_STR <<"GoalManager::RemoveGoal object " << _id << " not found in CGoalManager " << std::endl;
 	return false;
 }
 
@@ -127,7 +140,9 @@ bool GoalManager::RemoveGoal(Goal* pGoal)
  **/
 bool GoalManager::AddRule(Rule* rule)
 {
-    std::cout << " AddRule " << rule->toString() << " to AIManager " << std::endl;
+    if (Debug::AI>0)
+        std::cout << " AddRule " << rule->toString() << " to AIManager " << std::endl;
+
     m_vRules.push_back(rule);
 	return true;
 }
@@ -179,8 +194,9 @@ void GoalManager::CheckCurrGoalReached(AIAvatar *av)
         }
         else
         {
-            cout << "ERR: GoalManager::CheckCurrGoalReached: removing aicontroller " << currGoalController 
-                << " from timeline of " << av->toString() << " failed !!!! " << endl;
+            if (Debug::ERR)
+                cout << Debug::ERR_STR << "GoalManager::CheckCurrGoalReached: removing aicontroller " << currGoalController 
+                    << " from timeline of " << av->toString() << " failed !!!! " << endl;
         }
     }
 
@@ -281,7 +297,8 @@ void GoalManager::ExecuteGoal(Goal* goal, AIAvatar *av)
 
     if (!actionExecuted)
     {
-        cout << " ERR: GoalManager::ExecuteGoal - execution of action needed to Goal realization failed. " << endl;
+        if (Debug::ERR)
+            cout << Debug::ERR_STR << "GoalManager::ExecuteGoal - execution of action needed to Goal realization failed. " << endl;
     }
 }
 

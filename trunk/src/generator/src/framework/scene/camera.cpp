@@ -238,7 +238,9 @@ void Camera::ChangeCameraMode()
 
 const void Camera::PrintInfo() const
 {
-	std::cout << "Camera <" << m_id <<">: mode [" << CameraModeId[m_cameraMode] <<"] \n";
+    if (Debug::CAMERA>0)
+	    std::cout << "Camera <" << m_id <<">: mode [" << CameraModeId[m_cameraMode] <<"] \n";
+
 	//	", location = [" << m_position.x <<", " << m_position.y << ", " << m_position.z 
 	//<<"], m_color = [" << m_color.x << ", "<<m_color.y<<", "<< m_color.z <<"] \n";
 }
