@@ -84,7 +84,7 @@ bool Cal3DObject::InitHardwareAcceleration()
 	if(!loadBufferObject())
 	{
       if (Debug::ERR)
-          std::cout << Debug::ERR_STR << "Error loading vertex buffer object." << std::endl;
+          _dbg << Debug::ERR_STR << "Error loading vertex buffer object." << std::endl;
 
 	  return false;
 	}
@@ -92,13 +92,13 @@ bool Cal3DObject::InitHardwareAcceleration()
 	if ((m_vertexProgramId = OGLContext::getInstance()->loadVertexProgram(FT_SHADERPATH + Config::getInstance()->GetStrVal("mesh_vertex_program"))) == 0)
 	{
       if (Debug::ERR)
-          std::cout << Debug::ERR_STR << "Error loading vertex program." << std::endl;
+          _dbg << Debug::ERR_STR << "Error loading vertex program." << std::endl;
 
 	  return false;
 	}
 	//if ((m_fragmentProgramId = OGLContext::getInstance()->loadFragmentProgram(FT_SHADERPATH + Config::getInstance()->GetStrVal("mesh_fragment_program"))) == 0)
 	//{
-	//  std::cout << "Error loading fragment program." << std::endl;
+	//  _dbg << "Error loading fragment program." << std::endl;
 	//}
 
 	return true;
@@ -152,7 +152,7 @@ CalCoreModel* Cal3DObject::GetCalCoreModel()
 void Cal3DObject::OnMessage(Message* msg)
 {
     if (Debug::UPDATE>0)
-        std::cout << toString() << " received message: " << Message::_GET_MSG_NAME(msg->getType()) << std::endl;
+        _dbg << toString() << " received message: " << Message::_GET_MSG_NAME(msg->getType()) << std::endl;
 
     if (msg->getType() == MSG_PROPERTY_LOD) 
     {
@@ -656,7 +656,7 @@ void Cal3DObject::SetLodLevel(float level)
     {
 
         if (Debug::MODEL_LOADING>0)
-            std::cout << "Cal3DObject<" << getID() <<"> SetLodLevel " << level << std::endl;
+            _dbg << "Cal3DObject<" << getID() <<"> SetLodLevel " << level << std::endl;
 
         m_calModel->setLodLevel(level);
     }

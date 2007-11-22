@@ -28,6 +28,8 @@ void ExitFunc()
 {
    // shut down OGL Content
    VisualizationManager::getInstance()->CleanUp();
+   Application::DestroyInstance();
+   Debug::Destroy();
 }
 
 /// \brief GLUT callback function

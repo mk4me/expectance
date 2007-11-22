@@ -42,7 +42,7 @@ Line::Line(const CalVector& start, const CalVector& end, const std::string& name
 
 Line::~Line(void)
 {
-	std::cout << getID() << " line deleted\n";
+	_dbg << getID() << " line deleted\n";
 }
 
 bool Line::Render()

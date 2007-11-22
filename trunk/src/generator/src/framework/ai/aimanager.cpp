@@ -32,7 +32,7 @@ AIManager* AIManager::getInstance()
     if (m_instance == NULL)
     {
         if (Debug::AI>0)
-            cout << "AIManager::getInstace(): instance of AIManager created " << endl;;
+            _dbg << "AIManager::getInstace(): instance of AIManager created " << endl;;
 
         m_instance = new AIManager();
     }
@@ -94,7 +94,7 @@ void AIManager::UpadateAvatarGoals()
 bool AIManager::AddAvatar(AIAvatar* av)
 {
     if (Debug::AI>0)
-        std::cout << " AddAvatar " << av->toString() << " to AIManager " << std::endl;
+        _dbg << " AddAvatar " << av->toString() << " to AIManager " << std::endl;
 
     m_vAvatars.push_back(av);
     av->SetThink(true);

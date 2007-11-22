@@ -5,10 +5,16 @@
 #ifndef _GEN_DEBUG_H
 #define _GEN_DEBUG_H
 
-
+#include <fstream>
 #include <iostream>
 
-#define DEBUG_MESSAGES false
+//#define _DEBUGS_TO_FILE   //uncomment it to write logs into a file
+
+#ifdef _DEBUGS_TO_FILE
+    #define _dbg Debug::FILE_OUT
+#else
+    #define _dbg std::cout
+#endif
 
 namespace ft
 {
@@ -19,14 +25,6 @@ namespace ft
     class Debug
     {
     public:
-        static std::string ERR_STR;
-        static std::string WARN_STR;
-
-        static bool ON;
-        static bool WARN;
-        static bool ERR;
-
-        static void LoadLevelsFromConfig();
 
         //////// ADD  BELOW YOUR DEBUG FLAG //////////////
 
@@ -43,6 +41,22 @@ namespace ft
         static int CAMERA;
 
         //////////////////////////////////////
+
+        static bool ON;
+        static bool WARN;
+        static bool ERR;
+
+
+        static std::ofstream FILE_OUT;
+
+        static void InitDebug();
+        static void Destroy();
+
+        static std::string ERR_STR;
+        static std::string WARN_STR;
+
+    private:
+        static void LoadLevelsFromConfig();
     };
 };
 

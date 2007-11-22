@@ -181,16 +181,16 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 
         if (timeLineContext->anim_changed)
         {
-            if (LOCAL_DEBUG) cout << " Anim changed .... anim time " << animTime  << endl;
+            if (LOCAL_DEBUG) _dbg << " Anim changed .... anim time " << animTime  << endl;
 
             if (timeLineContext->prevAnim != NULL)
             {
-                if (LOCAL_DEBUG) cout << " Prev != NULL " << endl;
+                if (LOCAL_DEBUG) _dbg << " Prev != NULL " << endl;
                 //calculate rest time
                 timeLineContext->prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(timeLineContext->prevAnimTime, restTrans, tmpRot);
                 restTrans -= m_vLastPos;
 
-                if (LOCAL_DEBUG) cout << " resTrans " << restTrans.length() << endl;
+                if (LOCAL_DEBUG) _dbg << " resTrans " << restTrans.length() << endl;
 
             }
             else
@@ -212,13 +212,13 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
             vStartOffset -= startAnimPos;
             restTrans += vStartOffset;
 
-            //if (LOCAL_DEBUG) cout << " resTrans " << restTrans.length() << endl;
+            //if (LOCAL_DEBUG) _dbg << " resTrans " << restTrans.length() << endl;
          }
 
         if (INTERPOLATION && timeLineContext->exec_state == EXEC_STATE_OVERLAP)
             //&& timeLineContext->prevAnimTime <= timeLineContext->prevAnimDuration)
         {
-            //cout << " Anim overlaped .... " << endl;
+            //_dbg << " Anim overlaped .... " << endl;
             if (timeLineContext->prevAnim != NULL)
             {
                 timeLineContext->prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(timeLineContext->prevAnimTime, vPrevPos , tmpRot);
@@ -230,7 +230,7 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
             else
             {
                 if (Debug::ERR)
-                    cout << Debug::ERR_STR << "LCSModifier::Apply(): no prev anim for OVERLAP !!! " << endl;
+                    _dbg << Debug::ERR_STR << "LCSModifier::Apply(): no prev anim for OVERLAP !!! " << endl;
             }
         }
 
@@ -241,7 +241,7 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
     }
     else
     {
-        if (LOCAL_DEBUG) cout << " Original pos " << endl;
+        if (LOCAL_DEBUG) _dbg << " Original pos " << endl;
         currPos = bone->getTranslation();
     }
 
@@ -264,11 +264,11 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
                 {
                     //if (timeLineContext->anim_changed)
                     //{
-                    //    cout << " prev time " << timeLineContext->prevAnimTime << " prev dur " << timeLineContext->prevAnimDuration << endl;
+                    //    _dbg << " prev time " << timeLineContext->prevAnimTime << " prev dur " << timeLineContext->prevAnimDuration << endl;
                     //}
-                    //cout << " animTime " << timeLineContext->currAnimTime << " dur " << timeLineContext->prevOverlap 
+                    //_dbg << " animTime " << timeLineContext->currAnimTime << " dur " << timeLineContext->prevOverlap 
                     //    << " factor " << factor << " diff " << diff.length() <<endl;
-                    //cout << " prevAnimTime " << timeLineContext->prevAnimTime << " prev dur " << timeLineContext->prevAnimDuration << endl;
+                    //_dbg << " prevAnimTime " << timeLineContext->prevAnimTime << " prev dur " << timeLineContext->prevAnimDuration << endl;
                 }
 //                counter = (counter+1)%5;
             }
@@ -303,7 +303,7 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
     //if (counter == 0)
     //{
     //    Quat rotQuat = CalQuatToQuat(rootRotation);
-    //    cout << " x " << radToDeg(rotQuat.Xangle()) <<  " y " << radToDeg(rotQuat.Yangle())
+    //    _dbg << " x " << radToDeg(rotQuat.Xangle()) <<  " y " << radToDeg(rotQuat.Yangle())
     //        << " z " << radToDeg(rotQuat.Zangle()) << endl;
     //        // << " z " << rotQuat.Zangle() << endl;
     //}
@@ -376,7 +376,7 @@ void LCSModifier::ApplyAnimDirectionToGlobalRotation(CalQuaternion& qGlobalRotOf
 {
     if (timeLineContext->anim_changed || timeLineContext->anim_new_cycle || timeLineContext->anim_stopped)
     {
-//        cout << " ---------- anim changed  ----  m_fAnimRot " << radToDeg(m_fAnimRot) << endl;
+//        _dbg << " ---------- anim changed  ----  m_fAnimRot " << radToDeg(m_fAnimRot) << endl;
 
         if (m_fAnimRot != 0) // means that (timeLineContext->prevAnim != NULL)
         {
@@ -407,7 +407,7 @@ void LCSModifier::ApplyAnimDirectionToGlobalRotation(CalQuaternion& qGlobalRotOf
 
                 //if (counter == 0 || fCurrAnimRot > 0.1f)
                 //{
-                //    cout << " fCurrAnimRot " << radToDeg(fCurrAnimRot) << " m_fAnimRot " << radToDeg(m_fAnimRot) << endl;
+                //    _dbg << " fCurrAnimRot " << radToDeg(fCurrAnimRot) << " m_fAnimRot " << radToDeg(m_fAnimRot) << endl;
                 //}
                 //counter = (counter+1)%30;
 

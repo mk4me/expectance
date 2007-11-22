@@ -141,7 +141,7 @@ const bool SceneObject::isVisible() const
 
 const void SceneObject::PrintInfo(void) const
 {
-	std::cout << "ID " << getID() <<", location = [" << m_position.x <<", " << m_position.y << ", " << m_position.z 
+	_dbg << "ID " << getID() <<", location = [" << m_position.x <<", " << m_position.y << ", " << m_position.z 
 	<<"], m_color = [" << m_color.x << ", "<<m_color.y<<", "<< m_color.z <<"] \n";
 }
 

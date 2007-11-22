@@ -22,7 +22,7 @@ UpdateManager* UpdateManager::getInstance()
     if (m_instance == NULL)
     {
         if (Debug::UPDATE>0)
-            cout << "UpdateManager::getInstace(): instance of UpdateManager created " << endl;
+            _dbg << "UpdateManager::getInstace(): instance of UpdateManager created " << endl;
 
         m_instance = new UpdateManager();
     }
@@ -105,7 +105,7 @@ void UpdateManager::OnUpdate()
 void UpdateManager::SendMessage(Message* msg, bool deleteAfterSent)
 {
     if (Debug::UPDATE>0)
-        std::cout << "UpdateManager::SendMessage: "<< Message::_GET_MSG_NAME(msg->getType())  << std::endl;
+        _dbg << "UpdateManager::SendMessage: "<< Message::_GET_MSG_NAME(msg->getType())  << std::endl;
 
     //TODO: abak:  this update should be synchronized with adding and removing UpdateObjects
 
@@ -140,14 +140,14 @@ bool UpdateManager::AddUpdateObject(UpdateObject* pObj)
 		if ( it!=m_objects.end()) { 
 
             if (Debug::ERR)
-                cout << Debug::ERR_STR << "UpdateManager::AddUpdateObject object " << _id << " already added to UpdateManager " << std::endl;
+                _dbg << Debug::ERR_STR << "UpdateManager::AddUpdateObject object " << _id << " already added to UpdateManager " << std::endl;
 
 			return false;
 		}
 	    m_objects.insert( std::make_pair( std::string(_id), pObj) );
 	}
     if (Debug::UPDATE>0)
-        cout << " UpdateManager::AddUpdateObject object " << _id << " added to UpdateManager " << std::endl;
+        _dbg << " UpdateManager::AddUpdateObject object " << _id << " added to UpdateManager " << std::endl;
 
 	return true;
 }
@@ -169,7 +169,7 @@ bool UpdateManager::RemoveUpdateObject(UpdateObject* pObj)
             m_objects.erase(it);
             
             if (Debug::UPDATE>0)
-                cout << "UpdateManager::RemoveUpdateObject object " << _id << " removed form UpdateManager " << std::endl;
+                _dbg << "UpdateManager::RemoveUpdateObject object " << _id << " removed form UpdateManager " << std::endl;
 
 			return true;
 		}
@@ -177,7 +177,7 @@ bool UpdateManager::RemoveUpdateObject(UpdateObject* pObj)
 	}
 
     if (Debug::ERR)
-        cout << Debug::ERR_STR << "UpdateManager::RemoveUpdateObject object " << _id << " not found in Control Manager " << std::endl;
+        _dbg << Debug::ERR_STR << "UpdateManager::RemoveUpdateObject object " << _id << " not found in Control Manager " << std::endl;
 
 	return false;
 }
@@ -188,13 +188,13 @@ bool UpdateManager::RemoveUpdateObject(UpdateObject* pObj)
  **/
 void UpdateManager::Dump()
 {
-    cout << "Dump UpdateManager content: " << std::endl;
-    cout << "- objects: " << std::endl;
+    _dbg << "Dump UpdateManager content: " << std::endl;
+    _dbg << "- objects: " << std::endl;
 
 	std::map<std::string,UpdateObject*>::iterator it=m_objects.begin();
 	for( ; it != m_objects.end(); ++it ) 
     {
-        cout << " - - id " << it->first << std::endl;
+        _dbg << " - - id " << it->first << std::endl;
     }
 }
 

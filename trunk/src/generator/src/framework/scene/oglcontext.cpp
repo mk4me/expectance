@@ -12,7 +12,7 @@ OGLContext* OGLContext::getInstance()
 {
     if (m_instance == NULL)
     {
-        cout << "OGLContext::getInstace(): instance of OGLContext created " << endl;
+        _dbg << "OGLContext::getInstace(): instance of OGLContext created " << endl;
         m_instance = new OGLContext();
     }
 
@@ -562,7 +562,7 @@ GLuint OGLContext::loadVertexProgram(const std::string fn)
    }
    
    if (Debug::RENDER>0)
-        std::cout << "Loading vertex program: " << fn << std::endl;
+        _dbg << "Loading vertex program: " << fn << std::endl;
    
    fseek(fp, 0, SEEK_END);
    length = ftell(fp);

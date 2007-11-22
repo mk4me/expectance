@@ -12,7 +12,7 @@ using namespace ft;
 void Action::Init(PhysicsAvatar* avatar)
 {
     if (Debug::ACTION)
-        std::cout << toString() << ": Init " << std::endl;
+        _dbg << toString() << ": Init " << std::endl;
 }
 
 /// \brief Callback method called when related Avatar gets to this action
@@ -21,7 +21,7 @@ void Action::Init(PhysicsAvatar* avatar)
 void Action::Entry(PhysicsAvatar* avatar, Action* oldAction)
 {
     if (Debug::ACTION)
-        std::cout << toString() << ": Entry " << std::endl;
+        _dbg << toString() << ": Entry " << std::endl;
 }
 
 /// \brief Callback method called when related Avatar exits from this action to another action
@@ -30,7 +30,7 @@ void Action::Entry(PhysicsAvatar* avatar, Action* oldAction)
 void Action::Exit(PhysicsAvatar* avatar, Action* newAction)
 {
     if (Debug::ACTION)
-        std::cout << toString() << ": Exit " << std::endl;
+        _dbg << toString() << ": Exit " << std::endl;
 }
 
 /// \brief Resets all paremeters releated to this action
@@ -38,7 +38,7 @@ void Action::Exit(PhysicsAvatar* avatar, Action* newAction)
 void Action::Reset(PhysicsAvatar* avatar)
 {
     if (Debug::ACTION)
-        std::cout << toString() << ": Reset " << std::endl;
+        _dbg << toString() << ": Reset " << std::endl;
 }
 
 /// \brief Returns string representation of this action

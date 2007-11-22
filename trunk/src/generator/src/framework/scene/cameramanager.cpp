@@ -15,7 +15,7 @@ CameraManager* CameraManager::getInstance()
     if (m_instance == NULL)
     {
         if (Debug::CAMERA>0)
-            cout << "CameraManager::getInstace(): instance of CameraManager created " << endl;
+            _dbg << "CameraManager::getInstace(): instance of CameraManager created " << endl;
 
         m_instance = new CameraManager();
     }

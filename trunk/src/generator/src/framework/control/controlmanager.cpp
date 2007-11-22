@@ -37,7 +37,7 @@ ControlManager* ControlManager::getInstance()
     if (m_instance == NULL)
     {
         if (Debug::CONTROL>0)
-            cout << "ControlManager::getInstace(): instance of ControlManager created " << endl;
+            _dbg << "ControlManager::getInstace(): instance of ControlManager created " << endl;
 
         m_instance = new ControlManager();
     }
@@ -110,7 +110,7 @@ void ControlManager::UpdateActiveAvatarMarker()
 bool ControlManager::AddAvatar(AIAvatar* av)
 {
     if (Debug::CONTROL>0)
-        std::cout << " AddAvatar " << av->toString() << " to ControlManager " << std::endl;
+        _dbg << " AddAvatar " << av->toString() << " to ControlManager " << std::endl;
 
     m_vAvatars.push_back(av);
 	return true;
@@ -129,7 +129,7 @@ void ControlManager::setActiveAvatar(int ind)
     m_activeAvatarInd  = ind; 
 
     if (Debug::CONTROL>0)
-        std::cout << "ControlManager.setActiveAvatar(" << ind << ")" << std::endl;
+        _dbg << "ControlManager.setActiveAvatar(" << ind << ")" << std::endl;
 
     currAvatar = getActiveAvatar();
     if (currAvatar != NULL)

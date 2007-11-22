@@ -33,7 +33,7 @@ bool Goal::ExecuteAction(ActionAvatar *av)
         if (action == NULL)
         {
             if (Debug::ERR)
-                cout << Debug::ERR_STR << "Goal::ExecuteAction - action id not correct:" << actionId << endl;
+                _dbg << Debug::ERR_STR << "Goal::ExecuteAction - action id not correct:" << actionId << endl;
         }
         else
         {

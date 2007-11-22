@@ -47,7 +47,7 @@ void ActionAvatar::Init()
 void ActionAvatar::SetCurrAction(Action *newAction)
 {
     if (Debug::ACTION)
-        cout << toString() << ": SetCurrAction( " << newAction->toString() << ")" << endl;
+        _dbg << toString() << ": SetCurrAction( " << newAction->toString() << ")" << endl;
 
     if (IsTransitionAllowed(m_action, newAction))
     {
@@ -63,7 +63,7 @@ void ActionAvatar::SetCurrAction(Action *newAction)
     else
     {
         if (Debug::ACTION)
-            cout << toString() << ":SetAction: not allowed transition from " + m_action->toString() + " to " + newAction->toString() << endl;
+            _dbg << toString() << ":SetAction: not allowed transition from " + m_action->toString() + " to " + newAction->toString() << endl;
     }
 }
 
@@ -169,7 +169,7 @@ void ActionAvatar::Reset()
     PhysicsAvatar::Reset();
 
     if (Debug::ACTION)
-        cout << toString() << " ActionAvatar::Reset() " << std::endl;
+        _dbg << toString() << " ActionAvatar::Reset() " << std::endl;
 
     ACTION_IDLE->Reset(this);
     ACTION_WALK->Reset(this);
@@ -199,7 +199,7 @@ void ActionAvatar::OnMessage(Message* msg)
     {
         if (msg->getParam() == NULL || (getName().compare(msg->getParam()->getStrValue()) == 0))
         {
-            //cout << "PhysicsAvatar : will stop TimeLine "<< std::endl;
+            //_dbg << "PhysicsAvatar : will stop TimeLine "<< std::endl;
             //StopTimeLine();
            if (getCurrAction() == ACTION_WALK)
                 SetActionById(ACTION_IDLE_ID);
@@ -211,7 +211,7 @@ void ActionAvatar::OnMessage(Message* msg)
     {
         if (msg->getParam() == NULL || (getName().compare(msg->getParam()->getStrValue()) == 0))
         {
-//            cout << "PhysicsAvatar : turn left " << std::endl;
+//            _dbg << "PhysicsAvatar : turn left " << std::endl;
             
             Quat addRot = Quat(degToRad(-3.0f), Vec(0,1,0));
             changeGlobalRotationOffset( QuatToCalQuat(addRot) );
@@ -222,7 +222,7 @@ void ActionAvatar::OnMessage(Message* msg)
     {
         if (msg->getParam() == NULL || (getName().compare(msg->getParam()->getStrValue()) == 0))
         {
-//            cout << "PhysicsAvatar : turn left " << std::endl;
+//            _dbg << "PhysicsAvatar : turn left " << std::endl;
 
             Quat addRot = Quat(degToRad(3.0f), Vec(0,1,0));
 			changeGlobalRotationOffset( QuatToCalQuat(addRot) );
@@ -236,14 +236,14 @@ void ActionAvatar::OnMessage(Message* msg)
             if (this->getTLExecutor()->isTerminated()) 
             {
                 if (Debug::ACTION>0)
-                    cout << " setTerminated ---------------------- false" << endl;
+                    _dbg << " setTerminated ---------------------- false" << endl;
 
                 this->getTLExecutor()->setTerminated(false);
             }
             else
             {
                 if (Debug::ACTION>0)
-                    cout << " setTerminated ---------------------- true" << endl;
+                    _dbg << " setTerminated ---------------------- true" << endl;
 
                 this->getTLExecutor()->setTerminated(true);
             }

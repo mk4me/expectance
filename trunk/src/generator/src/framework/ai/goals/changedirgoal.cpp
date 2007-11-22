@@ -20,7 +20,7 @@ ChangeDirController::ChangeDirController(float minAngle, float maxAngle)
 
     m_fAngle = minAngle + angle;
 
-    //cout << "  ------------ Random  angle -------- " <<  m_fAngle;
+    //_dbg << "  ------------ Random  angle -------- " <<  m_fAngle;
 }
 
 /// \brief destructor

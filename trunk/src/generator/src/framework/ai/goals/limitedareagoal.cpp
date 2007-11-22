@@ -39,7 +39,7 @@ LimitedAreaController::LimitedAreaController(ActionAvatar *av)
         m_changeToLeft = true;
     }
 
-//    cout << " !!!---------!!! ----------  Awaryjny zwrot " << m_fAngle << endl;
+//    _dbg << " !!!---------!!! ----------  Awaryjny zwrot " << m_fAngle << endl;
     
 
     m_changeSpeed = 2;

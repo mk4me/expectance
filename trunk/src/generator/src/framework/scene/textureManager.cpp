@@ -27,7 +27,7 @@ TextureManager* TextureManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        std::cout << "TextureManager::getInstace(): instance of TextureManager created " << std::endl;
+        _dbg << "TextureManager::getInstace(): instance of TextureManager created " << std::endl;
         m_instance = new TextureManager();
     }
 
@@ -166,7 +166,7 @@ unsigned int TextureManager::LoadTexture(const std::string filename,bool compres
 			return 0;
 	}
 	else {
-		std::cout << "Unsupported image format\n";
+		_dbg << "Unsupported image format\n";
 		return 0;
 	}
 

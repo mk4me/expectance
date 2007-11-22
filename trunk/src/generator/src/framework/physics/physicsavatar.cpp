@@ -40,7 +40,7 @@ void PhysicsAvatar::Init()
 /// \brief Resets all parameters related to physical aspects of this avatar
 void PhysicsAvatar::Reset()
 {
-    cout << toString() << " PhysicsAvatar::Reset() " << std::endl;
+    _dbg << toString() << " PhysicsAvatar::Reset() " << std::endl;
     MovableAvatar::Reset();
 }
 

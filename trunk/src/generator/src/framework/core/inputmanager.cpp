@@ -19,7 +19,7 @@ InputManager* InputManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        cout << "InputManager::getInstace(): instance of InputManager created " << endl;
+        _dbg << "InputManager::getInstace(): instance of InputManager created " << endl;
         m_instance = new InputManager();
     }
 
@@ -145,7 +145,7 @@ void InputManager::OnSpecial(int key, int x, int y)
  **/
 void InputManager::OnMouseButtonDown(int button, int x, int y)
 {
-	std::cout << "Nacisnieto button: " << button <<"w pozycji (x,y) = (" <<x<<", "<<y<<")"<<endl;
+	_dbg << "Nacisnieto button: " << button <<"w pozycji (x,y) = (" <<x<<", "<<y<<")"<<endl;
 	if (y < 60)
 	{
 		MenuManager::getInstance()->OnMouseButtonDown(button, x, y);

@@ -27,7 +27,7 @@ Application* Application::getInstance()
     if (m_instance == NULL)
     {
         if (Debug::APP>0)
-            cout << "Application::getInstace(): instance of Application created " << endl;;
+            _dbg << "Application::getInstace(): instance of Application created " << endl;;
 
         m_instance = new Application();
     }
@@ -45,7 +45,7 @@ void Application::DestroyInstance()
         delete m_instance;
 
     if (Debug::APP>0)
-        cout << "Application::getInstace(): instance of Application destroyed  " << endl;
+        _dbg << "Application::getInstace(): instance of Application destroyed  " << endl;
 }
 
 /**
@@ -55,7 +55,7 @@ void Application::DestroyInstance()
 void Application::InitConfig()
 {
     if (Debug::APP>0)
-        cout << "Application::InitConfig()." << endl;
+        _dbg << "Application::InitConfig()." << endl;
 
     Config::getInstance()->LoadConfigFile();  //with creation of singleton in getInstance()
     Config::TEST_CONFIG();
@@ -68,16 +68,16 @@ void Application::InitConfig()
 bool Application::InitModules()
 {
     if (Debug::APP>0)
-        cout << "Application::InitModules()." << endl;
+        _dbg << "Application::InitModules()." << endl;
 
-    Debug::LoadLevelsFromConfig();
+    Debug::InitDebug();
     UpdateManager::getInstance()->Init();  //enforced creation of singleton
     Cal3DObjectFactory::getMeshObjectFactoryInstance();   //enforced creation of singleton
     AvatarFactory::getAvatarFactoryInstance();   //enforced creation of singleton
     if (!VisualizationManager::getInstance()->Init()) //enforced creation of singleton
 	{
         if (Debug::APP>0)
-    		cout << "VisualizationManager::Init error" << endl;
+    		_dbg << "VisualizationManager::Init error" << endl;
 
 		return 0;
 	}
@@ -100,7 +100,7 @@ bool Application::InitModules()
 void Application::InitAvatars()
 {
     if (Debug::APP>0)
-        cout << "Application::InitSceneObjects()." << endl;
+        _dbg << "Application::InitSceneObjects()." << endl;
 
     int avatar_number = -1;
     if (Config::getInstance()->IsKey("avatars_number"))

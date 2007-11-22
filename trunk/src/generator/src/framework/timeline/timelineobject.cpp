@@ -24,7 +24,7 @@ TimeLineObject::TimeLineObject()
 void TimeLineObject::Destroy(void)
 {
     if (Debug::TIMELINE>0)
-        std::cout << toString() << " Destroy() " << std::endl;
+        _dbg << toString() << " Destroy() " << std::endl;
     
     TimeLineObject* obj = m_first;
     while(obj != NULL)
@@ -190,7 +190,7 @@ std::string TimeLineObject::getDepthStr(int depth)
 void TimeLineObject::Dump(int depth)
 {
 
-    std::cout << getDepthStr(depth) << toString() << std::endl;
+    _dbg << getDepthStr(depth) << toString() << std::endl;
     DumpSubObjects(depth);
 }
 

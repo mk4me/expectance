@@ -88,7 +88,7 @@ bool MovableAvatar::AddMotion(Motion* motion)
 		if ( it!=m_motions.end())
         { 
             if (Debug::ERR)
-                cout << Debug::ERR_STR << "MovableAvatar::AddMotion motion " << _id << " already added to Avatar " << std::endl;
+                _dbg << Debug::ERR_STR << "MovableAvatar::AddMotion motion " << _id << " already added to Avatar " << std::endl;
 
 			return false;
 		}
@@ -96,7 +96,7 @@ bool MovableAvatar::AddMotion(Motion* motion)
 	}
 
     if (Debug::MOTION>0)
-        cout << " MovableAvatar::AddMotion motion " << _id << " added to avatar " << std::endl;
+        _dbg << " MovableAvatar::AddMotion motion " << _id << " added to avatar " << std::endl;
 
 	return true;
 }
@@ -117,7 +117,7 @@ bool  MovableAvatar::RemoveMotion(Motion* motion)
             m_motions.erase(it);
 
             if (Debug::MOTION>0)
-                cout << "MovableAvatar::AddMotion motion " << _id << " removed form avatar " << std::endl;
+                _dbg << "MovableAvatar::AddMotion motion " << _id << " removed form avatar " << std::endl;
 
 			return true;
 		}
@@ -125,7 +125,7 @@ bool  MovableAvatar::RemoveMotion(Motion* motion)
 	}
 
     if (Debug::ERR)
-        cout << Debug::ERR_STR << "MovableAvatar::AddMotion motion " << _id << " not found in Avatar " << std::endl;
+        _dbg << Debug::ERR_STR << "MovableAvatar::AddMotion motion " << _id << " not found in Avatar " << std::endl;
 	return false;
 }
 
@@ -177,7 +177,7 @@ bool MovableAvatar::setTimeLine(TimeLine* timeLine)
     else
     {
         if (Debug::ERR)
-            cout << Debug::ERR_STR << "MovableAvatar::setTimeLine - timeline is already set for avatar " + toString();
+            _dbg << Debug::ERR_STR << "MovableAvatar::setTimeLine - timeline is already set for avatar " + toString();
     }
 
     return result;
@@ -212,7 +212,7 @@ bool MovableAvatar::AddTimeLineMotion(TimeLineMotion *timeLineMotion)
 void MovableAvatar::StartTimeLine()
 {
     if (Debug::TIMELINE>0)
-        cout << toString() << "StartTimeLine()" << endl;
+        _dbg << toString() << "StartTimeLine()" << endl;
 
     if (m_timeLine != NULL)
     {
@@ -267,20 +267,20 @@ void MovableAvatar::UpdateTimeLine(float elapsedSeconds)
  **/
 void MovableAvatar::Dump()
 {
-    cout << "Dump MovableAvatar content: " << std::endl;
-    cout << "- motions: " << std::endl;
+    _dbg << "Dump MovableAvatar content: " << std::endl;
+    _dbg << "- motions: " << std::endl;
 
 	std::map<std::string,Motion*>::iterator it=m_motions.begin();
 	for( ; it != m_motions.end(); ++it ) 
     {
-        cout << " - - id " << it->first << std::endl;
+        _dbg << " - - id " << it->first << std::endl;
     }
 
-    cout << "- time line:" << std::endl;
+    _dbg << "- time line:" << std::endl;
     if (m_timeLine != NULL)
         m_timeLine->Dump(2);
     else
-       cout << "- - NULL" << endl;
+       _dbg << "- - NULL" << endl;
 }   
 
 
@@ -327,7 +327,7 @@ void MovableAvatar::OnUpdate(const double elapsedSeconds)
 void MovableAvatar::Reset()
 {
     if (Debug::MOTION>0)
-        cout << toString() << " MovableAvatar::Reset() " << std::endl;
+        _dbg << toString() << " MovableAvatar::Reset() " << std::endl;
 
     if (getTimeLine() != NULL)
     {
@@ -380,7 +380,7 @@ void MovableAvatar::OnMessage(Message* msg)
     else if (msg->getType() == MSG_START_SIMULATION)
     {
         if (Debug::MOTION>0)
-            cout << toString() << " start simulation .. " << std::endl;
+            _dbg << toString() << " start simulation .. " << std::endl;
 
         if (!getTimeLine()->isStarted())
         {

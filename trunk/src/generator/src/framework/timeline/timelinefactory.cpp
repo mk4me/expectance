@@ -19,7 +19,7 @@ TimeLineFactory* TimeLineFactory::getInstance()
     if (m_instance == NULL)
     {
         if (Debug::TIMELINE>0)
-            cout << "TimeLineFactory::getInstace(): instance of TimeLineFactory created " << endl;
+            _dbg << "TimeLineFactory::getInstace(): instance of TimeLineFactory created " << endl;
 
         m_instance = new TimeLineFactory();
     }

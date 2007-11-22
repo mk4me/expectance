@@ -41,7 +41,7 @@ void RandomMoveController::Apply(float elapsedSeconds, TimeLineContext * timeLin
             setGoalReached(true);
 
             if (Debug::AI>0)
-                cout << " RandomMoveController::Apply .. FINISH reached " << endl; 
+                _dbg << " RandomMoveController::Apply .. FINISH reached " << endl; 
         }
     }
 }

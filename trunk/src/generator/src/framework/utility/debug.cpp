@@ -8,6 +8,8 @@
 
 using namespace ft;
 
+std::ofstream Debug::FILE_OUT;
+
 std::string Debug::ERR_STR = "ERR:";
 std::string Debug::WARN_STR = "WARN:";
 
@@ -30,6 +32,22 @@ int Debug::FPS = 0;
 int Debug::CAMERA = 0;
 
 //////// //////////////
+
+void Debug::InitDebug()
+{
+#ifdef _DEBUGS_TO_FILE
+    FILE_OUT.open("logs.txt"); 
+#endif
+
+    LoadLevelsFromConfig();
+}
+
+void Debug::Destroy()
+{
+#ifdef _DEBUGS_TO_FILE
+    FILE_OUT.close();
+#endif
+}
 
 void Debug::LoadLevelsFromConfig()
 {

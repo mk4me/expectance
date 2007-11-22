@@ -181,7 +181,7 @@ void Camera::OnUpdate(const double deltaTime)
 	_index = cameraSpline->getSplineIndex(cameraSpline, &_cameraDistance, m_tracingRadius); 
 	_orbitViewMtx = LookAtMatrix44(cameraSpline->curveData[_index].pos+_currTrgPos, _currTrgPos, vector3(0.0, 1.0, 0.0));
 
-	// for testing purposes std::cout << deltaTime <<" elapsed time \n";
+	// for testing purposes _dbg << deltaTime <<" elapsed time \n";
 
 	// *** Set Proper View Matrix
 	switch (m_cameraMode) {
@@ -239,7 +239,7 @@ void Camera::ChangeCameraMode()
 const void Camera::PrintInfo() const
 {
     if (Debug::CAMERA>0)
-	    std::cout << "Camera <" << m_id <<">: mode [" << CameraModeId[m_cameraMode] <<"] \n";
+	    _dbg << "Camera <" << m_id <<">: mode [" << CameraModeId[m_cameraMode] <<"] \n";
 
 	//	", location = [" << m_position.x <<", " << m_position.y << ", " << m_position.z 
 	//<<"], m_color = [" << m_color.x << ", "<<m_color.y<<", "<< m_color.z <<"] \n";

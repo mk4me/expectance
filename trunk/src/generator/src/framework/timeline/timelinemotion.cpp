@@ -42,7 +42,7 @@ void TimeLineMotion::Destroy(void)
 bool TimeLineMotion::AddModifier(TimeLineModifier* modifier)
 {
     if (Debug::TIMELINE>0)
-        std::cout << " AddModifier " << modifier->toString() << " to " << toString() << std::endl;
+        _dbg << " AddModifier " << modifier->toString() << " to " << toString() << std::endl;
 
     m_vModifiers.push_back(modifier);
     modifier->setParentMotion(this);
@@ -102,13 +102,13 @@ void TimeLineMotion::Dump(int depth)
     
     if (m_blender != NULL)
     {
-        std::cout << getDepthStr(depth+1) << "blender: " << std::endl;
+        _dbg << getDepthStr(depth+1) << "blender: " << std::endl;
         m_blender->Dump(depth+1);
     }
     else
-        std::cout << getDepthStr(depth+1) << "blender: NULL " << std::endl;
+        _dbg << getDepthStr(depth+1) << "blender: NULL " << std::endl;
 
-    std::cout << getDepthStr(depth+1) << "modifiers list: " << m_vModifiers.size();
+    _dbg << getDepthStr(depth+1) << "modifiers list: " << m_vModifiers.size();
     if (m_vModifiers.size() > 0)
     {
         for (int m=0; m<(int)m_vModifiers.size(); m++)

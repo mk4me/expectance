@@ -133,7 +133,7 @@ void TimeLineExecutor::ChangeState(int newState)
     int oldState = getState();
 
     if (Debug::TIMELINE>0)
-        cout  << " TimeLineExecutor::ChangeState to "<< _GET_STATE_NAME(newState) << "(old:"
+        _dbg  << " TimeLineExecutor::ChangeState to "<< _GET_STATE_NAME(newState) << "(old:"
                 << _GET_STATE_NAME(oldState) << ")" << endl;
 
     
@@ -366,7 +366,7 @@ void TimeLineExecutor::UpdateOverlapState()
 {
     if (m_prevMotion.motion != NULL)
     {
-//        cout << " UpdateOverlapState m_prevMotion.anim " << m_prevMotion.anim << endl;
+//        _dbg << " UpdateOverlapState m_prevMotion.anim " << m_prevMotion.anim << endl;
         if (m_prevMotion.anim == NULL)
         {
             ChangeState(EXEC_STATE_SINGLE);
@@ -392,7 +392,7 @@ void TimeLineExecutor::UpdateFadeInState()
         else
         {
             if (Debug::ERR)
-                cout << Debug::ERR_STR <<"TimeLineExecutor::UpdateFadeInState():  m_currMotion.anim == NULL during FADE_IN state !!!" << endl;
+                _dbg << Debug::ERR_STR <<"TimeLineExecutor::UpdateFadeInState():  m_currMotion.anim == NULL during FADE_IN state !!!" << endl;
         }
     }
 
@@ -427,7 +427,7 @@ void TimeLineExecutor::UpdateFadeOutState()
     else
     {
         if (Debug::ERR)
-            cout << Debug::ERR_STR << "TimeLineExecutor::UpdateFadeOutState() " << " null motion for " 
+            _dbg << Debug::ERR_STR << "TimeLineExecutor::UpdateFadeOutState() " << " null motion for " 
                             << _GET_STATE_NAME(getState()) << " !!! " << endl;
     }
 }
@@ -468,7 +468,7 @@ void TimeLineExecutor::StartNextMotion()
         if (m_nextMotion.motion->isAnimLoop() && (m_nextMotion.motion->getLoopNumber() == 0))
         {
             if (Debug::WARN)
-                cout << Debug::WARN << "TimeLineExecutor::StartNextMotion() :  loop_number for loop animation is 0." 
+                _dbg << Debug::WARN << "TimeLineExecutor::StartNextMotion() :  loop_number for loop animation is 0." 
                     << " To avoid inconsistency and potential problems the loop number will be set to 1!!!! " << endl;
         }
         
@@ -478,7 +478,7 @@ void TimeLineExecutor::StartNextMotion()
             if (m_nextMotion.motion->isAnimLoop())
             {
                 if (Debug::TIMELINE>0)
-                    std::cout << " StartAnim-blendCycle "  << m_nextMotion.motion->toString() << " with fade_in " << fade_in << std::endl;
+                    _dbg << " StartAnim-blendCycle "  << m_nextMotion.motion->toString() << " with fade_in " << fade_in << std::endl;
 
                 getCtx()->getAvatar()->GetCalModel()->getMixer()->blendCycle(m_nextMotion.motion->getMotion()->getAnimID(),
                         1.0f, fade_in);
@@ -487,14 +487,14 @@ void TimeLineExecutor::StartNextMotion()
                 if (m_nextMotion.anim == NULL)
                 {
                     if (Debug::ERR)
-                        cout << Debug::ERR_STR << "TimeLineExecutor::StartNextMotion - no cycle anim extracted from Cal3d after adding motion " << endl;
+                        _dbg << Debug::ERR_STR << "TimeLineExecutor::StartNextMotion - no cycle anim extracted from Cal3d after adding motion " << endl;
                 }
                 else
                 {
                     m_animChanged = true;
 
                     if (Debug::TIMELINE>0)
-                        cout << "New loop animation " << m_nextMotion.anim->getCoreAnimation()->getFilename() << " length: " 
+                        _dbg << "New loop animation " << m_nextMotion.anim->getCoreAnimation()->getFilename() << " length: " 
                             << m_nextMotion.anim->getCoreAnimation()->getDuration() << endl;
                 }
 
@@ -502,7 +502,7 @@ void TimeLineExecutor::StartNextMotion()
             else
             {
                 if (Debug::TIMELINE>0)
-                    std::cout << " StartAnim-executeAction with  " << m_nextMotion.motion->toString() << " fade_in " << fade_in << " fade_out " << fade_out << std::endl;
+                    _dbg << " StartAnim-executeAction with  " << m_nextMotion.motion->toString() << " fade_in " << fade_in << " fade_out " << fade_out << std::endl;
 
                 getCtx()->getAvatar()->GetCalModel()->getMixer()->executeAction(m_nextMotion.motion->getMotion()->getAnimID(),
                         fade_in, fade_out);
@@ -511,14 +511,14 @@ void TimeLineExecutor::StartNextMotion()
                 if (m_nextMotion.anim == NULL)
                 {
                     if (Debug::ERR)
-                        cout << Debug::ERR_STR << "TimeLineExecutor::StartNextMotion - no action anim extracted from Cal3d after adding motion " << endl;
+                        _dbg << Debug::ERR_STR << "TimeLineExecutor::StartNextMotion - no action anim extracted from Cal3d after adding motion " << endl;
                 }
                 else
                 {
                     m_animChanged = true;
 
                     if (Debug::TIMELINE>0)
-                        cout << "New action animation " << m_nextMotion.anim->getCoreAnimation()->getFilename() << " length: " 
+                        _dbg << "New action animation " << m_nextMotion.anim->getCoreAnimation()->getFilename() << " length: " 
                             << m_nextMotion.anim->getCoreAnimation()->getDuration() << endl;
 
                 }
@@ -571,7 +571,7 @@ void TimeLineExecutor::StopLoopAnim()
             fade_out = m_currBlender;
     
         if (Debug::TIMELINE>0)
-            std::cout << " StopLoopAnim-clearCycle " << m_currMotion.motion->toString() << " with fade out " << fade_out << std::endl;
+            _dbg << " StopLoopAnim-clearCycle " << m_currMotion.motion->toString() << " with fade out " << fade_out << std::endl;
 
         getCtx()->getAvatar()->GetCalModel()->getMixer()->clearCycle(m_currMotion.motion->getMotion()->getAnimID(), fade_out);
     }
@@ -590,7 +590,7 @@ void TimeLineExecutor::StopActionAnim()
             fade_out = m_currBlender;
     
         if (Debug::TIMELINE>0)
-            std::cout << " StopActionAnim-removeAction " << m_currMotion.motion->toString() << " [ no fade out used ]" << endl;
+            _dbg << " StopActionAnim-removeAction " << m_currMotion.motion->toString() << " [ no fade out used ]" << endl;
 
         getCtx()->getAvatar()->GetCalModel()->getMixer()->removeAction(m_currMotion.motion->getMotion()->getAnimID());
     }
@@ -618,7 +618,7 @@ void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
     if (CHECK_EMPTY_FRAMES && !isTerminated() && CheckEpmtyFrame())  //check if there is no any animation in mixer
     {
         if (Debug::WARN)
-            cout << Debug::WARN_STR << "empty frame !!!! " << endl;
+            _dbg << Debug::WARN_STR << "empty frame !!!! " << endl;
     }
 
     m_lastEvent = EXEC_EVENT_NONE;
@@ -738,7 +738,7 @@ void TimeLineExecutor::UpdateExecItem(timeline_exec_item_t &item)
                 {
                     item.animTime = item.anim->getTime();
                     item.animDuration = item.anim->getCoreAnimation()->getDuration();
-//                    cout << " animTime: " << item.animTime << " dur " << item.animDuration << endl;
+//                    _dbg << " animTime: " << item.animTime << " dur " << item.animDuration << endl;
                 }
             }
             else
@@ -1044,7 +1044,7 @@ void TimeLineExecutor::LimitCurrBlenderForNextAnim()
             m_currBlender = nextAnimCoreDuration -  fMARGIN;
             if (m_currBlender < 0)
                 m_currBlender = 0;
-            //cout << " Blender " << oldBlenderVal << " linimted to " << m_currBlender << " because of too short next anim -> " << nextAnimCoreDuration << endl;
+            //_dbg << " Blender " << oldBlenderVal << " linimted to " << m_currBlender << " because of too short next anim -> " << nextAnimCoreDuration << endl;
         }
     }
 }
@@ -1060,7 +1060,7 @@ void TimeLineExecutor::LimitCurrBlenderForCurrAnim()
         float animLeftTime = m_currMotion.animDuration - m_currMotion.animTime;
         if (m_currBlender > animLeftTime ) //&& animLeftTime > 0.1f)
         {
-            //cout << " Blender " << m_currBlender << " linimted to " << animLeftTime << " because of anim left time " << endl;
+            //_dbg << " Blender " << m_currBlender << " linimted to " << animLeftTime << " because of anim left time " << endl;
             m_currBlender = animLeftTime;
         }
     }
@@ -1166,7 +1166,7 @@ void TimeLineExecutor::Dump()
         desc = "timeLineContex==NULL"; 
     }
 
-    cout<< " TimeLineExecutor.Dump for " << desc << " state: " << _GET_STATE_NAME(getState()) << endl;
+    _dbg<< " TimeLineExecutor.Dump for " << desc << " state: " << _GET_STATE_NAME(getState()) << endl;
 }
 
 /**
@@ -1188,7 +1188,7 @@ void TimeLineExecutor::RemoveExecutedMotions()
         while (obj != prevMotionParent && obj != currMotionParent && obj != nextMotionParent)
         {
             if (Debug::TIMELINE>0)
-                cout << "RemoveExecutedMotions: removal of " << obj->toString() << endl;
+                _dbg << "RemoveExecutedMotions: removal of " << obj->toString() << endl;
 
             TimeLineObject* obj_to_delete = obj;
             obj = obj->getNextObject();
@@ -1208,7 +1208,7 @@ void TimeLineExecutor::RemoveUnexecutedMotions()
         while (obj != NULL)
         {
             if (Debug::TIMELINE>0)
-                cout << "RemoveMotionsAfterCurrent: removal of " << obj->toString() << endl;
+                _dbg << "RemoveMotionsAfterCurrent: removal of " << obj->toString() << endl;
 
             TimeLineObject* obj_to_delete = obj;
             obj = obj->getNextObject();

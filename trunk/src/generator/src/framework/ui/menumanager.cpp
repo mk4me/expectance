@@ -13,7 +13,7 @@ MenuManager* MenuManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        cout << "MenuManager::getInstace(): instance of MenuManager created " << endl;
+        _dbg << "MenuManager::getInstace(): instance of MenuManager created " << endl;
         m_instance = new MenuManager();
     }
 
@@ -183,7 +183,7 @@ void MenuManager::OnMouseButtonDown(int button, int x, int y)
 	if ((btn=checkScope(x,y))>=0) //label from pressed button
 	{
 		m_pressedButton = btn;
-		std::cout <<"Button selected "<< btn << endl;
+		_dbg <<"Button selected "<< btn << endl;
 	}
 
 }
@@ -200,7 +200,7 @@ void MenuManager::OnMouseButtonUp(int button, int x, int y)
 			std::string id = m_mainMenu->getSubMenu().at(m_avtiveButton)->getMenuName();
 			UpdateManager::getInstance()->SendMessage(new Message(MSG_MENU_ITEM_SELECTED, new MessageParam(id)), true);
 		}
-		std::cout <<"Button released "<< btn << endl;
+		_dbg <<"Button released "<< btn << endl;
 	}
 
 }

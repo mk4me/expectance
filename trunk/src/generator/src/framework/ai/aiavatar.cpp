@@ -45,7 +45,7 @@ void AIAvatar::Reset()
     ActionAvatar::Reset();
 
     if (Debug::AI>0)
-        cout << toString() << " AIAvatar::Reset() " << std::endl;
+        _dbg << toString() << " AIAvatar::Reset() " << std::endl;
 }
 
 void AIAvatar::SetThink(boolean set)
