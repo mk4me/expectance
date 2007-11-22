@@ -435,6 +435,88 @@ Ka¿dy obiekt typu \textit{ft::SceneObject} mo¿e implementowaæ w³asne sprzêtowe r
 \item Utworzyæ w kodzie obiektu graficznego metodê renderuj¹c¹ obiekt przy pomocy sprzêtu analogiczn¹ do \textit{Avatar::HardwareRenderModelMesh}
 \end{enumerate}
 
+\section{System debug'ów}
+
+Wszystkie debugi wypisywane na konsole z Generatora, które maja byæ dodane do oficjalnej wersji w SVN-ie, powinny byæ wypisywane z u¿yciem metod zdefiniowanych w klase \textit{ft::Debug} z pakietu \textit{/utility}.
+\\
+
+Do wypisywania tekstu zaleca siê uzywanie polecania  \textit{\_dbg} (zdefniowanego w pliku  \textit{/utility.debug.h}) zamiast standardowych polecen  \textit{cout},  \textit{cerr} lub  \textit{printf}.  
+\\
+
+Dodatkowo zaleca siê u¿ywanie warunków z u¿yciem flag zdefniowanych w klasie \textit{ft::Debug} (np. flaga \textit{ERR} definiuje wypisywania debugow zwiazanych z bledami) . 
+\\
+
+Przykladowe wypisanie debug'a:
+
+\begin{center} \small
+
+\textbf{ 
+if (Debug::FLAG)
+	\_dbg << " To jest debug " << endl;
+}
+
+\end{center}
+
+\subsection{B³êdy i ostrze¿enia}
+
+Do wypisywania bledow i warningow sluza specjalne flagi \textit{Debug:ERR} oraz \textit{Debug::WARN}. Sa one typu bool i kazde wypisanie bledu lub ostrzezenia nale¿y ograniczyc warunkiem z uzyciem tych flag.  Dodatkowo ztefiniowane sa slowa kluczowe dla bledow i ostrzezen, których warto uzywac w celu ulatwienia w przeszukiwaniu loga: \textit{Debug::ERR\_STR} oraz \textit{Debug::WARN\_STR}.
+\\
+
+Przyk³ady: 
+\textbf{ 
+\begin{center} \small
+if (Debug::ERR)
+	\_dbg << Debug::ERR\_STR << " To jest blad !!! " << endl;
+\end{center}
+}
+
+\begin{center} \small
+\textbf{ 
+if (Debug::WARN)
+	\_dbg << Debug::ERR\_WARN << " Ostrzezenie !!! " << endl;
+}
+\end{center}
+
+\subsection{Poziomy debugów dla modulów}
+
+Oprócz bledów i ostrze¿eñ zosta³y zdefiniowane poziomy debugów dla modu³ów. Dla ka¿dego modulu (lub logicznej czesci kodu zwiazanej z dana funkcjonalnoscia) nale¿y dodac statyczna zmienna typu int do klasy \textit{Debug}. Nastepnie wypisujac debugi dla danego modulu nale¿y tej zmiennej uzywac sprawdzajac czy zostal ustawiony wystarczajacy poziom debugow dla modulu np.:
+\textbf{ 
+\begin{flushleft} \small
+	if (Debug::CONTROL>1)
+		\_dbg << " To jest debug z ControlManagera " << endl;
+\end{flushleft}
+}
+
+Powyzszy debug zostanie wypisany jeœli poziom debugow \textit{CONTROL} zostanie ustawiony na wyzszy ni¿ 1 (czyli np. 2).
+
+Dodawanie zmiennych dla powyzszych debugow wymaga wykonania nastepujacych krokow:
+\begin{enumerate}
+\item dodajemy publiczna statyczna zmienna  \textit{CONTROL}  do klasy Debug w pliku debug.h
+\textbf{
+\begin{flushleft} \small
+static int CONTROL;
+\end{flushleft}
+}
+
+\item dodajemy inicjalizacje zmiennej statyczne CONTROL w pliku debug.cpp
+\textbf{
+\begin{flushleft} \small
+int Debug::CONTROL = 0;
+\end{flushleft}
+}
+
+\item dodajemy operacje wczytania wartosci poziomu dla CONTROL z pliku application.cfg - robimy to w metodzie Debug::LoadLevelsFromConfig():
+\textbf{
+\begin{flushleft} \small
+if (Config::getInstance()->IsKey("DEBUG\_CONTROL"))
+CONTROL = Config::getInstance()->GetIntVal("DEBUG\_CONTROL");
+\end{flushleft}
+}
+\end{enumerate}
+	
+Teraz gdy ustawimy w pliku application.cfg wpis np. \textit{DEBUG\_CONTROL = 2} to poziom debugow \textit{CONTROL} zostanie ustawiony na 2.
+
+
 \flushright
 
 \end{document}
