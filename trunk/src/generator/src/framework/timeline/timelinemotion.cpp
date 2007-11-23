@@ -45,7 +45,7 @@ bool TimeLineMotion::AddModifier(TimeLineModifier* modifier)
         _dbg << " AddModifier " << modifier->toString() << " to " << toString() << std::endl;
 
     m_vModifiers.push_back(modifier);
-    modifier->setParentMotion(this);
+//    modifier->setParentMotion(this);
 	return true;
 }
 

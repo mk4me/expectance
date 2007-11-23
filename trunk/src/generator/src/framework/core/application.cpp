@@ -10,7 +10,6 @@
 #include "../ai/aimanager.h"
 #include "../avatar/avatarfactory.h"
 #include "../scene/visualizationmanager.h"
-#include "../timeline/timelinefactory.h"
 #include "../utility/debug.h"
 
 using namespace ft;
@@ -81,7 +80,6 @@ bool Application::InitModules()
 
 		return 0;
 	}
-    TimeLineFactory::getInstance(); //enforced creation of singleton
 
     ControlManager::getInstance()->Init(); //enforced creation of singleton
     AIManager::getInstance()->Init();  //enforced creation of singleton

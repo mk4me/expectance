@@ -9,8 +9,6 @@ using namespace ft;
 /// \brief constructor
 TimeLineObject::TimeLineObject()
 {
-    m_started = false;
-
     m_first = NULL;
     m_current = NULL;
     m_next = NULL;
@@ -131,19 +129,19 @@ void TimeLineObject::RemoveSubObject(TimeLineObject* obj_to_delete, bool deleteF
 /**
  * \brief Removes all objects from subobjects list
  **/
-void TimeLineObject::ClearSubObjects()
-{
-    TimeLineObject* obj = m_first;
-    TimeLineObject* obj_to_delete;
-    while(obj != NULL)
-    {
-        obj_to_delete = obj;
-        obj = obj->m_next;
-        obj_to_delete->Destroy();
-        delete obj_to_delete;
-    }
-    m_first = NULL;
-}
+//void TimeLineObject::ClearSubObjects()
+//{
+//    TimeLineObject* obj = m_first;
+//    TimeLineObject* obj_to_delete;
+//    while(obj != NULL)
+//    {
+//        obj_to_delete = obj;
+//        obj = obj->m_next;
+//        obj_to_delete->Destroy();
+//        delete obj_to_delete;
+//    }
+//    m_first = NULL;
+//}
 
 /// \brief Dumps subobjects list information
 void TimeLineObject::DumpSubObjects(int depth)

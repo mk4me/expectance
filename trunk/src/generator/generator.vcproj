@@ -920,14 +920,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\timeline\timelinefactory.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\timeline\timelinefactory.h"
-					>
-				</File>
-				<File
 					RelativePath=".\src\framework\timeline\timelinemodifier.cpp"
 					>
 				</File>

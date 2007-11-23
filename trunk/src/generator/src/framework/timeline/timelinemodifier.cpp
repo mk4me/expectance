@@ -15,11 +15,11 @@ using namespace ft;
 void TimeLineModifier::Apply(float elapsedSeconds,TimeLineContext* timeLineContext)
 {
     // execute submodifier
-    TimeLineModifier* subModifier = (TimeLineModifier*)getCurrentObject();
-    if (subModifier != NULL)
-    {
-        subModifier->Apply(elapsedSeconds, timeLineContext);
-    }
+    //TimeLineModifier* subModifier = (TimeLineModifier*)getCurrentObject();
+    //if (subModifier != NULL)
+    //{
+    //    subModifier->Apply(elapsedSeconds, timeLineContext);
+    //}
 
     // Here apply this modifier
 }

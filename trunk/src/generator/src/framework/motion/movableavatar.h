@@ -9,7 +9,6 @@
 //#include "cal3d/cal3d.h"
 #include "../avatar/avatar.h"
 #include "../utility/Quat.h"
-#include "../timeline/timelinefactory.h"
 #include "../timeline/timelineexecutor.h"
 #include "../timeline/lcsmodifier.h"
 #include "../scene/visualizationmanager.h"

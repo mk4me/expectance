@@ -31,17 +31,9 @@ namespace ft
         virtual bool AddSubObject(TimeLineObject* object, int where_to_add = ADD_OBJECT_AS_LAST);
         virtual void RemoveSubObject(TimeLineObject* obj_to_delete, bool deleteFromMemory = false);
 
-        TimeLineObject* GetCurrSubObject();
         TimeLineObject* GetLastSubObject();
         bool isEmpty() { return (m_first == NULL); }
-        void ClearSubObjects();
         void DumpSubObjects(int depth);
-
-        void setStarted(bool set) { m_started = set; }
-        bool isStarted() { return m_started; }
-
-        TimeLineObject* getCurrentObject() { return m_current; }
-        void setCurrentObject(TimeLineObject* obj) { m_current = obj; }
 
         TimeLineObject* getNextObject() { return m_next; }
         void setNextObject(TimeLineObject* obj) { m_next = obj; }
@@ -59,8 +51,6 @@ namespace ft
         virtual void Dump(int depth);
 
     protected:
-        bool m_started;
-
         //list
         TimeLineObject* m_first;
         TimeLineObject* m_current;

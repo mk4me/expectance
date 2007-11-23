@@ -17,16 +17,16 @@ namespace ft
     class TimeLineModifier : public TimeLineObject
     {
     public:
-        TimeLineModifier() { m_parentMotion = NULL; } 
+        TimeLineModifier() { /*m_parentMotion = NULL;*/ } 
         virtual ~TimeLineModifier(void) { /* empty */ }
 
         virtual void Apply(float elapsedSeconds, TimeLineContext* timeLineContext);
 
-        void setParentMotion(TimeLineObject* mot) { m_parentMotion = mot; }
-        TimeLineObject* getParentMotion() { return m_parentMotion; }
+//        void setParentMotion(TimeLineObject* mot) { m_parentMotion = mot; }
+//        TimeLineObject* getParentMotion() { return m_parentMotion; }
 
-    private:
-        TimeLineObject* m_parentMotion;
+//    private:
+//        TimeLineObject* m_parentMotion;
     };
 };
 
