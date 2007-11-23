@@ -25,6 +25,11 @@ bool TraceLine::Render()
 	unsigned long _size = m_traces.size();
 	if(_size > 1) //minimum two elements
 	{
+		glPushMatrix();
+		glDisable(GL_CULL_FACE);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_BLEND);
+
 		float _div = 1.0f/_size;
 		for (unsigned long i = 1; i < _size; i++)
 		{
@@ -32,12 +37,12 @@ bool TraceLine::Render()
 			CalVector p2 = static_cast<CalVector>(m_traces[i]);
 			
 			
-			glPushMatrix();
+
 			if (!m_colorMix) //one color line
-				glColor3f(m_color.x,m_color.y,m_color.z);
+				glColor4f(m_color.x,m_color.y,m_color.z, _div);
 			else //multicolor line
 			{
-				glColor3f(i/15.0,i/10.0,i/50.0);
+				glColor4f(i/15.0,i/10.0,i/50.0, _div);
 			}
 
 			if (m_line)
@@ -51,9 +56,6 @@ bool TraceLine::Render()
 			if (m_marker)
 			{
 
-				glDisable(GL_CULL_FACE);
-				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-				glEnable(GL_BLEND);
 				glColor4f(m_markerColor.x,m_markerColor.y,m_markerColor.z,_div);
 				switch (m_shape)
 				{
@@ -111,14 +113,13 @@ bool TraceLine::Render()
 					};
 				default: break;
 				}
-				_div+=1.0f/_size;
-				glLineWidth(1.0f);
-				glDisable(GL_BLEND);
-				glEnable(GL_CULL_FACE);
 			}
-
-			glPopMatrix();
+			_div+=1.0f/_size;
 		}
+		glLineWidth(1.0f);
+		glDisable(GL_BLEND);
+		glEnable(GL_CULL_FACE);
+		glPopMatrix();
 		_div = 0;
 		if ((m_bufferSize != 0)&&(_size > m_bufferSize))
 		m_traces.erase(m_traces.begin());

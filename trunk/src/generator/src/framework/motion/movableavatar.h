@@ -11,6 +11,7 @@
 #include "../utility/Quat.h"
 #include "../timeline/timelineexecutor.h"
 #include "../timeline/lcsmodifier.h"
+#include "../timeline/footdetector.h"
 #include "../scene/visualizationmanager.h"
 
 #include "motion.h"
@@ -63,6 +64,9 @@ namespace ft
         void setLCSModifier(LCSModifier* modifier) { m_lcsModifier = modifier; }
         LCSModifier* getLCSModifier() { return m_lcsModifier; }
 
+		void setFootDetector(FootDetector* detector) { m_footDetector = detector; } //TMMP
+        FootDetector* getFootDetector() { return m_footDetector; }
+
         void setTLExecutor(TimeLineExecutor* executor) { m_tlExecutor = executor; }
         TimeLineExecutor* getTLExecutor() { return m_tlExecutor; }
 
@@ -88,7 +92,7 @@ namespace ft
         TraceLine *tracer_start_pos;
 
         LCSModifier* m_lcsModifier; //TODO: only temporarily here
-
+        FootDetector* m_footDetector; //TODO: only temporarily here
     };
 };
 

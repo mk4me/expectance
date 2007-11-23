@@ -363,6 +363,9 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
     {
         setLCSModifier(new LCSModifier());
         getTimeLine()->AddModifier(getLCSModifier());
+
+		setFootDetector(new FootDetector());
+        getTimeLine()->AddModifier(getFootDetector());
 		
         if ((Config::getInstance()->IsKey("track_on")) && (Config::getInstance()->GetIntVal("track_on")==1))
         {
