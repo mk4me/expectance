@@ -30,10 +30,6 @@ namespace ft
         void setBlender(TimeLineBlender* blender) { m_blender = blender; } 
         TimeLineBlender* getBlender() { return m_blender; }
 
-        bool AddModifier(TimeLineModifier* modifier);
-        bool RemoveModifier(TimeLineModifier* modifier);
-//        TimeLineModifier* GetModifier(int);
-
         void setAnimLoop(bool set) { m_animLoop = set; }
         bool isAnimLoop() { return m_animLoop; }
 
@@ -43,12 +39,8 @@ namespace ft
         void setInterupting(bool set) { m_interrupting = set; }
         bool isInterupting() { return m_interrupting; }
 
-        virtual void Reset(TimeLineContext* timeLineContext); // resets current object and its children
-
         void Dump(int depth);   //OVERRIDEN
         std::string toString(); //OVERRIDEN
-
-        std::vector<TimeLineModifier*> m_vModifiers;
 
 
     private:

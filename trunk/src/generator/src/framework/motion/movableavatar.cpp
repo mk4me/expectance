@@ -284,7 +284,7 @@ void MovableAvatar::Dump()
 
         _dbg << "- time line:" << std::endl;
         if (m_timeLine != NULL)
-            m_timeLine->Dump(2);
+            m_timeLine->Dump();
         else
            _dbg << "- - NULL" << endl;
     }

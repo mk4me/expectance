@@ -1072,60 +1072,14 @@ void TimeLineExecutor::LimitCurrBlenderForCurrAnim()
  **/
 void TimeLineExecutor::UpdateModifiers(const double elapsedSeconds)
 {
-    // apply modifiers for current and prev motion 
 
-    if (getState() != EXEC_STATE_WAIT && getState() != EXEC_STATE_TERMINATED)
+    if (getTimeLine()->m_vModifiers.size() > 0)
     {
-        // for curr motion
-        TimeLineMotion* motionWithModifier = m_currMotion.motion;
-
-        while (motionWithModifier != NULL)
+        for (int m=0; m <(int)getTimeLine()->m_vModifiers.size(); m++)
         {
-            UpdateModifiersForMotion(motionWithModifier, elapsedSeconds);
-            motionWithModifier = (TimeLineMotion*)motionWithModifier->getParent();
-        }
-
-        //for prev motion
-        if (m_prevMotion.motion != NULL)
-        {
-            motionWithModifier = m_prevMotion.motion;
-
-            while (motionWithModifier != NULL)
-            {
-                if ( ! IsParent(m_currMotion.motion, motionWithModifier) )
-                {
-                    UpdateModifiersForMotion(motionWithModifier, elapsedSeconds);
-                    motionWithModifier = (TimeLineMotion*)motionWithModifier->getParent();
-                }
-                else
-                {
-                    break;
-                }
-            }
+            getTimeLine()->m_vModifiers[m]->Apply(elapsedSeconds, getCtx());
         }
     }
-    else
-    {
-        UpdateModifiersForMotion(getTimeLine(), elapsedSeconds);
-    }
-
-}
-
-/**
- * \brief Updates modifiers for given motion
- * \param TimeLineMotion* motion - motion whose modifiers will be updated
- * \param const double elapsedSeconds - time elapsed since last update
- **/
-void TimeLineExecutor::UpdateModifiersForMotion(TimeLineMotion* motion, float elapsedSeconds)
-{
-    if (motion->m_vModifiers.size() > 0)
-    {
-        for (int m=0; m <(int)motion->m_vModifiers.size(); m++)
-        {
-            motion->m_vModifiers[m]->Apply(elapsedSeconds, getCtx());
-        }
-    }
-
 }
 
 /**

@@ -22,73 +22,6 @@ TimeLineMotion::TimeLineMotion(void)
 void TimeLineMotion::Destroy(void)
 {
     TimeLineObject::Destroy();
-    
-    //clear modifiers
-    for (int m=0; m<(int)m_vModifiers.size(); m++)
-    {
-        m_vModifiers[m]->Destroy();
-        delete m_vModifiers[m];
-    }
-    m_vModifiers.clear();
-
-}
-
-/**
- * \brief Adds modifier that can change animation while this TimeLineMotion is executed
- *
- * \param ft::TimeLineModifier * modifier - modifier to add
- * \return bool - true if modifier added successfuly
- **/
-bool TimeLineMotion::AddModifier(TimeLineModifier* modifier)
-{
-    if (Debug::TIMELINE>0)
-        _dbg << " AddModifier " << modifier->toString() << " to " << toString() << std::endl;
-
-    m_vModifiers.push_back(modifier);
-//    modifier->setParentMotion(this);
-	return true;
-}
-
-bool  TimeLineMotion::RemoveModifier(TimeLineModifier* modifier)
-{
-    bool result = false;
-
-    std::vector<TimeLineModifier*>::iterator iteratorModifier;
-    iteratorModifier = m_vModifiers.begin();
-
-    while(iteratorModifier != m_vModifiers.end())
-    {
-        // find the specified action and remove it
-        if((*iteratorModifier) == modifier)
-        {
-            // found, so remove
-            m_vModifiers.erase(iteratorModifier);
-            result = true;
-            break;
-        }
-        iteratorModifier++;
-    }
-
-    return result;
-}
-
-//        TimeLineModifier* TimeLineMotion::GetModifier(int);
-
-/**
- * \brief Resets all objects related to this TimeLineMotion
- *
- **/
-void TimeLineMotion::Reset(TimeLineContext* timeLineContext)
-{
-    TimeLineObject::Reset(timeLineContext);
-
-    if (m_vModifiers.size() > 0)
-    {
-        for (int m=0; m<(int)m_vModifiers.size(); m++)
-        {
-            m_vModifiers[m]->Reset(timeLineContext);
-        }
-    }
 }
 
 /**
@@ -108,14 +41,6 @@ void TimeLineMotion::Dump(int depth)
     else
         _dbg << getDepthStr(depth+1) << "blender: NULL " << std::endl;
 
-    _dbg << getDepthStr(depth+1) << "modifiers list: " << m_vModifiers.size();
-    if (m_vModifiers.size() > 0)
-    {
-        for (int m=0; m<(int)m_vModifiers.size(); m++)
-        {
-            m_vModifiers[m]->Dump(depth);
-        }
-    }
     _dbg << endl;
 }   
 

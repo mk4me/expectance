@@ -81,9 +81,6 @@ namespace ft
         timeline_exec_item_t m_currMotion;
         timeline_exec_item_t m_nextMotion;
 
-//        TimeLineBlender * m_prevBlender;  //lastly used blender
-//        TimeLineBlender * m_currBlender;  // blender that will be used afte current motion
-//        TimeLineBlender * m_nextBlender;  // blender that will be used after next motion
         float m_prevBlender;  //lastly used blender
         float m_currBlender;  // blender that will be used afte current motion
         float m_nextBlender;  // blender that will be used after next motion
@@ -123,7 +120,6 @@ namespace ft
         void MarkAnimStopped(timeline_exec_item_t &item);
         CalAnimation* FindAddedAnimInCal3d(int animType);
 
-        void UpdateModifiersForMotion(TimeLineMotion* motion, float elapsedSeconds);
         bool IsParent(TimeLineObject* motion, TimeLineObject* parent);
 
         bool CheckEpmtyFrame();
