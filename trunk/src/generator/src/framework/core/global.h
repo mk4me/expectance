@@ -55,6 +55,7 @@ namespace ft
 	//                       0                 1               2              3
 	enum CameraMode { ft_StaticCamera, ft_ThirdPersonCamera, ft_FlyCamera, ft_OrbitCamera };
 	enum Direction { ft_Forward, ft_Backward };
+	enum MarkerShape { ft_Point, ft_Diamond, ft_Cross };
 
 	enum KeyCodes {ft_F1, ft_F2, ft_F3 ,ft_F4, ft_F5 ,ft_F6, ft_F7, ft_F8, ft_F9, ft_F10, ft_F11, ft_F12, ft_KEY_LEFT, ft_KEY_UP,
 				   ft_KEY_RIGHT, ft_KEY_DOWN, ft_KEY_PAGE_UP, ft_KEY_PAGE_DOWN, ft_KEY_HOME, ft_KEY_END, ft_KEY_INSERT};

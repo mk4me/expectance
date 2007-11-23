@@ -28,17 +28,33 @@ namespace ft {
 		/*! \brief Adds new point to the collection for rendering*/
 		void AddPoint(const CalVector& point);
 		//! clear collection of existing points
-	    void ClearTrace();
+	        void ClearTrace();
 		//! set multicolor mode (true)
 		void setColorMix(bool mix);
 		//! set marker visible 
 		void ShowMarker();
 		//! set marker invisible
 		void HideMarker();
+		//! set line visible 
+		void ShowLine();
+		//! set line invisible
+		void HideLine();
+		//! set shape of marker
+		void setMarkerShape(const MarkerShape shape);
+		//! set size of buffer for data 0 means neverending buffer size
+		void setBufferSize(const long bufferSize);
+		//! set marker Color
+		void setMarkerColor(const CalVector color);
+
 	protected:
 		std::vector <CalVector> m_traces;
 		bool m_colorMix;
 		bool m_marker;
+		bool m_line;
+		unsigned long m_bufferSize;
+		int m_markerScale;
+		MarkerShape m_shape;
+		CalVector m_markerColor;
 	};
 };
 

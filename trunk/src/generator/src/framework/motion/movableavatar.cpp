@@ -27,6 +27,7 @@ MovableAvatar::MovableAvatar(CalModel* calModel, CalCoreModel* calCoreModel, con
     if (TRACE)
     {
         tracer_start_pos = new TraceLine("start_pos" + toString());
+		tracer_start_pos ->setMarkerShape(ft_Diamond);
         VisualizationManager::getInstance()->AddObject(tracer_start_pos);
 
         tracer_start_pos->AddPoint(getStartPosition());

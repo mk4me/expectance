@@ -69,6 +69,7 @@ void ControlManager::Init()
     if (TRACE)
     {
         tracer_active_avatar = new TraceLine(toString() + "_active_avatar");
+		tracer_active_avatar->setMarkerShape(ft_Diamond);
         VisualizationManager::getInstance()->AddObject(tracer_active_avatar);
     }
 
