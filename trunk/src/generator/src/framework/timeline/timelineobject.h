@@ -28,8 +28,9 @@ namespace ft
         virtual ~TimeLineObject(void) { /* empty */ }
         virtual void Destroy(void);
 
-        bool AddSubObject(TimeLineObject* object, int where_to_add = ADD_OBJECT_AS_LAST);
-        void RemoveSubObject(TimeLineObject* obj_to_delete, bool deleteFromMemory = false);
+        virtual bool AddSubObject(TimeLineObject* object, int where_to_add = ADD_OBJECT_AS_LAST);
+        virtual void RemoveSubObject(TimeLineObject* obj_to_delete, bool deleteFromMemory = false);
+
         TimeLineObject* GetCurrSubObject();
         TimeLineObject* GetLastSubObject();
         bool isEmpty() { return (m_first == NULL); }

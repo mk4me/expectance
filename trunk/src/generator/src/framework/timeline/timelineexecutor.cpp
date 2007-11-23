@@ -133,7 +133,7 @@ void TimeLineExecutor::ChangeState(int newState)
     int oldState = getState();
 
     if (Debug::TIMELINE>0)
-        _dbg  << " TimeLineExecutor::ChangeState to "<< _GET_STATE_NAME(newState) << "(old:"
+        _dbg  << " TimeLineExecutor::ChangeState to  "<< _GET_STATE_NAME(newState) << "  (old:"
                 << _GET_STATE_NAME(oldState) << ")" << endl;
 
     
@@ -477,7 +477,7 @@ void TimeLineExecutor::StartNextMotion()
         {
             if (m_nextMotion.motion->isAnimLoop())
             {
-                if (Debug::TIMELINE>0)
+                if (Debug::TIMELINE>1)
                     _dbg << " StartAnim-blendCycle "  << m_nextMotion.motion->toString() << " with fade_in " << fade_in << std::endl;
 
                 getCtx()->getAvatar()->GetCalModel()->getMixer()->blendCycle(m_nextMotion.motion->getMotion()->getAnimID(),
@@ -493,7 +493,7 @@ void TimeLineExecutor::StartNextMotion()
                 {
                     m_animChanged = true;
 
-                    if (Debug::TIMELINE>0)
+                    if (Debug::TIMELINE>1)
                         _dbg << "New loop animation " << m_nextMotion.anim->getCoreAnimation()->getFilename() << " length: " 
                             << m_nextMotion.anim->getCoreAnimation()->getDuration() << endl;
                 }
@@ -501,7 +501,7 @@ void TimeLineExecutor::StartNextMotion()
             }
             else
             {
-                if (Debug::TIMELINE>0)
+                if (Debug::TIMELINE>1)
                     _dbg << " StartAnim-executeAction with  " << m_nextMotion.motion->toString() << " fade_in " << fade_in << " fade_out " << fade_out << std::endl;
 
                 getCtx()->getAvatar()->GetCalModel()->getMixer()->executeAction(m_nextMotion.motion->getMotion()->getAnimID(),
@@ -517,7 +517,7 @@ void TimeLineExecutor::StartNextMotion()
                 {
                     m_animChanged = true;
 
-                    if (Debug::TIMELINE>0)
+                    if (Debug::TIMELINE>1)
                         _dbg << "New action animation " << m_nextMotion.anim->getCoreAnimation()->getFilename() << " length: " 
                             << m_nextMotion.anim->getCoreAnimation()->getDuration() << endl;
 
@@ -570,7 +570,7 @@ void TimeLineExecutor::StopLoopAnim()
         if (m_currBlender > 0)
             fade_out = m_currBlender;
     
-        if (Debug::TIMELINE>0)
+        if (Debug::TIMELINE>1)
             _dbg << " StopLoopAnim-clearCycle " << m_currMotion.motion->toString() << " with fade out " << fade_out << std::endl;
 
         getCtx()->getAvatar()->GetCalModel()->getMixer()->clearCycle(m_currMotion.motion->getMotion()->getAnimID(), fade_out);
@@ -589,7 +589,7 @@ void TimeLineExecutor::StopActionAnim()
         if (m_currBlender > 0)
             fade_out = m_currBlender;
     
-        if (Debug::TIMELINE>0)
+        if (Debug::TIMELINE>1)
             _dbg << " StopActionAnim-removeAction " << m_currMotion.motion->toString() << " [ no fade out used ]" << endl;
 
         getCtx()->getAvatar()->GetCalModel()->getMixer()->removeAction(m_currMotion.motion->getMotion()->getAnimID());
@@ -1153,20 +1153,36 @@ bool TimeLineExecutor::IsParent(TimeLineObject* motion, TimeLineObject* parent)
  **/
 void TimeLineExecutor::Dump()
 {
-    TimeLineContext* tlCtx = getCtx();
-
-    string desc;
-
-    if (tlCtx != NULL)
+    if (Debug::TIMELINE>0)
     {
-        desc = tlCtx->getAvatar()->toString(); 
-    }
-    else
-    {
-        desc = "timeLineContex==NULL"; 
-    }
+        TimeLineContext* tlCtx = getCtx();
 
-    _dbg<< " TimeLineExecutor.Dump for " << desc << " state: " << _GET_STATE_NAME(getState()) << endl;
+        string desc;
+
+        if (tlCtx != NULL)
+        {
+            desc = tlCtx->getAvatar()->toString(); 
+        }
+        else
+        {
+            desc = "timeLineContex==NULL"; 
+        }
+
+        _dbg<< " TimeLineExecutor.Dump for " << desc << " state: " << _GET_STATE_NAME(getState()) << endl;
+
+        string currMotionStr;
+        if (m_currMotion.motion != NULL)
+        {
+            if (m_currMotion.motion->getMotion() != NULL)
+                currMotionStr = m_currMotion.motion->getMotion()->getAnimName();
+            else
+                currMotionStr = m_currMotion.motion->getID();
+        }
+        else
+            currMotionStr = "NULL";
+
+        _dbg<< " TimeLineExecutor.Dump, curr motion: " << currMotionStr << endl;
+    }
 }
 
 /**
@@ -1239,13 +1255,13 @@ std::string TimeLineExecutor::_GET_STATE_NAME(int state)
 
     switch(state)
     {
-    case EXEC_STATE_NOT_INITED: strState= "EXEC_STATE_NOT_INITED"; break;
-    case EXEC_STATE_WAIT: strState = "EXEC_STATE_WAIT"; break;
-    case EXEC_STATE_SINGLE: strState = "EXEC_STATE_SINGLE"; break;
-    case EXEC_STATE_OVERLAP: strState = "EXEC_STATE_OVERLAP"; break;
-    case EXEC_STATE_FADE_IN: strState = "EXEC_STATE_FADE_IN"; break;
-    case EXEC_STATE_FADE_OUT: strState = "EXEC_STATE_FADE_OUT"; break;
-    case EXEC_STATE_TERMINATED: strState = "EXEC_STATE_TERMINATED"; break;
+    case EXEC_STATE_NOT_INITED: strState= "NOT_INITED"; break;
+    case EXEC_STATE_WAIT: strState = "WAIT"; break;
+    case EXEC_STATE_SINGLE: strState = "SINGLE"; break;
+    case EXEC_STATE_OVERLAP: strState = "OVERLAP"; break;
+    case EXEC_STATE_FADE_IN: strState = "FADE_IN"; break;
+    case EXEC_STATE_FADE_OUT: strState = "FADE_OUT"; break;
+    case EXEC_STATE_TERMINATED: strState = "TERMINATED"; break;
     default: strState = "<unknown>"; break;
     }
     

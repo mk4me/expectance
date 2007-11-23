@@ -39,6 +39,8 @@ namespace ft
 
         virtual void Reset();
 
+        void ActionAvatar::Dump();
+
     protected:
         IdleAction *ACTION_IDLE;
         WalkAction *ACTION_WALK;

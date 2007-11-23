@@ -252,3 +252,13 @@ void ActionAvatar::OnMessage(Message* msg)
 
  }
 
+void ActionAvatar::Dump()
+{
+    MovableAvatar::Dump();
+
+    if (Debug::ACTION>0)
+    {
+        _dbg << "Current action: " << getCurrAction()->toString() << endl;
+    }
+
+}

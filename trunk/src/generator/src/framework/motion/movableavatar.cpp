@@ -267,20 +267,33 @@ void MovableAvatar::UpdateTimeLine(float elapsedSeconds)
  **/
 void MovableAvatar::Dump()
 {
-    _dbg << "Dump MovableAvatar content: " << std::endl;
-    _dbg << "- motions: " << std::endl;
-
-	std::map<std::string,Motion*>::iterator it=m_motions.begin();
-	for( ; it != m_motions.end(); ++it ) 
+    if (Debug::MOTION>0)
     {
-        _dbg << " - - id " << it->first << std::endl;
+        _dbg << "Dump MovableAvatar content: " << std::endl;
+        _dbg << "- motions: " << std::endl;
+
+	    std::map<std::string,Motion*>::iterator it=m_motions.begin();
+	    for( ; it != m_motions.end(); ++it ) 
+        {
+            _dbg << " - - id " << it->first << std::endl;
+        }
     }
 
-    _dbg << "- time line:" << std::endl;
-    if (m_timeLine != NULL)
-        m_timeLine->Dump(2);
-    else
-       _dbg << "- - NULL" << endl;
+    if (Debug::TIMELINE>0)
+    {
+
+        _dbg << "- time line:" << std::endl;
+        if (m_timeLine != NULL)
+            m_timeLine->Dump(2);
+        else
+           _dbg << "- - NULL" << endl;
+    }
+
+
+    if (getTLExecutor()!=NULL)
+    {
+        getTLExecutor()->Dump();
+    }
 }   
 
 
@@ -372,10 +385,6 @@ void MovableAvatar::OnMessage(Message* msg)
     {
 
         this->Dump();
-        if (getTLExecutor()!=NULL)
-        {
-            getTLExecutor()->Dump();
-        }
     } 
     else if (msg->getType() == MSG_START_SIMULATION)
     {

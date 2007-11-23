@@ -102,7 +102,7 @@ void TimeLineMotion::Dump(int depth)
     
     if (m_blender != NULL)
     {
-        _dbg << getDepthStr(depth+1) << "blender: " << std::endl;
+        _dbg << getDepthStr(depth+1) << "blender: ";
         m_blender->Dump(depth+1);
     }
     else
@@ -116,6 +116,7 @@ void TimeLineMotion::Dump(int depth)
             m_vModifiers[m]->Dump(depth);
         }
     }
+    _dbg << endl;
 }   
 
 /**
