@@ -9,7 +9,13 @@ using namespace ft;
 
 FootDetector::FootDetector(void)
 {
-	FOOTPLANT_TRACE = true;
+    if ((Config::getInstance()->IsKey("track_on")) && (Config::getInstance()->GetIntVal("track_on")==1))
+    {
+		FOOTPLANT_TRACE = ((Config::getInstance()->IsKey("track_footplant")) 
+							&& (Config::getInstance()->GetIntVal("track_footplant")==1)) ? true: false;
+	} 
+	else 
+		FOOTPLANT_TRACE = false;
 
 	if (FOOTPLANT_TRACE)
 	{

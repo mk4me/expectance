@@ -18,6 +18,11 @@ SceneObject::SceneObject(void)
 	m_visible = true;
 }
 
+byte SceneObject::getRenderingOrder()
+{
+	return 1; //by default
+}
+
 bool SceneObject::Render()
 {
 	return true;
@@ -97,6 +102,7 @@ SceneObject& SceneObject::setColor(const CalVector& col)
 	m_color = col;
 	return *this;
 }
+
 
 const CalVector& SceneObject::getPosition() const
 {

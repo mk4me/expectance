@@ -35,6 +35,8 @@ namespace ft
 
         virtual void OnUpdate(const double elapsedSeconds);  // OVERRIDEN, updates by UpdateManager 
         void OnMessage(Message* msg);  // OVERRIDEN, receives a message from UpdateManager
+		//! get the value of object rendering order
+		virtual byte getRenderingOrder();
 		virtual bool Render();
 		virtual bool RenderShadow();
 

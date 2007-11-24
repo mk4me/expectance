@@ -23,6 +23,9 @@ namespace ft
 		///		   orientation on (0,0,0), direction according to positive Z (0,0,1), white color and object as visible
 		SceneObject(void);
 		virtual~SceneObject(void) {};
+
+		//! get the value of object rendering order: 1 - static objects, 2 - tracers and other dodads, 3 - dynamic objects
+		virtual byte getRenderingOrder();
 		/// \brief virtual base for inherited objects for rendering purposes
 		virtual bool Render();		
 		/// \brief virtual base for inherited objects for rendering shadows

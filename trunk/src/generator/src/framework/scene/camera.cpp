@@ -161,6 +161,7 @@ void Camera::OnUpdate(const double deltaTime)
 	if (m_scObj!=NULL) //update translation from sceneobject
 	{
 		_currTrgPos = CalVecToVector3(m_scObj->getPosition());
+		_currTrgPos.y = 0; // against waving camera according to y avatars coordinate waving
 	}
 
 	// Update Distances

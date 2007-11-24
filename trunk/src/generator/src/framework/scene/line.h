@@ -28,6 +28,8 @@ namespace ft {
 		/// \brief create line given by position, orientation, length and label
 		Line(const CalVector& position, const Quat& orientation, float length, const std::string& name);
 		virtual ~Line(void);
+		//! get the value of object rendering order
+		virtual byte getRenderingOrder();
 		//! render line
 		virtual bool Render();
 		//! set the value of line length

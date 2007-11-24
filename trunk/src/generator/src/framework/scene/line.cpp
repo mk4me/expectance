@@ -45,6 +45,11 @@ Line::~Line(void)
 	_dbg << getID() << " line deleted\n";
 }
 
+byte Line::getRenderingOrder()
+{
+	return 2; // 2 for tracers and other dodads
+}
+
 bool Line::Render()
 {
 	glPushMatrix();

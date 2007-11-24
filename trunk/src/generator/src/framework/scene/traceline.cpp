@@ -11,13 +11,19 @@ TraceLine::TraceLine(const std::string& name)
 {
 	setName(name);
 	setColor(CalVector(1,1,1));
-	m_colorMix = false;
-	m_marker = true;
-	m_line = true;
-	m_shape = ft_Point;
-	m_markerColor = CalVector(0.5f, 0.5f, 0.8f);
-	m_bufferSize = 20;
-	m_markerScale = 4;
+	setColorMix(false);
+	setMarkerShape(ft_Point);
+	setMarkerColor(CalVector(0.5f, 0.5f, 0.8f));
+	setBufferSize(20);
+	setMarkerScale(4);
+	setBlending(true);
+	ShowMarker();
+	ShowLine();
+}
+
+byte TraceLine::getRenderingOrder()
+{
+	return 2; // 2 - for tracers
 }
 
 bool TraceLine::Render()
@@ -27,9 +33,11 @@ bool TraceLine::Render()
 	{
 		glPushMatrix();
 		glDisable(GL_CULL_FACE);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_BLEND);
-
+		if (m_blending)
+		{
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_BLEND);
+		}
 		float _div = 1.0f/_size;
 		for (unsigned long i = 1; i < _size; i++)
 		{
@@ -73,17 +81,17 @@ bool TraceLine::Render()
 						glLineWidth(2.0f);
 						//glColor3f(0.5f,0.5f, 0.8f);
 						glBegin(GL_QUADS);
-							glVertex3f(p1.x+10, p1.y, p1.z);
-							glVertex3f(p1.x, p1.y, p1.z-10);
-							glVertex3f(p1.x-10, p1.y, p1.z);
-							glVertex3f(p1.x, p1.y, p1.z+10);
+							glVertex3f(p1.x+2*m_markerScale, p1.y, p1.z);
+							glVertex3f(p1.x, p1.y, p1.z-2*m_markerScale);
+							glVertex3f(p1.x-2*m_markerScale, p1.y, p1.z);
+							glVertex3f(p1.x, p1.y, p1.z+2*m_markerScale);
 						glEnd();
 						glBegin(GL_TRIANGLE_FAN);
-							glVertex3f(p1.x, p1.y-10, p1.z);
-							glVertex3f(p1.x+10, p1.y, p1.z);
-							glVertex3f(p1.x, p1.y, p1.z-10);
-							glVertex3f(p1.x-10, p1.y, p1.z);
-							glVertex3f(p1.x, p1.y, p1.z+10);
+							glVertex3f(p1.x, p1.y-2*m_markerScale, p1.z);
+							glVertex3f(p1.x+2*m_markerScale, p1.y, p1.z);
+							glVertex3f(p1.x, p1.y, p1.z-2*m_markerScale);
+							glVertex3f(p1.x-2*m_markerScale, p1.y, p1.z);
+							glVertex3f(p1.x, p1.y, p1.z+2*m_markerScale);
 						glEnd();
 						break;
 					};
@@ -117,7 +125,9 @@ bool TraceLine::Render()
 			_div+=1.0f/_size;
 		}
 		glLineWidth(1.0f);
-		glDisable(GL_BLEND);
+		if (m_blending)
+			glDisable(GL_BLEND);
+		
 		glEnable(GL_CULL_FACE);
 		glPopMatrix();
 		_div = 0;
@@ -171,12 +181,23 @@ void TraceLine::setMarkerShape(const ft::MarkerShape shape)
 	m_shape = shape;
 }
 
-void TraceLine::setBufferSize(const long bufferSize)
-{
-	m_bufferSize = bufferSize;
-}
 
 void TraceLine::setMarkerColor(const CalVector color)
 {
 	m_markerColor = color;
+}
+
+void TraceLine::setMarkerScale(const int scale)
+{
+	m_markerScale = scale;
+}
+
+void TraceLine::setBlending(bool blending)
+{
+	m_blending = blending;
+}
+
+void TraceLine::setBufferSize(const long bufferSize)
+{
+	m_bufferSize = bufferSize;
 }

@@ -169,6 +169,11 @@ void Cal3DObject::OnMessage(Message* msg)
 }
 
 
+byte Cal3DObject::getRenderingOrder()
+{
+	return 3; //3 - for dynamic objects
+}
+
 /**
  * \brief Main rendering routine for Cal3DObject
  **/

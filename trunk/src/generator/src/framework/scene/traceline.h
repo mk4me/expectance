@@ -23,6 +23,8 @@ namespace ft {
 		/*! Constructs object with a given name */
 		TraceLine(const std::string& name);
 		virtual ~TraceLine(void) { /* empty */};
+		//! get the value of object rendering order
+		virtual byte getRenderingOrder();
 		/*! \brief Renders line with point at the end of it */
 		virtual bool Render();
 		/*! \brief Adds new point to the collection for rendering*/
@@ -41,16 +43,21 @@ namespace ft {
 		void HideLine();
 		//! set shape of marker
 		void setMarkerShape(const MarkerShape shape);
-		//! set size of buffer for data 0 means neverending buffer size
-		void setBufferSize(const long bufferSize);
 		//! set marker Color
 		void setMarkerColor(const CalVector color);
+		//! set marker scale
+		void setMarkerScale (const int scale);
+		//! set blending for tracer on or off
+		void setBlending(bool blending);
+		//! set size of buffer for data 0 means neverending buffer size
+		void setBufferSize(const long bufferSize);
 
 	protected:
 		std::vector <CalVector> m_traces;
 		bool m_colorMix;
 		bool m_marker;
 		bool m_line;
+		bool m_blending;
 		unsigned long m_bufferSize;
 		int m_markerScale;
 		MarkerShape m_shape;

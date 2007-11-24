@@ -192,13 +192,37 @@ void VisualizationManager::Render3DObjects()
 			}
 		}
 	}
-	// iterate through the objects to find object needs rendering
+	
+	// now we don't distinguish full static objects in code, uncomment for later use
+	//// iterate through the semistatic objects (tracers) to find object needs rendering
+	//it=m_SceneObjects.begin();
+	//for( ; it != m_SceneObjects.end(); ++it ) {
+	//	if ((pObj = dynamic_cast<SceneObject*>(it->second))!=NULL)
+	//	{
+	//		if (pObj->isVisible())
+	//			if (pObj->getRenderingOrder() == 1)
+	//				pObj->Render();
+	//	}
+	//}
+
+	// iterate through the semistatic objects (tracers) to find object needs rendering
 	it=m_SceneObjects.begin();
 	for( ; it != m_SceneObjects.end(); ++it ) {
 		if ((pObj = dynamic_cast<SceneObject*>(it->second))!=NULL)
 		{
-			if (pObj->isVisible()) 
-			pObj->Render();
+			if (pObj->isVisible())
+				if (pObj->getRenderingOrder() == 2)
+					pObj->Render();
+		}
+	}
+	// iterate through the dynamic objects to find object needs rendering
+	it=m_SceneObjects.begin();
+	for( ; it != m_SceneObjects.end(); ++it ) {
+		if ((pObj = dynamic_cast<SceneObject*>(it->second))!=NULL)
+		{
+			if (pObj->isVisible())
+				if (pObj->getRenderingOrder() == 3)
+					pObj->Render();
 		}
 	}
 }
