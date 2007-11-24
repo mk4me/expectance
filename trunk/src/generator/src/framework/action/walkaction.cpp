@@ -52,19 +52,25 @@ void WalkAction::Entry(PhysicsAvatar* avatar, Action* oldAction)
     Action::Entry(avatar, oldAction);
 
     m_tlStopWalk->setInterupting(false);
-    avatar->getTimeLine()->AddSubObject(m_tlWalk);
 
     if (oldAction->getId() == ACTION_RUN_ID)
     {
         m_tlWalk->AddSubObject(m_tlStopWalk);
     }
+
+    avatar->getTimeLine()->AddSubObject(m_tlWalk->Clone());
+
 }
 
 /// \brief Overriden method from ft::Action
 void WalkAction::Exit(PhysicsAvatar* avatar, Action* newAction)
 {
     Action::Exit(avatar, newAction);
-    m_tlStopWalk->setInterupting(true);
+
+    if (avatar->getTLExecutor() != NULL)
+    {
+        avatar->getTLExecutor()->InterruptUnexecutedMotions();
+    }
 }
 
 /// \brief Overriden method from ft::Action

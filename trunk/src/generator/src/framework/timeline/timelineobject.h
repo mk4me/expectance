@@ -15,8 +15,7 @@ namespace ft
 {
     static const int TIME_UNDEFINED = -1;
 
-    static const int ADD_OBJECT_AS_NEXT = 0;
-    static const int ADD_OBJECT_AS_LAST = 1;
+    static const int ADD_OBJECT_AS_LAST = 0;
 
 	/**
 	 * Class TimeLineObject: base object for all objects that can be part of TimeLine
@@ -50,10 +49,13 @@ namespace ft
         std::string getDepthStr(int depth);
         virtual void Dump(int depth);
 
+        virtual TimeLineObject* CreateInstance();
+        virtual TimeLineObject* Clone();
+        
+
     protected:
         //list
         TimeLineObject* m_first;
-        TimeLineObject* m_current;
 
         TimeLineObject* m_next;
 

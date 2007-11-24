@@ -10,7 +10,6 @@ using namespace ft;
 TimeLineObject::TimeLineObject()
 {
     m_first = NULL;
-    m_current = NULL;
     m_next = NULL;
     setParent(NULL);
 }
@@ -33,8 +32,26 @@ void TimeLineObject::Destroy(void)
         delete obj_to_delete;
     }
     m_first = NULL;
-    m_current = NULL;
     m_next=NULL;
+}
+
+// to use it in cloning operation
+TimeLineObject* TimeLineObject::CreateInstance()
+{
+    return new TimeLineObject();
+}
+
+TimeLineObject* TimeLineObject::Clone()
+{
+    TimeLineObject* cloneOfThis = CreateInstance();
+
+    TimeLineObject* obj = getFirstObject();
+    while (obj != NULL)
+    {
+        cloneOfThis->AddSubObject(obj->Clone());
+        obj = obj->getNextObject();
+    }
+    return cloneOfThis;
 }
 
 /**
@@ -61,15 +78,6 @@ bool TimeLineObject::AddSubObject(TimeLineObject* object, int where_to_add)
             object->m_next = NULL;
             result = true;
         } 
-        else if (where_to_add == ADD_OBJECT_AS_NEXT) 
-        {
-          if (m_current != NULL)
-          {
-              object->m_next = m_current->m_next;
-              m_current->m_next = object;
-              result = true;
-          }
-        }
     }
 
     if (result)

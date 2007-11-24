@@ -42,8 +42,10 @@ namespace ft
         void Dump(int depth);   //OVERRIDEN
         std::string toString(); //OVERRIDEN
 
+        virtual TimeLineObject* CreateInstance();
+        virtual TimeLineObject* Clone();
 
-    private:
+    protected:
         Motion* m_motionRef; //reference to motion which is represented by this object
         TimeLineBlender* m_blender;
 

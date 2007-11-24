@@ -61,15 +61,17 @@ void RunAction::Entry(PhysicsAvatar* avatar, Action* oldAction)
         }
     }
 
-    m_tlStopRun->setInterupting(false);
-    avatar->getTimeLine()->AddSubObject(m_tlRun);
+    avatar->getTimeLine()->AddSubObject(m_tlRun->Clone());
 }
 
 /// \brief Overriden method from ft::Action
 void RunAction::Exit(PhysicsAvatar* avatar, Action* newAction)
 {
     Action::Exit(avatar, newAction);
-    m_tlStopRun->setInterupting(true);
+    if (avatar->getTLExecutor() != NULL)
+    {
+        avatar->getTLExecutor()->InterruptUnexecutedMotions();
+    }
 }
 
 /// \brief Overriden method from ft::Action

@@ -60,6 +60,8 @@ namespace ft
         void StopRequest();
         void RemoveUnexecutedMotions();
 
+        void InterruptUnexecutedMotions();
+
         void ChangeState(int newState);
 
         void UpdateMotions(const double elapsedSeconds);
@@ -101,6 +103,7 @@ namespace ft
         void UpdateExecItem(timeline_exec_item_t &item);
         void CheckInterrupting();
         void IdentifyNextMotion();
+        TimeLineMotion* FindNextMotionToExecute(TimeLineMotion* motion);
         void IdentifyBlenders();
         void LimitCurrBlenderForNextAnim();
         void LimitCurrBlenderForCurrAnim();

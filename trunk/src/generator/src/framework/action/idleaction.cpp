@@ -29,7 +29,7 @@ void IdleAction::Init(PhysicsAvatar* avatar)
 void IdleAction::Entry(PhysicsAvatar* avatar, Action* oldAction)
 {
     Action::Entry(avatar, oldAction);
-    avatar->getTimeLine()->AddSubObject(m_tlIdle);
+    avatar->getTimeLine()->AddSubObject(m_tlIdle->Clone());
 }
 
 /// \brief Overriden method from ft::Action

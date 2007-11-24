@@ -22,6 +22,10 @@ namespace ft
         void setOverlap(bool set) { m_overlap = set; }
         float getOverlap() { return m_overlap; }
 
+
+        virtual TimeLineObject* CreateInstance();
+        virtual TimeLineObject* Clone();
+
     private:
         float m_overlap;
     };

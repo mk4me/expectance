@@ -788,11 +788,7 @@ void TimeLineExecutor::IdentifyNextMotion()
     }
     else
     {
-        TimeLineMotion *parentWithNext = GetParentWithNext(m_currMotion.motion);
-        if (parentWithNext != NULL)
-        {
-            nextMotion = GetSubMotionWithAnim((TimeLineMotion*)parentWithNext->getNextObject());
-        }
+        nextMotion = FindNextMotionToExecute(m_currMotion.motion);
     }
 
     if (nextMotion != NULL)
@@ -805,6 +801,22 @@ void TimeLineExecutor::IdentifyNextMotion()
     }
 }
 
+/**
+ * \brief finds next motion to excute in timeline (it must have animation)
+ * \ return TimeLineMotion* - next motion execute (next to given one as parameter)
+ **/
+TimeLineMotion* TimeLineExecutor::FindNextMotionToExecute(TimeLineMotion* motion)
+{
+    TimeLineMotion* nextMotion = NULL;
+
+    TimeLineMotion *parentWithNext = GetParentWithNext(motion);
+    if (parentWithNext != NULL)
+    {
+        nextMotion = GetSubMotionWithAnim((TimeLineMotion*)parentWithNext->getNextObject());
+    }
+
+    return nextMotion;
+}
 /**
  * \brief Checks if given timeline_exec_item_t structs defines loop motion which should be stopped
  * \param timeline_exec_item_t &item - struct to check
@@ -1139,6 +1151,22 @@ void TimeLineExecutor::Dump()
     }
 }
 
+/**
+ * \brief Interrupts all unexecuted motion starting from current motion (if any)
+ **/
+void TimeLineExecutor::InterruptUnexecutedMotions()
+{
+    if (m_currMotion.motion != NULL)
+    {
+        TimeLineMotion* nextMotion = FindNextMotionToExecute(m_currMotion.motion);
+
+        while (nextMotion != NULL)
+        {
+            nextMotion->setInterupting(true);
+            nextMotion = FindNextMotionToExecute(nextMotion);
+        }
+    }
+}
 /**
  * \brief Removes motions from timeLine that were already executed
  **/
