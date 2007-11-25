@@ -3,7 +3,7 @@
  * author: abak
  */
 #include "timelinevisualizer.h"
-#include "../utility/vishelper.h"
+#include "utility/vishelper.h"
 
 using namespace ft;
 

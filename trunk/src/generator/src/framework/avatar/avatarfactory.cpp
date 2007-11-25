@@ -5,7 +5,7 @@
 
 #include "avatarfactory.h"
 #include "../ai/aiavatar.h"
-#include "../utility/debug.h"
+#include "utility/debug.h"
 
 using namespace ft;
 

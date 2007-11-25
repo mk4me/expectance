@@ -3,12 +3,12 @@
  * author: abak
  */
 #include "goalmanager.h"
-#include "../utility/debug.h"
+#include "utility/debug.h"
 #include "goals/randommovegoal.h"
 #include "goals/changedirgoal.h"
 #include "goals/limitedareagoal.h"
 #include "constraints/limitedareaconstraint.h"
-#include "../utility/randomgen.h"
+#include "utility/randomgen.h"
 #include "rule.h"
 
 

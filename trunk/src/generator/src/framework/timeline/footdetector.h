@@ -7,7 +7,7 @@
 #define _GEN_FOOT_DETECTOR_H
 
 #include "timelinemodifier.h"
-#include "../scene/visualizationmanager.h"
+#include "scene/visualizationmanager.h"
 
 namespace ft
 {

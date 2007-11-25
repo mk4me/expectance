@@ -4,6 +4,7 @@
  */
 
 #include "menumanager.h"
+#include "../core/inputmanager.h"
 
 using namespace ft;
 
@@ -28,6 +29,8 @@ void MenuManager::DestroyInstance()
 
 bool MenuManager::Init(int x, int y)
 {
+    InputManager::getInstance()->AddListener(this);
+
 	bool _final = true;
 	static unsigned int _listID = 1000; // hope that system textures wont be so much
 	vector<string> _tokens;
@@ -179,29 +182,47 @@ const MenuItem* MenuManager::getMainMenu() const
 
 void MenuManager::OnMouseButtonDown(int button, int x, int y)
 {
-	int btn;
-	if ((btn=checkScope(x,y))>=0) //label from pressed button
+  	if (y < 60)
 	{
-		m_pressedButton = btn;
-		_dbg <<"Button selected "<< btn << endl;
-	}
 
+	    int btn;
+	    if ((btn=checkScope(x,y))>=0) //label from pressed button
+	    {
+		    m_pressedButton = btn;
+		    _dbg <<"Button selected "<< btn << endl;
+	    }
+    }
+}
+
+void MenuManager::OnKey(unsigned char key, int x, int y)
+{
+  switch(key)
+  {
+    case 'M':
+        hideMenu();
+        break;
+    default:
+        break;
+  }
 }
 
 void MenuManager::OnMouseButtonUp(int button, int x, int y)
 {
-	int btn;
-	if ((btn=checkScope(x,y))>=0)
-	{
-		m_releasedButon = btn;
-		if (m_pressedButton == m_releasedButon) //enter to pressed button (message from it)
-		{
-			m_avtiveButton = m_releasedButon;
-			std::string id = m_mainMenu->getSubMenu().at(m_avtiveButton)->getMenuName();
-			UpdateManager::getInstance()->SendMessage(new Message(MSG_MENU_ITEM_SELECTED, new MessageParam(id)), true);
-		}
-		_dbg <<"Button released "<< btn << endl;
-	}
+    if (y < 60)
+    {
+	    int btn;
+	    if ((btn=checkScope(x,y))>=0)
+	    {
+		    m_releasedButon = btn;
+		    if (m_pressedButton == m_releasedButon) //enter to pressed button (message from it)
+		    {
+			    m_avtiveButton = m_releasedButon;
+			    std::string id = m_mainMenu->getSubMenu().at(m_avtiveButton)->getMenuName();
+			    UpdateManager::getInstance()->SendMessage(new Message(MSG_MENU_ITEM_SELECTED, new MessageParam(id)), true);
+		    }
+		    _dbg <<"Button released "<< btn << endl;
+	    }
+    }
 
 }
 

@@ -4,7 +4,6 @@
  */
 
 #include "inputmanager.h"
-#include "../control/controlmanager.h"
 
 using namespace ft;
 
@@ -36,6 +35,51 @@ void InputManager::DestroyInstance()
         delete m_instance;
 }
 
+/**
+ * \brief Adds listener  to InputManager
+ * \param ft::InputListener* listener - listener to add
+ * \return bool - true if listener added successfuly
+ **/
+void InputManager::AddListener(InputListener* listener)
+{
+    if (Debug::INPUT>0)
+        _dbg << " InputManager::AddListener " << listener << std::endl;
+
+    m_vListeners.push_back(listener);
+}
+
+bool  InputManager::RemoveListener(InputListener* listener)
+{
+    bool result = false;
+
+    std::vector<InputListener*>::iterator iteratorListener;
+    iteratorListener = m_vListeners.begin();
+
+    while(iteratorListener != m_vListeners.end())
+    {
+        // find the specified action and remove it
+        if((*iteratorListener) == listener)
+        {
+            // found, so remove
+            m_vListeners.erase(iteratorListener);
+            result = true;
+            break;
+        }
+        iteratorListener++;
+    }
+
+        if (Debug::INPUT>0)
+        {
+            if (result)
+                _dbg << " InputManager::RemoveListener " << listener << " removed " << std::endl;
+             else
+                _dbg << " InputManager::RemoveListener " << listener << " - removing FAILED " << std::endl;
+        }
+
+    return result;
+}
+
+
 /*-----  -----*/
 /**
  * \brief Handles a key event from keyboard
@@ -46,60 +90,13 @@ void InputManager::DestroyInstance()
  **/
 void InputManager::OnKey(unsigned char key, int x, int y)
 {
- 
-  switch(key)
-  {
-    case 13: //enter
-//      UpdateManager::getInstance()->SendMessage(new Message(MSG_START_SIMULATION), true);
-      break;
-    case 'z':
-    case 'Z': 
-      UpdateManager::getInstance()->SendMessage(new Message(MSG_RESTART_SIMULATION), true);
-      break;
-    case 't':
-      UpdateManager::getInstance()->SendMessage(new Message(MSG_TEST), true);
-       break;     
-    case 'i':
-      UpdateManager::getInstance()->SendMessage(new Message(MSG_DUMP_STATE), true);
-       break;     
-    // test for quit event
-    case 27:
-    case 'Q':
-      exit(0);
-      break;
-    case ' ':
-      UpdateManager::getInstance()->SendMessage(new Message(MSG_CONTROL_PAUSE), true);
-      break;
-    case '*':
-      UpdateManager::getInstance()->setTimeScale(  UpdateManager::getInstance()->getTimeScale() * 1.1f);
-      break;
-    case '/':
-      UpdateManager::getInstance()->setTimeScale(  UpdateManager::getInstance()->getTimeScale() / 1.1f);
-      break;
-    case 'R':
-      UpdateManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_RENDER_METHOD), true);  
-      break;
-	case 'S':
-      UpdateManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_SHADOW), true);  
-  	  break;
-	case 'F':
-		OGLContext::getInstance()->changeFloorType();
-      break;
-	case 'L':
-		OGLContext::getInstance()->hideFTLogo();
-      break;
-	case 'M':
-		MenuManager::getInstance()->hideMenu();
-      break;
-    default:
-      if((key >= '0') && (key <= '9'))
-      {
-        float lod = (key == '0') ? 1.0f : (key - '0') * 0.1f;
-        UpdateManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_LOD, new MessageParam(lod)), true);
-      }
-	  CameraManager::getInstance()->OnKey(key, x, y);
-      break;
-  }
+    if (m_vListeners.size() > 0)
+    {
+        for (int m=0; m<(int)m_vListeners.size(); m++)
+        {
+            m_vListeners[m]->OnKey(key, x, y);
+        }
+    }
 }
 
 
@@ -131,9 +128,13 @@ void InputManager::OnSpecial(int key, int x, int y)
       break;	
   }
   */
- ControlManager::getInstance()->OnSpecial(key, x, y);
- CameraManager::getInstance()->OnSpecial(key, x, y);
-  
+    if (m_vListeners.size() > 0)
+    {
+        for (int m=0; m<(int)m_vListeners.size(); m++)
+        {
+            m_vListeners[m]->OnSpecial(key, x, y);
+        }
+    }
 }
 
 /**
@@ -145,15 +146,16 @@ void InputManager::OnSpecial(int key, int x, int y)
  **/
 void InputManager::OnMouseButtonDown(int button, int x, int y)
 {
-	_dbg << "Nacisnieto button: " << button <<"w pozycji (x,y) = (" <<x<<", "<<y<<")"<<endl;
-	if (y < 60)
-	{
-		MenuManager::getInstance()->OnMouseButtonDown(button, x, y);
-	}
-	else	//the rest
-	{
-		CameraManager::getInstance()->OnMouseButtonDown(button, x, y);
-	}
+    if (Debug::INPUT>0)
+	    _dbg << "Nacisnieto button: " << button <<"w pozycji (x,y) = (" <<x<<", "<<y<<")"<<endl;
+
+    if (m_vListeners.size() > 0)
+    {
+        for (int m=0; m<(int)m_vListeners.size(); m++)
+        {
+            m_vListeners[m]->OnMouseButtonDown(button, x, y);
+        }
+    }
 }
 
 /**
@@ -165,14 +167,13 @@ void InputManager::OnMouseButtonDown(int button, int x, int y)
  **/
 void InputManager::OnMouseButtonUp(int button, int x, int y)
 {
-	if (y<60)
-	{
-		MenuManager::getInstance()->OnMouseButtonUp(button, x, y);
-	}
-	else	//the rest
-	{
-		CameraManager::getInstance()->OnMouseButtonUp(button, x, y);
-	}
+    if (m_vListeners.size() > 0)
+    {
+        for (int m=0; m<(int)m_vListeners.size(); m++)
+        {
+            m_vListeners[m]->OnMouseButtonUp(button, x, y);
+        }
+    }
 }
 
 /**
@@ -183,5 +184,11 @@ void InputManager::OnMouseButtonUp(int button, int x, int y)
  **/
 void InputManager::OnMouseMove(int x, int y)
 {
-    CameraManager::getInstance()->OnMouseMove(x, y);
+    if (m_vListeners.size() > 0)
+    {
+        for (int m=0; m<(int)m_vListeners.size(); m++)
+        {
+            m_vListeners[m]->OnMouseMove(x, y);
+        }
+    }
 }

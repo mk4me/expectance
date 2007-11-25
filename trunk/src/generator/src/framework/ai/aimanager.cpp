@@ -4,7 +4,7 @@
  */
 #include "aimanager.h"
 #include "goalmanager.h"
-#include "../utility/debug.h"
+#include "utility/debug.h"
 
 using namespace ft;
 using namespace std;

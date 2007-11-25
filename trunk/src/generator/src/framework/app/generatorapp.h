@@ -3,9 +3,10 @@
  * author: abak
  */
 
-#ifndef _GEN_APPLICATION_H
-#define _GEN_APPLICATION_H
+#ifndef _GEN_GENERATORAPP_H
+#define _GEN_GENERATORAPP_H
 
+#include "core/application.h"
 #include "../avatar/avatar.h"
 
 namespace ft
@@ -13,27 +14,21 @@ namespace ft
 	/**
 	 * Class Application: is responsible for lifecycle of Generator application
 	 **/
-    class Application
+    class GeneratorApp : public Application
     {
     public:
-        static Application* getInstance();
-        static void DestroyInstance();
-
-        void InitConfig();
-        bool InitModules();
-        void InitAvatars();
+        virtual int Init();
+        virtual void InitObjects();
+        virtual bool InitModules();
         void InitStaticObjects();
+        void InitAvatars();
+        void SetCameraToActiveAvatar();
         void StartAISimulation();
 
-        void SetCameraToActiveAvatar();
-
         Avatar* CreateAvatarOnScene(const std::string& calCoreModel,const std::string& name);
-
-    private:
-        static Application* m_instance;
 
     };
 };
 
-#endif //_GEN_APPLICATION_H
+#endif //_GEN_GENERATORAPP_H
 

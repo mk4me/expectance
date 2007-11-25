@@ -6,7 +6,7 @@
 #ifndef _GEN_AVATAR_H
 #define _GEN_AVATAR_H
 
-#include "../scene/cal3dobject.h"
+#include "scene/cal3dobject.h"
 
 namespace ft
 {

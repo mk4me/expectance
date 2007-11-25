@@ -5,8 +5,8 @@
 #include "lcsmodifier.h"
 //#include "cal3d/coreanimation.h"
 #include "cal3d/coretrack.h"
-#include "../utility/vishelper.h"
-#include "../utility/mathutil.h"
+#include "utility/vishelper.h"
+#include "utility/mathutil.h"
 #include <math.h>
 
 using namespace ft;

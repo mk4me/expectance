@@ -3,7 +3,7 @@
  * author: abak
  */
 #include "changedirgoal.h"
-#include "../../utility/randomgen.h"
+#include "utility/randomgen.h"
 
 using namespace ft;
 using namespace std;

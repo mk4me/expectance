@@ -7,6 +7,7 @@
 #define _GEN_INPUT_MANAGER_H
 
 #include <iostream>
+#include "inputlistener.h"
 #include "../utility/debug.h"
 #include "../scene/cameramanager.h"
 #include "../ui/menumanager.h"
@@ -14,6 +15,7 @@
 #include "../scene/oglcontext.h"
 #include "UpdateManager.h"
 #include "message.h"
+#include <vector>
 
 namespace ft
 {
@@ -29,6 +31,9 @@ namespace ft
         static InputManager* getInstance();
         static void DestroyInstance();
 
+        void AddListener(InputListener* listener);
+        bool RemoveListener(InputListener* listener);
+
         void OnKey(unsigned char key, int x, int y);
         void OnSpecial(int key, int x, int y);
         void OnMouseButtonDown(int button, int x, int y);
@@ -37,6 +42,10 @@ namespace ft
 
     private:
         static InputManager* m_instance;
+
+        vector<InputListener*> m_vListeners;
+
+
     };
 };
 

@@ -6,7 +6,7 @@
 #ifndef _GEN_AI_GOAL_H
 #define _GEN_AI_GOAL_H
 
-#include "../core/baseobject.h"
+#include "core/baseobject.h"
 #include "../action/actionavatar.h"
 #include "aicontroller.h"
 

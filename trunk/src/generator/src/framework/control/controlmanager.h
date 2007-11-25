@@ -7,14 +7,15 @@
 #define _GEN_CONTROL_MANAGER_H
 
 #include "../ai/aiavatar.h"
-#include "../scene/cameramanager.h"
+#include "scene/cameramanager.h"
+#include "core/inputlistener.h"
 
 namespace ft
 {
 	/**
 	 * Class ControlManager: responsible for control layer and manages list of control avatars
 	 **/
-    class ControlManager : public UpdateObject
+    class ControlManager : public UpdateObject, public InputListener
     {
     public:
 

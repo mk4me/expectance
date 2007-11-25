@@ -28,7 +28,6 @@ void ExitFunc()
 {
    // shut down OGL Content
    VisualizationManager::getInstance()->CleanUp();
-   Application::DestroyInstance();
    Debug::Destroy();
 }
 
@@ -81,7 +80,6 @@ void ReshapeFunc(int width, int height)
 	OGLContext::getInstance()->setWindowSize(width, height);
 }
 
-
 /**
  * \brief Main entry to application
  *
@@ -89,9 +87,9 @@ void ReshapeFunc(int width, int height)
  * \param char *[] argv - list of arguments
  * \return int - result of application
  **/
-int main(int argc, char *argv[])
+int InitGlutApplication(int argc, char *argv[], Application *app)
 {
-	ft::Application::getInstance()->InitConfig();
+	app->InitConfig();
 	// initialize the GLUT system
 	glutInit(&argc, argv);
 	atexit(ExitFunc);
@@ -115,21 +113,10 @@ int main(int argc, char *argv[])
 	glutKeyboardFunc(KeyboardFunc);
 	glutSpecialFunc(SpecialFunc);
 
-    if (!Application::getInstance()->InitModules())
-	{
-        cout << Debug::ERR_STR << "Application::InitModules error" << endl;
-		return -1;
-	}
-
-	VisualizationManager::getInstance()->AddObject(new TraceLine("TL1")); //lines for tracing
-	VisualizationManager::getInstance()->AddObject(new TraceLine("TL2"));
-	VisualizationManager::getInstance()->AddObject(new TraceLine("TL3"));	
-
-    Application::getInstance()->InitAvatars();
-    Application::getInstance()->SetCameraToActiveAvatar();
-    Application::getInstance()->InitStaticObjects();
-    Application::getInstance()->StartAISimulation();
-	
+    if (app->Init() < 0)
+    {
+        return -1;
+    }
 
 
 	// run the GLUT message loop

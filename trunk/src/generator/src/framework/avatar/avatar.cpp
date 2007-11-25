@@ -4,7 +4,7 @@
  */
 
 #include "avatar.h"
-#include "../utility/debug.h"
+#include "utility/debug.h"
 
 using namespace ft;
 

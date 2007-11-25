@@ -30,6 +30,7 @@ int Debug::CONTROL = 0;
 int Debug::RENDER = 0;
 int Debug::FPS = 0;
 int Debug::CAMERA = 0;
+int Debug::INPUT = 0;
 
 //////// //////////////
 
@@ -85,6 +86,8 @@ void Debug::LoadLevelsFromConfig()
             FPS = Config::getInstance()->GetIntVal("DEBUG_FPS");
         if (Config::getInstance()->IsKey("DEBUG_CAMERA"))
             CAMERA = Config::getInstance()->GetIntVal("DEBUG_CAMERA");
+        if (Config::getInstance()->IsKey("DEBUG_INPUT"))
+            INPUT = Config::getInstance()->GetIntVal("DEBUG_INPUT");
 
         //////////////////////
 

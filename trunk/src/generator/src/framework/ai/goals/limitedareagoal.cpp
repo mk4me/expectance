@@ -3,8 +3,8 @@
  * author: abak
  */
 #include "limitedareagoal.h"
-#include "../../utility/randomgen.h"
-#include "../../utility/mathutil.h"
+#include "utility/randomgen.h"
+#include "utility/mathutil.h"
 #include <math.h>
 
 using namespace ft;

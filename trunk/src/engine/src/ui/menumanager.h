@@ -11,6 +11,7 @@
 #include "../utility/stringhelper.h"
 #include "../scene/oglcontext.h"
 #include "menuitem.h"
+#include "../core/inputlistener.h"
 
 
 
@@ -23,7 +24,7 @@ namespace ft
 	 *  It creates menu on the base of configuration file. Receives messages from 
 	 *  InputManager and sends by UpdateManager messages to interested listeners.  
 	 */ 
-	class MenuManager
+    class MenuManager : public InputListener
     {
     public:
         
@@ -44,6 +45,8 @@ namespace ft
 		//! render menu 
 		/*! renders menu context (hightlights active/selected control and deactivates remaining) */
 		bool Render();
+
+        void OnKey(unsigned char key, int x, int y);
 
 		//! check if MenuItem is selected and set temporarily information about it (for rendering purposes)
 		void OnMouseButtonDown(int button, int x, int y);

@@ -7,7 +7,7 @@
 #define _GEN_MOTION_H
 
 #include <string>
-#include "../core/global.h"
+#include "core/global.h"
 
 
 namespace ft

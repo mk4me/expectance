@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="windows-1250"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\src; utils\textures"
+				AdditionalIncludeDirectories="..\..\src;utils\textures;..\engine\src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -137,7 +137,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\"
+				AdditionalIncludeDirectories="..\;..\engine\src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -227,7 +227,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\src; utils\textures"
+				AdditionalIncludeDirectories="..\..\src; utils\textures;..\engine\src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -319,7 +319,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\"
+				AdditionalIncludeDirectories="..\;..\engine\src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -403,312 +403,6 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\avatar\avatarfactory.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="core"
-				>
-				<File
-					RelativePath=".\src\framework\core\application.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\application.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\baseobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\baseobject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\config.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\config.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\global.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\inputmanager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\inputmanager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\main.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\message.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\message.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\simulation.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\simulation.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\updatemanager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\updatemanager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\updateobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\core\updateobject.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="ui"
-				>
-				<File
-					RelativePath=".\src\framework\ui\menuitem.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\ui\menuitem.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\ui\menumanager.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-							PrecompiledHeaderThrough="../utility/util_pch.h"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\src\framework\ui\menumanager.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="scene"
-				>
-				<File
-					RelativePath=".\src\framework\scene\cal3dobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\cal3dobject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\cal3dobjectfactory.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\cal3dobjectfactory.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\camera.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\camera.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\cameraconfiguration.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\cameraconfiguration.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\cameramanager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\cameramanager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\glew.c"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\line.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\line.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\oglcontext.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\oglcontext.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\sceneobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\sceneobject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\spline.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\spline.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\texturemanager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\texturemanager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\traceline.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\traceline.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\visualizationmanager.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-							PrecompiledHeaderThrough="../utility/util_pch.h"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\src\framework\scene\visualizationmanager.h"
-					>
-				</File>
-				<Filter
-					Name="GL"
-					>
-					<File
-						RelativePath=".\src\framework\scene\GL\glew.h"
-						>
-					</File>
-					<File
-						RelativePath=".\src\framework\scene\GL\glxew.h"
-						>
-					</File>
-					<File
-						RelativePath=".\src\framework\scene\GL\wglew.h"
-						>
-					</File>
-				</Filter>
-			</Filter>
-			<Filter
-				Name="utility"
-				>
-				<File
-					RelativePath=".\src\framework\utility\debug.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\utility\debug.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\utility\mathconversions.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\utility\mathutil.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\utility\mathutil.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\utility\mtxlib.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\utility\mtxlib.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\utility\quat.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\utility\quat.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\utility\randomgen.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\utility\randomgen.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\utility\stringhelper.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\utility\stringhelper.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\utility\vec.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\utility\vec.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\utility\vishelper.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\utility\vishelper.h"
 					>
 				</File>
 			</Filter>
@@ -1025,6 +719,22 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\physics\physicsavatar.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="app"
+				>
+				<File
+					RelativePath=".\src\framework\app\generatorapp.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\app\generatorapp.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\app\main.cpp"
 					>
 				</File>
 			</Filter>

@@ -6,7 +6,7 @@
 #ifndef _GEN_AVATAR_FACTORY_H
 #define _GEN_AVATAR_FACTORY_H
 
-#include "../scene/cal3dobjectfactory.h"
+#include "scene/cal3dobjectfactory.h"
 #include <map>
 
 namespace ft

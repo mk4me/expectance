@@ -6,7 +6,7 @@
 #ifndef _GEN_TIMELINE_OBJECT_H
 #define _GEN_TIMELINE_OBJECT_H
 
-#include "../core/baseobject.h"
+#include "core/baseobject.h"
 #include "timelinecontext.h"
 #include <string>
 #include <vector>

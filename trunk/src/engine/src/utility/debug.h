@@ -39,6 +39,7 @@ namespace ft
         static int RENDER;
         static int FPS;
         static int CAMERA;
+        static int INPUT;
 
         //////////////////////////////////////
 

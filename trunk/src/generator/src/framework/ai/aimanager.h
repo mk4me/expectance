@@ -7,7 +7,7 @@
 #define _GEN_AI_AIMANAGER_H
 
 #include "aiavatar.h"
-#include "../core/updatemanager.h"
+#include "core/updatemanager.h"
 
 
 namespace ft

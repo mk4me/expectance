@@ -6,7 +6,7 @@
 #include "movableavatar.h"
 #include "../timeline/lcsmodifier.h"
 #include "timelinevisualizer.h"
-#include "../utility/debug.h"
+#include "utility/debug.h"
 
 using namespace ft;
 using namespace std;

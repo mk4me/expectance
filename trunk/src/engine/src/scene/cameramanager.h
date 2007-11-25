@@ -14,6 +14,7 @@
 #include "../core/UpdateObject.h"
 #include "camera.h"
 #include "cameraconfiguration.h"
+#include "../core/inputlistener.h"
 
 
 namespace ft
@@ -23,7 +24,7 @@ namespace ft
 	/*!
 	 *	This class is responsible for global current camera operations and management of all system cameras. 
 	 */
-	class CameraManager : public UpdateObject
+	class CameraManager : public UpdateObject, public InputListener
     {
     public:
         CameraManager(void) { /*empty*/}

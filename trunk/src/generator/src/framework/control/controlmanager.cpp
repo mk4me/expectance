@@ -3,7 +3,11 @@
  * author: abak
  */
 #include "controlmanager.h"
-#include "../utility/debug.h"
+#include "utility/debug.h"
+#include "scene/cameramanager.h"
+#include "scene/oglcontext.h"
+#include "core/inputmanager.h"
+
 
 using namespace ft;
 using namespace std;
@@ -72,6 +76,8 @@ void ControlManager::Init()
 		tracer_active_avatar->setMarkerShape(ft_Diamond);
         VisualizationManager::getInstance()->AddObject(tracer_active_avatar);
     }
+
+      InputManager::getInstance()->AddListener(this);
 
 }
 

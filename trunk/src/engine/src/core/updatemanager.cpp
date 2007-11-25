@@ -45,7 +45,6 @@ void UpdateManager::Init()
   setTimeScale(1);
   ft::Simulation::setTimePrecision(ft_Microseconds); //set precision of program timer
   m_lastTick = ft::Simulation::getTick();
-
 }
 
 /**

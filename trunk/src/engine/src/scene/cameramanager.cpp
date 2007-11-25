@@ -5,6 +5,7 @@
 
 #include "cameramanager.h"
 #include "oglcontext.h"
+#include "../core/inputmanager.h"
 
 using namespace ft;
 
@@ -54,6 +55,7 @@ bool CameraManager::Init()
 	m_currentCamera->setOrbitCameraRadius(1000.0f); // bigger radius for global scene view for mainCamera
 	m_currentSceneObjectID = "mainCamera"; //set for current camera to avoid current empty object
 
+    InputManager::getInstance()->AddListener(this);
 
 	return true;
 }
@@ -405,40 +407,46 @@ void CameraManager::OnSpecial(int key, int x, int y)
 
 void CameraManager::OnMouseButtonDown(int button, int x, int y)
 {
-	// update mouse button states
-	if(button == GLUT_LEFT_BUTTON)
-	{
-	m_bLeftMouseButtonDown = true;
-	}
+    if (y >= 60)
+    {
+	    // update mouse button states
+	    if(button == GLUT_LEFT_BUTTON)
+	    {
+	    m_bLeftMouseButtonDown = true;
+	    }
 
-	if(button == GLUT_RIGHT_BUTTON)
-	{
-	m_bRightMouseButtonDown = true;
-	}
+	    if(button == GLUT_RIGHT_BUTTON)
+	    {
+	    m_bRightMouseButtonDown = true;
+	    }
 
-	if(button == GLUT_MIDDLE_BUTTON)
-	{
-	m_bMiddleMouseButtonDown = true;
-	}
+	    if(button == GLUT_MIDDLE_BUTTON)
+	    {
+	    m_bMiddleMouseButtonDown = true;
+	    }
+    }
 }
 
 void CameraManager::OnMouseButtonUp(int button, int x, int y)
 {
-	// update mouse button states
-	if(button == GLUT_LEFT_BUTTON)
-	{
-		m_bLeftMouseButtonDown = false;
-	}
+    if (y >= 60)
+    {
+	    // update mouse button states
+	    if(button == GLUT_LEFT_BUTTON)
+	    {
+		    m_bLeftMouseButtonDown = false;
+	    }
 
-	if(button == GLUT_RIGHT_BUTTON)
-	{
-		m_bRightMouseButtonDown = false;
-	}
+	    if(button == GLUT_RIGHT_BUTTON)
+	    {
+		    m_bRightMouseButtonDown = false;
+	    }
 
-	if(button == GLUT_MIDDLE_BUTTON)
-	{
-		m_bMiddleMouseButtonDown = false;
-	}
+	    if(button == GLUT_MIDDLE_BUTTON)
+	    {
+		    m_bMiddleMouseButtonDown = false;
+	    }
+    }
 }
 
 
