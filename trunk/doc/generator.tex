@@ -508,14 +508,15 @@ int Debug::CONTROL = 0;
 \item dodajemy operacje wczytania wartosci poziomu dla CONTROL z pliku application.cfg - robimy to w metodzie Debug::LoadLevelsFromConfig():
 \textbf{
 \begin{flushleft} \small
-if (Config::getInstance()->IsKey("DEBUG\_CONTROL"))
-CONTROL = Config::getInstance()->GetIntVal("DEBUG\_CONTROL");
+CONTROL = ReadLevelFromConfig("DEBUG\_CONTROL");
 \end{flushleft}
 }
 \end{enumerate}
 	
-Teraz gdy ustawimy w pliku application.cfg wpis np. \textit{DEBUG\_CONTROL = 2} to poziom debugow \textit{CONTROL} zostanie ustawiony na 2.
-
+Teraz gdy ustawimy w pliku application.cfg wpis np. \textit{DEBUG\_CONTROL = 2} to poziom debugów \textit{CONTROL} zostanie ustawiony na 2.
+\subsection{Debugi dla projektu 'genenerator'}
+Poziomy debugów dla modulów w projekcie 'generator' warto dodawaæ w klasie \textit{GenDebug} (pakiet \textit{/app}). Dotyczy to równie¿ u¿ywania systemu debugów w kodzie - czyli
+wszêdzie tam gdzie u¿ylibysmy klasy  \textit{Debug} powinnismy u¿yæ klasy  \textit{GenDebug}. Zalet¹ u¿ywania klasy  \textit{GenDebug} jest to, ¿e nie musmy zmieniaæ/kompilowaæ ¿róde³ projektu 'engine'.
 
 \flushright
 
