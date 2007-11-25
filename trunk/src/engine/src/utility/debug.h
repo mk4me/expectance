@@ -30,12 +30,7 @@ namespace ft
 
         static int APP;
         static int MODEL_LOADING;
-        static int TIMELINE;
-        static int ACTION;
-        static int AI;
         static int UPDATE;
-        static int MOTION;
-        static int CONTROL;
         static int RENDER;
         static int FPS;
         static int CAMERA;
@@ -55,6 +50,8 @@ namespace ft
 
         static std::string ERR_STR;
         static std::string WARN_STR;
+
+        static int ReadLevelFromConfig(const char * debugName);
 
     private:
         static void LoadLevelsFromConfig();

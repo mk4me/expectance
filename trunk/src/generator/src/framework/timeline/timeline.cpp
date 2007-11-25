@@ -3,6 +3,7 @@
  * author: abak
  */
 #include "timeline.h"
+#include "../app/gendebug.h"
 
 using namespace ft;
 
@@ -27,7 +28,7 @@ void TimeLine::Destroy(void)
  **/
 bool TimeLine::AddSubObject(TimeLineObject* object, int where_to_add)
 {
-    if (Debug::TIMELINE>0)
+    if (GenDebug::TIMELINE>0)
         _dbg << "TimeLine::AddSubObject " << object->toString() << endl;
 
     return TimeLineObject::AddSubObject(object, where_to_add);
@@ -38,7 +39,7 @@ bool TimeLine::AddSubObject(TimeLineObject* object, int where_to_add)
  **/
 void TimeLine::RemoveSubObject(TimeLineObject* obj_to_delete, bool deleteFromMemory)
 {
-    if (Debug::TIMELINE>0)
+    if (GenDebug::TIMELINE>0)
         _dbg << "TimeLine::RemoveSubObject " << obj_to_delete->toString() << endl;
 
     TimeLineObject::RemoveSubObject(obj_to_delete, deleteFromMemory);
@@ -52,7 +53,7 @@ void TimeLine::RemoveSubObject(TimeLineObject* obj_to_delete, bool deleteFromMem
  **/
 bool TimeLine::AddModifier(TimeLineModifier* modifier)
 {
-    if (Debug::TIMELINE>0)
+    if (GenDebug::TIMELINE>0)
         _dbg << " AddModifier " << modifier->toString() << " to " << toString() << std::endl;
 
     m_vModifiers.push_back(modifier);

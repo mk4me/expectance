@@ -3,7 +3,7 @@
  * author: abak
  */
 #include "controlmanager.h"
-#include "utility/debug.h"
+#include "../app/gendebug.h"
 #include "scene/cameramanager.h"
 #include "scene/oglcontext.h"
 #include "core/inputmanager.h"
@@ -40,7 +40,7 @@ ControlManager* ControlManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        if (Debug::CONTROL>0)
+        if (GenDebug::CONTROL>0)
             _dbg << "ControlManager::getInstace(): instance of ControlManager created " << endl;
 
         m_instance = new ControlManager();
@@ -116,7 +116,7 @@ void ControlManager::UpdateActiveAvatarMarker()
  **/
 bool ControlManager::AddAvatar(AIAvatar* av)
 {
-    if (Debug::CONTROL>0)
+    if (GenDebug::CONTROL>0)
         _dbg << " AddAvatar " << av->toString() << " to ControlManager " << std::endl;
 
     m_vAvatars.push_back(av);
@@ -135,7 +135,7 @@ void ControlManager::setActiveAvatar(int ind)
 
     m_activeAvatarInd  = ind; 
 
-    if (Debug::CONTROL>0)
+    if (GenDebug::CONTROL>0)
         _dbg << "ControlManager.setActiveAvatar(" << ind << ")" << std::endl;
 
     currAvatar = getActiveAvatar();

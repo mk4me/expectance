@@ -3,6 +3,7 @@
  * author: abak
  */
 #include "actionavatar.h"
+#include "../app/gendebug.h"
 
 using namespace ft;
 using namespace std;
@@ -46,7 +47,7 @@ void ActionAvatar::Init()
 /// \param Action *newAction - new action
 void ActionAvatar::SetCurrAction(Action *newAction)
 {
-    if (Debug::ACTION)
+    if (GenDebug::ACTION)
         _dbg << toString() << ": SetCurrAction( " << newAction->toString() << ")" << endl;
 
     if (IsTransitionAllowed(m_action, newAction))
@@ -62,7 +63,7 @@ void ActionAvatar::SetCurrAction(Action *newAction)
     }
     else
     {
-        if (Debug::ACTION)
+        if (GenDebug::ACTION)
             _dbg << toString() << ":SetAction: not allowed transition from " + m_action->toString() + " to " + newAction->toString() << endl;
     }
 }
@@ -168,7 +169,7 @@ void ActionAvatar::Reset()
 {
     PhysicsAvatar::Reset();
 
-    if (Debug::ACTION)
+    if (GenDebug::ACTION)
         _dbg << toString() << " ActionAvatar::Reset() " << std::endl;
 
     ACTION_IDLE->Reset(this);
@@ -235,14 +236,14 @@ void ActionAvatar::OnMessage(Message* msg)
         {
             if (this->getTLExecutor()->isTerminated()) 
             {
-                if (Debug::ACTION>0)
+                if (GenDebug::ACTION>0)
                     _dbg << " setTerminated ---------------------- false" << endl;
 
                 this->getTLExecutor()->setTerminated(false);
             }
             else
             {
-                if (Debug::ACTION>0)
+                if (GenDebug::ACTION>0)
                     _dbg << " setTerminated ---------------------- true" << endl;
 
                 this->getTLExecutor()->setTerminated(true);
@@ -256,7 +257,7 @@ void ActionAvatar::Dump()
 {
     MovableAvatar::Dump();
 
-    if (Debug::ACTION>0)
+    if (GenDebug::ACTION>0)
     {
         _dbg << "Current action: " << getCurrAction()->toString() << endl;
     }

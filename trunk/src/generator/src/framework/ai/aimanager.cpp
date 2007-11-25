@@ -4,7 +4,7 @@
  */
 #include "aimanager.h"
 #include "goalmanager.h"
-#include "utility/debug.h"
+#include "../app/gendebug.h"
 
 using namespace ft;
 using namespace std;
@@ -31,7 +31,7 @@ AIManager* AIManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        if (Debug::AI>0)
+        if (GenDebug::AI>0)
             _dbg << "AIManager::getInstace(): instance of AIManager created " << endl;;
 
         m_instance = new AIManager();
@@ -93,7 +93,7 @@ void AIManager::UpadateAvatarGoals()
  **/
 bool AIManager::AddAvatar(AIAvatar* av)
 {
-    if (Debug::AI>0)
+    if (GenDebug::AI>0)
         _dbg << " AddAvatar " << av->toString() << " to AIManager " << std::endl;
 
     m_vAvatars.push_back(av);

@@ -21,12 +21,7 @@ bool Debug::ERR = false;
 
 int Debug::APP = 0;
 int Debug::MODEL_LOADING = 0;
-int Debug::TIMELINE = 0;
-int Debug::ACTION = 0;
-int Debug::AI = 0;
 int Debug::UPDATE = 0;
-int Debug::MOTION  = 0;
-int Debug::CONTROL = 0;
 int Debug::RENDER = 0;
 int Debug::FPS = 0;
 int Debug::CAMERA = 0;
@@ -50,44 +45,32 @@ void Debug::Destroy()
 #endif
 }
 
+int Debug::ReadLevelFromConfig(const char * debugName)
+{
+    int level = 0;
+    if (Config::getInstance()->IsKey(debugName))
+        level = Config::getInstance()->GetIntVal(debugName);
+    return level;
+}
+
 void Debug::LoadLevelsFromConfig()
 {
-    if (Config::getInstance()->IsKey("DEBUG_ON"))
-        ON = (Config::getInstance()->GetIntVal("DEBUG_ON") == 1);
+    ON = (ReadLevelFromConfig("DEBUG_ON")==1);
 
     if (ON)
     {
-        if (Config::getInstance()->IsKey("DEBUG_WARN"))
-            WARN = (Config::getInstance()->GetIntVal("DEBUG_WARN") == 1);
-        if (Config::getInstance()->IsKey("DEBUG_ERR"))
-            ERR = (Config::getInstance()->GetIntVal("DEBUG_ERR") == 1);
+        WARN = (ReadLevelFromConfig("DEBUG_WARN")==1);
+        ERR = (ReadLevelFromConfig("DEBUG_ERR")==1);
 
         //////// ADD  BELOW YOUR DEBUG FLAG LOADING form Config//////////////
 
-        if (Config::getInstance()->IsKey("DEBUG_APP"))
-            APP = Config::getInstance()->GetIntVal("DEBUG_APP");
-        if (Config::getInstance()->IsKey("DEBUG_MODEL_LOADING"))
-            MODEL_LOADING = Config::getInstance()->GetIntVal("DEBUG_MODEL_LOADING");
-        if (Config::getInstance()->IsKey("DEBUG_TIMELINE"))
-            TIMELINE = Config::getInstance()->GetIntVal("DEBUG_TIMELINE");
-        if (Config::getInstance()->IsKey("DEBUG_ACTION"))
-            ACTION = Config::getInstance()->GetIntVal("DEBUG_ACTION");
-        if (Config::getInstance()->IsKey("DEBUG_AI"))
-            AI = Config::getInstance()->GetIntVal("DEBUG_AI");
-        if (Config::getInstance()->IsKey("DEBUG_UPDATE"))
-            UPDATE = Config::getInstance()->GetIntVal("DEBUG_UPDATE");
-        if (Config::getInstance()->IsKey("DEBUG_MOTION"))
-            MOTION = Config::getInstance()->GetIntVal("DEBUG_MOTION");
-        if (Config::getInstance()->IsKey("DEBUG_CONTROL"))
-            CONTROL = Config::getInstance()->GetIntVal("DEBUG_CONTROL");
-        if (Config::getInstance()->IsKey("DEBUG_RENDER"))
-            RENDER = Config::getInstance()->GetIntVal("DEBUG_RENDER");
-        if (Config::getInstance()->IsKey("DEBUG_FPS"))
-            FPS = Config::getInstance()->GetIntVal("DEBUG_FPS");
-        if (Config::getInstance()->IsKey("DEBUG_CAMERA"))
-            CAMERA = Config::getInstance()->GetIntVal("DEBUG_CAMERA");
-        if (Config::getInstance()->IsKey("DEBUG_INPUT"))
-            INPUT = Config::getInstance()->GetIntVal("DEBUG_INPUT");
+        APP = ReadLevelFromConfig("DEBUG_APP");
+        MODEL_LOADING = ReadLevelFromConfig("DEBUG_MODEL_LOADING");
+        UPDATE = ReadLevelFromConfig("DEBUG_UPDATE");
+        RENDER = ReadLevelFromConfig("DEBUG_RENDER");
+        FPS = ReadLevelFromConfig("DEBUG_FPS");
+        CAMERA = ReadLevelFromConfig("DEBUG_CAMERA");
+        INPUT = ReadLevelFromConfig("DEBUG_INPUT");
 
         //////////////////////
 

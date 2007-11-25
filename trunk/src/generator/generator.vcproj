@@ -726,6 +726,14 @@
 				Name="app"
 				>
 				<File
+					RelativePath=".\src\framework\app\gendebug.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\app\gendebug.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\app\generatorapp.cpp"
 					>
 				</File>

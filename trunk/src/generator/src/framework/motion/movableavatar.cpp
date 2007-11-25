@@ -6,7 +6,7 @@
 #include "movableavatar.h"
 #include "../timeline/lcsmodifier.h"
 #include "timelinevisualizer.h"
-#include "utility/debug.h"
+#include "../app/gendebug.h"
 
 using namespace ft;
 using namespace std;
@@ -88,15 +88,15 @@ bool MovableAvatar::AddMotion(Motion* motion)
 
 		if ( it!=m_motions.end())
         { 
-            if (Debug::ERR)
-                _dbg << Debug::ERR_STR << "MovableAvatar::AddMotion motion " << _id << " already added to Avatar " << std::endl;
+            if (GenDebug::ERR)
+                _dbg << GenDebug::ERR_STR << "MovableAvatar::AddMotion motion " << _id << " already added to Avatar " << std::endl;
 
 			return false;
 		}
 	    m_motions.insert( std::make_pair( std::string(_id), motion) );
 	}
 
-    if (Debug::MOTION>0)
+    if (GenDebug::MOTION>0)
         _dbg << " MovableAvatar::AddMotion motion " << _id << " added to avatar " << std::endl;
 
 	return true;
@@ -117,7 +117,7 @@ bool  MovableAvatar::RemoveMotion(Motion* motion)
 		if ( it!=m_motions.end()) { 
             m_motions.erase(it);
 
-            if (Debug::MOTION>0)
+            if (GenDebug::MOTION>0)
                 _dbg << "MovableAvatar::AddMotion motion " << _id << " removed form avatar " << std::endl;
 
 			return true;
@@ -125,8 +125,8 @@ bool  MovableAvatar::RemoveMotion(Motion* motion)
 	    m_motions.insert( std::make_pair( std::string(_id), motion) );
 	}
 
-    if (Debug::ERR)
-        _dbg << Debug::ERR_STR << "MovableAvatar::AddMotion motion " << _id << " not found in Avatar " << std::endl;
+    if (GenDebug::ERR)
+        _dbg << GenDebug::ERR_STR << "MovableAvatar::AddMotion motion " << _id << " not found in Avatar " << std::endl;
 	return false;
 }
 
@@ -177,8 +177,8 @@ bool MovableAvatar::setTimeLine(TimeLine* timeLine)
     }
     else
     {
-        if (Debug::ERR)
-            _dbg << Debug::ERR_STR << "MovableAvatar::setTimeLine - timeline is already set for avatar " + toString();
+        if (GenDebug::ERR)
+            _dbg << GenDebug::ERR_STR << "MovableAvatar::setTimeLine - timeline is already set for avatar " + toString();
     }
 
     return result;
@@ -212,7 +212,7 @@ bool MovableAvatar::AddTimeLineMotion(TimeLineMotion *timeLineMotion)
  **/
 void MovableAvatar::StartTimeLine()
 {
-    if (Debug::TIMELINE>0)
+    if (GenDebug::TIMELINE>0)
         _dbg << toString() << "StartTimeLine()" << endl;
 
     if (m_timeLine != NULL)
@@ -268,7 +268,7 @@ void MovableAvatar::UpdateTimeLine(float elapsedSeconds)
  **/
 void MovableAvatar::Dump()
 {
-    if (Debug::MOTION>0)
+    if (GenDebug::MOTION>0)
     {
         _dbg << "Dump MovableAvatar content: " << std::endl;
         _dbg << "- motions: " << std::endl;
@@ -280,7 +280,7 @@ void MovableAvatar::Dump()
         }
     }
 
-    if (Debug::TIMELINE>0)
+    if (GenDebug::TIMELINE>0)
     {
 
         _dbg << "- time line:" << std::endl;
@@ -340,7 +340,7 @@ void MovableAvatar::OnUpdate(const double elapsedSeconds)
 */
 void MovableAvatar::Reset()
 {
-    if (Debug::MOTION>0)
+    if (GenDebug::MOTION>0)
         _dbg << toString() << " MovableAvatar::Reset() " << std::endl;
 
     if (getTimeLine() != NULL)
@@ -392,7 +392,7 @@ void MovableAvatar::OnMessage(Message* msg)
     } 
     else if (msg->getType() == MSG_START_SIMULATION)
     {
-        if (Debug::MOTION>0)
+        if (GenDebug::MOTION>0)
             _dbg << toString() << " start simulation .. " << std::endl;
 
         if (!getTimeLine()->isStarted())

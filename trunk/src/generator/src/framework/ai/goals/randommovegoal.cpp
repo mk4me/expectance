@@ -4,6 +4,7 @@
  */
 #include "randommovegoal.h"
 #include "utility/randomgen.h"
+#include "../../app/gendebug.h"
 
 using namespace ft;
 using namespace std;
@@ -40,7 +41,7 @@ void RandomMoveController::Apply(float elapsedSeconds, TimeLineContext * timeLin
         {
             setGoalReached(true);
 
-            if (Debug::AI>0)
+            if (GenDebug::AI>0)
                 _dbg << " RandomMoveController::Apply .. FINISH reached " << endl; 
         }
     }

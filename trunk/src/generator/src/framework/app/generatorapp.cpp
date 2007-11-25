@@ -6,6 +6,7 @@
 #include "../control/controlmanager.h"
 #include "../ai/aimanager.h"
 #include "../avatar/avatarfactory.h"
+#include "gendebug.h"
 
 
 using namespace ft;
@@ -13,6 +14,9 @@ using namespace ft;
 // \brief OVERRIDEN from ft::Application
 int GeneratorApp::Init()
 {
+
+    cout << GenDebug::ERR << " hej " << endl;
+
     int result = Application::Init();
  
     StartAISimulation();
@@ -25,6 +29,8 @@ int GeneratorApp::Init()
  **/
 bool GeneratorApp::InitModules()
 {
+    GenDebug::LoadLevelsFromConfig(); //additional flags from GenDebug
+
     if (!Application::InitModules())
         return false;
 
@@ -83,7 +89,7 @@ void GeneratorApp::InitStaticObjects()
  **/
 void GeneratorApp::InitAvatars()
 {
-    if (Debug::APP>0)
+    if (GenDebug::APP>0)
         _dbg << "Application::InitSceneObjects()." << endl;
 
     int avatar_number = -1;

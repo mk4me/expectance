@@ -3,6 +3,7 @@
  * author: abak
  */
 #include "goal.h"
+#include "../app/gendebug.h"
 
 using namespace ft;
 
@@ -32,8 +33,8 @@ bool Goal::ExecuteAction(ActionAvatar *av)
         Action* action = av->SetActionById(actionId);
         if (action == NULL)
         {
-            if (Debug::ERR)
-                _dbg << Debug::ERR_STR << "Goal::ExecuteAction - action id not correct:" << actionId << endl;
+            if (GenDebug::ERR)
+                _dbg << GenDebug::ERR_STR << "Goal::ExecuteAction - action id not correct:" << actionId << endl;
         }
         else
         {

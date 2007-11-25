@@ -3,7 +3,7 @@
  * author: abak
  */
 #include "goalmanager.h"
-#include "utility/debug.h"
+#include "../app/gendebug.h"
 #include "goals/randommovegoal.h"
 #include "goals/changedirgoal.h"
 #include "goals/limitedareagoal.h"
@@ -38,7 +38,7 @@ GoalManager* GoalManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        if (Debug::AI>0)
+        if (GenDebug::AI>0)
             _dbg << "GoalManager::getInstace(): instance of GoalManager created " << endl;
 
         m_instance = new GoalManager();
@@ -89,15 +89,15 @@ bool GoalManager::AddGoal(Goal* pGoal)
 
 		if ( it!=m_goals.end()) { 
 
-            if (Debug::ERR)
-                _dbg << Debug::ERR_STR << "GoalManager::AddGoal goal " << _id << " already added to GoalManager " << std::endl;
+            if (GenDebug::ERR)
+                _dbg << GenDebug::ERR_STR << "GoalManager::AddGoal goal " << _id << " already added to GoalManager " << std::endl;
 
 			return false;
 		}
 	    m_goals.insert( std::make_pair( std::string(_id), pGoal) );
 	}
 
-    if (Debug::AI>0)
+    if (GenDebug::AI>0)
         _dbg << " GoalManager::AddGoal goal " << _id << " added to GoalManager " << std::endl;
 
 	return true;
@@ -119,7 +119,7 @@ bool GoalManager::RemoveGoal(Goal* pGoal)
 		if ( it!=m_goals.end()) { 
             m_goals.erase(it);
             
-            if (Debug::AI>0)
+            if (GenDebug::AI>0)
                 _dbg << "GoalManager::RemoveGoal object " << _id << " removed form GoalManager " << std::endl;
 
 			return true;
@@ -127,8 +127,8 @@ bool GoalManager::RemoveGoal(Goal* pGoal)
 	    m_goals.insert( std::make_pair( std::string(_id), pGoal) );
 	}
 
-    if (Debug::ERR)
-        _dbg << Debug::ERR_STR <<"GoalManager::RemoveGoal object " << _id << " not found in CGoalManager " << std::endl;
+    if (GenDebug::ERR)
+        _dbg << GenDebug::ERR_STR <<"GoalManager::RemoveGoal object " << _id << " not found in CGoalManager " << std::endl;
 	return false;
 }
 
@@ -140,7 +140,7 @@ bool GoalManager::RemoveGoal(Goal* pGoal)
  **/
 bool GoalManager::AddRule(Rule* rule)
 {
-    if (Debug::AI>0)
+    if (GenDebug::AI>0)
         _dbg << " AddRule " << rule->toString() << " to AIManager " << std::endl;
 
     m_vRules.push_back(rule);
@@ -194,8 +194,8 @@ void GoalManager::CheckCurrGoalReached(AIAvatar *av)
         }
         else
         {
-            if (Debug::ERR)
-                _dbg << Debug::ERR_STR << "GoalManager::CheckCurrGoalReached: removing aicontroller " << currGoalController 
+            if (GenDebug::ERR)
+                _dbg << GenDebug::ERR_STR << "GoalManager::CheckCurrGoalReached: removing aicontroller " << currGoalController 
                     << " from timeline of " << av->toString() << " failed !!!! " << endl;
         }
     }
@@ -297,8 +297,8 @@ void GoalManager::ExecuteGoal(Goal* goal, AIAvatar *av)
 
     if (!actionExecuted)
     {
-        if (Debug::ERR)
-            _dbg << Debug::ERR_STR << "GoalManager::ExecuteGoal - execution of action needed to Goal realization failed. " << endl;
+        if (GenDebug::ERR)
+            _dbg << GenDebug::ERR_STR << "GoalManager::ExecuteGoal - execution of action needed to Goal realization failed. " << endl;
     }
 }
 

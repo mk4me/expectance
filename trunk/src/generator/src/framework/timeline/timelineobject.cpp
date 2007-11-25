@@ -3,6 +3,7 @@
  * author: abak
  */
 #include "timelineobject.h"
+#include "../app/gendebug.h"
 
 using namespace ft;
 
@@ -20,7 +21,7 @@ TimeLineObject::TimeLineObject()
  **/
 void TimeLineObject::Destroy(void)
 {
-    if (Debug::TIMELINE>0)
+    if (GenDebug::TIMELINE>0)
         _dbg << toString() << " Destroy() " << std::endl;
     
     TimeLineObject* obj = m_first;

@@ -8,6 +8,7 @@
 #include "utility/vishelper.h"
 #include "utility/mathutil.h"
 #include <math.h>
+#include "../app/gendebug.h"
 
 using namespace ft;
 
@@ -229,8 +230,8 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
             }
             else
             {
-                if (Debug::ERR)
-                    _dbg << Debug::ERR_STR << "LCSModifier::Apply(): no prev anim for OVERLAP !!! " << endl;
+                if (GenDebug::ERR)
+                    _dbg << GenDebug::ERR_STR << "LCSModifier::Apply(): no prev anim for OVERLAP !!! " << endl;
             }
         }
 

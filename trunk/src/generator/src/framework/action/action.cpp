@@ -4,6 +4,7 @@
  */
 #include "action.h"
 #include <iostream>
+#include "../app/gendebug.h"
 
 using namespace ft;
 
@@ -11,7 +12,7 @@ using namespace ft;
 /// \param PhysicsAvatar* avatar - avatar to which this action will be connected
 void Action::Init(PhysicsAvatar* avatar)
 {
-    if (Debug::ACTION)
+    if (GenDebug::ACTION)
         _dbg << toString() << ": Init " << std::endl;
 }
 
@@ -20,7 +21,7 @@ void Action::Init(PhysicsAvatar* avatar)
 /// \param Action* oldAction - previous action in which was Avatar before it gets into this action
 void Action::Entry(PhysicsAvatar* avatar, Action* oldAction)
 {
-    if (Debug::ACTION)
+    if (GenDebug::ACTION)
         _dbg << toString() << ": Entry " << std::endl;
 }
 
@@ -29,7 +30,7 @@ void Action::Entry(PhysicsAvatar* avatar, Action* oldAction)
 /// \param Action* newAction - next action to which releted Avatar is going to get from this action
 void Action::Exit(PhysicsAvatar* avatar, Action* newAction)
 {
-    if (Debug::ACTION)
+    if (GenDebug::ACTION)
         _dbg << toString() << ": Exit " << std::endl;
 }
 
@@ -37,7 +38,7 @@ void Action::Exit(PhysicsAvatar* avatar, Action* newAction)
 /// \param PhysicsAvatar* avatar - avatar to which this action is connected
 void Action::Reset(PhysicsAvatar* avatar)
 {
-    if (Debug::ACTION)
+    if (GenDebug::ACTION)
         _dbg << toString() << ": Reset " << std::endl;
 }
 

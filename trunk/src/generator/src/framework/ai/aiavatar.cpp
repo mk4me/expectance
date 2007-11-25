@@ -3,6 +3,7 @@
  * author: abak
  */
 #include "aiavatar.h"
+#include "../app/gendebug.h"
 
 using namespace ft;
 using namespace std;
@@ -44,7 +45,7 @@ void AIAvatar::Reset()
 {
     ActionAvatar::Reset();
 
-    if (Debug::AI>0)
+    if (GenDebug::AI>0)
         _dbg << toString() << " AIAvatar::Reset() " << std::endl;
 }
 

@@ -5,7 +5,7 @@
 
 #include "avatarfactory.h"
 #include "../ai/aiavatar.h"
-#include "utility/debug.h"
+#include "../app/gendebug.h"
 
 using namespace ft;
 
@@ -20,7 +20,7 @@ AvatarFactory* AvatarFactory::getAvatarFactoryInstance()
 {
     if (m_avatarFactoryInstance == NULL)
     {
-        if (Debug::MODEL_LOADING)
+        if (GenDebug::MODEL_LOADING)
             _dbg << "AvatarFactory::getAvatarFactoryInstance(): instance of AvatarFactory created " << endl;
 
         m_avatarFactoryInstance = new AvatarFactory();
