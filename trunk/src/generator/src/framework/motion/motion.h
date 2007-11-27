@@ -8,6 +8,8 @@
 
 #include <string>
 #include "core/global.h"
+#include "core/config.h"
+#include "utility/stringhelper.h"
 
 
 namespace ft
@@ -42,8 +44,12 @@ namespace ft
         void setAnimID(int anim_id) { m_anim_id = anim_id; }
         int getAnimID() { return m_anim_id; }
 
+	//! init foot limits from configuration for given animName
+	bool initFootLimits(const std::string animName); 
+
        
         bool isNullAnim() { return (m_anim_id == -1);}
+	float footLimits[4];
 
     private:
         std::string m_animName;

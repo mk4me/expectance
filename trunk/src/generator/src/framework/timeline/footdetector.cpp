@@ -43,6 +43,7 @@ FootDetector::~FootDetector()
 		VisualizationManager::getInstance()->RemoveObject(tracer_L);
 		VisualizationManager::getInstance()->RemoveObject(tracer_R);
 	}
+
 }
 
 /**
@@ -71,37 +72,72 @@ void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
 	_RFPos = _boneRFoot->getTranslationAbsolute();
 	_RTPos = _boneRToe->getTranslationAbsolute();
 	
-	//debug for setting 
-	//cout.precision(5);
-	//std::cout<< "====>>> " << fixed << "dTCPy ="<<_LTPos.y<< " dFCPy ="<<_LFPos.y<<" dFCPx ="<<_LFPos.x<< " dFCPz ="<<_LFPos.z<<endl;
-
-	//chod  Toe < 0 && 5 < Foot < 6
-	if((_LTPos.y < 0) && ((5<_LFPos.y)&&(_LFPos.y<6)))
+	// for debug setting 
+	// cout.precision(5);
+	// std::cout<< "====>>> " << fixed << "dTCPy ="<<_LTPos.y<< " dFCPy ="<<_LFPos.y<<" dFCPx ="<<_LFPos.x<< " dFCPz ="<<_LFPos.z<<endl;
+	
+	if (timeLineContext->anim_changed) //change limits as motion has changed
+	{
+		std::string _animName = timeLineContext->currAnim->getCoreAnimation()->getFilename();
+		const float *_fl = getLimits(_animName);
+		if (_fl!=NULL)
+		{
+			footLimits[0] = _fl[0]; footLimits[1] = _fl[1]; footLimits[2] = _fl[2]; footLimits[3] = _fl[3]; 
+		}
+		else
+			footLimits[0] = footLimits[1] = footLimits[2] = footLimits[3] = 1000; //when limit doesn't exist
+	}
+	
+	if( ((footLimits[0] < _LFPos.y) && (_LFPos.y < footLimits[1])) && ((footLimits[2] < _LTPos.y) && (_LTPos.y < footLimits[3])))
 	{
 		_LTPos.y = 0;
 	if (FOOTPLANT_TRACE)
 			tracer_L->AddPoint(_LTPos); 
 	}
 
-	if((_RTPos.y < 0) && ((5<_RFPos.y)&&(_RFPos.y<6)))
+	if( ((footLimits[0] < _RFPos.y) && (_RFPos.y < footLimits[1])) && ((footLimits[2] < _RTPos.y) && (_RTPos.y < footLimits[3])))
 	{
 		_RTPos.y = 0;
 	if (FOOTPLANT_TRACE)
 		tracer_R->AddPoint(_RTPos);
 	}
+}
 
-	//bieg  Toe < 2 && 11 < Foot < 13
-	if((_LTPos.y < 3) && ((11<_LFPos.y)&&(_LFPos.y<14)))
+
+
+bool FootDetector::AddLimits(const std::string& motionName, const float* limits)
+{
+    //float *_tmp = new float[4];
+	std::string _id = motionName;
+	if (!_id.empty())
 	{
-		_LTPos.y = 0;
-	if (FOOTPLANT_TRACE)
-		tracer_L->AddPoint(_LTPos);
+	 	std::map<std::string,const float*>::iterator it = m_limits.find(_id);
+
+		if ( it!=m_limits.end())
+        { 
+            if (Debug::ERR)
+                _dbg << Debug::ERR_STR << "FootDetector::AddLimits limits for motion " << _id << " already added to it's FootDetector " << std::endl;
+			return false;
+		}
+		else
+		{
+			//_tmp[0] = limits[0]; _tmp[1] = limits[1]; _tmp[2] = limits[2]; _tmp[3] = limits[3];
+			m_limits.insert( std::make_pair( std::string(_id), limits) );
+		}
 	}
 
-	if((_RTPos.y < 3) && ((11<_RFPos.y)&&(_RFPos.y<14)))
-	{
-		_RTPos.y = 0;
-	if (FOOTPLANT_TRACE)
-		tracer_R->AddPoint(_RTPos);
-	}
+//    if (Debug::MOTION>0)
+//        _dbg << " FootDetector::AddLimits limits for motion " << _id << " added to it's FootDetector " << std::endl;
+
+	return true;
+}
+
+const float* FootDetector::getLimits(const std::string &motionName)
+{
+	const float* _limits = NULL;
+	std::map<std::string,const float*>::iterator it = m_limits.find(motionName);
+	if ( it!=m_limits.end()) { 
+        _limits = it->second;
+    }
+    return _limits;
 }

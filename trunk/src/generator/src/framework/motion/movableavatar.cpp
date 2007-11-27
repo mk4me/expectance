@@ -151,6 +151,7 @@ Motion* MovableAvatar::GetMotion(std::string motionName)
  **/
 void MovableAvatar::InitMotions()
 {
+    FootDetector* _fd = getFootDetector();
     int animCount = m_calCoreModel->getCoreAnimationCount();
     for (int i=0; i<animCount; i++)
     {
@@ -158,6 +159,7 @@ void MovableAvatar::InitMotions()
         std::string animName = anim->getFilename();
 
         Motion* mot = new Motion(animName, i);
+	_fd->AddLimits(animName, mot->footLimits);
 
         this->AddMotion(mot);
     }
@@ -302,6 +304,7 @@ void MovableAvatar::Dump()
 /// \brief Initializes this avatar with regard to motions
 void MovableAvatar::Init()
 {
+  setFootDetector(new FootDetector());
   InitMotions();
   setTimeLine(new TimeLine());
   TimeLineContext* ctx = new TimeLineContext();
@@ -364,7 +367,7 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
         setLCSModifier(new LCSModifier());
         getTimeLine()->AddModifier(getLCSModifier());
 
-		setFootDetector(new FootDetector());
+
         getTimeLine()->AddModifier(getFootDetector());
 		
         if ((Config::getInstance()->IsKey("track_on")) && (Config::getInstance()->GetIntVal("track_on")==1))
