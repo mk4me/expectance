@@ -7,6 +7,7 @@
 #define _GEN_AVATAR_H
 
 #include "scene/cal3dobject.h"
+#include "core/msgsender.h"
 
 namespace ft
 {
@@ -20,6 +21,11 @@ namespace ft
 		Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
 	    virtual ~Avatar(void);
         virtual void Destroy(void);
+
+        MsgSender* getLocalMsgSender() { return m_localMsgSender; }
+
+    private:
+        MsgSender* m_localMsgSender;
     };
 };
 

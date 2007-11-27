@@ -7,6 +7,7 @@
 #include "scene/cameramanager.h"
 #include "scene/oglcontext.h"
 #include "core/inputmanager.h"
+#include "core/globalmsgsender.h"
 
 
 using namespace ft;
@@ -217,11 +218,11 @@ void ControlManager::OnSpecial(int key, int x, int y)
   {
       if (m_activeAvatarInd >= 0 && getActiveAvatar() != NULL)
       {
-        UpdateManager::getInstance()->SendMessage(new Message(controlMessage, new MessageParam(getActiveAvatar()->getName())), true);
+        GlobalMsgSender::getInstance()->SendMsg(new Message(controlMessage, new MessageParam(getActiveAvatar()->getName())), true);
       }
       else
       {
-        UpdateManager::getInstance()->SendMessage(new Message(controlMessage, NULL), true);
+        GlobalMsgSender::getInstance()->SendMsg(new Message(controlMessage, NULL), true);
       }
   }
 }

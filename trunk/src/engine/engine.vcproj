@@ -345,6 +345,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\core\globalmsgsender.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\core\globalmsgsender.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\core\inputlistener.h"
 				>
 			</File>
@@ -370,6 +378,18 @@
 			</File>
 			<File
 				RelativePath=".\src\core\message.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\core\msglistener.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\core\msgsender.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\core\msgsender.h"
 				>
 			</File>
 			<File

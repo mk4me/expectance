@@ -26,6 +26,7 @@ int Debug::RENDER = 0;
 int Debug::FPS = 0;
 int Debug::CAMERA = 0;
 int Debug::INPUT = 0;
+int Debug::MESSAGE = 0;
 
 //////// //////////////
 
@@ -71,6 +72,7 @@ void Debug::LoadLevelsFromConfig()
         FPS = ReadLevelFromConfig("DEBUG_FPS");
         CAMERA = ReadLevelFromConfig("DEBUG_CAMERA");
         INPUT = ReadLevelFromConfig("DEBUG_INPUT");
+        MESSAGE = ReadLevelFromConfig("DEBUG_MESSAGE");
 
         //////////////////////
 

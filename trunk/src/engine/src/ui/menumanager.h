@@ -6,7 +6,6 @@
 #ifndef _GEN_MENU_MANAGER_H
 #define _GEN_MENU_MANAGER_H
 
-#include "../core/UpdateManager.h"
 #include "../core/config.h"
 #include "../utility/stringhelper.h"
 #include "../scene/oglcontext.h"

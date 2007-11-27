@@ -7,7 +7,7 @@
 #define _GEN_MESHOBJECT_H
 
 #include "cal3d/cal3d.h"
-#include "../core/UpdateObject.h"
+#include "../core/msglistener.h"
 #include "sceneobject.h"
 #include "OGLContext.h"
 
@@ -19,7 +19,7 @@ namespace ft
 	 *! Base class for all objects that has refernce in Cal3d (which contain meshes, materials, skeleton and animations)
      * \param CalModel * calModel -- model in Cal3d which is referenced by this Cal3DObject
 	 **/
-    class Cal3DObject : public UpdateObject, public SceneObject
+    class Cal3DObject : public MsgListener, public UpdateObject, public SceneObject
     {
     public:
 		Cal3DObject(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);

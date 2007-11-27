@@ -96,34 +96,6 @@ void UpdateManager::OnUpdate()
 }
 
 /**
- * \brief This method is used to send new message to objectes registered in UpdateManager
- *
- * \param ft::Message * msg - message to send
- * \param bool deleteAfterSent - defines if message object msg should be deleted after sending
- **/
-void UpdateManager::SendMessage(Message* msg, bool deleteAfterSent)
-{
-    if (Debug::UPDATE>0)
-        _dbg << "UpdateManager::SendMessage: "<< Message::_GET_MSG_NAME(msg->getType())  << std::endl;
-
-    //TODO: abak:  this update should be synchronized with adding and removing UpdateObjects
-
-   	std::map<std::string,UpdateObject*>::iterator it=m_objects.begin();
-	for( ; it != m_objects.end(); ++it )
-    {
-        it->second->OnMessage(msg);
-    }
-
-    if (deleteAfterSent && msg != NULL)
-    {
-        if (msg->getParam() != NULL)
-            delete msg->getParam();
-        delete msg;
-    }
-
-}
-
-/**
  * \brief Register UpdateObject in UpdateManager
  *
  * \param ft::UpdateObject * pObj - object that will be registered in UpdateManager

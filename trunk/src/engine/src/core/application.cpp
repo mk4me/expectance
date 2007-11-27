@@ -6,6 +6,7 @@
 #include "application.h"
 #include "config.h"
 #include "UpdateManager.h"
+#include "GlobalMsgSender.h"
 #include "inputmanager.h"
 #include "../scene/cal3dobjectfactory.h"
 #include "../scene/visualizationmanager.h"
@@ -61,6 +62,7 @@ bool Application::InitModules()
     Debug::InitDebug();
     InputManager::getInstance();  //enforced creation of singleton
     UpdateManager::getInstance()->Init();  //enforced creation of singleton
+    GlobalMsgSender::getInstance();  //enforced creation of singleton
     Cal3DObjectFactory::getMeshObjectFactoryInstance();   //enforced creation of singleton
 
     CreateVisualizationManager();  //enforced creation of singleton
@@ -97,17 +99,17 @@ void Application::OnKey(unsigned char key, int x, int y)
   switch(key)
   {
     case 13: //enter
-//      UpdateManager::getInstance()->SendMessage(new Message(MSG_START_SIMULATION), true);
+//      GlobalMsgSender::getInstance()->SendMsg(new Message(MSG_START_SIMULATION), true);
       break;
     case 'z':
     case 'Z': 
-      UpdateManager::getInstance()->SendMessage(new Message(MSG_RESTART_SIMULATION), true);
+      GlobalMsgSender::getInstance()->SendMsg(new Message(MSG_RESTART_SIMULATION), true);
       break;
     case 't':
-      UpdateManager::getInstance()->SendMessage(new Message(MSG_TEST), true);
+      GlobalMsgSender::getInstance()->SendMsg(new Message(MSG_TEST), true);
        break;     
     case 'i':
-      UpdateManager::getInstance()->SendMessage(new Message(MSG_DUMP_STATE), true);
+      GlobalMsgSender::getInstance()->SendMsg(new Message(MSG_DUMP_STATE), true);
        break;     
     // test for quit event
     case 27:
@@ -115,7 +117,7 @@ void Application::OnKey(unsigned char key, int x, int y)
       exit(0);
       break;
     case ' ':
-      UpdateManager::getInstance()->SendMessage(new Message(MSG_CONTROL_PAUSE), true);
+      GlobalMsgSender::getInstance()->SendMsg(new Message(MSG_CONTROL_PAUSE), true);
       break;
     case '*':
       UpdateManager::getInstance()->setTimeScale(  UpdateManager::getInstance()->getTimeScale() * 1.1f);
@@ -124,10 +126,10 @@ void Application::OnKey(unsigned char key, int x, int y)
       UpdateManager::getInstance()->setTimeScale(  UpdateManager::getInstance()->getTimeScale() / 1.1f);
       break;
     case 'R':
-      UpdateManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_RENDER_METHOD), true);  
+      GlobalMsgSender::getInstance()->SendMsg(new Message(MSG_PROPERTY_RENDER_METHOD), true);  
       break;
 	case 'S':
-      UpdateManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_SHADOW), true);  
+      GlobalMsgSender::getInstance()->SendMsg(new Message(MSG_PROPERTY_SHADOW), true);  
   	  break;
 	case 'F':
 		OGLContext::getInstance()->changeFloorType();
@@ -139,7 +141,7 @@ void Application::OnKey(unsigned char key, int x, int y)
       if((key >= '0') && (key <= '9'))
       {
         float lod = (key == '0') ? 1.0f : (key - '0') * 0.1f;
-        UpdateManager::getInstance()->SendMessage(new Message(MSG_PROPERTY_LOD, new MessageParam(lod)), true);
+        GlobalMsgSender::getInstance()->SendMsg(new Message(MSG_PROPERTY_LOD, new MessageParam(lod)), true);
       }
       break;
   }

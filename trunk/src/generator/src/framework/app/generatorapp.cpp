@@ -4,6 +4,7 @@
  */
 #include "generatorapp.h"
 #include "../control/controlmanager.h"
+#include "core/globalmsgsender.h"
 #include "../ai/aimanager.h"
 #include "../avatar/avatarfactory.h"
 #include "genvisualizationmanager.h"
@@ -78,6 +79,7 @@ void GeneratorApp::InitStaticObjects()
     {
       VisualizationManager::getInstance()->AddObject(table); 
       UpdateManager::getInstance()->AddUpdateObject(table);
+      GlobalMsgSender::getInstance()->AddMsgListener(table);
       CalVector vStartPos(0,0,0);
       table->setPosition(vStartPos);
     }
@@ -87,6 +89,7 @@ void GeneratorApp::InitStaticObjects()
     {
       VisualizationManager::getInstance()->AddObject(table); 
       UpdateManager::getInstance()->AddUpdateObject(table);
+      GlobalMsgSender::getInstance()->AddMsgListener(table);
       CalVector vStartPos(200,0,200);
       table->setPosition(vStartPos);
     }
@@ -139,7 +142,7 @@ void GeneratorApp::InitAvatars()
         }
     }
 
-    UpdateManager::getInstance()->SendMessage(new Message(MSG_START_SIMULATION), true);
+    GlobalMsgSender::getInstance()->SendMsg(new Message(MSG_START_SIMULATION), true);
 }
 
 /**
@@ -170,6 +173,7 @@ Avatar* GeneratorApp::CreateAvatarOnScene(const std::string& calCoreModel,const 
   {
 	  VisualizationManager::getInstance()->AddObject(avatar); 
       UpdateManager::getInstance()->AddUpdateObject(avatar);
+      GlobalMsgSender::getInstance()->AddMsgListener(avatar);
       AIManager::getInstance()->AddAvatar((AIAvatar*)avatar);
   }
 

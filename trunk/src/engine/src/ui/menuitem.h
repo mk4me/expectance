@@ -62,5 +62,5 @@ namespace ft
 #endif //_GEN_MENU_ITEM_H
 
 /* for future use:
-void SendMessage(); // info jaki button "etykieta uid buttona" + stan to powinien interpretowac i pachowac menager, ktory wysyla takie informacje do systemu lub sam wykonuje akcje
+void SendMsg(); // info jaki button "etykieta uid buttona" + stan to powinien interpretowac i pachowac menager, ktory wysyla takie informacje do systemu lub sam wykonuje akcje
 */

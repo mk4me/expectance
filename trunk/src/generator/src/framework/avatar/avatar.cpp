@@ -18,7 +18,7 @@ using namespace ft;
 Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName):
 Cal3DObject(calModel, calCoreModel, modelName)
 {
-    //empty
+    m_localMsgSender = new MsgSender();
 }
 
 /**
@@ -27,7 +27,8 @@ Cal3DObject(calModel, calCoreModel, modelName)
  **/
 Avatar::~Avatar()
 {
-    //empty
+    m_localMsgSender->Destroy();
+    delete m_localMsgSender;
 }
 
 /// \brief Releases all resources and objects related to this Avatar

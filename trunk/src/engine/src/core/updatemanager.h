@@ -29,8 +29,6 @@ namespace ft
 
         void OnUpdate();  // called from window application
 
-        void SendMessage(Message* msg, bool deleteAfterSent);  //request to send a message to registered objects
-
         bool AddUpdateObject(UpdateObject* pObj);
         bool  RemoveUpdateObject(UpdateObject* pObj);
 

@@ -5,6 +5,7 @@
 
 #include "menumanager.h"
 #include "../core/inputmanager.h"
+#include "../core/globalmsgsender.h"
 
 using namespace ft;
 
@@ -218,7 +219,7 @@ void MenuManager::OnMouseButtonUp(int button, int x, int y)
 		    {
 			    m_avtiveButton = m_releasedButon;
 			    std::string id = m_mainMenu->getSubMenu().at(m_avtiveButton)->getMenuName();
-			    UpdateManager::getInstance()->SendMessage(new Message(MSG_MENU_ITEM_SELECTED, new MessageParam(id)), true);
+			    GlobalMsgSender::getInstance()->SendMsg(new Message(MSG_MENU_ITEM_SELECTED, new MessageParam(id)), true);
 		    }
 		    _dbg <<"Button released "<< btn << endl;
 	    }

@@ -20,8 +20,6 @@ namespace ft
         UpdateObject(void) { /*empty*/}
 	    virtual ~UpdateObject(void) { /*empty*/}
 
-        virtual void OnMessage(Message* msg);  // receives a message from UpdateManager
-
         virtual void OnUpdate(const double elapsedTime);  // updates by UpdateManager
     };
 };
