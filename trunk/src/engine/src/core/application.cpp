@@ -62,7 +62,9 @@ bool Application::InitModules()
     InputManager::getInstance();  //enforced creation of singleton
     UpdateManager::getInstance()->Init();  //enforced creation of singleton
     Cal3DObjectFactory::getMeshObjectFactoryInstance();   //enforced creation of singleton
-    if (!VisualizationManager::getInstance()->Init()) //enforced creation of singleton
+
+    CreateVisualizationManager();  //enforced creation of singleton
+    if (!VisualizationManager::getInstance()->Init()) 
 	{
         if (Debug::APP>0)
     		_dbg << "VisualizationManager::Init error" << endl;
@@ -73,6 +75,12 @@ bool Application::InitModules()
 	UpdateManager::getInstance()->AddUpdateObject(CameraManager::getInstance()); //synchronize cameramanager from global timer
 
 	return true;
+}
+
+bool Application::CreateVisualizationManager()
+{
+    VisualizationManager* man = VisualizationManager::createInstanceFirstTime();  //enforced creation of singleton
+    return (man!=NULL);
 }
 
 /*-----  -----*/

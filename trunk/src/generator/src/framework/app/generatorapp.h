@@ -20,6 +20,7 @@ namespace ft
         virtual int Init();
         virtual void InitObjects();
         virtual bool InitModules();
+        virtual bool CreateVisualizationManager();
         void InitStaticObjects();
         void InitAvatars();
         void SetCameraToActiveAvatar();

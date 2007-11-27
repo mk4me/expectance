@@ -37,7 +37,9 @@ namespace ft
         //! singleton - Returns the only instance of VisualizationManager
 		/*! Creates the only instance of VisualizationManager as well as enforces instantiation of TextureManager and Camera singletons */
         static VisualizationManager * getInstance();
-		//! destroy all resources owned by VisualizationManager
+        //! it cerates only instance when called first time
+        static VisualizationManager* createInstanceFirstTime();
+        //! destroy all resources owned by VisualizationManager
         static void DestroyInstance();
 
 		//! create scene and all connected scene objects
@@ -52,7 +54,7 @@ namespace ft
 		void CleanUp();
 		//! register SceneObject
 		/*! Registers object to be rendered */
-		bool AddObject(SceneObject* pObj);   
+		virtual bool AddObject(SceneObject* pObj);   
 		
 		//! get the pointer value of SceneObject by unique id
 		SceneObject* getObject(std::string id);
@@ -68,7 +70,11 @@ namespace ft
 		void Render3DObjects();
 		/*! Calls all 2D objects for rendering */
 		void Render2DObjects();
-    private:
+
+        /*! Checks if object of given type can be traced by camera */
+        virtual bool IsObjectTraceableByCamera(SceneObject* pObj);
+
+    protected:
 		
         static VisualizationManager* m_instance;
 		std::map<std::string,SceneObject*> m_SceneObjects;

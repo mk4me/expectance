@@ -23,6 +23,20 @@ VisualizationManager* VisualizationManager::getInstance()
     return m_instance;
 }
 
+VisualizationManager* VisualizationManager::createInstanceFirstTime()
+{
+    if (m_instance == NULL)
+    {
+        m_instance = new VisualizationManager();
+    }
+    else
+    {
+        if (Debug::ERR)
+            _dbg << "VisualizationManager::createInstanceFirstTime(): instance alraedy created!!!! " << endl;
+    }
+    return m_instance;
+}
+
 void VisualizationManager::DestroyInstance()
 {
     if (m_instance != NULL)
@@ -110,9 +124,13 @@ void VisualizationManager::CleanUp()
 }
 
 
+bool VisualizationManager::IsObjectTraceableByCamera(SceneObject* pObj)
+{
+    return (dynamic_cast<SceneObject*>(pObj)!=NULL);
+}
+
 bool VisualizationManager::AddObject(SceneObject* pObj)
 {
-	SceneObject *pScObj;
 	std::string _id = pObj->getID();
 	if (!_id.empty())
 	{
@@ -122,8 +140,8 @@ bool VisualizationManager::AddObject(SceneObject* pObj)
 		}
 	    m_SceneObjects.insert( std::make_pair( std::string(_id), pObj ) );
 
-		if ((pScObj = dynamic_cast<SceneObject*>(pObj))!=NULL)
-		{
+        if (IsObjectTraceableByCamera(pObj))
+        {
 			CameraManager::getInstance()->AddCamera(pObj); // add camera by default to Avatar object only
 			CameraManager::getInstance()->setCurrentSceneObjectID(_id);   // set current scene object ID to last added scene object
 		}

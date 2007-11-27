@@ -742,6 +742,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\framework\app\genvisualizationmanager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\app\genvisualizationmanager.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\app\main.cpp"
 					>
 				</File>

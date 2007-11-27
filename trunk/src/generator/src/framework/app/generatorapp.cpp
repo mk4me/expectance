@@ -6,6 +6,7 @@
 #include "../control/controlmanager.h"
 #include "../ai/aimanager.h"
 #include "../avatar/avatarfactory.h"
+#include "genvisualizationmanager.h"
 #include "gendebug.h"
 
 
@@ -43,6 +44,14 @@ bool GeneratorApp::InitModules()
 
     return true;
 }
+
+bool  GeneratorApp::CreateVisualizationManager()
+{
+    VisualizationManager* man = GenVisualizationManager::createInstanceFirstTime();  //enforced creation of singleton
+    man = dynamic_cast<GenVisualizationManager* >(man);  // additional check of type
+    return (man!=NULL);
+}
+
 
 
 /**

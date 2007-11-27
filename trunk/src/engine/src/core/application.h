@@ -20,6 +20,7 @@ namespace ft
 
         void InitConfig();
 
+        virtual bool CreateVisualizationManager();
         virtual bool InitModules();
         virtual void InitObjects();
 
