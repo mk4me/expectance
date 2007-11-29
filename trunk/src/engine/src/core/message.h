@@ -19,7 +19,6 @@ namespace ft
     static const int MSG_CONTROL_TURN_LEFT = 3;  //param: NULL
     static const int MSG_CONTROL_TURN_RIGHT = 4;  //param: NULL
 
-
     static const int MSG_PROPERTY_LOD = 5;  //param: float
     static const int MSG_PROPERTY_RENDER_METHOD = 6;  //param: NULL  , changes render method into next one
 	static const int MSG_PROPERTY_SHADOW = 7; //param bool
@@ -31,11 +30,13 @@ namespace ft
 	//static const int MSG_INPUT_BUTTON_RELEASED = 11;
 	//static const int MSG_INPUT_MOUSE_MOVED = 12;
 
-      static const int MSG_START_SIMULATION = 20;
-      static const int MSG_RESTART_SIMULATION = 21;
+    static const int MSG_START_SIMULATION = 20;
+    static const int MSG_RESTART_SIMULATION = 21;
 
-      static const int MSG_DUMP_STATE = 22;
+    static const int MSG_DUMP_STATE = 22;
 
+	static const int MSG_DETECTOR_LEFT_FOOT_ON_THE_FLOOR = 23;  
+	static const int MSG_DETECTOR_RIGHT_FOOT_ON_THE_FLOOR = 24; 
 
 
 
@@ -49,18 +50,21 @@ namespace ft
     public:
         MessageParam(int value) { m_nValue = value; }
         MessageParam(float value) { m_fValue = value; }
+        MessageParam(bool value) { m_bValue = value; }
 		MessageParam(const std::string value) { m_strValue = value; }
 //        MessageParam(const std::string value) { m_strValue = value; }
 //        MessageParam(void * value) { m_ptrValue = value; } //WARNING : this consructos is improperly called for string values 
 
         int getIntValue() { return m_nValue; }
         float getFloatValue() { return m_fValue; }
+        bool getBoolValue() { return m_bValue; }
         std::string getStrValue() { return m_strValue; }
 //        void* getObjecttValue() { return m_ptrValue; } 
         
     private:
         int m_nValue;
         float m_fValue;
+		bool m_bValue;
         std::string m_strValue;
         void* m_ptrValue;
     };

@@ -19,18 +19,20 @@ FootDetector::FootDetector(void)
 
 	if (FOOTPLANT_TRACE)
 	{
-		tracer_L  = new TraceLine("leftFootMarker");
-		tracer_L->setMarkerShape(ft_Cross);
-		tracer_L->setBufferSize(20);
-		tracer_L->setMarkerColor(CalVector(1,1,0));
-		VisualizationManager::getInstance()->AddObject(tracer_L);
-		tracer_R  = new TraceLine("rightFootMarker");
-		tracer_R->setMarkerShape(ft_Cross);
-		tracer_R->setBufferSize(20);
-		tracer_R->setColor(CalVector(1,0,0));
-		tracer_R->setMarkerColor(CalVector(1,1,0));
-		VisualizationManager::getInstance()->AddObject(tracer_R);
+		m_tracerL  = new TraceLine("leftFootMarker");
+		m_tracerL->setMarkerShape(ft_Cross);
+		m_tracerL->setBufferSize(20);
+		m_tracerL->setMarkerColor(CalVector(1,1,0));
+		VisualizationManager::getInstance()->AddObject(m_tracerL);
+		m_tracerR  = new TraceLine("rightFootMarker");
+		m_tracerR->setMarkerShape(ft_Cross);
+		m_tracerR->setBufferSize(20);
+		m_tracerR->setColor(CalVector(1,0,0));
+		m_tracerR->setMarkerColor(CalVector(1,1,0));
+		VisualizationManager::getInstance()->AddObject(m_tracerR);
 	}
+	
+	m_leftFootPlant = m_rightFootPlant = false;   
 }
 
 
@@ -38,10 +40,10 @@ FootDetector::~FootDetector()
 {
 	if (FOOTPLANT_TRACE)
 	{
-	    tracer_L->ClearTrace();
-		tracer_R->ClearTrace();
-		VisualizationManager::getInstance()->RemoveObject(tracer_L);
-		VisualizationManager::getInstance()->RemoveObject(tracer_R);
+	    m_tracerL->ClearTrace();
+		m_tracerR->ClearTrace();
+		VisualizationManager::getInstance()->RemoveObject(m_tracerL);
+		VisualizationManager::getInstance()->RemoveObject(m_tracerR);
 	}
 
 }
@@ -57,7 +59,7 @@ void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
     TimeLineModifier::Apply(elapsedSeconds, timeLineContext);
 	
 	// Here apply this detector
-	CalVector _RFPos, _LFPos;
+	CalVector _RHPos, _LHPos;
 	CalVector _RTPos, _LTPos;
 
 	CalSkeleton *_skel = timeLineContext->getAvatar()->GetCalModel()->getSkeleton();
@@ -67,14 +69,14 @@ void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
 	CalBone *_boneRToe = _skel->getBone(44);
 	
 	//init
-	_LFPos = _boneLFoot->getTranslationAbsolute();
+	_LHPos = _boneLFoot->getTranslationAbsolute();
 	_LTPos = _boneLToe->getTranslationAbsolute();
-	_RFPos = _boneRFoot->getTranslationAbsolute();
+	_RHPos = _boneRFoot->getTranslationAbsolute();
 	_RTPos = _boneRToe->getTranslationAbsolute();
 	
 	// for debug setting 
 	// cout.precision(5);
-	// std::cout<< "====>>> " << fixed << "dTCPy ="<<_LTPos.y<< " dFCPy ="<<_LFPos.y<<" dFCPx ="<<_LFPos.x<< " dFCPz ="<<_LFPos.z<<endl;
+	// std::cout<< "====>>> " << fixed << "dTCPy ="<<_LTPos.y<< " dFCPy ="<<_LHPos.y<<" dFCPx ="<<_LHPos.x<< " dFCPz ="<<_LHPos.z<<endl;
 	
 	if (timeLineContext->anim_changed) //change limits as motion has changed
 	{
@@ -82,28 +84,65 @@ void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
 		const float *_fl = getLimits(_animName);
 		if (_fl!=NULL)
 		{
-			footLimits[0] = _fl[0]; footLimits[1] = _fl[1]; footLimits[2] = _fl[2]; footLimits[3] = _fl[3]; 
+			//  HeelminY				   HeelmaxY				  ToeminY					ToemaxY
+			m_footLimits[0] = _fl[0]; m_footLimits[1] = _fl[1]; m_footLimits[2] = _fl[2]; m_footLimits[3] = _fl[3]; 
 		}
 		else
-			footLimits[0] = footLimits[1] = footLimits[2] = footLimits[3] = 1000; //when limit doesn't exist
+			m_footLimits[0] = m_footLimits[1] = m_footLimits[2] = m_footLimits[3] = 1000; //when limit doesn't exist
 	}
 	
-	if( ((footLimits[0] < _LFPos.y) && (_LFPos.y < footLimits[1])) && ((footLimits[2] < _LTPos.y) && (_LTPos.y < footLimits[3])))
+	//LEFT FOOT
+	if( ((m_footLimits[0] < _LHPos.y) && (_LHPos.y < m_footLimits[1])) && ((m_footLimits[2] < _LTPos.y) && (_LTPos.y < m_footLimits[3])))
 	{
-		_LTPos.y = 0;
-	if (FOOTPLANT_TRACE)
-			tracer_L->AddPoint(_LTPos); 
-	}
+		if (!m_leftFootPlant)
+		{
+			m_leftFootPlant = true;
+			timeLineContext->getAvatar()->getLocalMsgSender()->SendMsg(new Message(MSG_DETECTOR_LEFT_FOOT_ON_THE_FLOOR, 
+																	   new MessageParam(true)), true);
+			 std::cout<< "====>>> Left foot on the ground <<<=====" << endl;
+		}
 
-	if( ((footLimits[0] < _RFPos.y) && (_RFPos.y < footLimits[1])) && ((footLimits[2] < _RTPos.y) && (_RTPos.y < footLimits[3])))
-	{
-		_RTPos.y = 0;
-	if (FOOTPLANT_TRACE)
-		tracer_R->AddPoint(_RTPos);
+		if (FOOTPLANT_TRACE)
+		{
+			_LTPos.y = 0;
+			m_tracerL->AddPoint(_LTPos); 
+		}
 	}
+	else
+		if (m_leftFootPlant) //left foot siwng phase
+		{
+			m_leftFootPlant = false;
+			timeLineContext->getAvatar()->getLocalMsgSender()->SendMsg(new Message(MSG_DETECTOR_LEFT_FOOT_ON_THE_FLOOR, 
+																	   new MessageParam(false)), true);
+			 std::cout<< "====>>> Left foot swinging <<<=====" << endl;
+		}
+
+	// RIGHT FOOT
+	if( ((m_footLimits[0] < _RHPos.y) && (_RHPos.y < m_footLimits[1])) && ((m_footLimits[2] < _RTPos.y) && (_RTPos.y < m_footLimits[3])))
+	{
+		if (!m_rightFootPlant)
+		{
+			m_rightFootPlant = true;
+			timeLineContext->getAvatar()->getLocalMsgSender()->SendMsg(new Message(MSG_DETECTOR_RIGHT_FOOT_ON_THE_FLOOR,
+																	   new MessageParam(true)), true);
+			// std::cout<< "====>>> Right foot on the ground <<<=====" << endl;
+		}
+			
+		if (FOOTPLANT_TRACE)
+		{
+			_RTPos.y = 0;
+			m_tracerR->AddPoint(_RTPos);
+		}
+	}
+	else
+		if (m_rightFootPlant)  // right foot swing phase
+		{
+			m_rightFootPlant = false;
+			timeLineContext->getAvatar()->getLocalMsgSender()->SendMsg(new Message(MSG_DETECTOR_RIGHT_FOOT_ON_THE_FLOOR,
+																	   new MessageParam(false)), true);
+
+		}
 }
-
-
 
 bool FootDetector::AddLimits(const std::string& motionName, const float* limits)
 {

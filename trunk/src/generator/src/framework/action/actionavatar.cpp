@@ -19,6 +19,9 @@ ActionAvatar::ActionAvatar(CalModel* calModel, CalCoreModel* calCoreModel, const
     ACTION_IDLE = NULL;
     ACTION_WALK = NULL;
     ACTION_RUN = NULL;
+	m_turnLeft = m_turnRight = true;
+	FOOT_DETECTOR = ((Config::getInstance()->IsKey("foot_detector")) 
+							&& (Config::getInstance()->GetIntVal("foot_detector")==1)) ? true: false;
 }
 
 // \brief Destructor
@@ -208,15 +211,31 @@ void ActionAvatar::OnMessage(Message* msg)
                 SetActionById(ACTION_WALK_ID);
         }
     }
-    else if (msg->getType() == MSG_CONTROL_TURN_LEFT)
+	else if (msg->getType() == MSG_DETECTOR_LEFT_FOOT_ON_THE_FLOOR)
+    {
+        if ((msg->getParam() != NULL) && (FOOT_DETECTOR) )
+		{
+			m_turnRight = msg->getParam()->getBoolValue();
+		}
+	}
+	else if (msg->getType() == MSG_DETECTOR_RIGHT_FOOT_ON_THE_FLOOR)
+    {
+        if ((msg->getParam() != NULL) && (FOOT_DETECTOR))
+		{
+			m_turnLeft = msg->getParam()->getBoolValue();
+		}
+	}
+	else if (msg->getType() == MSG_CONTROL_TURN_LEFT)
     {
         if (msg->getParam() == NULL || (getName().compare(msg->getParam()->getStrValue()) == 0))
         {
 //            _dbg << "PhysicsAvatar : turn left " << std::endl;
-            
-            Quat addRot = Quat(degToRad(-3.0f), Vec(0,1,0));
-            changeGlobalRotationOffset( QuatToCalQuat(addRot) );
-            //m_stepOrientation *= QuatToCalQuat(addRot);
+            if (m_turnLeft)
+			{
+				Quat addRot = Quat(degToRad(-3.0f), Vec(0,1,0));
+				changeGlobalRotationOffset( QuatToCalQuat(addRot) );
+				//m_stepOrientation *= QuatToCalQuat(addRot);
+			}
         }
     }
     else if (msg->getType() == MSG_CONTROL_TURN_RIGHT)
@@ -224,10 +243,12 @@ void ActionAvatar::OnMessage(Message* msg)
         if (msg->getParam() == NULL || (getName().compare(msg->getParam()->getStrValue()) == 0))
         {
 //            _dbg << "PhysicsAvatar : turn left " << std::endl;
-
-            Quat addRot = Quat(degToRad(3.0f), Vec(0,1,0));
-			changeGlobalRotationOffset( QuatToCalQuat(addRot) );
-            //m_stepOrientation *= QuatToCalQuat(addRot);
+			if (m_turnRight)
+			{
+				Quat addRot = Quat(degToRad(3.0f), Vec(0,1,0));
+				changeGlobalRotationOffset( QuatToCalQuat(addRot) );
+				//m_stepOrientation *= QuatToCalQuat(addRot);
+			}
         }
     }
     else if (msg->getType() == MSG_TEST)

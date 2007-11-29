@@ -19,6 +19,7 @@ Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string
 Cal3DObject(calModel, calCoreModel, modelName)
 {
     m_localMsgSender = new MsgSender();
+	m_localMsgSender->AddMsgListener(this);
 }
 
 /**

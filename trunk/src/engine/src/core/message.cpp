@@ -31,7 +31,9 @@ std::string Message::_GET_MSG_NAME(int msg)
 //	case MSG_INPUT_KEY_PRESSED: strMsg ="MSG_INPUT_KEY_PRESSED"; break;
 	case MSG_MENU_ITEM_SELECTED: strMsg ="MSG_MENU_ITEM_SELECTED"; break;
     case MSG_START_SIMULATION: strMsg ="MSG_START_SIMULATION"; break;       
-    case MSG_RESTART_SIMULATION : strMsg ="MSG_RESTART_SIMULATION "; break;       
+    case MSG_RESTART_SIMULATION : strMsg ="MSG_RESTART_SIMULATION"; break;  
+	case MSG_DETECTOR_LEFT_FOOT_ON_THE_FLOOR : strMsg ="MSG_DETECTOR_LEFT_FOOT_ON_THE_FLOOR"; break;
+	case MSG_DETECTOR_RIGHT_FOOT_ON_THE_FLOOR : strMsg ="MSG_DETECTOR_RIGHT_FOOT_ON_THE_FLOOR"; break;
     default: strMsg = "<unknown>"; break;
     }
     

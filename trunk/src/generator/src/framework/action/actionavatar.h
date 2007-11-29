@@ -40,6 +40,10 @@ namespace ft
         virtual void Reset();
 
         void ActionAvatar::Dump();
+		
+		const bool canTurnLeft(){ return m_turnLeft;};
+		const bool canTurnRight(){ return m_turnRight;};
+
 
     protected:
         IdleAction *ACTION_IDLE;
@@ -48,6 +52,7 @@ namespace ft
 
     private:
         void SetCurrAction(Action *newAction);
+		bool m_turnLeft, m_turnRight, FOOT_DETECTOR;
 
         Action* m_action;
         
