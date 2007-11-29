@@ -24,7 +24,9 @@ namespace ft
         static AvatarFactory * getAvatarFactoryInstance();
 
     protected:
-        Cal3DObject* CreateMeshObjectInstance(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
+        virtual Cal3DObject* CreateMeshObjectInstance(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
+        virtual CalCoreModel* CreateCoreModel(const std::string &typeName);
+        virtual CalCoreModel* LoadCalCoreModel(const std::string modelName);
 
     private:
         static AvatarFactory* m_avatarFactoryInstance;

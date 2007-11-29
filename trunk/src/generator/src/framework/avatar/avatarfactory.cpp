@@ -6,6 +6,7 @@
 #include "avatarfactory.h"
 #include "../ai/aiavatar.h"
 #include "../app/gendebug.h"
+#include "avatartype.h"
 
 using namespace ft;
 
@@ -36,4 +37,20 @@ AvatarFactory* AvatarFactory::getAvatarFactoryInstance()
 Cal3DObject* AvatarFactory::CreateMeshObjectInstance(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName)
 {
     return new AIAvatar(calModel, calCoreModel, modelName);
+}
+
+CalCoreModel* AvatarFactory::CreateCoreModel(const std::string &typeName)
+{
+    return new AvatarType(typeName);
+}
+
+CalCoreModel* AvatarFactory::LoadCalCoreModel(const std::string modelName)
+{
+    CalCoreModel* coreModel = Cal3DObjectFactory::LoadCalCoreModel(modelName);
+
+    if (coreModel != NULL)
+    {
+        ((AvatarType*)coreModel)->InitMotions();
+    }
+    return coreModel;
 }

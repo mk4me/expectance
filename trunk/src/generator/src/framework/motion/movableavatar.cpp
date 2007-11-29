@@ -7,6 +7,9 @@
 #include "../timeline/lcsmodifier.h"
 #include "timelinevisualizer.h"
 #include "../app/gendebug.h"
+#include "../avatar/avatartype.h"
+
+
 
 using namespace ft;
 using namespace std;
@@ -74,63 +77,6 @@ void MovableAvatar::Destroy(void)
 }
 
 /**
- * \brief Adds motion (animation) to avatar
- *
- * \param ft::Motion * motion - motion that represents animation 
- * \return bool - true if operation succeed, false if motion with the same name is already added to avatar
- **/
-bool MovableAvatar::AddMotion(Motion* motion)
-{
-    std::string _id = motion->getAnimName();
-	if (!_id.empty())
-	{
-	 	std::map<std::string,Motion*>::iterator it = m_motions.find(_id);
-
-		if ( it!=m_motions.end())
-        { 
-            if (GenDebug::ERR)
-                _dbg << GenDebug::ERR_STR << "MovableAvatar::AddMotion motion " << _id << " already added to Avatar " << std::endl;
-
-			return false;
-		}
-	    m_motions.insert( std::make_pair( std::string(_id), motion) );
-	}
-
-    if (GenDebug::MOTION>0)
-        _dbg << " MovableAvatar::AddMotion motion " << _id << " added to avatar " << std::endl;
-
-	return true;
-}
-/**
- * \brief Removes motion (animation) from avatar
- *
- * \param ft::Motion * motion - moton to remove
- * \return bool - true if motion removed, false if given motion not found for this avatar
- **/
-bool  MovableAvatar::RemoveMotion(Motion* motion)
-{
-    std::string _id = motion->getAnimName();
-
-    if (!_id.empty())
-	{
-	 	std::map<std::string,Motion*>::iterator it = m_motions.find(_id);
-		if ( it!=m_motions.end()) { 
-            m_motions.erase(it);
-
-            if (GenDebug::MOTION>0)
-                _dbg << "MovableAvatar::AddMotion motion " << _id << " removed form avatar " << std::endl;
-
-			return true;
-		}
-	    m_motions.insert( std::make_pair( std::string(_id), motion) );
-	}
-
-    if (GenDebug::ERR)
-        _dbg << GenDebug::ERR_STR << "MovableAvatar::AddMotion motion " << _id << " not found in Avatar " << std::endl;
-	return false;
-}
-
-/**
  * \brief Gets motion with given name
  *
  * \param std::string motionName - name of motion (animation)
@@ -139,29 +85,23 @@ bool  MovableAvatar::RemoveMotion(Motion* motion)
 Motion* MovableAvatar::GetMotion(std::string motionName)
 {
     Motion * motion = NULL;
- 	std::map<std::string,Motion*>::iterator it = m_motions.find(motionName);
-	if ( it!=m_motions.end()) { 
-        motion = dynamic_cast<Motion*>(it->second);
-    }
+    motion = ((AvatarType*)this->GetCalCoreModel())->GetMotion(motionName);
     return motion;
 }
 
 /**
  * \brief Collects all motions (animations) for ths avatar from CalCoreModel
  **/
-void MovableAvatar::InitMotions()
+void MovableAvatar::InitFootDetector()
 {
     FootDetector* _fd = getFootDetector();
-    int animCount = m_calCoreModel->getCoreAnimationCount();
-    for (int i=0; i<animCount; i++)
+
+    std::map<std::string,Motion*> motions = ((AvatarType*)GetCalCoreModel())->getMotionsMap();
+  	std::map<std::string,Motion*>::iterator it = motions.begin();
+
+    for( ; it != motions.end(); ++it ) 
     {
-        CalCoreAnimation* anim = m_calCoreModel->getCoreAnimation(i);
-        std::string animName = anim->getFilename();
-
-        Motion* mot = new Motion(animName, i);
-	_fd->AddLimits(animName, mot->footLimits);
-
-        this->AddMotion(mot);
+        _fd->AddLimits(it->second->getAnimName(), it->second->footLimits);
     }
 }
 
@@ -270,17 +210,7 @@ void MovableAvatar::UpdateTimeLine(float elapsedSeconds)
  **/
 void MovableAvatar::Dump()
 {
-    if (GenDebug::MOTION>0)
-    {
-        _dbg << "Dump MovableAvatar content: " << std::endl;
-        _dbg << "- motions: " << std::endl;
-
-	    std::map<std::string,Motion*>::iterator it=m_motions.begin();
-	    for( ; it != m_motions.end(); ++it ) 
-        {
-            _dbg << " - - id " << it->first << std::endl;
-        }
-    }
+    Avatar::Dump();
 
     if (GenDebug::TIMELINE>0)
     {
@@ -305,7 +235,7 @@ void MovableAvatar::Dump()
 void MovableAvatar::Init()
 {
   setFootDetector(new FootDetector());
-  InitMotions();
+  InitFootDetector();
   setTimeLine(new TimeLine());
   TimeLineContext* ctx = new TimeLineContext();
   ctx->stop_immediate = true;

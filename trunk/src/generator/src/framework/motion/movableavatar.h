@@ -36,8 +36,6 @@ namespace ft
         virtual void OnUpdate(const double elapsedSeconds);  // OVERRIDEN, updates by UpdateManager 
         void OnMessage(Message* msg);  // OVERRIDEN, receives a message from UpdateManager
 
-        bool AddMotion(Motion* motion);
-        bool  RemoveMotion(Motion* motion);
         Motion* GetMotion(std::string motionName);
 
 
@@ -77,13 +75,11 @@ namespace ft
         float m_blendTime;
         bool m_bPaused;
 
-        std::map<std::string,Motion*> m_motions;
-
         TimeLine* m_timeLine;
         TimeLineContext* m_timeLineContext;
         TimeLineExecutor* m_tlExecutor;
         
-        void InitMotions();
+        void InitFootDetector();
 
         void UpdateTimeLine(float elapsedSeconds);
 

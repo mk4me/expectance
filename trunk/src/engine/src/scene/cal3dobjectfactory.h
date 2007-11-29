@@ -31,13 +31,14 @@ namespace ft
 
     protected:
         virtual Cal3DObject* CreateMeshObjectInstance(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
+        virtual CalCoreModel* CreateCoreModel(const std::string &typeName);
+        virtual CalCoreModel* LoadCalCoreModel(const std::string modelName);
 
     private:
         static Cal3DObjectFactory* m_instance;
         
         std::map<std::string,CalCoreModel*> m_coreModels;
 
-        CalCoreModel* LoadCalCoreModel(const std::string modelName);
 
         void ReleaseCalCoreModels();
 

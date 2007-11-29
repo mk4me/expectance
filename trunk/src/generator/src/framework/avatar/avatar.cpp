@@ -5,6 +5,7 @@
 
 #include "avatar.h"
 #include "../app/gendebug.h"
+#include "avatartype.h"
 
 using namespace ft;
 
@@ -37,3 +38,13 @@ void Avatar::Destroy(void)
 {
     Cal3DObject::Destroy();
 }
+
+/**
+ * \brief Prints debug information describing this avatar on output console
+ *
+ **/
+void Avatar::Dump()
+{
+    ((AvatarType*)GetCalCoreModel())->Dump();
+}
+

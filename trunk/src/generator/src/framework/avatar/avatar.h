@@ -24,6 +24,9 @@ namespace ft
 
         MsgSender* getLocalMsgSender() { return m_localMsgSender; }
 
+        virtual void Dump();
+
+
     private:
         MsgSender* m_localMsgSender;
     };

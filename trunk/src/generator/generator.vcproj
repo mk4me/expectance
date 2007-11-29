@@ -405,6 +405,14 @@
 					RelativePath=".\src\framework\avatar\avatarfactory.h"
 					>
 				</File>
+				<File
+					RelativePath=".\src\framework\avatar\avatartype.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\avatar\avatartype.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="ai"

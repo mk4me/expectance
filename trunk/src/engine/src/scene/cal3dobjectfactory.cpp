@@ -99,6 +99,17 @@ Cal3DObject* Cal3DObjectFactory::CreateMeshObject(const std::string modelName, s
 }
 
 /**
+ * \brief Create new CalCoreModel object
+ *
+ * \param const std::string &typeName - name of core model
+ * \return CalCoreModel * - created object
+ **/
+CalCoreModel* Cal3DObjectFactory::CreateCoreModel(const std::string &typeName)
+{
+    return new CalCoreModel(typeName);
+}
+
+/**
  * \brief Loads new core model in Cal3d
  *
  * \param const std::string modelName - name of model which responds to appriopriate configuration file
@@ -109,7 +120,7 @@ CalCoreModel* Cal3DObjectFactory::LoadCalCoreModel(const std::string modelName)
     if (Debug::MODEL_LOADING)
         _dbg << "Cal3DObjectFactory::LoadCalCoreModel, for model: " + modelName  << std::endl;
 
-    CalCoreModel* coreModel = new CalCoreModel("dummy");
+    CalCoreModel* coreModel = CreateCoreModel("dummy");
     
     if (ParseModelConfiguration(modelName, coreModel))
     {

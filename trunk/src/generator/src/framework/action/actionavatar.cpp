@@ -230,12 +230,29 @@ void ActionAvatar::OnMessage(Message* msg)
         if (msg->getParam() == NULL || (getName().compare(msg->getParam()->getStrValue()) == 0))
         {
 //            _dbg << "PhysicsAvatar : turn left " << std::endl;
+
             if (m_turnLeft)
 			{
 				Quat addRot = Quat(degToRad(-3.0f), Vec(0,1,0));
 				changeGlobalRotationOffset( QuatToCalQuat(addRot) );
 				//m_stepOrientation *= QuatToCalQuat(addRot);
 			}
+/*
+            if (m_turnLeft)
+			{
+				Quat addRot = Quat(degToRad(-7.0f), Vec(0,1,0));
+				changeGlobalRotationOffset( QuatToCalQuat(addRot) );
+				//m_stepOrientation *= QuatToCalQuat(addRot);
+			}
+
+
+            if (m_turnRight)
+			{
+				Quat addRot = Quat(degToRad(-4.0f), Vec(0,1,0));
+				changeGlobalRotationOffset( QuatToCalQuat(addRot) );
+				//m_stepOrientation *= QuatToCalQuat(addRot);
+			}
+*/
         }
     }
     else if (msg->getType() == MSG_CONTROL_TURN_RIGHT)
@@ -243,12 +260,19 @@ void ActionAvatar::OnMessage(Message* msg)
         if (msg->getParam() == NULL || (getName().compare(msg->getParam()->getStrValue()) == 0))
         {
 //            _dbg << "PhysicsAvatar : turn left " << std::endl;
-			if (m_turnRight)
+            if (m_turnRight)
 			{
-				Quat addRot = Quat(degToRad(3.0f), Vec(0,1,0));
+				Quat addRot = Quat(degToRad(7.0f), Vec(0,1,0));
 				changeGlobalRotationOffset( QuatToCalQuat(addRot) );
 				//m_stepOrientation *= QuatToCalQuat(addRot);
 			}
+            if (m_turnLeft)
+			{
+				Quat addRot = Quat(degToRad(4.0f), Vec(0,1,0));
+				changeGlobalRotationOffset( QuatToCalQuat(addRot) );
+				//m_stepOrientation *= QuatToCalQuat(addRot);
+			}
+
         }
     }
     else if (msg->getType() == MSG_TEST)
