@@ -4,10 +4,14 @@ rem "%VS80COMNTOOLS%..\IDE\devenv.exe" %CD%\Generator.sln /clean debug
 rem "%VS80COMNTOOLS%..\IDE\devenv.exe" %CD%\Generator.sln /clean release
 echo T | del /F "src/cal3d/Debug/." > null
 echo T | del /F "src/cal3d/Release/." > null
+echo T | del /F "src/engine/Debug/." > null
+echo T | del /F "src/engine/Release/." > null
 echo T | del /F "src/generator/Debug/." > null
 echo T | del /F "src/generator/Release/." > null
 rmdir /S /Q "src/cal3d/FT Full Debug Max 6"
 rmdir /S /Q "src/cal3d/FT Full Release Max 6"
+rmdir /S /Q "src/engine/FT Full Debug Max 6"
+rmdir /S /Q "src/engine/FT Full Release Max 6"
 rmdir /S /Q "src/generator/FT Full Debug Max 6"
 rmdir /S /Q "src/generator/FT Full Release Max 6"
 rmdir /S /Q _ReSharper.Generator
