@@ -513,6 +513,22 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\scene\transform.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\scene\transform.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\scene\transformmanager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\scene\transformmanager.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\scene\visualizationmanager.cpp"
 				>
 			</File>

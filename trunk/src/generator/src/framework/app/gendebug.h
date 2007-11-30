@@ -24,6 +24,7 @@ namespace ft
         static int AI;
         static int MOTION;
         static int CONTROL;
+        static int FOOTSTEP;
 
         static void LoadLevelsFromConfig();
     };

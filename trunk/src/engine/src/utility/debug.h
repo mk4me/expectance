@@ -36,6 +36,7 @@ namespace ft
         static int CAMERA;
         static int INPUT;
         static int MESSAGE;
+        static int SCENE;
 
         //////////////////////////////////////
 

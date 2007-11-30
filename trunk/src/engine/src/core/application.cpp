@@ -9,6 +9,7 @@
 #include "GlobalMsgSender.h"
 #include "inputmanager.h"
 #include "../scene/cal3dobjectfactory.h"
+#include "../scene/transformmanager.h"
 #include "../scene/visualizationmanager.h"
 #include "../utility/debug.h"
 
@@ -64,7 +65,7 @@ bool Application::InitModules()
     UpdateManager::getInstance()->Init();  //enforced creation of singleton
     GlobalMsgSender::getInstance();  //enforced creation of singleton
     Cal3DObjectFactory::getMeshObjectFactoryInstance();   //enforced creation of singleton
-
+    TransformManager::getInstance(); //enforced creation of singleton
     CreateVisualizationManager();  //enforced creation of singleton
     if (!VisualizationManager::getInstance()->Init()) 
 	{

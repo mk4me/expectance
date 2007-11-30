@@ -4,6 +4,7 @@
  */
 #include "footdetector.h"
 #include "cal3d/coretrack.h"
+#include "../app/gendebug.h"
 
 using namespace ft;
 
@@ -99,7 +100,11 @@ void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
 			m_leftFootPlant = true;
 			timeLineContext->getAvatar()->getLocalMsgSender()->SendMsg(new Message(MSG_DETECTOR_LEFT_FOOT_ON_THE_FLOOR, 
 																	   new MessageParam(true)), true);
-			 std::cout<< "====>>> Left foot on the ground <<<=====" << endl;
+
+            if (GenDebug::FOOTSTEP>0)
+            {
+			    _dbg << "====>>> Left foot on the ground <<<=====" << endl;
+            }
 		}
 
 		if (FOOTPLANT_TRACE)
@@ -114,7 +119,10 @@ void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
 			m_leftFootPlant = false;
 			timeLineContext->getAvatar()->getLocalMsgSender()->SendMsg(new Message(MSG_DETECTOR_LEFT_FOOT_ON_THE_FLOOR, 
 																	   new MessageParam(false)), true);
-			 std::cout<< "====>>> Left foot swinging <<<=====" << endl;
+            if (GenDebug::FOOTSTEP>0)
+            {
+			    _dbg << "====>>> Left foot swinging <<<=====" << endl;
+            }
 		}
 
 	// RIGHT FOOT

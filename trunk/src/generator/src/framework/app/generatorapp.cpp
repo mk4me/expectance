@@ -16,9 +16,6 @@ using namespace ft;
 // \brief OVERRIDEN from ft::Application
 int GeneratorApp::Init()
 {
-
-    cout << GenDebug::ERR << " hej " << endl;
-
     int result = Application::Init();
  
     StartAISimulation();
