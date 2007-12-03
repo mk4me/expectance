@@ -24,7 +24,7 @@ namespace ft
         void setTransform(Transform* transform) { m_transform = transform; }
         Transform* getTransform() { return m_transform; }
 
-        virtual void InitTransform();
+        virtual void InitTransform(bool source_3dsmax);
 
         virtual void Dump();
     

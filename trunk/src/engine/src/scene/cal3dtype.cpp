@@ -4,6 +4,7 @@
  */
 
 #include "cal3dtype.h"
+#include "transformmanager.h"
 #include "../utility/debug.h"
 
 using namespace ft;
@@ -28,9 +29,25 @@ Cal3dType::~Cal3dType()
     //TODO: delete all motions of this cal3d object type
 }
 
-void Cal3dType::InitTransform()
+void Cal3dType::InitTransform(bool source_3dsmax)
 {
-    //implement
+    CalCoreBone* root = getCoreSkeleton()->getCoreBone(0);
+
+    CalVector pos = root->getTranslation();
+    CalQuaternion rot = root->getRotation();
+
+    getTransform()->setOrigPosition(pos);
+    // set offset as inversion of pos
+    pos.x = -pos.x; pos.y = -pos.y; pos.z = -pos.z; 
+    getTransform()->setPosOffset(pos);
+
+    //CalVector dir = TransformManager::SCENE_FORWARD;
+    //dir *= rot;
+
+    //getTransform()->setOrigForward(dir);
+    
+    if (true)
+        return;
 }
 
 /**

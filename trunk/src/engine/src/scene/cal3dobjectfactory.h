@@ -35,6 +35,8 @@ namespace ft
         virtual Cal3dType* CreateCoreModel(const std::string &typeName);
         virtual Cal3dType* LoadCalCoreModel(const std::string modelName);
 
+        bool m_source_3dsmax;
+
     private:
         static Cal3DObjectFactory* m_instance;
         

@@ -27,7 +27,7 @@ namespace ft
         std::map<std::string,Motion*>& getMotionsMap() { return m_motions; }
         void InitMotions();
 
-        virtual void InitTransform();
+        virtual void InitTransform(bool source_3dsmax);
 
         virtual void Dump();
     

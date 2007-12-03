@@ -75,11 +75,12 @@ Cal3DObject* Cal3DObjectFactory::CreateMeshObject(const std::string modelName, s
 	}
     else
     {
+        m_source_3dsmax = false; //can be set to true inside LoadCalCoreModel method
         coreModel = LoadCalCoreModel(modelName);
         if (coreModel != NULL)
         {
             m_coreModels.insert( std::make_pair( std::string(modelName), coreModel ) );
-            coreModel->InitTransform();
+            coreModel->InitTransform(m_source_3dsmax);
         }
     }
 
@@ -220,7 +221,10 @@ bool Cal3DObjectFactory::ParseModelConfiguration(const std::string& modelName, C
     if(strKey == "source") //mka - for correct axis order of loaded data
 	{
 		if(strData.compare("3dsmax")==0)
+        {
 			CalLoader::setLoadingMode(LOADER_ROTATE_X_AXIS);
+            m_source_3dsmax = true;
+        }
 	}
 	else if(strKey == "scale")
     {

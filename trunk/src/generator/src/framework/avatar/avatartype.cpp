@@ -122,9 +122,9 @@ void AvatarType::InitMotions()
     }
 }
 
-void AvatarType::InitTransform()
+void AvatarType::InitTransform(bool source_3dsmax)
 {
-    Cal3dType::InitTransform();
+    Cal3dType::InitTransform(source_3dsmax);
 
     //inits transform for motions
 }

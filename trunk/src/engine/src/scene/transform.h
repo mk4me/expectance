@@ -21,6 +21,18 @@ namespace ft
 	    virtual ~Transform(void);
         virtual void Dump();
 
+        bool isRoationFrom3dsmax() { return m_rotationFrom3dsmax; }
+        void setRoationFrom3dsmax(bool set) { m_rotationFrom3dsmax = set; }
+
+        const CalVector& getOrigPosition() { return m_vOrigPosition; }
+        void setOrigPosition(const CalVector& origPos) { m_vOrigPosition = origPos; }
+        const CalVector& getPosOffset() { return m_vPosOffset; }
+        void setPosOffset(const CalVector& posOffset) { m_vPosOffset = posOffset; }
+        const CalVector& getOrigForward() { return m_vOrigForward; }
+        void setOrigForward(const CalVector& origForward) { m_vOrigForward = origForward; }
+        const CalVector& getForwardDiff() { return m_vForwardDiff; }
+        void setForwardDiff(const CalVector& forwardDiff) { m_vForwardDiff = forwardDiff; }
+
         const std::string getType() { return m_type; }
     private:
         std::string m_type;
@@ -30,7 +42,8 @@ namespace ft
 
         CalVector m_vOrigForward; //original forward vector
         CalVector m_vForwardDiff; //original forward vector
-    
+
+        bool m_rotationFrom3dsmax;   //flag if there was rotation -90 deg. around X (caused by 3ds max source)
     };
 };
 

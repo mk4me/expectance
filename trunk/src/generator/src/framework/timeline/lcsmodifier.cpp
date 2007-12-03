@@ -75,6 +75,13 @@ LCSModifier::LCSModifier()
         VisualizationManager::getInstance()->AddObject(tracer_X);
         VisualizationManager::getInstance()->AddObject(tracer_Y);
         VisualizationManager::getInstance()->AddObject(tracer_Z);
+
+        tracer_X->setBlending(false);
+        tracer_X->setRenderingOrder(ft_Rendering_Objects_Level);
+        tracer_Y->setBlending(false);
+        tracer_Y->setRenderingOrder(ft_Rendering_Objects_Level);
+        tracer_Z->setBlending(false);
+        tracer_Z->setRenderingOrder(ft_Rendering_Objects_Level);
     }
 }
 
