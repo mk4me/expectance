@@ -23,6 +23,7 @@
 
 namespace ft
 {
+	
 	//! A VisualizationManager class
 	/*!
 	 *	This class is responsible for registering, rendering and communication with the rest parts of the system in the scope of rendering. 
@@ -79,7 +80,7 @@ namespace ft
         static VisualizationManager* m_instance;
 		std::map<std::string,SceneObject*> m_SceneObjects;
 		int m_ActiveCameraMarker;
-
+		RenderingOrder m_rendering;
     };
 };
 

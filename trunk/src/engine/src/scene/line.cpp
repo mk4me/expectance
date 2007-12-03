@@ -10,6 +10,7 @@ using namespace ft;
 Line::Line(const std::string& name):m_arrow(false)
 {
 	setName(name);
+	setRenderingOrder(ft_Rendering_Trace_Level);
 	
 }
 
@@ -27,8 +28,7 @@ Line::Line(const CalVector& position, const Quat& orientation, float lenght, con
 	setLenght(lenght).setStart(position);
 	setPosition(position).setOrientation( QuatToCalQuat(orientation) );
 	setName(name);
-	
-
+	setRenderingOrder(ft_Rendering_Trace_Level);
 	//Line(position, tmpv, name); 
 }
 
@@ -38,16 +38,12 @@ Line::Line(const CalVector& start, const CalVector& end, const std::string& name
 	m_end = end;
 
 	setName(name);
+	setRenderingOrder(ft_Rendering_Trace_Level);
 }
 
 Line::~Line(void)
 {
 	_dbg << getID() << " line deleted\n";
-}
-
-byte Line::getRenderingOrder()
-{
-	return 2; // 2 for tracers and other dodads
 }
 
 bool Line::Render()

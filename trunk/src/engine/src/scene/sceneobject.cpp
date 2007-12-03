@@ -16,11 +16,12 @@ SceneObject::SceneObject(void)
 	m_color.set(1.0,1.0,1.0); //white
 	m_alpha = 1;
 	m_visible = true;
+	m_renderingOrder = ft_Rendering_StaticShadow_Level; // by default
 }
 
-byte SceneObject::getRenderingOrder()
+const byte SceneObject::getRenderingOrder()
 {
-	return 1; //by default
+	return m_renderingOrder; 
 }
 
 bool SceneObject::Render()
@@ -33,6 +34,11 @@ bool SceneObject::RenderShadow()
 	return true;
 }
 
+SceneObject& SceneObject::setRenderingOrder(RenderingOrder ro)
+{
+	m_renderingOrder = ro;
+	return *this;
+}
 
 SceneObject& SceneObject::setPosition(const CalVector &position)
 {

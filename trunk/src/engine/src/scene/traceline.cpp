@@ -19,11 +19,7 @@ TraceLine::TraceLine(const std::string& name)
 	setBlending(true);
 	ShowMarker();
 	ShowLine();
-}
-
-byte TraceLine::getRenderingOrder()
-{
-	return 2; // 2 - for tracers
+	setRenderingOrder(ft_Rendering_Trace_Level);
 }
 
 bool TraceLine::Render()

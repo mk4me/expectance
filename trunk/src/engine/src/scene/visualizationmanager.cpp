@@ -228,7 +228,7 @@ void VisualizationManager::Render3DObjects()
 		if ((pObj = dynamic_cast<SceneObject*>(it->second))!=NULL)
 		{
 			if (pObj->isVisible())
-				if (pObj->getRenderingOrder() == 2)
+				if (pObj->getRenderingOrder() == ft_Rendering_Trace_Level)
 					pObj->Render();
 		}
 	}
@@ -238,7 +238,7 @@ void VisualizationManager::Render3DObjects()
 		if ((pObj = dynamic_cast<SceneObject*>(it->second))!=NULL)
 		{
 			if (pObj->isVisible())
-				if (pObj->getRenderingOrder() == 3)
+				if (pObj->getRenderingOrder() == ft_Rendering_Objects_Level)
 					pObj->Render();
 		}
 	}

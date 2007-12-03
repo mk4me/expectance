@@ -22,6 +22,7 @@ m_shadow(true)
     m_calModel = calModel;
     m_calCoreModel = calCoreModel;
 	setName(modelName);
+	setRenderingOrder(ft_Rendering_Objects_Level);
 	if (OGLContext::getInstance()->HardwareAcceleration == 1) //check Vertex Shader and load shaders
 	{
 		m_hardwareRendering = InitHardwareAcceleration();
@@ -166,12 +167,6 @@ void Cal3DObject::OnMessage(Message* msg)
 	{
 		ChangeShadow();
 	}
-}
-
-
-byte Cal3DObject::getRenderingOrder()
-{
-	return 3; //3 - for dynamic objects
 }
 
 /**

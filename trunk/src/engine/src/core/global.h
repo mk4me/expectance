@@ -34,9 +34,13 @@ namespace ft
 	static char *CameraModeId[] = {"Static Camera", "3rd Person Camera", "Fly Camera", "Orbit Camera"};
 
 
+
 	/***************************************************************************************************/ 
 	// system enumerations
 	/***************************************************************************************************/ 
+
+	enum RenderingOrder {ft_Rendering_BottomMost_Level = 1, ft_Rendering_StaticShadow_Level, ft_Rendering_DynamicShadow_Level,		
+						 ft_Rendering_Trace_Level,			ft_Rendering_Objects_Level,		 ft_Rendering_TopMost_Level };
 
 	enum TimePrecision {ft_Microseconds, ft_Miliseconds};
 

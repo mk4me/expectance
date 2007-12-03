@@ -23,8 +23,7 @@ namespace ft {
 		/*! Constructs object with a given name */
 		TraceLine(const std::string& name);
 		virtual ~TraceLine(void) { /* empty */};
-		//! get the value of object rendering order
-		virtual byte getRenderingOrder();
+
 		/*! \brief Renders line with point at the end of it */
 		virtual bool Render();
 		/*! \brief Adds new point to the collection for rendering*/

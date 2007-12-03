@@ -24,13 +24,16 @@ namespace ft
 		SceneObject(void);
 		virtual~SceneObject(void) {};
 
-		//! get the value of object rendering order: 1 - static objects, 2 - tracers and other dodads, 3 - dynamic objects
-		virtual byte getRenderingOrder();
 		/// \brief virtual base for inherited objects for rendering purposes
 		virtual bool Render();		
 		/// \brief virtual base for inherited objects for rendering shadows
 		virtual bool RenderShadow();
-		
+
+		//! get the value of object rendering order: 1 - static objects, 2 - tracers and other dodads, 3 - dynamic objects
+		const byte getRenderingOrder();
+		//! set the value of object rendering order: 1 - static objects, 2 - tracers and other dodads, 3 - dynamic objects
+		SceneObject& setRenderingOrder(const RenderingOrder ro);
+
 		/// \brief Sets object position to given position value
 		SceneObject& setPosition(const CalVector &position);
 		/// \brief Changes object position by given deltaPosition value
@@ -80,7 +83,9 @@ namespace ft
 		/// \brief Prints general information about values of object properties  
 		const void PrintInfo(void) const;
 
+
 	protected:
+		RenderingOrder m_renderingOrder;
 		bool m_visible;
 		CalVector m_position,            // position (x,y,z)
 			      m_direction;	         // direction of object (ux,uy,uz)
