@@ -6,16 +6,16 @@
 #ifndef _GEN_AVATARTYPE_H
 #define _GEN_AVATARTYPE_H
 
-#include "cal3d/cal3d.h"
+#include "scene/cal3dType.h"
 #include "../motion/motion.h"
 
 
 namespace ft
 {
 	/* 
-     * An AvatarType class is extension of CalCoreModel for Avatars
+     * An AvatarType class is extension of Cal3dType for Avatars
 	 */
-    class AvatarType : public CalCoreModel
+    class AvatarType : public Cal3dType
     {
     public:
 		AvatarType(const std::string &typeName);
@@ -24,10 +24,10 @@ namespace ft
         bool AddMotion(Motion* motion);
         bool  RemoveMotion(Motion* motion);
         Motion* GetMotion(std::string motionName);
-
         std::map<std::string,Motion*>& getMotionsMap() { return m_motions; }
-
         void InitMotions();
+
+        virtual void InitTransform();
 
         virtual void Dump();
     

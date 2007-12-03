@@ -437,6 +437,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\scene\cal3dtype.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\scene\cal3dtype.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\scene\camera.cpp"
 				>
 			</File>

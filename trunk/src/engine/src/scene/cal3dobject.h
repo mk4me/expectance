@@ -6,7 +6,7 @@
 #ifndef _GEN_MESHOBJECT_H
 #define _GEN_MESHOBJECT_H
 
-#include "cal3d/cal3d.h"
+#include "cal3dtype.h"
 #include "../core/msglistener.h"
 #include "sceneobject.h"
 #include "OGLContext.h"
@@ -22,7 +22,7 @@ namespace ft
     class Cal3DObject : public MsgListener, public UpdateObject, public SceneObject
     {
     public:
-		Cal3DObject(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
+		Cal3DObject(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName);
 	    virtual ~Cal3DObject(void);
         virtual void Destroy(void);
 
@@ -30,8 +30,8 @@ namespace ft
         void SetCalModel(CalModel* calModel);
         CalModel* GetCalModel();
 		
-        void SetCalCoreModel(CalCoreModel* calCoreModel);
-        CalCoreModel* GetCalCoreModel();
+        void SetCalCoreModel(Cal3dType* calCoreModel);
+        Cal3dType* GetCalCoreModel();
 
         virtual void OnUpdate(const double elapsedSeconds);  // OVERRIDEN, updates by UpdateManager 
         void OnMessage(Message* msg);  // OVERRIDEN, receives a message from UpdateManager
@@ -55,7 +55,7 @@ namespace ft
         CalVector m_vStartPosition; //TODO : should be move to MovablaAvatar        
 		bool loadBufferObject();
         CalModel* m_calModel;  //cal3d model which is represented by this mesh object
-        CalCoreModel* m_calCoreModel;
+        Cal3dType* m_calCoreModel;  //extension of CalCoreModel
 		CalHardwareModel* m_calHardwareModel;
 		unsigned int m_vertexProgramId;
 		unsigned int m_fragmentProgramId;

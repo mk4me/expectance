@@ -16,9 +16,9 @@ using namespace std;
 
 /// \brief Constructor
 /// \param CalModel * calModel - model in Cal3d which is referenced by this avatar
-/// \param CalCoreModel * calCoreModel - type defined in Cal3d that has been used to create CalModel for this avatar
+/// \param Cal3dType * calCoreModel - type defined in Cal3d that has been used to create CalModel for this avatar
 /// \param const std::string modelName - name defined in ft::BaseObject which is the base class for Avatar
-MovableAvatar::MovableAvatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName)
+MovableAvatar::MovableAvatar(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName)
 :Avatar(calModel, calCoreModel, modelName)
 {
     TRACE = false;

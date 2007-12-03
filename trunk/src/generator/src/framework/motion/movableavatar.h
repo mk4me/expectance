@@ -27,7 +27,7 @@ namespace ft
     public:
         bool TRACE;
 
-		MovableAvatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName); 
+		MovableAvatar(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName); 
 	    virtual ~MovableAvatar(void);
         virtual void Destroy(void);
 

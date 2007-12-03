@@ -17,7 +17,7 @@ namespace ft
     class PhysicsAvatar : public MovableAvatar                                 
     {
     public:
-        PhysicsAvatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
+        PhysicsAvatar(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName);
         virtual ~PhysicsAvatar(void);
         virtual void Destroy(void);
 

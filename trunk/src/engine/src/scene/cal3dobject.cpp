@@ -15,7 +15,7 @@ using namespace ft;
  * \param CalCoreModel * calCoreModel - type defined in Cal3d that has been used to create CalModel for this mesh object
  * \param const std::string modelName - name defined in ft::BaseObject which is the base class for mesh object
  **/
-Cal3DObject::Cal3DObject(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName):
+Cal3DObject::Cal3DObject(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName):
 m_renderMethod(0), 
 m_shadow(true)
 {
@@ -127,9 +127,9 @@ CalModel* Cal3DObject::GetCalModel()
 /**
  * \brief Sets object representing type defined in Cal3d that is used to create CalModel for this mesh object
  *
- * \param CalCoreModel * calCoreModel - object representing type of CalModel
+ * \param Cal3dType * calCoreModel - object representing type of CalModel
  **/
-void Cal3DObject::SetCalCoreModel(CalCoreModel* calCoreModel)
+void Cal3DObject::SetCalCoreModel(Cal3dType* calCoreModel)
 {
     m_calCoreModel = calCoreModel;
 }
@@ -137,9 +137,9 @@ void Cal3DObject::SetCalCoreModel(CalCoreModel* calCoreModel)
 /**
  * \brief Returns object representing type defined in Cal3d that is used to create CalModel for this mesh object
  *
- * \return CalCoreModel * - object representing type of CalModel
+ * \return Cal3dType * - object representing type of CalModel
  **/
-CalCoreModel* Cal3DObject::GetCalCoreModel()
+Cal3dType* Cal3DObject::GetCalCoreModel()
 {
     return m_calCoreModel;
 }

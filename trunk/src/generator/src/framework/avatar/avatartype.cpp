@@ -14,7 +14,7 @@ using namespace ft;
  * \param const std::string - typeName
  **/
 AvatarType::AvatarType(const std::string &typeName):
-CalCoreModel(typeName)
+Cal3dType(typeName)
 {
 }
 
@@ -121,6 +121,14 @@ void AvatarType::InitMotions()
         this->AddMotion(mot);
     }
 }
+
+void AvatarType::InitTransform()
+{
+    Cal3dType::InitTransform();
+
+    //inits transform for motions
+}
+
 
 /**
  * \brief Prints debug information describing this avatar on output console

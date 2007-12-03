@@ -20,7 +20,7 @@ namespace ft
     class ActionAvatar : public PhysicsAvatar                                 
     {
     public:
-        ActionAvatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
+        ActionAvatar(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName);
         virtual ~ActionAvatar(void);
         virtual void Destroy(void);
 

@@ -18,7 +18,7 @@ namespace ft
     class Avatar : public Cal3DObject
     {
     public:
-		Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
+		Avatar(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName);
 	    virtual ~Avatar(void);
         virtual void Destroy(void);
 

@@ -34,19 +34,19 @@ AvatarFactory* AvatarFactory::getAvatarFactoryInstance()
 /**
  * \brief Overriden from ft::Cal3DObjectFactory
  **/
-Cal3DObject* AvatarFactory::CreateMeshObjectInstance(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName)
+Cal3DObject* AvatarFactory::CreateMeshObjectInstance(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName)
 {
     return new AIAvatar(calModel, calCoreModel, modelName);
 }
 
-CalCoreModel* AvatarFactory::CreateCoreModel(const std::string &typeName)
+Cal3dType* AvatarFactory::CreateCoreModel(const std::string &typeName)
 {
     return new AvatarType(typeName);
 }
 
-CalCoreModel* AvatarFactory::LoadCalCoreModel(const std::string modelName)
+Cal3dType* AvatarFactory::LoadCalCoreModel(const std::string modelName)
 {
-    CalCoreModel* coreModel = Cal3DObjectFactory::LoadCalCoreModel(modelName);
+    Cal3dType* coreModel = Cal3DObjectFactory::LoadCalCoreModel(modelName);
 
     if (coreModel != NULL)
     {

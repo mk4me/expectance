@@ -9,6 +9,7 @@
 
 #include "../core/global.h"
 #include "cal3dobject.h"
+#include "cal3dtype.h"
 #include <map>
 
 namespace ft
@@ -30,9 +31,9 @@ namespace ft
         Cal3DObject* CreateMeshObject(const std::string modelName, const std::string objectName);
 
     protected:
-        virtual Cal3DObject* CreateMeshObjectInstance(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
-        virtual CalCoreModel* CreateCoreModel(const std::string &typeName);
-        virtual CalCoreModel* LoadCalCoreModel(const std::string modelName);
+        virtual Cal3DObject* CreateMeshObjectInstance(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName);
+        virtual Cal3dType* CreateCoreModel(const std::string &typeName);
+        virtual Cal3dType* LoadCalCoreModel(const std::string modelName);
 
     private:
         static Cal3DObjectFactory* m_instance;

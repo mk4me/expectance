@@ -16,7 +16,7 @@ using namespace ft;
  * \param CalCoreModel * calCoreModel - type defined in Cal3d that has been used to create CalModel for this avatar
  * \param const std::string modelName - name defined in ft::BaseObject which is the base class for Avatar
  **/
-Avatar::Avatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName):
+Avatar::Avatar(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName):
 Cal3DObject(calModel, calCoreModel, modelName)
 {
     m_localMsgSender = new MsgSender();

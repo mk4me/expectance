@@ -19,7 +19,7 @@ namespace ft
     class AIAvatar : public ActionAvatar                                 
     {
     public:
-        AIAvatar(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName);
+        AIAvatar(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName);
         virtual ~AIAvatar(void);
         virtual void Destroy(void);
         void Init();

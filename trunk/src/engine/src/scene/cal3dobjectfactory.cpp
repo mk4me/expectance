@@ -46,7 +46,7 @@ void Cal3DObjectFactory::DestroyInstance()
  * \param const std::string objectName - name of object
  * \return ft::Cal3DObject* - new mesh object instance
  **/
-Cal3DObject* Cal3DObjectFactory::CreateMeshObjectInstance(CalModel* calModel, CalCoreModel* calCoreModel, const std::string modelName)
+Cal3DObject* Cal3DObjectFactory::CreateMeshObjectInstance(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName)
 {
     return new Cal3DObject(calModel, calCoreModel, modelName);
 }
@@ -65,19 +65,22 @@ Cal3DObject* Cal3DObjectFactory::CreateMeshObject(const std::string modelName, s
 
     Cal3DObject *newObject = NULL;
     CalModel* newModel= NULL;
-    CalCoreModel* coreModel = NULL;
+    Cal3dType* coreModel = NULL;
 
 	std::map<std::string,CalCoreModel*>::iterator it = m_coreModels.find(modelName);
 
     if ( it!=m_coreModels.end()) {
 
-        coreModel = static_cast<CalCoreModel *>(it->second);
+        coreModel = static_cast<Cal3dType *>(it->second);
 	}
     else
     {
         coreModel = LoadCalCoreModel(modelName);
         if (coreModel != NULL)
+        {
             m_coreModels.insert( std::make_pair( std::string(modelName), coreModel ) );
+            coreModel->InitTransform();
+        }
     }
 
     if (coreModel != NULL)
@@ -99,28 +102,28 @@ Cal3DObject* Cal3DObjectFactory::CreateMeshObject(const std::string modelName, s
 }
 
 /**
- * \brief Create new CalCoreModel object
+ * \brief Create new Cal3dType object
  *
  * \param const std::string &typeName - name of core model
- * \return CalCoreModel * - created object
+ * \return Cal3dType * - created object
  **/
-CalCoreModel* Cal3DObjectFactory::CreateCoreModel(const std::string &typeName)
+Cal3dType* Cal3DObjectFactory::CreateCoreModel(const std::string &typeName)
 {
-    return new CalCoreModel(typeName);
+    return new Cal3dType(typeName);
 }
 
 /**
- * \brief Loads new core model in Cal3d
+ * \brief Loads new Cal3dType
  *
  * \param const std::string modelName - name of model which responds to appriopriate configuration file
- * \return CalCoreModel * - loaded core model or NULL if loading failed
+ * \return Cal3dType* - loaded core model or NULL if loading failed
  **/
-CalCoreModel* Cal3DObjectFactory::LoadCalCoreModel(const std::string modelName)
+Cal3dType* Cal3DObjectFactory::LoadCalCoreModel(const std::string modelName)
 {
     if (Debug::MODEL_LOADING)
         _dbg << "Cal3DObjectFactory::LoadCalCoreModel, for model: " + modelName  << std::endl;
 
-    CalCoreModel* coreModel = CreateCoreModel("dummy");
+    Cal3dType* coreModel = CreateCoreModel("dummy");
     
     if (ParseModelConfiguration(modelName, coreModel))
     {
