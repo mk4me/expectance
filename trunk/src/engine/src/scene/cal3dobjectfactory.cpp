@@ -80,7 +80,7 @@ Cal3DObject* Cal3DObjectFactory::CreateMeshObject(const std::string modelName, s
         if (coreModel != NULL)
         {
             m_coreModels.insert( std::make_pair( std::string(modelName), coreModel ) );
-            coreModel->InitTransform(m_source_3dsmax);
+            //coreModel->InitTransform(m_source_3dsmax);
         }
     }
 
