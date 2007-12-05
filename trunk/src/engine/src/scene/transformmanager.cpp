@@ -4,12 +4,13 @@
  */
 #include "transformmanager.h"
 #include "../utility/debug.h"
+#include "../core/config.h"
 
 using namespace ft;
 using namespace std;
 
 // \brief Forward vector for objects on application scene
-CalVector TransformManager::SCENE_FORWARD = CalVector(0,0,1);
+CalVector TransformManager::SCENE_FORWARD = CalVector(1,0,0);
 
 // \brief Up vector for objects on application scene
 CalVector TransformManager::SCENE_UP = CalVector(0,1,0);
@@ -28,6 +29,7 @@ TransformManager* TransformManager::m_instance = NULL;
  **/
 TransformManager::TransformManager()
 {
+    TRACK_TRANSFORM = (Config::getInstance()->IsKey("track_transform")) && (Config::getInstance()->GetIntVal("track_transform")==1);
 }
 
 /**
@@ -71,17 +73,17 @@ void TransformManager::DestroyInstance()
  \param const std::string& transformType - type of transform
  \return Tramsform* - created transform object
  **/
-Transform* TransformManager::CreateTransform(const std::string& transformType)
-{
-    Transform* transform = NULL;
-    
-    if (transformType.compare(TRANSFORM_FROM_3DSMAX) == 0)
-        transform = new Transform(TRANSFORM_FROM_3DSMAX);
-
-    if (transform == NULL && Debug::WARN)
-    {
-        _dbg << Debug::WARN_STR << " TransformManager::CreateTransform: no transform type " << transformType << endl;
-    }
-
-    return transform;
-}
+//Transform* TransformManager::CreateTransform(const std::string& transformType)
+//{
+//    Transform* transform = NULL;
+//    
+//    if (transformType.compare(TRANSFORM_FROM_3DSMAX) == 0)
+//        transform = new Transform(TRANSFORM_FROM_3DSMAX);
+//
+//    if (transform == NULL && Debug::WARN)
+//    {
+//        _dbg << Debug::WARN_STR << " TransformManager::CreateTransform: no transform type " << transformType << endl;
+//    }
+//
+//    return transform;
+//}

@@ -8,13 +8,15 @@
 
 #include <string>
 #include "../utility/mathconversions.h"
+#include "../core/baseobject.h"
+#include "visualizationmanager.h"
 
 namespace ft
 {
 	/* A Transform class 
 	 * Base class for objects responsible for transformation of motion data from original for to application scene
 	 */
-    class Transform
+    class Transform : public BaseObject
     {
     public:
         Transform(const std::string type); 
@@ -30,10 +32,15 @@ namespace ft
         void setPosOffset(const CalVector& posOffset) { m_vPosOffset = posOffset; }
         const CalVector& getOrigForward() { return m_vOrigForward; }
         void setOrigForward(const CalVector& origForward) { m_vOrigForward = origForward; }
-        const CalVector& getForwardDiff() { return m_vForwardDiff; }
-        void setForwardDiff(const CalVector& forwardDiff) { m_vForwardDiff = forwardDiff; }
+        const CalQuaternion& getForwardDiff() { return m_qForwardDiff; }
+        void setForwardDiff(const CalQuaternion& forwardDiff) { m_qForwardDiff = forwardDiff; }
 
         const std::string getType() { return m_type; }
+
+        void Init(const CalVector& origPos, const CalQuaternion& origQuat, bool source_3dsmax);
+
+        TraceLine* getTraceLine() {return m_forward_trace; }
+        void Trace(const CalVector& pos);
     private:
         std::string m_type;
 
@@ -41,9 +48,11 @@ namespace ft
         CalVector m_vPosOffset; //position offset 
 
         CalVector m_vOrigForward; //original forward vector
-        CalVector m_vForwardDiff; //original forward vector
+        CalQuaternion m_qForwardDiff; //difference angle between original forward vector and secene 
 
         bool m_rotationFrom3dsmax;   //flag if there was rotation -90 deg. around X (caused by 3ds max source)
+
+        TraceLine* m_forward_trace;
     };
 };
 

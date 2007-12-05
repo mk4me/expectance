@@ -7,19 +7,17 @@
 
 using namespace ft;
 
-
+bool TimeLineVisualizer::TRACK_TIMELINE = true;
 
 /// \brief constructor
 TimeLineVisualizer::TimeLineVisualizer()
 {
-
-	bool _checkTrack = (Config::getInstance()->IsKey("track_timeline_states")) && (Config::getInstance()->GetIntVal("track_timeline_states")==1);		(_checkTrack)? TRACK_TIMELINE_STATES = true : TRACK_TIMELINE_STATES = false;
-
-    if (TRACK_TIMELINE_STATES)
+    if (TRACK_TIMELINE)
     {
         tracer_timeline_states = new TraceLine(toString() + "TimeLineVisualizer_tracer_timeline_states");
         VisualizationManager::getInstance()->AddObject(tracer_timeline_states);
         tracer_timeline_states->HideMarker();
+        tracer_timeline_states->setBlending(false);
     }	
 }
 
@@ -45,7 +43,7 @@ void TimeLineVisualizer::Apply(float elapsedSeconds, TimeLineContext * timeLineC
 
     CalVector vAvatarPos = timeLineContext->getAvatar()->getPosition();
 
-    if (TRACK_TIMELINE_STATES)
+    if (TRACK_TIMELINE)
     {
         int state = timeLineContext->exec_state;
 
@@ -90,7 +88,7 @@ void TimeLineVisualizer::Reset(TimeLineContext * timeLineContext)
 {
     TimeLineObject::Reset(timeLineContext);
 
-    if (TRACK_TIMELINE_STATES)
+    if (TRACK_TIMELINE)
     {
         tracer_timeline_states->ClearTrace();
     }

@@ -3,6 +3,7 @@
  * author: abak
  */
 #include "mathutil.h"
+#include "debug.h"
 
 using namespace ft;
 /**
@@ -54,5 +55,38 @@ float UTIL_GetRightArgForArcCos(float arg)
     else if (arg < -1.0f)
         arg = -1.0f;
     return arg;
+}
+
+/*
+ * Returns angle between two vectors
+ * \param
+ * \param
+ * \return float - angle bewteen vectors, (-) when vect2 is on on the right side of vect1, (+) otherwise
+ */
+float UTIL_GetVectorsAngle(const CalVector& vect1, const CalVector& vect2)
+{
+    float dot = vect1*vect2;
+    dot = UTIL_GetRightArgForArcCos(dot);
+
+    return acos(dot);
+}
+
+void UTIL_DumpQuat(const CalQuaternion& quat, std::string caption)
+{
+    Quat rotQuat = CalQuatToQuat(quat);
+
+    if (!caption.empty())
+        _dbg << caption << ": ";
+
+    _dbg << "Q(" << radToDeg(rotQuat.Xangle()) <<  "," << radToDeg(rotQuat.Yangle())
+        << "," << radToDeg(rotQuat.Zangle()) << ")" << std::endl;
+}
+
+void UTIL_DumpVect(const CalVector& vect, std::string caption)
+{
+    if (!caption.empty())
+        _dbg << caption << ": ";
+
+    _dbg << "V(" << vect.x <<  "," << vect.y  << "," << vect.z << ")"  << std::endl;
 }
 

@@ -299,8 +299,10 @@ TimeLine* MovableAvatar::CreateTestTimeLine()
 
 
         getTimeLine()->AddModifier(getFootDetector());
+
+        TimeLineVisualizer::TRACK_TIMELINE = (Config::getInstance()->IsKey("track_timeline")) && (Config::getInstance()->GetIntVal("track_timeline")==1);		
 		
-        if ((Config::getInstance()->IsKey("track_on")) && (Config::getInstance()->GetIntVal("track_on")==1))
+        if (TimeLineVisualizer::TRACK_TIMELINE)
         {
             getTimeLine()->AddModifier(new TimeLineVisualizer());
         }

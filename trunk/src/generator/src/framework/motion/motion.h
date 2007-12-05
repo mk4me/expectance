@@ -10,6 +10,7 @@
 #include "core/global.h"
 #include "core/config.h"
 #include "utility/stringhelper.h"
+#include "scene/transform.h"
 
 
 namespace ft
@@ -44,6 +45,9 @@ namespace ft
         void setAnimID(int anim_id) { m_anim_id = anim_id; }
         int getAnimID() { return m_anim_id; }
 
+        void setTransform(Transform* transform) { m_transform = transform; }
+        Transform* getTransform() { return m_transform; }
+
 	//! init foot limits from configuration for given animName
 	bool initFootLimits(const std::string animName); 
 
@@ -54,6 +58,8 @@ namespace ft
     private:
         std::string m_animName;
         int m_anim_id;
+
+        Transform* m_transform;
     };
 };
 

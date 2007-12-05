@@ -6,6 +6,7 @@
 #include "cal3dtype.h"
 #include "transformmanager.h"
 #include "../utility/debug.h"
+#include "../utility/vishelper.h"
 
 using namespace ft;
 
@@ -31,23 +32,24 @@ Cal3dType::~Cal3dType()
 
 void Cal3dType::InitTransform(bool source_3dsmax)
 {
-    CalCoreBone* root = getCoreSkeleton()->getCoreBone(0);
+    if (Debug::TRANSFORM>0)
+        _dbg << "Cal3dType::InitTransform" << " for " << this->getName() << std::endl;
 
+    Transform* transform = new Transform(TRANSFORM_FROM_3DSMAX);
+
+    CalCoreBone* root = getCoreSkeleton()->getCoreBone(0);
     CalVector pos = root->getTranslation();
     CalQuaternion rot = root->getRotation();
 
-    getTransform()->setOrigPosition(pos);
-    // set offset as inversion of pos
-    pos.x = -pos.x; pos.y = -pos.y; pos.z = -pos.z; 
-    getTransform()->setPosOffset(pos);
+    transform->Init(pos, rot, source_3dsmax);
 
-    //CalVector dir = TransformManager::SCENE_FORWARD;
-    //dir *= rot;
+    if (transform->getTraceLine() != NULL)
+    {
+        transform->getTraceLine()->setColor(VisualizationHelper::COLOR_SKYBLUE);
+    }
 
-    //getTransform()->setOrigForward(dir);
-    
-    if (true)
-        return;
+    setTransform(transform);
+  
 }
 
 /**

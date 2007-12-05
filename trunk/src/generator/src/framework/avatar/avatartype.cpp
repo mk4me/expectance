@@ -5,6 +5,8 @@
 
 #include "avatartype.h"
 #include "../app/gendebug.h"
+#include "cal3d/coretrack.h"
+#include "scene/transformmanager.h"
 
 using namespace ft;
 
@@ -127,6 +129,20 @@ void AvatarType::InitTransform(bool source_3dsmax)
     Cal3dType::InitTransform(source_3dsmax);
 
     //inits transform for motions
+   	std::map<std::string,Motion*>::iterator it = m_motions.begin();
+
+    CalVector pos;
+    CalQuaternion rot;
+
+    for( ; it != m_motions.end(); ++it ) 
+    {
+        Motion* mot = it->second;
+        CalCoreAnimation* coreAnim = getCoreAnimation(mot->getAnimID());
+        (coreAnim->getCoreTrack(0))->getState(0.0f,pos,rot);
+        Transform* transform = new Transform(TRANSFORM_FROM_3DSMAX);
+        transform->Init(pos, rot, source_3dsmax);
+        mot->setTransform(transform);
+    }
 }
 
 

@@ -37,6 +37,7 @@ namespace ft
         static int INPUT;
         static int MESSAGE;
         static int SCENE;
+        static int TRANSFORM;
 
         //////////////////////////////////////
 

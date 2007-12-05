@@ -6,7 +6,8 @@
 #ifndef _SCENE_TRANSFORMMANAGER_H
 #define _SCENE_TRANSFORMMANAGER_H
 
-#include "transform.h"
+//#include "transform.h"
+#include "../utility/mathconversions.h"
 #include <string>
 
 namespace ft
@@ -19,6 +20,8 @@ namespace ft
     class TransformManager
     {
     public:
+        bool TRACK_TRANSFORM; 
+
         static CalVector SCENE_FORWARD;
         static CalVector SCENE_UP;
         static CalVector SCENE_RIGHT;
@@ -30,7 +33,7 @@ namespace ft
         static TransformManager* getInstance();
         static void DestroyInstance();
 
-        Transform* CreateTransform(const std::string& transformType);
+        //Transform* CreateTransform(const std::string& transformType);
 
     private:
         static TransformManager* m_instance;

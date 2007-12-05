@@ -6,7 +6,6 @@
 #ifndef _SCENE_CAL3DTYPE_H
 #define _SCENE_CAL3DTYPE_H
 
-#include "cal3d/cal3d.h"
 #include "transform.h"
 
 

@@ -359,7 +359,7 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 
     if (TRACE_FINAL_DIR)
     {
-        VisualizationHelper::TraceVector(tracer_final_dir, timeLineContext->getAvatar()->getDirection(), vCurrAvatarPosition, 100, VisualizationHelper::COLOR_PINK);
+        VisualizationHelper::TraceVector(tracer_final_dir, timeLineContext->getAvatar()->getDirection(), vCurrAvatarPosition, 100, VisualizationHelper::COLOR_PURPLE);
     }
 
 

@@ -18,8 +18,7 @@ namespace ft
     class TimeLineVisualizer : public TimeLineModifier
     {
     public:
-        static bool TRACK_ON;
-        bool TRACK_TIMELINE_STATES; 
+        static bool TRACK_TIMELINE; 
 
         TimeLineVisualizer();
         virtual ~TimeLineVisualizer(void);

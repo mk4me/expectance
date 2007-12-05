@@ -80,7 +80,7 @@ Cal3DObject* Cal3DObjectFactory::CreateMeshObject(const std::string modelName, s
         if (coreModel != NULL)
         {
             m_coreModels.insert( std::make_pair( std::string(modelName), coreModel ) );
-            //coreModel->InitTransform(m_source_3dsmax);
+            coreModel->InitTransform(m_source_3dsmax);
         }
     }
 
@@ -124,7 +124,7 @@ Cal3dType* Cal3DObjectFactory::LoadCalCoreModel(const std::string modelName)
     if (Debug::MODEL_LOADING)
         _dbg << "Cal3DObjectFactory::LoadCalCoreModel, for model: " + modelName  << std::endl;
 
-    Cal3dType* coreModel = CreateCoreModel("dummy");
+    Cal3dType* coreModel = CreateCoreModel(modelName);
     
     if (ParseModelConfiguration(modelName, coreModel))
     {

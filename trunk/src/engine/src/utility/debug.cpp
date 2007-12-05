@@ -28,6 +28,7 @@ int Debug::CAMERA = 0;
 int Debug::INPUT = 0;
 int Debug::MESSAGE = 0;
 int Debug::SCENE = 0;
+int Debug::TRANSFORM = 0;
 
 //////// //////////////
 
@@ -75,6 +76,7 @@ void Debug::LoadLevelsFromConfig()
         INPUT = ReadLevelFromConfig("DEBUG_INPUT");
         MESSAGE = ReadLevelFromConfig("DEBUG_MESSAGE");
         SCENE = ReadLevelFromConfig("DEBUG_SCENE");
+        TRANSFORM = ReadLevelFromConfig("DEBUG_TRANSFORM");
 
         //////////////////////
 

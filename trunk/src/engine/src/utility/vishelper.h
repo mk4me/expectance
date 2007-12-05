@@ -22,7 +22,8 @@ namespace ft
         static CalVector COLOR_GREEN;
         static CalVector COLOR_BLUE;
         static CalVector COLOR_SKYBLUE;
-        static CalVector COLOR_PINK;
+        static CalVector COLOR_PURPLE;
+        static CalVector COLOR_ORANGE;
         static CalVector COLOR_YELLOW;
 
         static void TraceRotation(TraceLine *traceLine, CalVector vBaseDir, CalVector pos, CalQuaternion rot, float line_length, CalVector vColor);

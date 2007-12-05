@@ -12,7 +12,8 @@ CalVector VisualizationHelper::COLOR_RED = CalVector(255,0,0);
 CalVector VisualizationHelper::COLOR_GREEN = CalVector(0,255,0);
 CalVector VisualizationHelper::COLOR_BLUE = CalVector(0,0,255);
 CalVector VisualizationHelper::COLOR_SKYBLUE = CalVector(0,100,100);
-CalVector VisualizationHelper::COLOR_PINK = CalVector(128, 0, 128);
+CalVector VisualizationHelper::COLOR_PURPLE = CalVector(128, 0, 128);
+CalVector VisualizationHelper::COLOR_ORANGE = CalVector(255, 69, 0); //CalVector(255, 105, 180)
 CalVector VisualizationHelper::COLOR_YELLOW = CalVector(255,255,0);
 
 /**
