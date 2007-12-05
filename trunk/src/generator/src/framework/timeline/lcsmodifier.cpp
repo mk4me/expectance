@@ -3,7 +3,6 @@
  * author: abak, mka
  */
 #include "lcsmodifier.h"
-//#include "cal3d/coreanimation.h"
 #include "cal3d/coretrack.h"
 #include "utility/vishelper.h"
 #include "utility/mathutil.h"
@@ -153,34 +152,87 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
     TimeLineModifier::Apply(elapsedSeconds, timeLineContext);
 
-    // Here apply this modifier
-    CalSkeleton *skel = timeLineContext->getAvatar()->GetCalModel()->getSkeleton();
-    CalBone *bone = skel->getBone(0);
+    UpdateRotation(elapsedSeconds, timeLineContext);
+    UpdateTranslation(elapsedSeconds, timeLineContext);
 
-    //  ROTATION ////////////////////
+    CalBone *bone = timeLineContext->getAvatar()->GetCalModel()->getSkeleton()->getBone(0);
+    bone->calculateState();
+	
+    if (TRACE_AXIS)
+    {
+        CalVector vCurrAvatarPosition = timeLineContext->getAvatar()->getPosition();
+        VisualizationHelper::TraceRotation(tracer_X, CalVector(1,0,0), vCurrAvatarPosition, CalQuaternion(), 100, VisualizationHelper::COLOR_RED);
+        VisualizationHelper::TraceRotation(tracer_Y, CalVector(0,1,0), vCurrAvatarPosition, CalQuaternion(), 100, VisualizationHelper::COLOR_GREEN);
+        VisualizationHelper::TraceRotation(tracer_Z, CalVector(0,0,1), vCurrAvatarPosition, CalQuaternion(), 100, VisualizationHelper::COLOR_BLUE);
+    }
+}
 
-    CalQuaternion qCurrAnimOrient;
-    CalQuaternion qCurrAvatarOrientation;
+////////////////// ROTATION ///////////////////////////////
+
+void LCSModifier::UpdateRotation(float elapsedSeconds, TimeLineContext * timeLineContext)
+{
+    CalBone *bone = timeLineContext->getAvatar()->GetCalModel()->getSkeleton()->getBone(0);
 
     CalQuaternion qGlobalRotOffset = timeLineContext->getAvatar()->getGlobalRotationOffset();
-
-    CalQuaternion rootRotation;
-    CalQuaternion tmpRot;
-
-     
-    // TRANSLATION //////////////////////
     CalVector vCurrAvatarPosition = timeLineContext->getAvatar()->getPosition();
 
+    if (ANIM_DIR_CALC)
+    {
+        //ApplyAnimDirectionToGlobalRotation(qGlobalRotOffset, currPos, timeLineContext);
+    }
+
+    CalQuaternion rootRotation = bone->getRotation();
+    CalQuaternion rotToSet = qGlobalRotOffset * rootRotation;
+    bone->setRotation(rotToSet); //ABAK
+
+    timeLineContext->getAvatar()->setGlobalRotationOffset(qGlobalRotOffset);
+    timeLineContext->getAvatar()->setOrientation(rotToSet);
+
+
+    CalVector vOriginForward(1,0,0);      // original forward vector without affection of animation
+    CalVector vDir = vOriginForward;
+    vDir *= rotToSet;
+    timeLineContext->getAvatar()->setDirection(vDir);
+
+    //TRACER-s -------------------------------------------------------
+    if (TRACE_ANIM_ORIENT)
+    {
+        CalVector lastAnimDirTmp = m_vLastAnimDir;
+        lastAnimDirTmp *= qGlobalRotOffset;;
+        VisualizationHelper::TraceVector(tracer_anim_orient, lastAnimDirTmp, vCurrAvatarPosition, 100, VisualizationHelper::COLOR_SKYBLUE);
+    }
+
+    if (TRACE_ROOT_ROTATION)
+    {
+        VisualizationHelper::TraceRotation(tracer_root_orient, vOriginForward, vCurrAvatarPosition, bone->getRotation(), 150, VisualizationHelper::COLOR_WHITE);
+    }
+
+    if (TRACE_FINAL_ORIENT)
+    {
+        VisualizationHelper::TraceRotation(tracer_final_orient, vOriginForward, vCurrAvatarPosition, timeLineContext->getAvatar()->getOrientation(), 170, VisualizationHelper::COLOR_YELLOW);
+    }
+
+    if (TRACE_FINAL_DIR)
+    {
+        VisualizationHelper::TraceVector(tracer_final_dir, timeLineContext->getAvatar()->getDirection(), vCurrAvatarPosition, 100, VisualizationHelper::COLOR_PURPLE);
+    }
+}
+
+//////////////////// TRANSLATION ///////////////////////////////
+
+void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * timeLineContext)
+{
+    CalBone *bone = timeLineContext->getAvatar()->GetCalModel()->getSkeleton()->getBone(0);
+    
+    CalVector vCurrAvatarPosition = timeLineContext->getAvatar()->getPosition();
 
     CalVector currPos;
+    CalQuaternion tmpRot;
     CalVector restTrans(0,0,0); // used in case of changing animation or new cycle in loop anim
     CalVector vPrevPos(0,0,0); //used only for OVERLAP state
 
     if (timeLineContext->currAnim != NULL)
     {
-
-        CalVector translation;
-
         CalCoreAnimation* coreAnim = timeLineContext->currAnim->getCoreAnimation();
         CalCoreTrack* track = coreAnim->getCoreTrack(0);
         track->getState(timeLineContext->currAnimTime, currPos, tmpRot);
@@ -199,7 +251,6 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
                 restTrans -= m_vLastPos;
 
                 if (LOCAL_DEBUG) _dbg << " resTrans " << restTrans.length() << endl;
-
             }
             else
             {
@@ -265,21 +316,6 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
         diff = (1.0f - factor) * prevDiff + factor * diff;
         y_to_set = (1.0f - factor) * vPrevPos.y + factor * currPos.y;
         m_vLastPrevPos = vPrevPos;
-
-            if (LOCAL_DEBUG) 
-            {
-                if (counter == 0 || timeLineContext->anim_changed)
-                {
-                    //if (timeLineContext->anim_changed)
-                    //{
-                    //    _dbg << " prev time " << timeLineContext->prevAnimTime << " prev dur " << timeLineContext->prevAnimDuration << endl;
-                    //}
-                    //_dbg << " animTime " << timeLineContext->currAnimTime << " dur " << timeLineContext->prevOverlap 
-                    //    << " factor " << factor << " diff " << diff.length() <<endl;
-                    //_dbg << " prevAnimTime " << timeLineContext->prevAnimTime << " prev dur " << timeLineContext->prevAnimDuration << endl;
-                }
-//                counter = (counter+1)%5;
-            }
     }
 
     if (REST_TRANS_CALC)
@@ -287,92 +323,21 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
        diff += restTrans;
     }
 
-     // ANIM DIRECTION calculating
-
-    if (ANIM_DIR_CALC)
-    {
-        ApplyAnimDirectionToGlobalRotation(qGlobalRotOffset, currPos, timeLineContext);
-    }
-
-    diff *= qGlobalRotOffset; //ABAK
-
+    diff *= timeLineContext->getAvatar()->getGlobalRotationOffset();
     vCurrAvatarPosition += diff;
-   
     vCurrAvatarPosition.y = y_to_set;   
 
     m_vLastPos = currPos;
 
-    //CalQuaternion rotToSet = qGlobalRotOffset * rootRotation;
-
-    rootRotation = bone->getRotation();
-    CalQuaternion rotToSet = qGlobalRotOffset * rootRotation;
-    bone->setRotation(rotToSet); //ABAK
-
-    //if (counter == 0)
-    //{
-    //    Quat rotQuat = CalQuatToQuat(rootRotation);
-    //    _dbg << " x " << radToDeg(rotQuat.Xangle()) <<  " y " << radToDeg(rotQuat.Yangle())
-    //        << " z " << radToDeg(rotQuat.Zangle()) << endl;
-    //        // << " z " << rotQuat.Zangle() << endl;
-    //}
-    //counter = (counter+1)%10;
-
     bone->setTranslation(vCurrAvatarPosition);
-    bone->calculateState();
-	
-	//set current parameters lcs to scene object
 	timeLineContext->getAvatar()->setPosition(vCurrAvatarPosition);
 
-
-    CalVector vOriginForward(1,0,0);      // original forward vector without affection of animation
-
-    timeLineContext->getAvatar()->setGlobalRotationOffset(qGlobalRotOffset);
-    timeLineContext->getAvatar()->setOrientation(rotToSet);
-
-    CalVector vDir = vOriginForward;
-    vDir *= rotToSet;
-    timeLineContext->getAvatar()->setDirection(vDir);
-
     //TRACER-s -------------------------------------------------------
-
     if (TRACE_TRANSLATION)
     {
         tracer_translation->AddPoint(vCurrAvatarPosition);
     }
-
-    if (TRACE_ANIM_ORIENT)
-    {
-        CalVector lastAnimDirTmp = m_vLastAnimDir;
-        lastAnimDirTmp *= qGlobalRotOffset;;
-        VisualizationHelper::TraceVector(tracer_anim_orient, lastAnimDirTmp, vCurrAvatarPosition, 100, VisualizationHelper::COLOR_SKYBLUE);
-    }
-
-    if (TRACE_ROOT_ROTATION)
-    {
-        VisualizationHelper::TraceRotation(tracer_root_orient, vOriginForward, vCurrAvatarPosition, bone->getRotation(), 150, VisualizationHelper::COLOR_WHITE);
-    }
-
-    if (TRACE_FINAL_ORIENT)
-    {
-        VisualizationHelper::TraceRotation(tracer_final_orient, vOriginForward, vCurrAvatarPosition, timeLineContext->getAvatar()->getOrientation(), 170, VisualizationHelper::COLOR_YELLOW);
-    }
-
-    if (TRACE_FINAL_DIR)
-    {
-        VisualizationHelper::TraceVector(tracer_final_dir, timeLineContext->getAvatar()->getDirection(), vCurrAvatarPosition, 100, VisualizationHelper::COLOR_PURPLE);
-    }
-
-
-    if (TRACE_AXIS)
-    {
-        // X - axis 
-        VisualizationHelper::TraceRotation(tracer_X, CalVector(1,0,0), vCurrAvatarPosition, CalQuaternion(), 100, VisualizationHelper::COLOR_RED);
-        //Y - axis 
-        VisualizationHelper::TraceRotation(tracer_Y, CalVector(0,1,0), vCurrAvatarPosition, CalQuaternion(), 100, VisualizationHelper::COLOR_GREEN);
-        //Z - axis 
-        VisualizationHelper::TraceRotation(tracer_Z, CalVector(0,0,1), vCurrAvatarPosition, CalQuaternion(), 100, VisualizationHelper::COLOR_BLUE);
-    }
-}
+ }
 
 /**
  * \brief Applies direction of current animation to global rotation offset
@@ -448,53 +413,6 @@ CalQuaternion LCSModifier::CalculateCurrentRootOrientAroundY(CalBone *rootBone)
 
     return qGlobalRot;
 }
-
-/**
- * \brief Adds helper trace line for rendering
- * \param TraceLine *traceLine - traceline object (should be created and added to ft::VisualizationManager before)
- * \param  CalVector vBaseDir - base vector from which given rotation is defined
- * \param CalVector pos - current position of origin of traceline
- * \param CalQuaternion rot - rotation to visualize
- * \param float line_length - lenght of traceline to draw
- * \param CalVector vColor - collor of traceline
- */
-//void LCSModifier::TraceRotation(TraceLine *traceLine, CalVector vBaseDir, CalVector pos, CalQuaternion rot, float line_length, CalVector vColor)
-//{
-//    traceLine->ClearTrace();
-//
-//    traceLine->setColor(vColor);
-//    traceLine->AddPoint(pos);
-//
-//    vBaseDir *= line_length;
-//    vBaseDir *= rot;
-//
-//    traceLine->AddPoint(pos + vBaseDir);
-//}
-
-/**
- * \brief Adds helper trace line for rendering
- * \param TraceLine *traceLine - traceline object (should be created and added to ft::VisualizationManager before)
- * \param  CalVector vVector - vector to visualize
- * \param CalVector pos - current position of origin of traceline
- * \param float line_length - lenght of traceline to draw
- * \param CalVector vColor - collor of traceline
- */
-//void LCSModifier::TraceVector(TraceLine *traceLine, CalVector vVector, CalVector pos, float line_length, CalVector vColor)
-//{
-//    traceLine->ClearTrace();
-//
-//    if (vVector.length() >0)
-//    {
-//        traceLine->setColor(vColor);
-//        traceLine->AddPoint(pos);
-//
-//        vVector.normalize();
-//        vVector*= line_length;
-//
-//        traceLine->AddPoint(pos + vVector);
-//    }
-//}
-
 
 
 /// \brief Resets parameters of this modifier
