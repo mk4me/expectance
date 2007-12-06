@@ -20,6 +20,8 @@ CalVector TransformManager::SCENE_RIGHT = CalVector(-1,0,0);
 
 // \brief Left vector for objects on application scene
 CalVector TransformManager::SCENE_LEFT = CalVector(1,0,0);
+// \ Rototion by 90 degree
+CalQuaternion TransformManager::Y_90 = QuatToCalQuat( Quat( DegToRad(90) , Vec(0,1,0)));
 
 
 TransformManager* TransformManager::m_instance = NULL;

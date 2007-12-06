@@ -12,7 +12,7 @@ using namespace ft;
  * \param CalQuaternion& val - rotation component whic will be substracted from 'rot'
  * \return CalQuaternion& - result of substraction
  */
-CalQuaternion&  UTIL_diff_quats(CalQuaternion& rot, CalQuaternion& val)
+CalQuaternion&  UTIL_diff_quats(CalQuaternion& rot, const CalQuaternion& val)
 {
     //NOTE: inverted components     
     Quat restRotQuat = CalQuatToQuat(rot); 

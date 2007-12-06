@@ -27,6 +27,8 @@ namespace ft
         static CalVector SCENE_RIGHT;
         static CalVector SCENE_LEFT;
 
+        static CalQuaternion Y_90;
+
 		TransformManager();
 	    virtual ~TransformManager(void);
 

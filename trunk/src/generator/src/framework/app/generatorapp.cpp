@@ -9,6 +9,7 @@
 #include "../avatar/avatarfactory.h"
 #include "genvisualizationmanager.h"
 #include "gendebug.h"
+#include "scene/transformmanager.h"
 
 
 using namespace ft;
@@ -131,6 +132,7 @@ void GeneratorApp::InitAvatars()
 
             //av->setStartPosition(vStartPos);
             av->setPosition(vStartPos);
+            av->setGlobalRotationOffset(TransformManager::Y_90);
             ControlManager::getInstance()->AddAvatar(av);
             if (i==0)
             {

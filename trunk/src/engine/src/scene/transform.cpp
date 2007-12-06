@@ -48,8 +48,9 @@ Transform::~Transform()
 void Transform::Init(const CalVector& origPos, const CalQuaternion& origQuat, bool source_3dsmax)
 {
     setOrigPosition(origPos);
-    // set offset as inversion of pos
-    CalVector offset(-origPos.x,-origPos.y,-origPos.z); 
+    // set offset as inversion of pos with y=0
+    // it can be used to use data as started from point (0,0,0)
+    CalVector offset(-origPos.x, 0,-origPos.z); 
     setPosOffset(offset);
     
     //calculate orig forward
@@ -59,10 +60,14 @@ void Transform::Init(const CalVector& origPos, const CalQuaternion& origQuat, bo
     if (source_3dsmax)
     {
         // rotation around Y is indicated by roation around Z in 3dsmax model (sign for angle is inversed
-        // as in 3ds is right-hand coordinate system nut in cal3d is left-hand systsem)
+        // as in 3ds is right-hand coordinate system nut in cal3d is left-hand systsem) - it means that qDiffForward
+        // will represent rotation which must be added to each rotation from data to achieve 0
 
-        qDiffForward = QuatToCalQuat(     Quat( -CalQuatToQuat(origQuat).Zangle() , Vec(0,1,0))    );
-        vOrigForward *= qDiffForward;
+        qDiffForward = QuatToCalQuat(     Quat( CalQuatToQuat(origQuat).Zangle() , Vec(0,1,0))    );
+        
+        //set orinal forward
+        CalQuaternion quat = QuatToCalQuat(     Quat( -CalQuatToQuat(origQuat).Zangle() , Vec(0,1,0))    );
+        vOrigForward *= quat;
     }
     
     setOrigForward(vOrigForward);

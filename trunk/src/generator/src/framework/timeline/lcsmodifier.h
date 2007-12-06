@@ -19,7 +19,7 @@ namespace ft
     {
     public:
         bool TRACE_TRANSLATION; 
-        bool TRACE_ANIM_ORIENT;   //sky-blue  
+        bool TRACE_TRANSFORM;   //sky-blue  
         bool TRACE_ROOT_ROTATION;   //white
         bool TRACE_FINAL_ORIENT;  //yellow
         bool TRACE_FINAL_DIR;     //purple
@@ -43,7 +43,9 @@ namespace ft
     private:
         void ApplyAnimDirectionToGlobalRotation(CalQuaternion& qGlobalRotOffset, CalVector& currPos, TimeLineContext * timeLineContext);
         CalQuaternion CalculateCurrentRootOrientAroundY(CalBone *rootBone);
-
+        Transform* GetTransformForAnim(CalAnimation* anim, Avatar* avatar);
+        Transform* GetTransformForType(Avatar* avatar);
+        
         CalVector m_vLastPos;
         CalVector m_vLastPrevPos;  //used only for OVERLAP state
 

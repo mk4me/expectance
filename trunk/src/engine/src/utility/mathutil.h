@@ -4,7 +4,7 @@
  */
 #include "mathconversions.h"
 
-CalQuaternion&  UTIL_diff_quats(CalQuaternion& rot, CalQuaternion& val);
+CalQuaternion&  UTIL_diff_quats(CalQuaternion& rot, const CalQuaternion& val);
 float UTIL_GetRightArgForArcCos(float arg);
 float UTIL_GetSignForDirChange(CalVector& oldDir, CalVector& newDir);
 void UTIL_DumpQuat(const CalQuaternion& quat, std::string caption = "");
