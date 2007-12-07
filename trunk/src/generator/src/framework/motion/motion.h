@@ -20,6 +20,8 @@ namespace ft
     static const std::string MOTION_WALK_LOOP = FT_MODELPATH + "cally\\cally_walkloop.CAF";  
     static const std::string MOTION_WALK_STOP = FT_MODELPATH + "cally\\cally_walkstop.CAF";  
     static const std::string MOTION_WALK_IDLE = FT_MODELPATH + "cally\\cally_walkidle.CAF";  
+    static const std::string MOTION_WALK_TURN_LEFT = FT_MODELPATH + "cally\\cally_walturn_left.CAF";
+    static const std::string MOTION_WALK_TURN_RIGHT = FT_MODELPATH + "cally\\cally_walturn_right.CAF";
     static const std::string MOTION_RUN_START = FT_MODELPATH + "cally\\cally_runstart.CAF";  
     static const std::string MOTION_RUN_LOOP  = FT_MODELPATH + "cally\\cally_runloop.CAF";  
     static const std::string MOTION_RUN_STOP  = FT_MODELPATH + "cally\\cally_runstop.CAF";  
