@@ -37,11 +37,15 @@ namespace ft
 
         const std::string getType() { return m_type; }
 
-        void Init(const CalVector& origPos, const CalQuaternion& origQuat, bool source_3dsmax);
+        void InitForType(const CalVector& origPos, const CalQuaternion& origQuat, bool source_3dsmax);
+        void InitForAnim(CalCoreAnimation* coreAnim, bool source_3dsmax);
+        
+        float CalculateAnimForward(CalCoreAnimation* coreAnim, int iterCount, bool from_begin);
 
         TraceLine* getTraceLine() {return m_forward_trace; }
         void Trace(const CalVector& pos);
     private:
+        void Init(const CalVector& origPos, float forwardAngle, bool source_3dsmax);
         std::string m_type;
 
         CalVector m_vOrigPosition;  //original position

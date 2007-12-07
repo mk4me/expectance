@@ -41,7 +41,7 @@ void Cal3dType::InitTransform(bool source_3dsmax)
     CalVector pos = root->getTranslation();
     CalQuaternion rot = root->getRotation();
 
-    transform->Init(pos, rot, source_3dsmax);
+    transform->InitForType(pos, rot, source_3dsmax);
 
     if (transform->getTraceLine() != NULL)
     {
