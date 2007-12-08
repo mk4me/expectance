@@ -22,9 +22,9 @@ LCSModifier::LCSModifier()
      m_fAnimRot = 0;
      m_vLastAnimDir = CalVector(0,0,0);
 
-    TRACE_TRANSLATION = true;
+    TRACE_TRANSLATION = false;
     TRACE_TRANSFORM = false;
-    TRACE_ROOT_ROTATION = true;
+    TRACE_ROOT_ROTATION = false;
 
     TRACE_FINAL_ORIENT = false;
     TRACE_FINAL_DIR = false;

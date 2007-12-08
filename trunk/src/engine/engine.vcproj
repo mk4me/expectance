@@ -489,7 +489,7 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="man"
+				Name="manager"
 				>
 				<File
 					RelativePath=".\src\scene\cameramanager.cpp"
