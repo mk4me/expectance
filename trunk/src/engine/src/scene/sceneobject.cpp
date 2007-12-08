@@ -3,7 +3,7 @@
  * author: mka
  */
 
-#include "SceneObject.h"
+#include "sceneobject.h"
 using namespace ft;
 
 SceneObject::SceneObject(void)
@@ -13,32 +13,8 @@ SceneObject::SceneObject(void)
                             // ABAK's note: doesn't true for avatar - avatar is originally oriented along positive X axis
 	m_orientation = QuatToCalQuat( Quat(degToRad(0.0f), Vec(0,1,0)) ); //global orientation (zero angle around Y axis for initial global rotation)
     m_globalRotationOffset = CalQuaternion(); // no rotation
-	m_color.set(1.0,1.0,1.0); //white
-	m_alpha = 1;
-	m_visible = true;
-	m_renderingOrder = ft_Rendering_StaticShadow_Level; // by default
 }
 
-const byte SceneObject::getRenderingOrder()
-{
-	return m_renderingOrder; 
-}
-
-bool SceneObject::Render()
-{
-	return true;
-}
-
-bool SceneObject::RenderShadow()
-{
-	return true;
-}
-
-SceneObject& SceneObject::setRenderingOrder(RenderingOrder ro)
-{
-	m_renderingOrder = ro;
-	return *this;
-}
 
 SceneObject& SceneObject::setPosition(const CalVector &position)
 {
@@ -101,15 +77,6 @@ SceneObject& SceneObject::changeDirection(const CalQuaternion &deltaDirection)
 	return *this;
 }
 
-
-
-SceneObject& SceneObject::setColor(const CalVector& col)
-{
-	m_color = col;
-	return *this;
-}
-
-
 const CalVector& SceneObject::getPosition() const
 {
 	return m_position;
@@ -129,26 +96,6 @@ const CalQuaternion& SceneObject::getGlobalRotationOffset() const
 const CalVector& SceneObject::getDirection() const
 {
 	return m_direction;
-}
-
-const CalVector& SceneObject::getColor() const
-{
-	return m_color;
-}
-
-void SceneObject::Show()
-{
-	m_visible = true;
-}
-
-void SceneObject::Hide()
-{
-	m_visible = false;
-}
-
-const bool SceneObject::isVisible() const
-{
-	return m_visible;
 }
 
 const void SceneObject::PrintInfo(void) const

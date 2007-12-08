@@ -22,9 +22,9 @@ LCSModifier::LCSModifier()
      m_fAnimRot = 0;
      m_vLastAnimDir = CalVector(0,0,0);
 
-    TRACE_TRANSLATION = false;
+    TRACE_TRANSLATION = true;
     TRACE_TRANSFORM = false;
-    TRACE_ROOT_ROTATION = false;
+    TRACE_ROOT_ROTATION = true;
 
     TRACE_FINAL_ORIENT = false;
     TRACE_FINAL_DIR = false;
@@ -41,6 +41,7 @@ LCSModifier::LCSModifier()
         tracer_translation = new TraceLine(toString() + "Translation");
         VisualizationManager::getInstance()->AddObject(tracer_translation);
         tracer_translation->HideMarker();
+		tracer_translation->setBufferSize(0);
         tracer_translation->setColor(VisualizationHelper::COLOR_BLUE);
     }	
 

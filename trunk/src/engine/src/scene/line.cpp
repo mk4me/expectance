@@ -54,7 +54,7 @@ bool Line::Render()
 		glTranslatef(m_start.x, m_start.y, m_start.z);
 		//set object parameters
 		//draw it	
-		glColor4f(m_color.x, m_color.y, m_color.z, m_alpha);
+		glColor4f(m_color.x, m_color.y, m_color.z, 1.0);
 		glBegin(GL_LINES);
 			glVertex3f(m_start.x, m_start.y, m_start.z);
 			glVertex3f(m_end.x, m_end.y, m_end.z);
