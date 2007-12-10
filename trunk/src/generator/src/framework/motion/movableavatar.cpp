@@ -31,7 +31,7 @@ MovableAvatar::MovableAvatar(CalModel* calModel, Cal3dType* calCoreModel, const 
     {
         tracer_start_pos = new TraceLine("start_pos" + toString());
 		tracer_start_pos ->setMarkerShape(ft_Diamond);
-        VisualizationManager::getInstance()->AddObject(tracer_start_pos);
+        SceneManager::getInstance()->AddObject(tracer_start_pos);
 
         tracer_start_pos->AddPoint(getStartPosition());
         tracer_start_pos->AddPoint(CalVector(0,70,0));
@@ -45,7 +45,7 @@ MovableAvatar::~MovableAvatar()
     if (tracer_start_pos != NULL)
     {
         tracer_start_pos->ClearTrace();
-        VisualizationManager::getInstance()->RemoveObject(tracer_start_pos);
+        SceneManager::getInstance()->RemoveObject(tracer_start_pos);
     }
 }
 

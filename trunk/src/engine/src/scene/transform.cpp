@@ -29,7 +29,7 @@ Transform::Transform(const std::string type)
     if (TransformManager::getInstance()->TRACK_TRANSFORM)
     {
         m_forward_trace = new TraceLine(toString() + "m_forward_trace");
-        VisualizationManager::getInstance()->AddObject(m_forward_trace);
+		SceneManager::getInstance()->AddObject(m_forward_trace);
         m_forward_trace->HideMarker();
     }	
 }
@@ -43,7 +43,7 @@ Transform::~Transform()
     if (m_forward_trace != NULL)
     {
         m_forward_trace->ClearTrace();
-        VisualizationManager::getInstance()->RemoveObject(m_forward_trace);
+        SceneManager::getInstance()->RemoveObject(m_forward_trace);
     }
 }
 

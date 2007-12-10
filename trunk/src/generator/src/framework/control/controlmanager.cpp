@@ -27,7 +27,7 @@ ControlManager::~ControlManager(void)
     if (tracer_active_avatar != NULL)
     {
         tracer_active_avatar->ClearTrace();
-        VisualizationManager::getInstance()->RemoveObject(tracer_active_avatar);
+        SceneManager::getInstance()->RemoveObject(tracer_active_avatar);
         tracer_active_avatar = NULL;
     }
 }
@@ -75,7 +75,7 @@ void ControlManager::Init()
     {
         tracer_active_avatar = new TraceLine(toString() + "_active_avatar");
 		tracer_active_avatar->setMarkerShape(ft_Diamond);
-        VisualizationManager::getInstance()->AddObject(tracer_active_avatar);
+        SceneManager::getInstance()->AddObject(tracer_active_avatar);
     }
 
       InputManager::getInstance()->AddListener(this);

@@ -21,6 +21,7 @@
 
 
 
+
 namespace ft
 {
 	
@@ -57,10 +58,10 @@ namespace ft
 		/*! Registers object to be rendered */
 		virtual bool AddObject(SceneObject* pObj);   
 		
-		//! get the pointer value of SceneObject by unique id
-		SceneObject* getObject(std::string id);
-		//! get the pointer value of SceneObject by name
-		SceneObject* getObjectByName(std::string name);
+		//////! get the pointer value of SceneObject by unique id
+		////SceneObject* getObject(std::string id);
+		//////! get the pointer value of SceneObject by name
+		////SceneObject* getObjectByName(std::string name);
 		//! remove SceneObject
 		/*! Unregisters SceneObject from Rendering queue and call their destructor */
 		bool RemoveObject(SceneObject*);

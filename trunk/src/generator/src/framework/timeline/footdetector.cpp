@@ -18,13 +18,13 @@ FootDetector::FootDetector(void)
 		m_tracerL->setMarkerShape(ft_Cross);
 		m_tracerL->setBufferSize(20);
 		m_tracerL->setMarkerColor(CalVector(1,1,0));
-		VisualizationManager::getInstance()->AddObject(m_tracerL);
+		SceneManager::getInstance()->AddObject(m_tracerL);
 		m_tracerR  = new TraceLine("rightFootMarker");
 		m_tracerR->setMarkerShape(ft_Cross);
 		m_tracerR->setBufferSize(20);
 		m_tracerR->setColor(CalVector(1,0,0));
 		m_tracerR->setMarkerColor(CalVector(1,1,0));
-		VisualizationManager::getInstance()->AddObject(m_tracerR);
+		SceneManager::getInstance()->AddObject(m_tracerR);
 	}
 	
 	m_leftFootPlant = m_rightFootPlant = false;   
@@ -37,8 +37,8 @@ FootDetector::~FootDetector()
 	{
 	    m_tracerL->ClearTrace();
 		m_tracerR->ClearTrace();
-		VisualizationManager::getInstance()->RemoveObject(m_tracerL);
-		VisualizationManager::getInstance()->RemoveObject(m_tracerR);
+		SceneManager::getInstance()->RemoveObject(m_tracerL);
+		SceneManager::getInstance()->RemoveObject(m_tracerR);
 	}
 
 }

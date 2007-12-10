@@ -15,7 +15,7 @@ TimeLineVisualizer::TimeLineVisualizer()
     if (TRACK_TIMELINE)
     {
         tracer_timeline_states = new TraceLine(toString() + "TimeLineVisualizer_tracer_timeline_states");
-        VisualizationManager::getInstance()->AddObject(tracer_timeline_states);
+        SceneManager::getInstance()->AddObject(tracer_timeline_states);
         tracer_timeline_states->HideMarker();
         tracer_timeline_states->setBlending(false);
     }	
@@ -27,7 +27,7 @@ TimeLineVisualizer::~TimeLineVisualizer(void)
     if (tracer_timeline_states != NULL)
     {
         tracer_timeline_states->ClearTrace();
-        VisualizationManager::getInstance()->RemoveObject(tracer_timeline_states);
+        SceneManager::getInstance()->RemoveObject(tracer_timeline_states);
     }
 }
 

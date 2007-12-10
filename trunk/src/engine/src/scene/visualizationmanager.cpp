@@ -151,24 +151,24 @@ bool VisualizationManager::AddObject(SceneObject* pObj)
 }  
 
 
-SceneObject* VisualizationManager::getObject(std::string id)
-{
- 	std::map<std::string,SceneObject*>::iterator it = m_SceneObjects.find(id);
-	if ( it!=m_SceneObjects.end()) { 
-		return it->second;
-	}
-	return NULL;
-}
-
-SceneObject* VisualizationManager::getObjectByName(std::string name)
-{
-	std::map<std::string,SceneObject*>::iterator it = m_instance->m_SceneObjects.begin();
-	for( ; it != m_instance->m_SceneObjects.end(); ++it ) {
-		if (name.compare(it->second->getName()) == 0)
-			return it->second;
-    }
-	return NULL;
-}
+////SceneObject* VisualizationManager::getObject(std::string id)
+////{
+//// 	std::map<std::string,SceneObject*>::iterator it = m_SceneObjects.find(id);
+////	if ( it!=m_SceneObjects.end()) { 
+////		return it->second;
+////	}
+////	return NULL;
+////}
+////
+////SceneObject* VisualizationManager::getObjectByName(std::string name)
+////{
+////	std::map<std::string,SceneObject*>::iterator it = m_instance->m_SceneObjects.begin();
+////	for( ; it != m_instance->m_SceneObjects.end(); ++it ) {
+////		if (name.compare(it->second->getName()) == 0)
+////			return it->second;
+////    }
+////	return NULL;
+////}
 
 bool VisualizationManager::RemoveObject(SceneObject* pObj)
 {
@@ -186,7 +186,7 @@ bool VisualizationManager::RemoveObject(std::string id)
 	 	std::map<std::string,SceneObject*>::iterator it = m_SceneObjects.find(id);
 		if ( it!=m_SceneObjects.end()) 
 		{ 
-			delete it->second;
+			//delete it->second; //scene manager does it
 			m_SceneObjects.erase(it);
 			return true;
 		}

@@ -9,7 +9,8 @@
 #include <string>
 #include "../utility/mathconversions.h"
 #include "../core/baseobject.h"
-#include "visualizationmanager.h"
+#include "scenemanager.h"
+#include "traceline.h"
 
 namespace ft
 {

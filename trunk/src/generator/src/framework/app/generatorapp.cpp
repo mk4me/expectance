@@ -75,7 +75,7 @@ void GeneratorApp::InitStaticObjects()
     Cal3DObject *table = Cal3DObjectFactory::getMeshObjectFactoryInstance()->CreateMeshObject("table","table01");
     if (table != NULL)
     {
-      VisualizationManager::getInstance()->AddObject(table); 
+      SceneManager::getInstance()->AddObject(table); 
       UpdateManager::getInstance()->AddUpdateObject(table);
       GlobalMsgSender::getInstance()->AddMsgListener(table);
       CalVector vStartPos(0,0,0);
@@ -85,7 +85,7 @@ void GeneratorApp::InitStaticObjects()
     table = Cal3DObjectFactory::getMeshObjectFactoryInstance()->CreateMeshObject("table","table02");
     if (table != NULL)
     {
-      VisualizationManager::getInstance()->AddObject(table); 
+      SceneManager::getInstance()->AddObject(table); 
       UpdateManager::getInstance()->AddUpdateObject(table);
       GlobalMsgSender::getInstance()->AddMsgListener(table);
       CalVector vStartPos(200,0,200);
@@ -170,7 +170,7 @@ Avatar* GeneratorApp::CreateAvatarOnScene(const std::string& calCoreModel,const 
   Avatar* avatar = (Avatar*)ft::AvatarFactory::getAvatarFactoryInstance()->CreateMeshObject(calCoreModel, name);
   if (avatar != NULL)
   {
-	  VisualizationManager::getInstance()->AddObject(avatar); 
+	  SceneManager::getInstance()->AddObject(avatar); 
       UpdateManager::getInstance()->AddUpdateObject(avatar);
       GlobalMsgSender::getInstance()->AddMsgListener(avatar);
       AIManager::getInstance()->AddAvatar((AIAvatar*)avatar);

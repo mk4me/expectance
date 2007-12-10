@@ -10,6 +10,7 @@
 #include "inputmanager.h"
 #include "../scene/cal3dobjectfactory.h"
 #include "../scene/transformmanager.h"
+#include "../scene/scenemanager.h"
 #include "../scene/visualizationmanager.h"
 #include "../utility/debug.h"
 
@@ -40,10 +41,6 @@ int Application::Init()
 		return -1;
 	}
 
-	VisualizationManager::getInstance()->AddObject(new TraceLine("TL1")); //lines for tracing
-	VisualizationManager::getInstance()->AddObject(new TraceLine("TL2"));
-	VisualizationManager::getInstance()->AddObject(new TraceLine("TL3"));	
-
     InitObjects();
 
     InputManager::getInstance()->AddListener(this);
@@ -64,7 +61,8 @@ bool Application::InitModules()
     InputManager::getInstance();  //enforced creation of singleton
     UpdateManager::getInstance()->Init();  //enforced creation of singleton
     GlobalMsgSender::getInstance();  //enforced creation of singleton
-    Cal3DObjectFactory::getMeshObjectFactoryInstance();   //enforced creation of singleton
+	SceneManager::getInstance();	 // enforced creation of singleton
+	Cal3DObjectFactory::getMeshObjectFactoryInstance();   //enforced creation of singleton
     TransformManager::getInstance(); //enforced creation of singleton
     CreateVisualizationManager();  //enforced creation of singleton
     if (!VisualizationManager::getInstance()->Init()) 

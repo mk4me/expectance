@@ -39,7 +39,7 @@ LCSModifier::LCSModifier()
     if (TRACE_TRANSLATION)
     {
         tracer_translation = new TraceLine(toString() + "Translation");
-        VisualizationManager::getInstance()->AddObject(tracer_translation);
+        SceneManager::getInstance()->AddObject(tracer_translation);
         tracer_translation->HideMarker();
 		tracer_translation->setBufferSize(0);
         tracer_translation->setColor(VisualizationHelper::COLOR_BLUE);
@@ -48,26 +48,26 @@ LCSModifier::LCSModifier()
     if (TRACE_ROOT_ROTATION)
     {
         tracer_root_orient = new TraceLine(toString() + "tracer_root_orient");
-        VisualizationManager::getInstance()->AddObject(tracer_root_orient);
+        SceneManager::getInstance()->AddObject(tracer_root_orient);
     }
 
     if (TRACE_TRANSFORM)
     {
         tracer_anim_orient = new TraceLine(toString() + "tracer_rot_Curr");
-        VisualizationManager::getInstance()->AddObject(tracer_anim_orient);
+        SceneManager::getInstance()->AddObject(tracer_anim_orient);
         tracer_anim_orient->setRenderingOrder(ft_Rendering_Objects_Level);
     }
 
     if (TRACE_FINAL_ORIENT)
     {
         tracer_final_orient  = new TraceLine(toString() + "tracer_final_orient");
-        VisualizationManager::getInstance()->AddObject(tracer_final_orient);
+        SceneManager::getInstance()->AddObject(tracer_final_orient);
     }
 
     if (TRACE_FINAL_DIR)
     {
         tracer_final_dir  = new TraceLine(toString() + "tracer_final_dir");
-        VisualizationManager::getInstance()->AddObject(tracer_final_dir);
+        SceneManager::getInstance()->AddObject(tracer_final_dir);
         tracer_final_dir->setRenderingOrder(ft_Rendering_Objects_Level);
     }
 
@@ -78,9 +78,9 @@ LCSModifier::LCSModifier()
         tracer_Y  = new TraceLine(toString() + "tracer_rot_Y ");
         tracer_Z  = new TraceLine(toString() + "tracer_rot_Z");
 
-        VisualizationManager::getInstance()->AddObject(tracer_X);
-        VisualizationManager::getInstance()->AddObject(tracer_Y);
-        VisualizationManager::getInstance()->AddObject(tracer_Z);
+        SceneManager::getInstance()->AddObject(tracer_X);
+        SceneManager::getInstance()->AddObject(tracer_Y);
+        SceneManager::getInstance()->AddObject(tracer_Z);
 
         tracer_X->setBlending(false);
         tracer_X->setRenderingOrder(ft_Rendering_Objects_Level);
@@ -97,25 +97,25 @@ LCSModifier::~LCSModifier(void)
     if (tracer_translation != NULL)
     {
         tracer_translation->ClearTrace();
-        VisualizationManager::getInstance()->RemoveObject(tracer_translation);
+        SceneManager::getInstance()->RemoveObject(tracer_translation);
     }
 
     if (tracer_root_orient!= NULL)
     {
         tracer_root_orient->ClearTrace();
-        VisualizationManager::getInstance()->RemoveObject(tracer_root_orient);
+        SceneManager::getInstance()->RemoveObject(tracer_root_orient);
     }
 
     if (tracer_final_orient != NULL)
     {
         tracer_final_orient->ClearTrace();
-        VisualizationManager::getInstance()->RemoveObject(tracer_final_orient);
+        SceneManager::getInstance()->RemoveObject(tracer_final_orient);
     }
 
     if (tracer_final_dir != NULL)
     {
         tracer_final_dir->ClearTrace();
-        VisualizationManager::getInstance()->RemoveObject(tracer_final_dir);
+        SceneManager::getInstance()->RemoveObject(tracer_final_dir);
     }
     
     if (TRACE_AXIS)
@@ -123,18 +123,18 @@ LCSModifier::~LCSModifier(void)
         if (tracer_X!=NULL)
         {
             tracer_X->ClearTrace();
-            VisualizationManager::getInstance()->RemoveObject(tracer_X);
+            SceneManager::getInstance()->RemoveObject(tracer_X);
         }
 
         if (tracer_Y != NULL)
         {
             tracer_Y->ClearTrace();
-            VisualizationManager::getInstance()->RemoveObject(tracer_Y);
+            SceneManager::getInstance()->RemoveObject(tracer_Y);
         }
         if (tracer_Z != NULL)
         {
             tracer_Z->ClearTrace();
-            VisualizationManager::getInstance()->RemoveObject(tracer_Z);
+            SceneManager::getInstance()->RemoveObject(tracer_Z);
         }
     }
 
@@ -143,7 +143,7 @@ LCSModifier::~LCSModifier(void)
         if (tracer_anim_orient != NULL)
         {
             tracer_anim_orient->ClearTrace();
-            VisualizationManager::getInstance()->RemoveObject(tracer_anim_orient);
+            SceneManager::getInstance()->RemoveObject(tracer_anim_orient);
         }
     }
 }

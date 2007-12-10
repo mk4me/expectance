@@ -12,7 +12,7 @@
 #include "../timeline/timelineexecutor.h"
 #include "../timeline/lcsmodifier.h"
 #include "../timeline/footdetector.h"
-#include "scene/visualizationmanager.h"
+
 
 #include "motion.h"
 #include <map>

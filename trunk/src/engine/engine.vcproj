@@ -500,6 +500,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\scene\scenemanager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\scene\scenemanager.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\scene\textureManager.cpp"
 					>
 				</File>
