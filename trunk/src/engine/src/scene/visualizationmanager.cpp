@@ -103,17 +103,27 @@ bool VisualizationManager::InitSceneObjects()
 
 void VisualizationManager::OnRender()
 {
-	OGLContext::getInstance()->setPerspective( CameraManager::getInstance()->IsZoom() ); 
-	CameraManager::getInstance()->UpdateView(); //update current camera View
 	
-	OGLContext::getInstance()->RenderScene(); 
+	// Scene ViewPort Render Pipeline SVPR
+	OGLContext::getInstance()->setSceneViewPort( CameraManager::getInstance()->IsZoom() ); 
+	CameraManager::getInstance()->UpdateView(); //update current camera View 
+	
+	OGLContext::getInstance()->DrawSceneViewPortPrimitives(); 
 	if (m_ActiveCameraMarker)
 		CameraManager::getInstance()->RenderCurrentCamera(); //show avatar's camera position
-	Render3DObjects();
-	Render2DObjects();
+	Render3DSceneObjects();
+	Render2DSceneObjects();
+	
+	// DataViewPort Render Pipeline
+	// place for DVPR
+	if (OGLContext::getInstance()->DATA_VIEWPORT)
+	{
+		OGLContext::getInstance()->setDataViewPort();
+		OGLContext::getInstance()->DrawDataViewPortPrimitives(); 
+		RenderDataObjects();
+	}
 	// swap the front- and back-buffer
 	glutSwapBuffers();
-
 	// increase frame counter
 	ft::UpdateManager::getInstance()->increraseFramesCounter();
 }
@@ -195,7 +205,7 @@ bool VisualizationManager::RemoveObject(std::string id)
 }
 
 
-void VisualizationManager::Render3DObjects()
+void VisualizationManager::Render3DSceneObjects()
 {
 	SceneObject *pObj;
 	// iterate through the objects and render shadows
@@ -244,7 +254,7 @@ void VisualizationManager::Render3DObjects()
 	}
 }
 
-void VisualizationManager::Render2DObjects()
+void VisualizationManager::Render2DSceneObjects()
 {
 	if ((OGLContext::getInstance()->IsLogoFTActive())||(MenuManager::getInstance()->IsMenuVisible()))
 	{
@@ -257,4 +267,8 @@ void VisualizationManager::Render2DObjects()
 
 }
 
+void VisualizationManager::RenderDataObjects()
+{
+	//TODO 
+}
 

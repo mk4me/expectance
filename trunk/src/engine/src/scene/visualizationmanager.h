@@ -69,9 +69,13 @@ namespace ft
 		bool RemoveObject(std::string id);
 		//! main rendering queue for SceneObject type obejcts 
 		/*! Calls all registered SceneObject type objects for rendering */
-		void Render3DObjects();
-		/*! Calls all 2D objects for rendering */
-		void Render2DObjects();
+		void Render3DSceneObjects();
+		/*! Calls all 2D Scene Objects for rendering */
+		void Render2DSceneObjects();
+
+		/*! Calls all Data objects for rendering */
+		void RenderDataObjects();
+
 
         /*! Checks if object of given type can be traced by camera */
         virtual bool IsObjectTraceableByCamera(SceneObject* pObj);

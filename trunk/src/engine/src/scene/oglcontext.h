@@ -70,10 +70,17 @@ namespace ft
 		bool InitLogoDL();
 		///// \brief Initializes context for OGL rendering  - TMP
 		//void InitRendering();
-		/// \brief Sets View perspective
-		void setPerspective(const bool zoom);
-		/// \brief Sets camera and viewports parameters and renders floor
-		void RenderScene();
+		/// \brief Sets ViewPort and Perspective for Scene 
+		void setSceneViewPort(const bool zoom);
+		/// \brief Sets ViewPort and Perspective for Data
+		void setDataViewPort();
+		/// \brief Sets View perspective for Data viewport
+		void setPerspectiveDVPR();
+		/// \brief renders OGL primitives for Scene Vieport
+		void DrawSceneViewPortPrimitives();
+		/// \brief renders OGL primitives for Data Vieport
+		void DrawDataViewPortPrimitives();
+
 		/// \brief Renders FT logo 
 		void RenderLogo();
 		/// \brief Calculates projection matrix for shadow effect with customized parameters
@@ -95,6 +102,7 @@ namespace ft
 		GLuint loadFragmentProgram(const std::string fn);
 
 		mutable int HardwareAcceleration;
+		bool DATA_VIEWPORT;
 	private:
 
 		static OGLContext* m_instance;

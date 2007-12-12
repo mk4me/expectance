@@ -112,7 +112,8 @@ bool OGLContext::Init()
 		  return false;
 		}
 	}
-
+	
+	DATA_VIEWPORT = ((Config::getInstance()->IsKey("data_viewport")) && (Config::getInstance()->GetIntVal("data_viewport")==1));
 	return true;
 }
 
@@ -311,13 +312,14 @@ bool OGLContext::InitLogoDL()
 //}
 
 
-void OGLContext::setPerspective(const bool zoom)
+void OGLContext::setSceneViewPort(const bool zoom)
 {
 	static float _tempAng = 0;
 	//static bool _switch = false;
 	double _fovy;
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	glClear(GL_COLOR_BUFFER_BIT);
+	if(DATA_VIEWPORT)
+		glViewport(0, m_height/4, m_width, m_height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
@@ -344,10 +346,28 @@ void OGLContext::setPerspective(const bool zoom)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
+	glClear (GL_DEPTH_BUFFER_BIT);
 
 }
-void OGLContext::RenderScene()
+
+void OGLContext::setDataViewPort()
+{
+	//if (m_horiz) //horizontal
+	//if (m_left)  // from left
+	//if (m_top)   //from top
+	//if (3D)      // perspective
+	//glClear(GL_COLOR_BUFFER_BIT);
+	//if(DATAVIEWPORT)
+	glViewport(0, 0, m_width, m_height/4);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0, m_width, 0, m_height/4);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	//glClear (GL_DEPTH_BUFFER_BIT);
+
+}
+void OGLContext::DrawSceneViewPortPrimitives()
 {
 	//render floor
 	glPushMatrix();
@@ -362,6 +382,21 @@ void OGLContext::RenderScene()
 	glPopMatrix();
 
 	glEnable(GL_CULL_FACE);
+}
+
+void OGLContext::DrawDataViewPortPrimitives()
+{
+	glPushMatrix();	// draw axis and so on ...
+
+	glDisable(GL_BLEND);
+
+    // Draw background 
+    glColor3f(1, 1, 1);
+    glRectf(0.0f, 0.0f, m_width, m_height/4);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glRectf(2.0f, 2.0f, m_width-2, m_height/4-2);
+
+	glPopMatrix();
 }
 
 void OGLContext::RenderLogo()
