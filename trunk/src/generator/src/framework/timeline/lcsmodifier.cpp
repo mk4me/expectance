@@ -35,6 +35,7 @@ LCSModifier::LCSModifier()
     INTERPOLATION = true;
     REST_TRANS_CALC = false;
     ANIM_DIR_CALC = (Config::getInstance()->IsKey("lcs_anim_orient_influence")) && (Config::getInstance()->GetIntVal("lcs_anim_orient_influence")==1);		
+    ANIM_DIR_CALC_FOR_CYCLES = false;
 
     if (TRACE_TRANSLATION)
     {
@@ -413,8 +414,9 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
  {
      CalQuaternion qGlobalRotOffset = timeLineContext->getAvatar()->getGlobalRotationOffset();
 
+     bool anim_dir_for_cycles = (ANIM_DIR_CALC_FOR_CYCLES && timeLineContext->anim_new_cycle);
 
-     if (timeLineContext->anim_changed || timeLineContext->anim_stopped || timeLineContext->anim_new_cycle)
+     if (timeLineContext->anim_changed || timeLineContext->anim_stopped || anim_dir_for_cycles)
      {
          if (timeLineContext->exec_state != EXEC_STATE_OVERLAP)
          {
@@ -475,31 +477,6 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
      }
      timeLineContext->getAvatar()->setGlobalRotationOffset(qGlobalRotOffset);
  }
-
-/**
- * \brief Calculates orientation of root bone around Y axis
- * \param CalBone *rootBone - root bone
- * \return CalQuaternion - rotation around Y axis
- */
-CalQuaternion LCSModifier::CalculateCurrentRootOrientAroundY(CalBone *rootBone)
-{
-    static CalQuaternion qGlobalRot;
-
-    qGlobalRot = rootBone->getRotation();
-
-    // extract rotation around Z axis (which means around Y in anim data)
-    float angleZ = CalQuatToQuat(qGlobalRot).Zangle();
-
-    //NOTE: constructor Quat(angle, axis) ignores sign for angle so it must be workarounded below
-    // to achieve proper direction of rotation (proper sign of angle)
-    if (angleZ > 0)
-        qGlobalRot = QuatToCalQuat( Quat(angleZ, Vec(0,1,0)) );
-    else
-        qGlobalRot = QuatToCalQuat( Quat(angleZ, Vec(0,-1,0)) );
-
-    return qGlobalRot;
-}
-
 
 /// \brief Resets parameters of this modifier
 void LCSModifier::Reset(TimeLineContext * timeLineContext)

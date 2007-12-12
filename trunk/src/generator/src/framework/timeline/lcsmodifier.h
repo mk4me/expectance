@@ -27,7 +27,9 @@ namespace ft
 
         bool INTERPOLATION;
         bool REST_TRANS_CALC;  //if rest of translation lost at anim changes should be applied
+
         bool ANIM_DIR_CALC; //if animation dir should affect global rotation
+        bool ANIM_DIR_CALC_FOR_CYCLES; //if animation dir should affect global rotation at the end of each cycle of loop anim
 
         LCSModifier();
         virtual ~LCSModifier(void);
@@ -41,7 +43,6 @@ namespace ft
 
     private:
         void ApplyAnimDirectionToGlobalRotation(TimeLineContext * timeLineContext);
-        CalQuaternion CalculateCurrentRootOrientAroundY(CalBone *rootBone);
         Transform* GetTransformForAnim(CalAnimation* anim, Avatar* avatar);
         Transform* GetTransformForType(Avatar* avatar);
         
