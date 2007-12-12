@@ -36,6 +36,8 @@ namespace ft
         bool LOCAL_DEBUG;
         bool CHECK_EMPTY_FRAMES;
 
+        bool BLENDING;
+
         TimeLineExecutor(void);
         virtual ~TimeLineExecutor(void) { /* empty */}
 

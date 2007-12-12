@@ -49,7 +49,8 @@ Transform::~Transform()
 
 void Transform::InitForType(const CalVector& origPos, const CalQuaternion& origQuat, bool source_3dsmax)
 {
-    Init(origPos, CalQuatToQuat(origQuat).Zangle(), source_3dsmax);
+    float forwardAngle = CalQuatToQuat(origQuat).Zangle();
+    Init(origPos, forwardAngle, forwardAngle, source_3dsmax);
 }
 
 void Transform::InitForAnim(CalCoreAnimation* coreAnim, bool source_3dsmax)
@@ -59,10 +60,11 @@ void Transform::InitForAnim(CalCoreAnimation* coreAnim, bool source_3dsmax)
     (coreAnim->getCoreTrack(0))->getState(0.0f,pos,rot);
 
     float forwardAngle = CalculateAnimForward(coreAnim, 25, true);
-    Init(pos, forwardAngle, source_3dsmax);
+    float endForwardAngle = CalculateAnimForward(coreAnim, 25, false);
+    Init(pos, forwardAngle, endForwardAngle, source_3dsmax);
 }
 
-void Transform::Init(const CalVector& origPos, float forwardAngle, bool source_3dsmax)
+void Transform::Init(const CalVector& origPos, float forwardAngle, float endForwardAngle, bool source_3dsmax)
 {
     setOrigPosition(origPos);
  
@@ -75,6 +77,9 @@ void Transform::Init(const CalVector& origPos, float forwardAngle, bool source_3
     CalVector vOrigForward(TransformManager::SCENE_FORWARD);
     CalQuaternion qDiffForward;
 
+    CalQuaternion qDiffEndForward;
+    CalQuaternion qEndForward;
+
     if (source_3dsmax)
     {
         // rotation around Y is indicated by roation around Z in 3dsmax model (sign for angle is inversed
@@ -86,11 +91,18 @@ void Transform::Init(const CalVector& origPos, float forwardAngle, bool source_3
         //set orinal forward
         CalQuaternion quat = QuatToCalQuat(     Quat( -forwardAngle , Vec(0,1,0))    );
         vOrigForward *= quat;
+
+        qEndForward = QuatToCalQuat(   Quat( -endForwardAngle , Vec(0,1,0))    );
+
+        CalQuaternion animDiff(qEndForward);
+        animDiff = UTIL_diff_quats(animDiff, quat);
+        setAnimEndDiff(animDiff);
+
     }
     
     setOrigForward(vOrigForward);
     setForwardDiff(qDiffForward);
-
+    setEndForwardDiff(qEndForward);
 
     if (Debug::TRANSFORM>0)
     {

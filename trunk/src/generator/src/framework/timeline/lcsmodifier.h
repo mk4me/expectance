@@ -20,7 +20,7 @@ namespace ft
         bool TRACE_TRANSLATION; 
         bool TRACE_TRANSFORM;   //sky-blue  
         bool TRACE_ROOT_ROTATION;   //white
-        bool TRACE_FINAL_ORIENT;  //yellow
+        bool TRACE_TRANSFORM_END;  //yellow
         bool TRACE_FINAL_DIR;     //purple
         bool TRACE_AXIS;   //red, green, blue
         bool LOCAL_DEBUG;
@@ -40,7 +40,7 @@ namespace ft
         virtual void Reset(TimeLineContext * timeLineContext); // resets current object and its children
 
     private:
-        void ApplyAnimDirectionToGlobalRotation(CalQuaternion& qGlobalRotOffset, CalVector& currPos, TimeLineContext * timeLineContext);
+        void ApplyAnimDirectionToGlobalRotation(TimeLineContext * timeLineContext);
         CalQuaternion CalculateCurrentRootOrientAroundY(CalBone *rootBone);
         Transform* GetTransformForAnim(CalAnimation* anim, Avatar* avatar);
         Transform* GetTransformForType(Avatar* avatar);
@@ -51,6 +51,11 @@ namespace ft
         CalVector m_vLastAnimDir;
         float m_fAnimRot;
 
+
+        CalQuaternion m_qAnimDirOverlapStart;
+        CalQuaternion m_qAnimDirOverlapDest;
+
+
 		TraceLine *tracer_translation;
 
         TraceLine *tracer_X;
@@ -58,8 +63,8 @@ namespace ft
         TraceLine *tracer_Z;
 
         TraceLine *tracer_root_orient;
-        TraceLine *tracer_anim_orient;
-        TraceLine *tracer_final_orient;
+        TraceLine *tracer_transform;
+        TraceLine *tracer_transform_end;
         TraceLine *tracer_final_dir;
        
 

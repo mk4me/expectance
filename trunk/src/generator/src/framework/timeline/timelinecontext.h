@@ -7,6 +7,7 @@
 #define _GEN_TIMELINE_CONTEXT_H
 
 #include "../avatar/avatar.h"
+#include "../motion/motion.h"
 
 namespace ft
 {
@@ -44,7 +45,9 @@ namespace ft
         bool stop_immediate;
 
         // RUNTIME parameters
+        Motion* prevMotion;
         CalAnimation* prevAnim;
+        Motion* currMotion;
         CalAnimation* currAnim;
 
         float prevAnimTime;

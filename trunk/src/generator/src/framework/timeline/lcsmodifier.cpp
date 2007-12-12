@@ -26,7 +26,7 @@ LCSModifier::LCSModifier()
     TRACE_TRANSFORM = false;
     TRACE_ROOT_ROTATION = false;
 
-    TRACE_FINAL_ORIENT = false;
+    TRACE_TRANSFORM_END = false;
     TRACE_FINAL_DIR = false;
 
     TRACE_AXIS = false;
@@ -34,7 +34,7 @@ LCSModifier::LCSModifier()
 
     INTERPOLATION = true;
     REST_TRANS_CALC = false;
-    ANIM_DIR_CALC = false;
+    ANIM_DIR_CALC = (Config::getInstance()->IsKey("lcs_anim_orient_influence")) && (Config::getInstance()->GetIntVal("lcs_anim_orient_influence")==1);		
 
     if (TRACE_TRANSLATION)
     {
@@ -53,15 +53,16 @@ LCSModifier::LCSModifier()
 
     if (TRACE_TRANSFORM)
     {
-        tracer_anim_orient = new TraceLine(toString() + "tracer_rot_Curr");
-        SceneManager::getInstance()->AddObject(tracer_anim_orient);
-        tracer_anim_orient->setRenderingOrder(ft_Rendering_Objects_Level);
+        tracer_transform = new TraceLine(toString() + "tracer_transform");
+        SceneManager::getInstance()->AddObject(tracer_transform);
+        tracer_transform->setRenderingOrder(ft_Rendering_Objects_Level);
     }
 
-    if (TRACE_FINAL_ORIENT)
+    if (TRACE_TRANSFORM_END)
     {
-        tracer_final_orient  = new TraceLine(toString() + "tracer_final_orient");
-        SceneManager::getInstance()->AddObject(tracer_final_orient);
+        tracer_transform_end  = new TraceLine(toString() + "tracer_transform_end");
+        SceneManager::getInstance()->AddObject(tracer_transform_end);
+        tracer_transform_end->setRenderingOrder(ft_Rendering_Objects_Level);
     }
 
     if (TRACE_FINAL_DIR)
@@ -106,10 +107,10 @@ LCSModifier::~LCSModifier(void)
         SceneManager::getInstance()->RemoveObject(tracer_root_orient);
     }
 
-    if (tracer_final_orient != NULL)
+    if (tracer_transform_end != NULL)
     {
-        tracer_final_orient->ClearTrace();
-        SceneManager::getInstance()->RemoveObject(tracer_final_orient);
+        tracer_transform_end->ClearTrace();
+        SceneManager::getInstance()->RemoveObject(tracer_transform_end);
     }
 
     if (tracer_final_dir != NULL)
@@ -140,10 +141,10 @@ LCSModifier::~LCSModifier(void)
 
     if (TRACE_TRANSFORM)
     {
-        if (tracer_anim_orient != NULL)
+        if (tracer_transform != NULL)
         {
-            tracer_anim_orient->ClearTrace();
-            SceneManager::getInstance()->RemoveObject(tracer_anim_orient);
+            tracer_transform->ClearTrace();
+            SceneManager::getInstance()->RemoveObject(tracer_transform);
         }
     }
 }
@@ -188,12 +189,12 @@ void LCSModifier::UpdateRotation(float elapsedSeconds, TimeLineContext * timeLin
         currTransform = GetTransformForType(timeLineContext->getAvatar());
     }
 
-    CalQuaternion qGlobalRotOffset = timeLineContext->getAvatar()->getGlobalRotationOffset();
-
     if (ANIM_DIR_CALC)
     {
-        //ApplyAnimDirectionToGlobalRotation(qGlobalRotOffset, currPos, timeLineContext);
+        ApplyAnimDirectionToGlobalRotation(timeLineContext);
     }
+
+    CalQuaternion qGlobalRotOffset = timeLineContext->getAvatar()->getGlobalRotationOffset();
 
     CalQuaternion rootRotation; // = bone->getRotation();
     CalVector tmpPos;
@@ -256,7 +257,7 @@ void LCSModifier::UpdateRotation(float elapsedSeconds, TimeLineContext * timeLin
         if (currTransform!=NULL)
         {
             originalForward = currTransform->getOrigForward();
-            VisualizationHelper::TraceVector(tracer_anim_orient, originalForward, vCurrAvatarPosition , 150, VisualizationHelper::COLOR_SKYBLUE);
+            VisualizationHelper::TraceVector(tracer_transform, originalForward, vCurrAvatarPosition , 150, VisualizationHelper::COLOR_YELLOW);
         }
     }
 
@@ -265,9 +266,15 @@ void LCSModifier::UpdateRotation(float elapsedSeconds, TimeLineContext * timeLin
         VisualizationHelper::TraceRotation(tracer_root_orient, vOriginForward, vCurrAvatarPosition, bone->getRotation(), 150, VisualizationHelper::COLOR_WHITE);
     }
 
-    if (TRACE_FINAL_ORIENT)
+    if (TRACE_TRANSFORM_END)
     {
-        VisualizationHelper::TraceRotation(tracer_final_orient, vOriginForward, vCurrAvatarPosition, timeLineContext->getAvatar()->getOrientation(), 170, VisualizationHelper::COLOR_YELLOW);
+       CalQuaternion endForward;
+       if (currTransform!=NULL)
+       {
+           endForward = currTransform->getEndForwardDiff();
+       }
+ 
+       VisualizationHelper::TraceRotation(tracer_transform_end, TransformManager::SCENE_FORWARD, vCurrAvatarPosition, endForward, 170, VisualizationHelper::COLOR_SKYBLUE);
     }
 
     if (TRACE_FINAL_DIR)
@@ -398,56 +405,76 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
     }
  }
 
-/**
+ /**
  * \brief Applies direction of current animation to global rotation offset
- * \param CalQuaternion& qGlobalRotOffset - global rotation offset (will be modified in this methos)
- * \param CalVector currPos - current posistion of root bone
  * \param TimeLineContext * timeLineContext - current timeLineContext
  */
-void LCSModifier::ApplyAnimDirectionToGlobalRotation(CalQuaternion& qGlobalRotOffset, CalVector& currPos, TimeLineContext * timeLineContext)
-{
-    if (timeLineContext->anim_changed || timeLineContext->anim_new_cycle || timeLineContext->anim_stopped)
-    {
-//        _dbg << " ---------- anim changed  ----  m_fAnimRot " << radToDeg(m_fAnimRot) << endl;
+ void LCSModifier::ApplyAnimDirectionToGlobalRotation(TimeLineContext * timeLineContext)
+ {
+     CalQuaternion qGlobalRotOffset = timeLineContext->getAvatar()->getGlobalRotationOffset();
 
-        if (m_fAnimRot != 0) // means that (timeLineContext->prevAnim != NULL)
-        {
-            CalQuaternion tmpQuat = QuatToCalQuat(Quat(m_fAnimRot, Vec(0,1,0)));
-            tmpQuat *= qGlobalRotOffset;
-            qGlobalRotOffset = tmpQuat;
-        }
-        m_fAnimRot = 0.0f;
-        m_vLastAnimDir = CalVector();
-    } else if (timeLineContext->currAnim != NULL)
-    {
-        //calculate current anim dir
-        CalVector currPosTmp = currPos;
-        currPosTmp.y = m_vLastPos.y;
-        CalVector vCurrAnimDir = currPosTmp - m_vLastPos;
-        vCurrAnimDir.normalize();
 
-        if (m_vLastAnimDir.length() > 0 && vCurrAnimDir.length() > 0)
-        {
-                float fCurrAnimRot = 0;
+     if (timeLineContext->anim_changed || timeLineContext->anim_stopped || timeLineContext->anim_new_cycle)
+     {
+         if (timeLineContext->exec_state != EXEC_STATE_OVERLAP)
+         {
+            if (timeLineContext->prevMotion != NULL)
+            {
+                
+                Transform* transform = NULL;
 
-                float dot = vCurrAnimDir*m_vLastAnimDir;
-                dot = UTIL_GetRightArgForArcCos(dot);
+                if (timeLineContext->anim_changed || timeLineContext->anim_stopped)
+                    transform = timeLineContext->prevMotion->getTransform();
 
-                fCurrAnimRot = acos(dot);
-               
-                m_fAnimRot += UTIL_GetSignForDirChange(m_vLastAnimDir, vCurrAnimDir) * fCurrAnimRot;
+                if (timeLineContext->anim_new_cycle)
+                    transform = timeLineContext->currMotion->getTransform();
 
-                //if (counter == 0 || fCurrAnimRot > 0.1f)
-                //{
-                //    _dbg << " fCurrAnimRot " << radToDeg(fCurrAnimRot) << " m_fAnimRot " << radToDeg(m_fAnimRot) << endl;
-                //}
-                //counter = (counter+1)%30;
+                if (transform != NULL)
+                {
+                    CalQuaternion animDiff = transform->getAnimEndDiff();
+                    qGlobalRotOffset *= animDiff;
+                    //cout << " Change anim direction .. " << RadToDeg(CalQuatToQuat(animDiff).Yangle()) <<  endl;
+                }
+            }
+         }
+         else
+         {
+             Transform* transform = NULL;
+             transform = timeLineContext->prevMotion->getTransform();
+             
+             if (transform != NULL)
+             {
+                 if (transform != NULL)
+                 {
+                     m_qAnimDirOverlapStart=qGlobalRotOffset;
+                     m_qAnimDirOverlapDest = m_qAnimDirOverlapStart * transform->getAnimEndDiff();
+                 }
+                 else
+                 {
+                     m_qAnimDirOverlapStart = qGlobalRotOffset;
+                     m_qAnimDirOverlapDest = qGlobalRotOffset;
+                 }
 
-        }
+                 //CalQuaternion animDiff = transform->getAnimEndDiff();
+                 //cout << " Change anim direction <START_OVERLAP>.. " << RadToDeg(CalQuatToQuat(animDiff).Yangle()) <<  endl;
+             }
+         }
+     }
 
-        m_vLastAnimDir = vCurrAnimDir;
-    }
-}
+     if (timeLineContext->exec_state == EXEC_STATE_OVERLAP || timeLineContext->exec_state == EXEC_STATE_FADE_OUT)
+     {
+        //add interpolated part
+         Transform* transform = timeLineContext->prevMotion->getTransform();
+         if (transform != NULL)
+         {
+             float factor = (timeLineContext->prevAnimDuration - timeLineContext->prevAnimTime)/timeLineContext->prevOverlap;
+             CalQuaternion rot = m_qAnimDirOverlapStart;
+             rot.blend((1-factor), m_qAnimDirOverlapDest);
+             qGlobalRotOffset = rot;
+         }
+     }
+     timeLineContext->getAvatar()->setGlobalRotationOffset(qGlobalRotOffset);
+ }
 
 /**
  * \brief Calculates orientation of root bone around Y axis
@@ -491,12 +518,12 @@ void LCSModifier::Reset(TimeLineContext * timeLineContext)
 
     if (TRACE_TRANSFORM)
     {
-        tracer_anim_orient->ClearTrace();
+        tracer_transform->ClearTrace();
     }
 
-    if (TRACE_FINAL_ORIENT)
+    if (TRACE_TRANSFORM_END)
     {
-        tracer_final_orient->ClearTrace();
+        tracer_transform_end->ClearTrace();
     }
 
     if (TRACE_FINAL_DIR)

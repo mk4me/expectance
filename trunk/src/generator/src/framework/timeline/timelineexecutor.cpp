@@ -50,6 +50,8 @@ TimeLineExecutor::TimeLineExecutor(void)
 {
     LOCAL_DEBUG = true;
     CHECK_EMPTY_FRAMES = false;
+    BLENDING = (Config::getInstance()->IsKey("tle_blending")) && (Config::getInstance()->GetIntVal("tle_blending")==1);		
+
     setState(EXEC_STATE_NOT_INITED);
     Reset();
 }
@@ -642,7 +644,8 @@ void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
     IdentifyNextMotion();
     UpdateExecItem(m_nextMotion);
 
-    IdentifyBlenders();
+    if (BLENDING)
+        IdentifyBlenders();
 
     LimitCurrBlenderForNextAnim();
     LimitCurrBlenderForCurrAnim();
@@ -686,7 +689,9 @@ void TimeLineExecutor::UpdateMotions(const double elapsedSeconds)
  **/
 void TimeLineExecutor::UpdateContext()
 {
+    getCtx()->prevMotion = (m_prevMotion.motion != NULL) ? m_prevMotion.motion->getMotion() : NULL;
     getCtx()->prevAnim = m_prevMotion.anim;
+    getCtx()->currMotion = (m_currMotion.motion != NULL) ? m_currMotion.motion->getMotion() : NULL;
     getCtx()->currAnim = m_currMotion.anim;
     getCtx()->prevAnimTime = m_prevMotion.animTime;
     getCtx()->prevAnimDuration = m_prevMotion.animDuration;
