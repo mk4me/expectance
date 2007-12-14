@@ -71,16 +71,21 @@ namespace ft
 		///// \brief Initializes context for OGL rendering  - TMP
 		//void InitRendering();
 		/// \brief Sets ViewPort and Perspective for Scene 
-		void setSceneViewPort(const bool zoom);
-		/// \brief Sets ViewPort and Perspective for Data
-		void setDataViewPort();
+		void setSceneViewport(const bool zoom);
+		/// \brief Sets Viewport and Perspective for Data
+		void setDataViewport();
 		/// \brief Sets View perspective for Data viewport
 		void setPerspectiveDVPR();
 		/// \brief renders OGL primitives for Scene Vieport
 		void DrawSceneViewPortPrimitives();
 		/// \brief renders OGL primitives for Data Vieport
 		void DrawDataViewPortPrimitives();
-
+		//! fill array by actual scope values
+		void OGLContext::SetDataViewportLegend(const float y_min, const float y_max);
+		//! set the scope for Data Viewport window width
+		const float getDataViewportWidth() { return m_dvpW;};
+		//! set the scope for Data Viewport window height
+		const float getDataViewportHeight() { return m_dvpH;};
 		/// \brief Renders FT logo 
 		void RenderLogo();
 		/// \brief Calculates projection matrix for shadow effect with customized parameters
@@ -103,11 +108,16 @@ namespace ft
 
 		mutable int HardwareAcceleration;
 		bool DATA_VIEWPORT;
-	private:
+		int DATA_VIEWPORT_TYPE;
 
+	private:
+		
+		double m_ymin, m_ymax, m_yscope;
 		static OGLContext* m_instance;
 		bool m_floorType, m_logoFT;
+		float m_dvpW,m_dvpH;
 		int m_width, m_height;
+		string m_dvpLegend[5];
 	};
 }; 
 

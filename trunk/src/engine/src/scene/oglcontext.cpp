@@ -50,6 +50,8 @@ void OGLContext::setWindowSize(int width, int height)
 	m_width = width;
 	m_height = height;
 	glViewport(0, 0, m_width, m_height);
+	m_dvpW = m_width;
+	m_dvpH = m_height/4;
 }
 
 
@@ -61,6 +63,10 @@ bool OGLContext::Init()
 	m_floorType = 0;
 	m_logoFT = 0;
 
+	m_yscope = abs(m_ymin) + abs(m_ymax);
+	m_dvpW = m_width;
+	m_dvpH = m_height/4;
+	SetDataViewportLegend(-100,100);
 	GLfloat light_ambient[]  = { 0.5f, 0.5f, 0.5f, 1.0f };
 	GLfloat light_diffuse[]  = { 0.5f, 0.5f, 0.5f, 1.0f };
 	GLfloat light_specular[] = { 0.1f, 0.1f, 0.1f, 1.0f };
@@ -312,7 +318,7 @@ bool OGLContext::InitLogoDL()
 //}
 
 
-void OGLContext::setSceneViewPort(const bool zoom)
+void OGLContext::setSceneViewport(const bool zoom)
 {
 	static float _tempAng = 0;
 	//static bool _switch = false;
@@ -320,6 +326,9 @@ void OGLContext::setSceneViewPort(const bool zoom)
 	glClear(GL_COLOR_BUFFER_BIT);
 	if(DATA_VIEWPORT)
 		glViewport(0, m_height/4, m_width, m_height);
+	else
+		glViewport(0, 0, m_width, m_height);
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
@@ -350,22 +359,15 @@ void OGLContext::setSceneViewPort(const bool zoom)
 
 }
 
-void OGLContext::setDataViewPort()
+void OGLContext::setDataViewport()
 {
-	//if (m_horiz) //horizontal
-	//if (m_left)  // from left
-	//if (m_top)   //from top
-	//if (3D)      // perspective
-	//glClear(GL_COLOR_BUFFER_BIT);
-	//if(DATAVIEWPORT)
-	glViewport(0, 0, m_width, m_height/4);
+	glViewport(0, 0, m_dvpW, m_dvpH);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0, m_width, 0, m_height/4);
+
+	gluOrtho2D(0, m_dvpW, 0, m_dvpH);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	//glClear (GL_DEPTH_BUFFER_BIT);
-
 }
 void OGLContext::DrawSceneViewPortPrimitives()
 {
@@ -388,15 +390,51 @@ void OGLContext::DrawDataViewPortPrimitives()
 {
 	glPushMatrix();	// draw axis and so on ...
 
-	glDisable(GL_BLEND);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // Draw background 
-    glColor3f(1, 1, 1);
-    glRectf(0.0f, 0.0f, m_width, m_height/4);
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glRectf(2.0f, 2.0f, m_width-2, m_height/4-2);
+	// Draw background for (x) 1D
+	glColor3f(1, 1, 1);
+	glRectf(0.0f, 0.0f, m_dvpW, m_dvpH);
+	glColor3f(0.0f, 0.0f, 0.0f);
+	glRectf(1.0f, 1.0f, m_dvpW/2-1, m_dvpH-2);
+	glRectf(m_dvpW/2+1, 1.0f, m_dvpW-1, m_dvpH-2);
 
+	//draw axis
+	int hdiv = m_dvpH/5;
+	for(int i = 1; i < 5; i++)
+	{
+		glColor4f(1,1,1,0.1f);
+		glBegin(GL_LINES);
+		glVertex2d(4,hdiv*i); glVertex2d(m_dvpW/2-4,hdiv*i);
+		glEnd();
+		//get apropriate text
+		glEnable(GL_LINE_SMOOTH);
+		glColor4f(1,1,1,0.5f);
+		OGLContext::getInstance()->OGLWriteBitmap(1,1, hdiv*i-5, m_dvpLegend[i-1].c_str());
+		glDisable(GL_LINE_SMOOTH);
+
+	}
 	glPopMatrix();
+}
+
+void OGLContext::SetDataViewportLegend(const float y_min, const float y_max)
+{
+	float scope  = y_max - y_min;
+	float scope_5 = scope/5.0f;
+	float res = 0.0f;
+	stringstream s, s1;
+	for (int i = 1; i<5; i++)
+	{
+		res = y_min+scope_5*i;
+		
+		s << res;
+		//m_dvpLegend[i-1].precision(5);
+		if (res >= 0)
+			m_dvpLegend[i-1] = " " + s.str().substr(0,8);
+		else
+			m_dvpLegend[i-1] = s.str().substr(0,8);
+	}
 }
 
 void OGLContext::RenderLogo()

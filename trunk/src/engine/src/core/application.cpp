@@ -136,6 +136,8 @@ void Application::OnKey(unsigned char key, int x, int y)
 	case 'L':
 		OGLContext::getInstance()->hideFTLogo();
       break;
+	case 'D':
+		OGLContext::getInstance()->DATA_VIEWPORT ^=1;
     default:
       if((key >= '0') && (key <= '9'))
       {

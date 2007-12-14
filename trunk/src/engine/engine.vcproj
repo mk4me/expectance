@@ -536,6 +536,14 @@
 				Name="object"
 				>
 				<File
+					RelativePath=".\src\scene\datacollector.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\scene\datacollector.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\scene\line.cpp"
 					>
 				</File>

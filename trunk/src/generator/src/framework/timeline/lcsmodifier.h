@@ -62,7 +62,7 @@ namespace ft
         TraceLine *tracer_X;
         TraceLine *tracer_Y;
         TraceLine *tracer_Z;
-
+		DataCollector *tracer_root;
         TraceLine *tracer_root_orient;
         TraceLine *tracer_transform;
         TraceLine *tracer_transform_end;

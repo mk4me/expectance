@@ -22,7 +22,7 @@ LCSModifier::LCSModifier()
      m_fAnimRot = 0;
      m_vLastAnimDir = CalVector(0,0,0);
 
-    TRACE_TRANSLATION = false;
+    TRACE_TRANSLATION = true;
     TRACE_TRANSFORM = false;
     TRACE_ROOT_ROTATION = false;
 
@@ -44,6 +44,12 @@ LCSModifier::LCSModifier()
         tracer_translation->HideMarker();
 		tracer_translation->setBufferSize(0);
         tracer_translation->setColor(VisualizationHelper::COLOR_BLUE);
+
+		tracer_root = new DataCollector(toString() + "Rotation");
+        VisualizationManager::getInstance()->AddDataObject(tracer_root);
+        tracer_root->HidePoints();
+        tracer_root->setColor(VisualizationHelper::COLOR_BLUE);
+
     }	
 
     if (TRACE_ROOT_ROTATION)
@@ -100,7 +106,11 @@ LCSModifier::~LCSModifier(void)
     {
         tracer_translation->ClearTrace();
         SceneManager::getInstance()->RemoveObject(tracer_translation);
-    }
+
+		tracer_root->Clear();
+        VisualizationManager::getInstance()->RemoveDataObject(tracer_root);
+
+	}
 
     if (tracer_root_orient!= NULL)
     {
@@ -403,6 +413,7 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
     if (TRACE_TRANSLATION)
     {
         tracer_translation->AddPoint(vCurrAvatarPosition);
+        tracer_root->getValue(vCurrAvatarPosition.y);
     }
  }
 

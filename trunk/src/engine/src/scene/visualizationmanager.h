@@ -11,6 +11,7 @@
 #include "line.h"
 #include "traceline.h"
 #include "sceneobject.h"
+#include "datacollector.h"
 #include "cameramanager.h"
 #include "oglcontext.h"
 #include "texturemanager.h"
@@ -58,6 +59,9 @@ namespace ft
 		/*! Registers object to be rendered */
 		virtual bool AddObject(SceneObject* pObj);   
 		
+		/*! Registers data object to be rendered */
+		virtual bool AddDataObject(SceneObject* pObj);   
+		
 		//////! get the pointer value of SceneObject by unique id
 		////SceneObject* getObject(std::string id);
 		//////! get the pointer value of SceneObject by name
@@ -67,6 +71,10 @@ namespace ft
 		bool RemoveObject(SceneObject*);
 		//! unregister SceneObject and destroy it
 		bool RemoveObject(std::string id);
+		/*! Unregisters DataObject from Rendering queue and call their destructor */
+		bool RemoveDataObject(SceneObject*);
+		//! unregister DataObject and destroy it
+		bool RemoveDataObject(std::string id);
 		//! main rendering queue for SceneObject type obejcts 
 		/*! Calls all registered SceneObject type objects for rendering */
 		void Render3DSceneObjects();
@@ -84,6 +92,7 @@ namespace ft
 		
         static VisualizationManager* m_instance;
 		std::map<std::string,SceneObject*> m_SceneObjects;
+		std::map<std::string,SceneObject*> m_DataObjects;
 		int m_ActiveCameraMarker;
 		RenderingOrder m_rendering;
     };

@@ -47,6 +47,12 @@ void VisualizationManager::DestroyInstance()
 	    }
 	    m_instance->m_SceneObjects.clear();
 
+    	it = m_instance->m_DataObjects.begin();
+		for( ; it != m_instance->m_DataObjects.end(); ++it ) {
+			delete it->second;
+	    }
+	    m_instance->m_DataObjects.clear();
+
         delete m_instance;
     }
 }
@@ -105,7 +111,7 @@ void VisualizationManager::OnRender()
 {
 	
 	// Scene ViewPort Render Pipeline SVPR
-	OGLContext::getInstance()->setSceneViewPort( CameraManager::getInstance()->IsZoom() ); 
+	OGLContext::getInstance()->setSceneViewport( CameraManager::getInstance()->IsZoom() ); 
 	CameraManager::getInstance()->UpdateView(); //update current camera View 
 	
 	OGLContext::getInstance()->DrawSceneViewPortPrimitives(); 
@@ -118,7 +124,7 @@ void VisualizationManager::OnRender()
 	// place for DVPR
 	if (OGLContext::getInstance()->DATA_VIEWPORT)
 	{
-		OGLContext::getInstance()->setDataViewPort();
+		OGLContext::getInstance()->setDataViewport();
 		OGLContext::getInstance()->DrawDataViewPortPrimitives(); 
 		RenderDataObjects();
 	}
@@ -160,6 +166,19 @@ bool VisualizationManager::AddObject(SceneObject* pObj)
 	return true;
 }  
 
+bool VisualizationManager::AddDataObject(SceneObject* pObj)
+{
+	std::string _id = pObj->getID();
+	if (!_id.empty())
+	{
+	 	std::map<std::string,SceneObject*>::iterator it = m_DataObjects.find(_id);
+		if ( it!=m_DataObjects.end()) { 
+			return false;
+		}
+	    m_DataObjects.insert( std::make_pair( std::string(_id), pObj ) );
+	}
+	return true;
+}  
 
 ////SceneObject* VisualizationManager::getObject(std::string id)
 ////{
@@ -183,27 +202,49 @@ bool VisualizationManager::AddObject(SceneObject* pObj)
 bool VisualizationManager::RemoveObject(SceneObject* pObj)
 {
 	std::string _id = pObj->getID();
-	bool done;	
-	CameraManager::getInstance()->RemoveCamera(_id); // remove pointer to camera from erased object
-	done = RemoveObject(_id);
+	bool done = false;	
+	if (!_id.empty())
+	{
+		CameraManager::getInstance()->RemoveCamera(_id); // remove pointer to camera from erased object
+		done = RemoveObject(_id);
+	}
 	return done;
 }
 
 bool VisualizationManager::RemoveObject(std::string id)
 {
-	if (!id.empty())
-	{
-	 	std::map<std::string,SceneObject*>::iterator it = m_SceneObjects.find(id);
-		if ( it!=m_SceneObjects.end()) 
-		{ 
-			//delete it->second; //scene manager does it
-			m_SceneObjects.erase(it);
-			return true;
-		}
+ 	std::map<std::string,SceneObject*>::iterator it = m_SceneObjects.find(id);
+	if ( it!=m_SceneObjects.end()) 
+	{ 
+		//delete it->second; //scene manager does it
+		m_SceneObjects.erase(it);
+		return true;
 	}
 	return false;
 }
 
+bool VisualizationManager::RemoveDataObject(SceneObject* pObj)
+{
+	std::string _id = pObj->getID();
+	bool done = false;	
+	if (!_id.empty())
+	{
+		done = RemoveDataObject(_id);
+	}
+	return done;
+}
+
+bool VisualizationManager::RemoveDataObject(std::string id)
+{
+ 	std::map<std::string,SceneObject*>::iterator it = m_DataObjects.find(id);
+	if ( it!=m_DataObjects.end()) 
+	{ 
+		//delete it->second; //scene manager does it
+		m_DataObjects.erase(it);
+		return true;
+	}
+	return false;
+}
 
 void VisualizationManager::Render3DSceneObjects()
 {
@@ -269,6 +310,40 @@ void VisualizationManager::Render2DSceneObjects()
 
 void VisualizationManager::RenderDataObjects()
 {
-	//TODO 
+	DataCollector *pObj;
+	float _min, _max;
+	bool _one = false;
+	// iterate through the objects and render shadows
+	std::map<std::string,SceneObject*>::iterator it=m_DataObjects.begin();
+	for( ; it != m_DataObjects.end(); ++it ) {
+		if ((pObj = dynamic_cast<DataCollector*>(it->second))!=NULL)
+		{
+			if (_one) 
+			{
+				if ( _max < pObj->getMax() ) _max = pObj->getMax();
+				if ( _min > pObj->getMin() ) _min = pObj->getMin();
+				_one = true;
+			}
+			else
+			{
+				_min = pObj->getMin();
+				_max = pObj->getMax();
+			}
+		}
+	}
+	OGLContext::getInstance()->SetDataViewportLegend(_min, _max);
+
+	
+	it=m_DataObjects.begin();
+	for( ; it != m_DataObjects.end(); ++it ) {
+		if ((pObj = dynamic_cast<DataCollector*>(it->second))!=NULL)
+		{
+			if (pObj->isVisible())
+			{
+				pObj->Render();
+			}
+		}
+	}
+
 }
 
