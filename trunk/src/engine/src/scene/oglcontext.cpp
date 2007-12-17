@@ -400,21 +400,28 @@ void OGLContext::DrawDataViewPortPrimitives()
 	glRectf(1.0f, 1.0f, m_dvpW/2-1, m_dvpH-2);
 	glRectf(m_dvpW/2+1, 1.0f, m_dvpW-1, m_dvpH-2);
 
-	//draw axis
-	int hdiv = m_dvpH/5;
-	for(int i = 1; i < 5; i++)
-	{
-		glColor4f(1,1,1,0.1f);
-		glBegin(GL_LINES);
-		glVertex2d(4,hdiv*i); glVertex2d(m_dvpW/2-4,hdiv*i);
-		glEnd();
-		//get apropriate text
-		glEnable(GL_LINE_SMOOTH);
-		glColor4f(1,1,1,0.5f);
-		OGLContext::getInstance()->OGLWriteBitmap(1,1, hdiv*i-5, m_dvpLegend[i-1].c_str());
-		glDisable(GL_LINE_SMOOTH);
+    //draw x axis
+	glColor4f(1,1,1,0.1f);
+	glBegin(GL_LINES);
+	glVertex2d(4,m_dvpH/2); glVertex2d(m_dvpW/2-4,m_dvpH/2);
+	glEnd();
 
-	}
+    // commented by abak 17-12-2007
+	//draw axis
+	//int hdiv = m_dvpH/5;
+	//for(int i = 1; i < 5; i++)
+	//{
+	//	glColor4f(1,1,1,0.1f);
+	//	glBegin(GL_LINES);
+	//	glVertex2d(4,hdiv*i); glVertex2d(m_dvpW/2-4,hdiv*i);
+	//	glEnd();
+	//	//get apropriate text
+	//	glEnable(GL_LINE_SMOOTH);
+	//	glColor4f(1,1,1,0.5f);
+	//	OGLContext::getInstance()->OGLWriteBitmap(1,1, hdiv*i-5, m_dvpLegend[i-1].c_str());
+	//	glDisable(GL_LINE_SMOOTH);
+
+	//}
 	glPopMatrix();
 }
 

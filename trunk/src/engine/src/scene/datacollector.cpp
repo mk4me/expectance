@@ -15,22 +15,19 @@ DataCollector::DataCollector(const std::string& name)
 	setBufferSize(OGLContext::getInstance()->getWidth()/2);
 	setBlending(true);
 	m_min=m_max = 0.0f;
+    m_drawScale = 1.0f;
+    m_drawOffset = 0.0f;
 }
+
 
 bool DataCollector::Render()
 {
 	unsigned long _size = m_DataList.size();
 	if(_size > 1) //minimum two elements
 	{
-		float _sh = OGLContext::getInstance()->getDataViewportHeight();
-		if (_sh==0) _sh = 1;
-		//if (_sh >=m_scope) 
-		//	_sh = m_scope / _sh;
-		//else
-		//	_sh /= m_scope;
-		_sh = m_scope /_sh;
-		//if (_sh < 1.0f ) _sh  = 1/_sh; 
-		glPushMatrix();
+		float dvpHeight = OGLContext::getInstance()->getDataViewportHeight();
+
+        glPushMatrix();
 		glDisable(GL_CULL_FACE);
 		if (m_blending)
 		{
@@ -39,44 +36,55 @@ bool DataCollector::Render()
 		}
 		float _div = 1.0f/_size;
 		std::list<float>::iterator it = m_DataList.begin();
-		float p1 = *it;
+
 		int i=0;
+        float p1;
 		for (; it!=m_DataList.end(); ++it)
 		{
 			float p2 = *it;
-			glColor4f(m_color.x,m_color.y,m_color.z, 1.0);
-			glBegin(GL_LINES);
-				glVertex2f(i-1,p1);
-				glVertex2f(i,p2);
-			glEnd();
-			// point at the end
-			if (m_points)
-			{
-				glPointSize(2.0f);
-				glColor4f(1.0f,1.0f,1.0f, 0.3f);
-				glBegin(GL_POINTS);
-					glVertex2f(i,p1);
-				glEnd();
-			}
+            p2 += getDrawOffset();
+            p2 *= getDrawScale();
+            p2 = dvpHeight/2 + p2;
+
+            if (i>0) // avoid first step to be ensured that p1 is defined
+            {
+			    glColor4f(m_color.x,m_color.y,m_color.z, 1.0);
+			    glBegin(GL_LINES);
+				    glVertex2f(i-1,p1);
+				    glVertex2f(i,p2);
+			    glEnd();
+			    // point at the end
+			    if (m_points)
+			    {
+				    glPointSize(2.0f);
+				    glColor4f(1.0f,1.0f,1.0f, 0.3f);
+				    glBegin(GL_POINTS);
+					    glVertex2f(i,p1);
+				    glEnd();
+			    }
+            }
+
 			p1=p2;
 			i++;
-			_div+=1.0f/_size;
 		}
-		glLineWidth(1.0f);
+
+        glLineWidth(1.0f);
 		if (m_blending)
 			glDisable(GL_BLEND);
 		
 		glEnable(GL_CULL_FACE);
 		glPopMatrix();
-		_div = 0;
+
 		if ((m_bufferSize != 0)&&(_size > m_bufferSize))
-		m_DataList.pop_front();
+        {
+		    m_DataList.pop_front();
+        }
 	}
 	return true;
 }
 
 
-void DataCollector::getValue(const float value)
+void DataCollector::AddValue(const float value)
 {
 	m_DataList.push_back(value);
 	unsigned long _size = m_DataList.size();

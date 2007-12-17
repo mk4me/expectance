@@ -56,13 +56,15 @@ namespace ft
         CalQuaternion m_qAnimDirOverlapStart;
         CalQuaternion m_qAnimDirOverlapDest;
 
+   		DataCollector *curve_trans_Y;
+        DataCollector *curve_root_rotation;
+
 
 		TraceLine *tracer_translation;
 
         TraceLine *tracer_X;
         TraceLine *tracer_Y;
         TraceLine *tracer_Z;
-		DataCollector *tracer_root;
         TraceLine *tracer_root_orient;
         TraceLine *tracer_transform;
         TraceLine *tracer_transform_end;
