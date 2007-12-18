@@ -22,7 +22,9 @@ LCSModifier::LCSModifier()
      m_fAnimRot = 0;
      m_vLastAnimDir = CalVector(0,0,0);
 
-    TRACE_TRANSLATION = true;
+    DRAW_CURVES = true;
+
+    TRACE_TRANSLATION = false;
     TRACE_TRANSFORM = false;
     TRACE_ROOT_ROTATION = false;
 
@@ -37,14 +39,8 @@ LCSModifier::LCSModifier()
     ANIM_DIR_CALC = (Config::getInstance()->IsKey("lcs_anim_orient_influence")) && (Config::getInstance()->GetIntVal("lcs_anim_orient_influence")==1);		
     ANIM_DIR_CALC_FOR_CYCLES = false;
 
-    if (TRACE_TRANSLATION)
+    if (DRAW_CURVES)
     {
-        tracer_translation = new TraceLine(toString() + "Translation");
-        SceneManager::getInstance()->AddObject(tracer_translation);
-        tracer_translation->HideMarker();
-		tracer_translation->setBufferSize(0);
-        tracer_translation->setColor(VisualizationHelper::COLOR_BLUE);
-
 		curve_trans_Y = new DataCollector(toString() + "curve_trans_Y");
         VisualizationManager::getInstance()->AddDataObject(curve_trans_Y);
         curve_trans_Y->HidePoints();
@@ -57,6 +53,15 @@ LCSModifier::LCSModifier()
         curve_root_rotation->HidePoints();
         curve_root_rotation->setColor(VisualizationHelper::COLOR_RED);
         curve_root_rotation->setDrawScale(0.3f);
+    }
+
+    if (TRACE_TRANSLATION)
+    {
+        tracer_translation = new TraceLine(toString() + "Translation");
+        SceneManager::getInstance()->AddObject(tracer_translation);
+        tracer_translation->HideMarker();
+		tracer_translation->setBufferSize(0);
+        tracer_translation->setColor(VisualizationHelper::COLOR_BLUE);
     }	
 
     if (TRACE_ROOT_ROTATION)
@@ -113,27 +118,35 @@ LCSModifier::~LCSModifier(void)
     {
         tracer_translation->ClearTrace();
         SceneManager::getInstance()->RemoveObject(tracer_translation);
-
-		curve_trans_Y->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_trans_Y);
-
-   		curve_root_rotation->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_root_rotation);
 	}
 
-    if (tracer_root_orient!= NULL)
+    if (DRAW_CURVES)
+    {
+		curve_trans_Y->Clear();
+        VisualizationManager::getInstance()->RemoveDataObject(curve_trans_Y);
+        curve_root_rotation->Clear();
+        VisualizationManager::getInstance()->RemoveDataObject(curve_root_rotation);
+    }
+    
+    if (TRACE_ROOT_ROTATION)
     {
         tracer_root_orient->ClearTrace();
         SceneManager::getInstance()->RemoveObject(tracer_root_orient);
     }
 
-    if (tracer_transform_end != NULL)
+    if (TRACE_TRANSFORM)
+    {
+        tracer_transform->ClearTrace();
+        SceneManager::getInstance()->RemoveObject(tracer_transform);
+    }
+
+    if (TRACE_TRANSFORM_END)
     {
         tracer_transform_end->ClearTrace();
         SceneManager::getInstance()->RemoveObject(tracer_transform_end);
     }
 
-    if (tracer_final_dir != NULL)
+    if (TRACE_FINAL_DIR)
     {
         tracer_final_dir->ClearTrace();
         SceneManager::getInstance()->RemoveObject(tracer_final_dir);
@@ -156,15 +169,6 @@ LCSModifier::~LCSModifier(void)
         {
             tracer_Z->ClearTrace();
             SceneManager::getInstance()->RemoveObject(tracer_Z);
-        }
-    }
-
-    if (TRACE_TRANSFORM)
-    {
-        if (tracer_transform != NULL)
-        {
-            tracer_transform->ClearTrace();
-            SceneManager::getInstance()->RemoveObject(tracer_transform);
         }
     }
 }
@@ -269,7 +273,7 @@ void LCSModifier::UpdateRotation(float elapsedSeconds, TimeLineContext * timeLin
     timeLineContext->getAvatar()->setDirection(vDir);
 
     //TRACER-s -------------------------------------------------------
-    if (TRACE_TRANSLATION)
+    if (DRAW_CURVES)
     {
         float rot = CalQuatToQuat(rotToSet).Zangle();
         curve_root_rotation->AddValue(RadToDeg(rot));
@@ -428,6 +432,10 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
     if (TRACE_TRANSLATION)
     {
         tracer_translation->AddPoint(vCurrAvatarPosition);
+    }
+
+    if (DRAW_CURVES)
+    {
         curve_trans_Y->AddValue(vCurrAvatarPosition.y);
     }
  }
@@ -509,10 +517,14 @@ void LCSModifier::Reset(TimeLineContext * timeLineContext)
 {
     TimeLineObject::Reset(timeLineContext);
 
+    if (DRAW_CURVES)
+    {
+        curve_root_rotation->Clear();
+    }
+
     if (TRACE_TRANSLATION)
     {
         tracer_translation->ClearTrace();
-        curve_root_rotation->Clear();
     }
 
     if (TRACE_ROOT_ROTATION)

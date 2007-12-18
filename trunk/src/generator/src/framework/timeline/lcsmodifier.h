@@ -23,6 +23,8 @@ namespace ft
         bool TRACE_TRANSFORM_END;  //yellow
         bool TRACE_FINAL_DIR;     //purple
         bool TRACE_AXIS;   //red, green, blue
+        bool DRAW_CURVES;
+
         bool LOCAL_DEBUG;
 
         bool INTERPOLATION;

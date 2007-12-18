@@ -311,7 +311,7 @@ void VisualizationManager::Render2DSceneObjects()
 void VisualizationManager::RenderDataObjects()
 {
 	DataCollector *pObj;
-	float _min, _max;
+	float _min=0, _max=0;
 	bool _one = false;
 	// iterate through the objects and find max and min values
 	std::map<std::string,SceneObject*>::iterator it=m_DataObjects.begin();
