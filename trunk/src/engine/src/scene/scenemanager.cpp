@@ -95,19 +95,23 @@ SceneObject* SceneManager::getObjectByName(std::string name)
 
 bool SceneManager::RemoveObject(SceneObject* pObj)
 {
+	bool result = false;
 	std::string _id = pObj->getID();
-	bool done = RemoveObject(_id);
-	return done;
+	if (!_id.empty())
+	{
+		VisualizationManager::getInstance()->RemoveObject(pObj);
+		result = RemoveObject(_id);
+	}
+	return result;
 }
 
 bool SceneManager::RemoveObject(std::string id)
 {
 	if (!id.empty())
 	{
-	 	std::map<std::string,SceneObject*>::iterator it = m_SceneObjectsMap.find(id);
+		std::map<std::string,SceneObject*>::iterator it = m_SceneObjectsMap.find(id);
 		if ( it!=m_SceneObjectsMap.end()) 
 		{ 
-			VisualizationManager::getInstance()->RemoveObject(id);
 			delete it->second;
 			m_SceneObjectsMap.erase(it);
 			return true;

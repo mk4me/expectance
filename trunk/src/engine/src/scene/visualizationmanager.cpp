@@ -41,13 +41,9 @@ void VisualizationManager::DestroyInstance()
 {
     if (m_instance != NULL)
     {
-    	std::map<std::string,SceneObject*>::iterator it = m_instance->m_SceneObjects.begin();
-		for( ; it != m_instance->m_SceneObjects.end(); ++it ) {
-			delete it->second;
-	    }
 	    m_instance->m_SceneObjects.clear();
 
-    	it = m_instance->m_DataObjects.begin();
+		std::map<std::string,SceneObject*>::iterator it = m_instance->m_DataObjects.begin();
 		for( ; it != m_instance->m_DataObjects.end(); ++it ) {
 			delete it->second;
 	    }
@@ -97,12 +93,6 @@ bool VisualizationManager::InitSceneObjects()
 	if (!OGLContext::getInstance()->InitTexturedFloorDL(20)) return false;
 	if (!OGLContext::getInstance()->InitLogoDL()) return false;
 
-	//init 4 scene cameras
-	//CameraManager::getInstance()->AddCamera("frontLeft",20,45,0.0,1000);
-	//CameraManager::getInstance()->AddCamera("backLeft",20,135,0.0,1000);
-	//CameraManager::getInstance()->AddCamera("backRight",20,225,0.0,1000);
-	//CameraManager::getInstance()->AddCamera("frontRight",20,315,0.0,1000);
-
 	return true;
 }
 
@@ -148,22 +138,38 @@ bool VisualizationManager::IsObjectTraceableByCamera(SceneObject* pObj)
 bool VisualizationManager::AddObject(SceneObject* pObj)
 {
 	std::string _id = pObj->getID();
+    bool result = false;
+
 	if (!_id.empty())
 	{
-	 	std::map<std::string,SceneObject*>::iterator it = m_SceneObjects.find(_id);
-		if ( it!=m_SceneObjects.end()) { 
-			return false;
+		result = true; //assume it's new element
+		std::list<SceneObject*>::iterator _iteratorRObj = m_SceneObjects.begin();
+		while(_iteratorRObj != m_SceneObjects.end())
+		{
+			if((*_iteratorRObj) == pObj)
+			{
+				// found, so don't add it
+				result = false;
+				break;
+			}
+			_iteratorRObj++;
 		}
-	    m_SceneObjects.insert( std::make_pair( std::string(_id), pObj ) );
 
-        if (IsObjectTraceableByCamera(pObj))
-        {
-			CameraManager::getInstance()->AddCamera(pObj); // add camera by default to Avatar object only
-			CameraManager::getInstance()->setCurrentSceneObjectID(_id);   // set current scene object ID to last added scene object
+		if (result) // for new object
+		{
+		    m_SceneObjects.push_front( pObj );
+			//m_SceneObjects.sort(greater<PSO>());
+			//std::sort(m_SceneObjects.begin(), m_SceneObjects.end(), CompareSceneObjects());   // sort ascending
+			
+			if (IsObjectTraceableByCamera(pObj))
+			{
+				CameraManager::getInstance()->AddCamera(pObj); // add camera by default to Avatar object only
+				CameraManager::getInstance()->setCurrentSceneObjectID(_id);   // set current scene object ID to last added scene object
+			}
 		}
 
 	}
-	return true;
+	return result;
 }  
 
 bool VisualizationManager::AddDataObject(SceneObject* pObj)
@@ -180,58 +186,39 @@ bool VisualizationManager::AddDataObject(SceneObject* pObj)
 	return true;
 }  
 
-////SceneObject* VisualizationManager::getObject(std::string id)
-////{
-//// 	std::map<std::string,SceneObject*>::iterator it = m_SceneObjects.find(id);
-////	if ( it!=m_SceneObjects.end()) { 
-////		return it->second;
-////	}
-////	return NULL;
-////}
-////
-////SceneObject* VisualizationManager::getObjectByName(std::string name)
-////{
-////	std::map<std::string,SceneObject*>::iterator it = m_instance->m_SceneObjects.begin();
-////	for( ; it != m_instance->m_SceneObjects.end(); ++it ) {
-////		if (name.compare(it->second->getName()) == 0)
-////			return it->second;
-////    }
-////	return NULL;
-////}
-
 bool VisualizationManager::RemoveObject(SceneObject* pObj)
 {
 	std::string _id = pObj->getID();
-	bool done = false;	
+    bool result = false;
 	if (!_id.empty())
 	{
 		CameraManager::getInstance()->RemoveCamera(_id); // remove pointer to camera from erased object
-		done = RemoveObject(_id);
-	}
-	return done;
-}
 
-bool VisualizationManager::RemoveObject(std::string id)
-{
- 	std::map<std::string,SceneObject*>::iterator it = m_SceneObjects.find(id);
-	if ( it!=m_SceneObjects.end()) 
-	{ 
-		//delete it->second; //scene manager does it
-		m_SceneObjects.erase(it);
-		return true;
+		std::list<SceneObject*>::iterator _iteratorRObj = m_SceneObjects.begin();
+		while(_iteratorRObj != m_SceneObjects.end())
+		{
+			if((*_iteratorRObj) == pObj)
+			{
+				// found, so remove list element
+				m_SceneObjects.erase(_iteratorRObj);
+				result = true;
+				break;
+			}
+			_iteratorRObj++;
+		}
 	}
-	return false;
+	return result;
 }
 
 bool VisualizationManager::RemoveDataObject(SceneObject* pObj)
 {
 	std::string _id = pObj->getID();
-	bool done = false;	
+	bool result = false;	
 	if (!_id.empty())
 	{
-		done = RemoveDataObject(_id);
+		result = RemoveDataObject(_id);
 	}
-	return done;
+	return result;
 }
 
 bool VisualizationManager::RemoveDataObject(std::string id)
@@ -250,9 +237,9 @@ void VisualizationManager::Render3DSceneObjects()
 {
 	SceneObject *pObj;
 	// iterate through the objects and render shadows
-	std::map<std::string,SceneObject*>::iterator it=m_SceneObjects.begin();
+	std::list<SceneObject*>::iterator it=m_SceneObjects.begin();
 	for( ; it != m_SceneObjects.end(); ++it ) {
-		if ((pObj = dynamic_cast<SceneObject*>(it->second))!=NULL)
+		if ((pObj = (*it))!=NULL)
 		{
 			if (pObj->isVisible())
 			{
@@ -261,35 +248,13 @@ void VisualizationManager::Render3DSceneObjects()
 		}
 	}
 	
-	// now we don't distinguish full static objects in code, uncomment for later use
-	//// iterate through the semistatic objects (tracers) to find object needs rendering
-	//it=m_SceneObjects.begin();
-	//for( ; it != m_SceneObjects.end(); ++it ) {
-	//	if ((pObj = dynamic_cast<SceneObject*>(it->second))!=NULL)
-	//	{
-	//		if (pObj->isVisible())
-	//			if (pObj->getRenderingOrder() == 1)
-	//				pObj->Render();
-	//	}
-	//}
 
-	// iterate through the semistatic objects (tracers) to find object needs rendering
+	// iterate through the ordered list of objects (tracers) and render
 	it=m_SceneObjects.begin();
 	for( ; it != m_SceneObjects.end(); ++it ) {
-		if ((pObj = dynamic_cast<SceneObject*>(it->second))!=NULL)
+		if ((pObj = (*it))!=NULL)
 		{
 			if (pObj->isVisible())
-				if (pObj->getRenderingOrder() == ft_Rendering_Trace_Level)
-					pObj->Render();
-		}
-	}
-	// iterate through the dynamic objects to find object needs rendering
-	it=m_SceneObjects.begin();
-	for( ; it != m_SceneObjects.end(); ++it ) {
-		if ((pObj = dynamic_cast<SceneObject*>(it->second))!=NULL)
-		{
-			if (pObj->isVisible())
-				if (pObj->getRenderingOrder() == ft_Rendering_Objects_Level)
 					pObj->Render();
 		}
 	}
