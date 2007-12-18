@@ -90,3 +90,12 @@ void UTIL_DumpVect(const CalVector& vect, std::string caption)
     _dbg << "V(" << vect.x <<  "," << vect.y  << "," << vect.z << ")"  << std::endl;
 }
 
+/*
+ * Checks if float number is valid 
+ * \param loaft number to check
+ * \return bool - true if is number is valid float, false otherwise (e.g. 1.#QNAN)
+ */
+bool UTIL_IsValidFloat(float number)
+{
+    return (number>0 || number<=0);
+}

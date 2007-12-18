@@ -9,3 +9,4 @@ float UTIL_GetRightArgForArcCos(float arg);
 float UTIL_GetSignForDirChange(CalVector& oldDir, CalVector& newDir);
 void UTIL_DumpQuat(const CalQuaternion& quat, std::string caption = "");
 void UTIL_DumpVect(const CalVector& vect, std::string caption = "");
+bool UTIL_IsValidFloat(float number);

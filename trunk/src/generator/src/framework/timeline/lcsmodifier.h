@@ -23,7 +23,9 @@ namespace ft
         bool TRACE_TRANSFORM_END;  //yellow
         bool TRACE_FINAL_DIR;     //purple
         bool TRACE_AXIS;   //red, green, blue
-        bool DRAW_CURVES;
+        bool DRAW_ROTATION_CURVES;
+        bool DRAW_CURVES_TRANSLATION;
+        bool DRAW_CURVES_TRANSLATION_DETAILED;
 
         bool LOCAL_DEBUG;
 
@@ -58,8 +60,16 @@ namespace ft
         CalQuaternion m_qAnimDirOverlapStart;
         CalQuaternion m_qAnimDirOverlapDest;
 
-   		DataCollector *curve_trans_Y;
-        DataCollector *curve_root_rotation;
+        DataCollector *curve_anim_rotation;
+        DataCollector *curve_global_rotation;
+        DataCollector *curve_final_rotation;
+
+        DataCollector *curve_trans_diff_X;
+        DataCollector *curve_trans_diff_Y;
+        DataCollector *curve_trans_diff_Z;
+
+        DataCollector *curve_trans_diff;
+        DataCollector *curve_trans_Y;
 
 
 		TraceLine *tracer_translation;

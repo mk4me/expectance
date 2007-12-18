@@ -22,16 +22,18 @@ LCSModifier::LCSModifier()
      m_fAnimRot = 0;
      m_vLastAnimDir = CalVector(0,0,0);
 
-    DRAW_CURVES = true;
+    DRAW_ROTATION_CURVES = ((Config::getInstance()->IsKey("lcs_rotation_curves")) && (Config::getInstance()->GetIntVal("lcs_rotation_curves")==1));
+    DRAW_CURVES_TRANSLATION = ((Config::getInstance()->IsKey("lcs_translation_curves")) && (Config::getInstance()->GetIntVal("lcs_translation_curves")==1));
+    DRAW_CURVES_TRANSLATION_DETAILED = ((Config::getInstance()->IsKey("lcs_translation_detailed_curves")) && (Config::getInstance()->GetIntVal("lcs_translation_detailed_curves")==1));
 
     TRACE_TRANSLATION = false;
     TRACE_TRANSFORM = false;
-    TRACE_ROOT_ROTATION = false;
+    TRACE_ROOT_ROTATION = ((Config::getInstance()->IsKey("lcs_trace_root_rotation")) && (Config::getInstance()->GetIntVal("lcs_trace_root_rotation")==1));
 
     TRACE_TRANSFORM_END = false;
     TRACE_FINAL_DIR = false;
 
-    TRACE_AXIS = false;
+    TRACE_AXIS = ((Config::getInstance()->IsKey("lcs_trace_axis")) && (Config::getInstance()->GetIntVal("lcs_trace_axis")==1));
     LOCAL_DEBUG = false;
 
     INTERPOLATION = true;
@@ -39,21 +41,57 @@ LCSModifier::LCSModifier()
     ANIM_DIR_CALC = (Config::getInstance()->IsKey("lcs_anim_orient_influence")) && (Config::getInstance()->GetIntVal("lcs_anim_orient_influence")==1);		
     ANIM_DIR_CALC_FOR_CYCLES = false;
 
-    if (DRAW_CURVES)
+    if (DRAW_ROTATION_CURVES)
     {
+		curve_anim_rotation = new DataCollector(toString() + "curve_anim_rotation");
+        VisualizationManager::getInstance()->AddDataObject(curve_anim_rotation);
+        curve_anim_rotation->HidePoints();       curve_anim_rotation->setColor(VisualizationHelper::COLOR_YELLOW);
+        curve_anim_rotation->setDrawScale(20);        
+
+		curve_global_rotation = new DataCollector(toString() + "curve_global_rotation");
+        VisualizationManager::getInstance()->AddDataObject(curve_global_rotation);
+        curve_global_rotation->HidePoints();       curve_global_rotation->setColor(VisualizationHelper::COLOR_WHITE);
+        curve_global_rotation->setDrawScale(20);        
+
+        
+		curve_final_rotation = new DataCollector(toString() + "curve_final_rotation");
+        VisualizationManager::getInstance()->AddDataObject(curve_final_rotation);
+        curve_final_rotation->HidePoints();        curve_final_rotation->setColor(VisualizationHelper::COLOR_SKYBLUE);
+        curve_final_rotation->setDrawScale(20);
+    }
+
+    if(DRAW_CURVES_TRANSLATION_DETAILED)
+    {
+		curve_trans_diff_X = new DataCollector(toString() + "curve_trans_diff_X");
+        VisualizationManager::getInstance()->AddDataObject(curve_trans_diff_X);
+        curve_trans_diff_X->HidePoints();       curve_trans_diff_X->setColor(VisualizationHelper::COLOR_RED);
+        curve_trans_diff_X->setDrawScale(5);
+        //curve_trans_X->setDrawOffset(-90);
+
+   		curve_trans_diff_Z = new DataCollector(toString() + "curve_trans_diff_Z");
+        VisualizationManager::getInstance()->AddDataObject(curve_trans_diff_Z);
+        curve_trans_diff_Z->HidePoints();       curve_trans_diff_Z->setColor(VisualizationHelper::COLOR_GREEN);
+        curve_trans_diff_Z->setDrawScale(5);
+
+		curve_trans_diff_Y = new DataCollector(toString() + "curve_trans_diff_Y");
+        VisualizationManager::getInstance()->AddDataObject(curve_trans_diff_Y);
+        curve_trans_diff_Y->HidePoints();       curve_trans_diff_Y->setColor(VisualizationHelper::COLOR_BLUE);
+        curve_trans_diff_Y->setDrawOffset(5);        
+    }
+
+    if(DRAW_CURVES_TRANSLATION)
+    {
+		curve_trans_diff = new DataCollector(toString() + "curve_trans_diff");
+        VisualizationManager::getInstance()->AddDataObject(curve_trans_diff);
+        curve_trans_diff->HidePoints();       curve_trans_diff->setColor(VisualizationHelper::COLOR_SKYBLUE);
+        curve_trans_diff->setDrawScale(5);
+
 		curve_trans_Y = new DataCollector(toString() + "curve_trans_Y");
         VisualizationManager::getInstance()->AddDataObject(curve_trans_Y);
-        curve_trans_Y->HidePoints();
-        curve_trans_Y->setColor(VisualizationHelper::COLOR_BLUE);
-        curve_trans_Y->setDrawScale(5);
-        curve_trans_Y->setDrawOffset(-90);
-
-		curve_root_rotation = new DataCollector(toString() + "curve_root_rotation");
-        VisualizationManager::getInstance()->AddDataObject(curve_root_rotation);
-        curve_root_rotation->HidePoints();
-        curve_root_rotation->setColor(VisualizationHelper::COLOR_RED);
-        curve_root_rotation->setDrawScale(0.3f);
+        curve_trans_Y->HidePoints();       curve_trans_Y->setColor(VisualizationHelper::COLOR_YELLOW);
+        curve_trans_Y->setDrawOffset(-50);        //curve_trans_Y->setDrawScale(0.8f);
     }
+
 
     if (TRACE_TRANSLATION)
     {
@@ -68,6 +106,7 @@ LCSModifier::LCSModifier()
     {
         tracer_root_orient = new TraceLine(toString() + "tracer_root_orient");
         SceneManager::getInstance()->AddObject(tracer_root_orient);
+        tracer_root_orient->setRenderingOrder(ft_Rendering_Objects_Level);
     }
 
     if (TRACE_TRANSFORM)
@@ -120,12 +159,32 @@ LCSModifier::~LCSModifier(void)
         SceneManager::getInstance()->RemoveObject(tracer_translation);
 	}
 
-    if (DRAW_CURVES)
+    if(DRAW_CURVES_TRANSLATION_DETAILED)
     {
-		curve_trans_Y->Clear();
+        curve_trans_diff_X->Clear();
+        VisualizationManager::getInstance()->RemoveDataObject(curve_trans_diff_X);
+        curve_trans_diff_Y->Clear();
+        VisualizationManager::getInstance()->RemoveDataObject(curve_trans_diff_Y);
+        curve_trans_diff_Z->Clear();
+        VisualizationManager::getInstance()->RemoveDataObject(curve_trans_diff_Z);
+    }
+
+    if(DRAW_CURVES_TRANSLATION)
+    {
+        curve_trans_diff->Clear();
+        VisualizationManager::getInstance()->RemoveDataObject(curve_trans_diff);
+        curve_trans_Y->Clear();
         VisualizationManager::getInstance()->RemoveDataObject(curve_trans_Y);
-        curve_root_rotation->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_root_rotation);
+    }
+    
+    if (DRAW_ROTATION_CURVES)
+    {
+		curve_anim_rotation->Clear();
+        VisualizationManager::getInstance()->RemoveDataObject(curve_anim_rotation);
+		curve_global_rotation->Clear();
+        VisualizationManager::getInstance()->RemoveDataObject(curve_global_rotation);
+        curve_final_rotation->Clear();
+        VisualizationManager::getInstance()->RemoveDataObject(curve_final_rotation);
     }
     
     if (TRACE_ROOT_ROTATION)
@@ -273,10 +332,15 @@ void LCSModifier::UpdateRotation(float elapsedSeconds, TimeLineContext * timeLin
     timeLineContext->getAvatar()->setDirection(vDir);
 
     //TRACER-s -------------------------------------------------------
-    if (DRAW_CURVES)
+    if (DRAW_ROTATION_CURVES)
     {
-        float rot = CalQuatToQuat(rotToSet).Zangle();
-        curve_root_rotation->AddValue(RadToDeg(rot));
+        float animRot = CalQuatToQuat(rootRotation).Zangle();
+        float globalRot = CalQuatToQuat(qGlobalRotOffset).Yangle();
+        globalRot = UTIL_IsValidFloat(globalRot) ? globalRot : 0;
+        float finalRot = CalQuatToQuat(rotToSet).Zangle();
+        curve_anim_rotation->AddValue(animRot);
+        curve_global_rotation->AddValue(globalRot);
+        curve_final_rotation->AddValue(finalRot);
     }
 
     CalVector vCurrAvatarPosition = timeLineContext->getAvatar()->getPosition();
@@ -385,6 +449,7 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
 
 
     CalVector diff = currPos - m_vLastPos;
+    CalVector animDiff(diff);
 
     CalQuaternion qGlobalRotation = timeLineContext->getAvatar()->getGlobalRotationOffset();
 
@@ -429,14 +494,25 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
 
     
     //TRACER-s -------------------------------------------------------
+
+    if(DRAW_CURVES_TRANSLATION)
+    {
+        curve_trans_diff->AddValue(diff.length());
+        curve_trans_Y->AddValue(vCurrAvatarPosition.y);
+    }
+
+    if(DRAW_CURVES_TRANSLATION_DETAILED)
+    {
+        curve_trans_diff_X->AddValue(diff.x);
+        curve_trans_diff_Y->AddValue(diff.y);
+        curve_trans_diff_Z->AddValue(diff.z);
+    }
+
+    
+
     if (TRACE_TRANSLATION)
     {
         tracer_translation->AddPoint(vCurrAvatarPosition);
-    }
-
-    if (DRAW_CURVES)
-    {
-        curve_trans_Y->AddValue(vCurrAvatarPosition.y);
     }
  }
 
@@ -517,9 +593,24 @@ void LCSModifier::Reset(TimeLineContext * timeLineContext)
 {
     TimeLineObject::Reset(timeLineContext);
 
-    if (DRAW_CURVES)
+    if(DRAW_CURVES_TRANSLATION_DETAILED)
     {
-        curve_root_rotation->Clear();
+        curve_trans_diff_X->Clear();
+        curve_trans_diff_Y->Clear();
+        curve_trans_diff_Z->Clear();
+    }
+
+    if(DRAW_CURVES_TRANSLATION)
+    {
+        curve_trans_diff->Clear();
+        curve_trans_Y->Clear();
+    }
+
+    if (DRAW_ROTATION_CURVES)
+    {
+        curve_final_rotation->Clear();
+        curve_anim_rotation->Clear();
+        curve_global_rotation->Clear();
     }
 
     if (TRACE_TRANSLATION)
