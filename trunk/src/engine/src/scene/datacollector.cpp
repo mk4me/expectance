@@ -86,8 +86,12 @@ bool DataCollector::Render()
 
 void DataCollector::AddValue(const float value)
 {
-	m_DataList.push_back(value);
 	unsigned long _size = m_DataList.size();
+	if ((m_bufferSize != 0)&&(_size > m_bufferSize))
+    {
+	    m_DataList.pop_front();
+    }
+	m_DataList.push_back(value);
 	if(_size > 1) //minimum two elements
 	{
 		if ( value > m_max ) m_max = value;

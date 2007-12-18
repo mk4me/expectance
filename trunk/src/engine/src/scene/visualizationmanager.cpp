@@ -313,7 +313,7 @@ void VisualizationManager::RenderDataObjects()
 	DataCollector *pObj;
 	float _min, _max;
 	bool _one = false;
-	// iterate through the objects and render shadows
+	// iterate through the objects and find max and min values
 	std::map<std::string,SceneObject*>::iterator it=m_DataObjects.begin();
 	for( ; it != m_DataObjects.end(); ++it ) {
 		if ((pObj = dynamic_cast<DataCollector*>(it->second))!=NULL)
