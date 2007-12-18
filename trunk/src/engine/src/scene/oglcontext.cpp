@@ -120,7 +120,16 @@ bool OGLContext::Init()
 	}
 	
 	DATA_VIEWPORT = ((Config::getInstance()->IsKey("data_viewport")) && (Config::getInstance()->GetIntVal("data_viewport")==1));
-	return true;
+
+    bool m_dvpGrid = ((Config::getInstance()->IsKey("data_viewport_draw_grid")) && (Config::getInstance()->GetIntVal("data_viewport_draw_grid")==1));
+
+    m_dvpGridStep = 10;
+    if (Config::getInstance()->IsKey("data_viewport_grid_step"))
+    {
+        m_dvpGridStep = Config::getInstance()->GetIntVal("data_viewport_grid_step");
+    }
+
+    return true;
 }
 
 //void OGLContext::InitCursorDL()
@@ -401,10 +410,27 @@ void OGLContext::DrawDataViewPortPrimitives()
 	glRectf(m_dvpW/2+1, 1.0f, m_dvpW-1, m_dvpH-2);
 
     //draw x axis
-	glColor4f(1,1,1,0.1f);
+	glColor4f(1,1,1,0.3f);
 	glBegin(GL_LINES);
 	glVertex2d(4,m_dvpH/2); glVertex2d(m_dvpW/2-4,m_dvpH/2);
 	glEnd();
+
+    //draw grid
+    if (m_dvpGrid && m_dvpGridStep>0)
+    {
+        float halfOfHeight = m_dvpH/2;
+        float startLine = 0;
+
+        while (startLine < halfOfHeight)
+        {
+	        glColor4f(1,1,1,0.1f);
+	        glBegin(GL_LINES);
+	        glVertex2d(4,halfOfHeight + startLine); glVertex2d(m_dvpW/2-4,halfOfHeight + startLine);
+            glVertex2d(4,halfOfHeight - startLine); glVertex2d(m_dvpW/2-4,halfOfHeight - startLine);
+	        glEnd();
+            startLine += m_dvpGridStep;
+        }
+    }
 
     // commented by abak 17-12-2007
 	//draw axis

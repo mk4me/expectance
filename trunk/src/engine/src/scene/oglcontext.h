@@ -106,7 +106,7 @@ namespace ft
 		//! load fragment program from file
 		GLuint loadFragmentProgram(const std::string fn);
 
-		mutable int HardwareAcceleration;
+    	mutable int HardwareAcceleration;
 		bool DATA_VIEWPORT;
 		int DATA_VIEWPORT_TYPE;
 
@@ -118,6 +118,9 @@ namespace ft
 		float m_dvpW,m_dvpH;
 		int m_width, m_height;
 		string m_dvpLegend[5];
+
+        bool m_dvpGrid;
+        float m_dvpGridStep;
 	};
 }; 
 
