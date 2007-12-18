@@ -86,7 +86,7 @@ LCSModifier::LCSModifier()
 		curve_trans_diff = new DataCollector(toString() + "curve_trans_diff");
         VisualizationManager::getInstance()->AddDataObject(curve_trans_diff);
         curve_trans_diff->HidePoints();       curve_trans_diff->setColor(VisualizationHelper::COLOR_SKYBLUE);
-        curve_trans_diff->setDrawScale(5);
+        curve_trans_diff->setDrawScale(4);
 
 		curve_trans_Y = new DataCollector(toString() + "curve_trans_Y");
         VisualizationManager::getInstance()->AddDataObject(curve_trans_Y);
@@ -414,11 +414,11 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
     CalQuaternion tmpRot;    
     CalVector vPrevPos;
 
-    CalVector vRest;
+    CalVector vCycleRest;
+    CalVector vOverlapRest;
     
     if (timeLineContext->currAnim != NULL)
     {
-        
         CalCoreAnimation* coreAnim = timeLineContext->currAnim->getCoreAnimation();
         coreAnim->getCoreTrack(0)->getState(timeLineContext->currAnimTime, currPos, tmpRot);
         if (currTransform != NULL)
@@ -448,21 +448,33 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
             }
         }
 
-        if (REST_TRANS_CALC )
+        if (timeLineContext->anim_new_cycle)
         {
-            if (timeLineContext->anim_new_cycle)
+            if (REST_TRANS_CALC )
             {
-                coreAnim->getCoreTrack(0)->getState(timeLineContext->currAnimDuration, vRest, tmpRot);
+                coreAnim->getCoreTrack(0)->getState(timeLineContext->currAnimDuration, vCycleRest, tmpRot);
                 CalVector vEnd;
                 coreAnim->getCoreTrack(0)->getState(m_fLastAnimTime, vEnd, tmpRot);
-                vRest -= vEnd;
+                vCycleRest -= vEnd;
 
                 CalVector vCurr;
                 coreAnim->getCoreTrack(0)->getState(timeLineContext->currAnimTime, vCurr, tmpRot);
                 CalVector vZero;
                 coreAnim->getCoreTrack(0)->getState(0, vZero, tmpRot);
                 vCurr -= vZero;
-                vRest += vCurr;
+                vCycleRest += vCurr;
+            }
+        }
+
+        // Rest calculation for anim_changed is calculated only for OVERLAP state
+        if (timeLineContext->anim_changed && timeLineContext->exec_state == EXEC_STATE_OVERLAP)
+        {
+            if (REST_TRANS_CALC )
+            {
+                timeLineContext->prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(timeLineContext->prevAnimTime, vOverlapRest, tmpRot);
+                CalVector vPrevious;
+                timeLineContext->prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(m_fLastAnimTime, vPrevious, tmpRot);
+                vOverlapRest -= vPrevious;
             }
         }
 
@@ -472,7 +484,6 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
         {
             m_vLastPos = currPos;
         }
-        
     }
     else
     {
@@ -489,8 +500,8 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
 
     if (REST_TRANS_CALC)
     {
-        vRest.y = 0;
-        diff += vRest;
+        vCycleRest.y = 0;
+        diff += vCycleRest;
     }
 
     CalQuaternion qGlobalRotation = timeLineContext->getAvatar()->getGlobalRotationOffset();
@@ -510,6 +521,9 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
         //position
         float factor =  timeLineContext->currAnimTime/timeLineContext->prevOverlap; 
         CalVector prevDiff = vPrevPos - m_vLastPrevPos;
+
+        vOverlapRest.y = 0;
+        prevDiff += vOverlapRest;
 
         CalQuaternion qGlobalRotation = timeLineContext->getAvatar()->getGlobalRotationOffset();
         if (prevTransform != NULL)
