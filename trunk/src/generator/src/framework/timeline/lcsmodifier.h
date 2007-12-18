@@ -26,6 +26,7 @@ namespace ft
         bool DRAW_ROTATION_CURVES;
         bool DRAW_CURVES_TRANSLATION;
         bool DRAW_CURVES_TRANSLATION_DETAILED;
+        bool DRAW_ANIM_TIME_CURVE;
 
         bool LOCAL_DEBUG;
 
@@ -56,6 +57,8 @@ namespace ft
         CalVector m_vLastAnimDir;
         float m_fAnimRot;
 
+        float m_fLastAnimTime;
+
 
         CalQuaternion m_qAnimDirOverlapStart;
         CalQuaternion m_qAnimDirOverlapDest;
@@ -71,6 +74,7 @@ namespace ft
         DataCollector *curve_trans_diff;
         DataCollector *curve_trans_Y;
 
+        DataCollector *curve_anim_time;
 
 		TraceLine *tracer_translation;
 

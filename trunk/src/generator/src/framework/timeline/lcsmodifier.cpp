@@ -20,11 +20,13 @@ LCSModifier::LCSModifier()
      m_vLastPrevPos = CalVector(0,0,0);
 
      m_fAnimRot = 0;
+     m_fLastAnimTime = 0;
      m_vLastAnimDir = CalVector(0,0,0);
 
     DRAW_ROTATION_CURVES = ((Config::getInstance()->IsKey("lcs_rotation_curves")) && (Config::getInstance()->GetIntVal("lcs_rotation_curves")==1));
     DRAW_CURVES_TRANSLATION = ((Config::getInstance()->IsKey("lcs_translation_curves")) && (Config::getInstance()->GetIntVal("lcs_translation_curves")==1));
     DRAW_CURVES_TRANSLATION_DETAILED = ((Config::getInstance()->IsKey("lcs_translation_detailed_curves")) && (Config::getInstance()->GetIntVal("lcs_translation_detailed_curves")==1));
+    DRAW_ANIM_TIME_CURVE = ((Config::getInstance()->IsKey("lcs_anim_time_curve")) && (Config::getInstance()->GetIntVal("lcs_anim_time_curve")==1));
 
     TRACE_TRANSLATION = false;
     TRACE_TRANSFORM = false;
@@ -37,7 +39,7 @@ LCSModifier::LCSModifier()
     LOCAL_DEBUG = false;
 
     INTERPOLATION = true;
-    REST_TRANS_CALC = false;
+    REST_TRANS_CALC = true;
     ANIM_DIR_CALC = (Config::getInstance()->IsKey("lcs_anim_orient_influence")) && (Config::getInstance()->GetIntVal("lcs_anim_orient_influence")==1);		
     ANIM_DIR_CALC_FOR_CYCLES = false;
 
@@ -90,6 +92,14 @@ LCSModifier::LCSModifier()
         VisualizationManager::getInstance()->AddDataObject(curve_trans_Y);
         curve_trans_Y->HidePoints();       curve_trans_Y->setColor(VisualizationHelper::COLOR_YELLOW);
         curve_trans_Y->setDrawOffset(-50);        //curve_trans_Y->setDrawScale(0.8f);
+    }
+
+    if(DRAW_ANIM_TIME_CURVE)
+    {
+		curve_anim_time = new DataCollector(toString() + "curve_anim_time");
+        VisualizationManager::getInstance()->AddDataObject(curve_anim_time);
+        curve_anim_time->HidePoints();       curve_anim_time->setColor(VisualizationHelper::COLOR_WHITE);
+        curve_anim_time->setDrawScale(30);
     }
 
 
@@ -185,6 +195,12 @@ LCSModifier::~LCSModifier(void)
         VisualizationManager::getInstance()->RemoveDataObject(curve_global_rotation);
         curve_final_rotation->Clear();
         VisualizationManager::getInstance()->RemoveDataObject(curve_final_rotation);
+    }
+
+    if (DRAW_ANIM_TIME_CURVE)
+    {
+		curve_anim_time->Clear();
+        VisualizationManager::getInstance()->RemoveDataObject(curve_anim_time);
     }
     
     if (TRACE_ROOT_ROTATION)
@@ -397,8 +413,9 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
     CalVector currPos;
     CalQuaternion tmpRot;    
     CalVector vPrevPos;
-    
 
+    CalVector vRest;
+    
     if (timeLineContext->currAnim != NULL)
     {
         
@@ -431,10 +448,31 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
             }
         }
 
+        if (REST_TRANS_CALC )
+        {
+            if (timeLineContext->anim_new_cycle)
+            {
+                coreAnim->getCoreTrack(0)->getState(timeLineContext->currAnimDuration, vRest, tmpRot);
+                CalVector vEnd;
+                coreAnim->getCoreTrack(0)->getState(m_fLastAnimTime, vEnd, tmpRot);
+                vRest -= vEnd;
+
+                CalVector vCurr;
+                coreAnim->getCoreTrack(0)->getState(timeLineContext->currAnimTime, vCurr, tmpRot);
+                CalVector vZero;
+                coreAnim->getCoreTrack(0)->getState(0, vZero, tmpRot);
+                vCurr -= vZero;
+                vRest += vCurr;
+            }
+        }
+
+        m_fLastAnimTime = timeLineContext->currAnimTime;
+        
         if (timeLineContext->anim_changed || timeLineContext->anim_new_cycle)
         {
             m_vLastPos = currPos;
         }
+        
     }
     else
     {
@@ -447,9 +485,13 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
         m_vLastPos = currPos;
     }
 
-
     CalVector diff = currPos - m_vLastPos;
-    CalVector animDiff(diff);
+
+    if (REST_TRANS_CALC)
+    {
+        vRest.y = 0;
+        diff += vRest;
+    }
 
     CalQuaternion qGlobalRotation = timeLineContext->getAvatar()->getGlobalRotationOffset();
 
@@ -494,6 +536,12 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
 
     
     //TRACER-s -------------------------------------------------------
+
+    if(DRAW_ANIM_TIME_CURVE)
+    {
+        if (timeLineContext->currAnim != NULL)
+            curve_anim_time->AddValue(-timeLineContext->currAnimTime);
+    }
 
     if(DRAW_CURVES_TRANSLATION)
     {
@@ -613,6 +661,11 @@ void LCSModifier::Reset(TimeLineContext * timeLineContext)
         curve_global_rotation->Clear();
     }
 
+    if (DRAW_ANIM_TIME_CURVE)
+    {
+		curve_anim_time->Clear();
+    }
+
     if (TRACE_TRANSLATION)
     {
         tracer_translation->ClearTrace();
@@ -649,6 +702,7 @@ void LCSModifier::Reset(TimeLineContext * timeLineContext)
      m_vLastPrevPos = CalVector(0,0,0);
 
      m_fAnimRot = 0;
+     m_fLastAnimTime = 0;
      m_vLastAnimDir = CalVector(0,0,0);
 }
 
