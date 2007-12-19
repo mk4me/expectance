@@ -7,7 +7,6 @@
 #define _GEN_VISUALIZATION_MANAGER_H
 
 #include <map>
-#include <list>
 #include "../utility/debug.h"
 #include "line.h"
 #include "traceline.h"
@@ -20,24 +19,13 @@
 #include "../core/application.h"
 #include "../core/UpdateManager.h"
 #include "../core/config.h"
-#include <functional>
+
 
 
 
 namespace ft
 {
-	//typedef SceneObject* PSO;
-	////template<> bool std::greater<PSO>::operator() (const PSO& _XX, const PSO& _YY) const { return _XX->getRenderingOrder() >_YY->getRenderingOrder(); }; 
-
-	//class CompareSceneObjects
-	//{
-	//	public:
-	//	bool operator() (const PSO & s1, const PSO & s2) const
-	//	{
-	//		return s1->getRenderingOrder() < s2->getRenderingOrder();        // cmp grades emulating "less than"
-	//	}
-	//};
-
+	using namespace std;
 	//! A VisualizationManager class
 	/*!
 	 *	This class is responsible for registering, rendering and communication with the rest parts of the system in the scope of rendering. 
@@ -102,9 +90,10 @@ namespace ft
         virtual bool IsObjectTraceableByCamera(SceneObject* pObj);
 
     protected:
-		bool CompareSO(SceneObject* so1, SceneObject* so2) { return so1->getRenderingOrder() < so2->getRenderingOrder(); };
+		/*! Sorts polimorfic structure in vector*/ 
+		void SortSceneObjectsList();
         static VisualizationManager* m_instance;
-		std::list<SceneObject*> m_SceneObjects;
+		std::vector<SceneObject*> m_SceneObjects;
 		std::map<std::string,SceneObject*> m_DataObjects;
 		int m_ActiveCameraMarker;
 		RenderingOrder m_rendering;

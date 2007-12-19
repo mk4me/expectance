@@ -194,6 +194,27 @@ bool VisualizationManager::IsObjectTraceableByCamera(SceneObject* pObj)
     return (dynamic_cast<SceneObject*>(pObj)!=NULL);
 }
 
+void VisualizationManager::SortSceneObjectsList()
+{
+	int _swpd = 1;
+	SceneObject *tmp;
+	for(unsigned int i = 0; i < m_SceneObjects.size() && (_swpd == 1); i++)
+	{
+		_swpd = 0;
+		for (unsigned int j = 0; j < (m_SceneObjects.size()-(i+1)); j++)
+		{
+			if ( m_SceneObjects[j]->getRenderingOrder() > m_SceneObjects[j+1]->getRenderingOrder())
+			{
+					tmp = m_SceneObjects[j];
+					m_SceneObjects[j] = m_SceneObjects[j+1];
+					m_SceneObjects[j+1] = tmp;
+					_swpd = 1;
+			}
+				
+		}
+	}
+}
+
 bool VisualizationManager::AddObject(SceneObject* pObj)
 {
 	std::string _id = pObj->getID();
@@ -202,7 +223,7 @@ bool VisualizationManager::AddObject(SceneObject* pObj)
 	if (!_id.empty())
 	{
 		result = true; //assume it's new element
-		std::list<SceneObject*>::iterator _iteratorRObj = m_SceneObjects.begin();
+		std::vector<SceneObject*>::iterator _iteratorRObj = m_SceneObjects.begin();
 		while(_iteratorRObj != m_SceneObjects.end())
 		{
 			if((*_iteratorRObj) == pObj)
@@ -212,13 +233,17 @@ bool VisualizationManager::AddObject(SceneObject* pObj)
 				break;
 			}
 			_iteratorRObj++;
+
+
+			//SortSceneObjectsList();
 		}
 
 		if (result) // for new object
 		{
-		    m_SceneObjects.push_front( pObj );
-			//m_SceneObjects.sort(greater<PSO>());
-			//std::sort(m_SceneObjects.begin(), m_SceneObjects.end(), CompareSceneObjects());   // sort ascending
+		    m_SceneObjects.push_back( pObj );
+			SortSceneObjectsList();
+			//m_SceneObjects.sort(); //CompareSO);			//m_SceneObjects.sort(greater<PSO>());
+			//std::sort(m_SceneObjects.begin(), m_SceneObjects.end());   // sort ascending
 			
 			if (IsObjectTraceableByCamera(pObj))
 			{
@@ -253,7 +278,7 @@ bool VisualizationManager::RemoveObject(SceneObject* pObj)
 	{
 		CameraManager::getInstance()->RemoveCamera(_id); // remove pointer to camera from erased object
 
-		std::list<SceneObject*>::iterator _iteratorRObj = m_SceneObjects.begin();
+		std::vector<SceneObject*>::iterator _iteratorRObj = m_SceneObjects.begin();
 		while(_iteratorRObj != m_SceneObjects.end())
 		{
 			if((*_iteratorRObj) == pObj)
@@ -296,7 +321,7 @@ void VisualizationManager::Render3DSceneObjects()
 {
 	SceneObject *pObj;
 	// iterate through the objects and render shadows
-	std::list<SceneObject*>::iterator it=m_SceneObjects.begin();
+	std::vector<SceneObject*>::iterator it=m_SceneObjects.begin();
 	for( ; it != m_SceneObjects.end(); ++it ) {
 		if ((pObj = (*it))!=NULL)
 		{

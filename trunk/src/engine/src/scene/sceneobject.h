@@ -40,6 +40,7 @@ namespace ft
 		/// \brief Changes object global rotation offset by given deltaRotation value
 		SceneObject& changeGlobalRotationOffset(const CalQuaternion &deltaRotation);
 
+		bool operator < (SceneObject *p) { return getRenderingOrder() > p->getRenderingOrder(); };
 
 		/// \brief Sets object direction to given direction value
 		SceneObject& setDirection(const CalVector &direction);
