@@ -80,8 +80,6 @@ namespace ft
 		void DrawSceneViewPortPrimitives();
 		/// \brief renders OGL primitives for Data Vieport
 		void DrawDataViewPortPrimitives();
-		//! fill array by actual scope values
-		void OGLContext::SetDataViewportLegend(const float y_min, const float y_max);
 		//! set the scope for Data Viewport window width
 		const float getDataViewportWidth() { return m_dvpW;};
 		//! set the scope for Data Viewport window height

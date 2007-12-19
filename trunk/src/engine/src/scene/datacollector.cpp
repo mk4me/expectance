@@ -10,6 +10,9 @@ using namespace ft;
 
 DataCollector::DataCollector(const std::string& name)
 {
+	if ( Config::getInstance()->IsKey("data_viewport_legend_details") )
+		LEGEND_DETAIL_LEVEL = Config::getInstance()->GetIntVal("data_viewport_legend_details");
+	else LEGEND_DETAIL_LEVEL = 0;
 	setName(name);
 	setColor(CalVector(1,1,1));
 	setBufferSize(OGLContext::getInstance()->getWidth()/2);
@@ -88,16 +91,17 @@ bool DataCollector::Render()
 
 void DataCollector::AddValue(const float value)
 {
+
 	unsigned long _size = m_DataList.size();
 	if ((m_bufferSize != 0)&&(_size > m_bufferSize))
     {
 	    m_DataList.pop_front();
     }
 	m_DataList.push_back(value);
-	if(_size > 1) //minimum two elements
+	if(_size > 2) //minimum two elements
 	{
-		if ( value > m_max ) m_max = value;
-		if ( value < m_min ) m_min = value;
+		if (( value > m_max )||(value > m_min)) {m_max += value; m_max/=2;};
+		if (( value < m_min )||( value < m_max )) {m_min += value; m_min/=2;};
 		if (m_max != m_min)
 			m_scope = m_max - m_min;
 		else m_scope = 1;
@@ -105,7 +109,11 @@ void DataCollector::AddValue(const float value)
 	else
 	{
 		m_min=m_max=value;
+		m_cntr=0;
 	}
+	if ((LEGEND_DETAIL_LEVEL != 0)&&(m_cntr> 200))
+	{ updateLegendDetails(m_drawLegendLabel); m_cntr = 0; };
+	m_cntr++;
 }
 
 void DataCollector::Clear()
@@ -133,4 +141,65 @@ void DataCollector::setBlending(bool blending)
 void DataCollector::setBufferSize(const long bufferSize)
 {
 	m_bufferSize = bufferSize;
+}
+
+void DataCollector::setDrawScale(float scale)
+{ 
+	m_drawScale = scale; 
+	if (LEGEND_DETAIL_LEVEL != 0)
+		updateLegendDetails(m_drawLegendLabel);
+}
+
+void DataCollector::setDrawOffset(float offset)
+{ 
+	m_drawOffset = offset; 
+	if (LEGEND_DETAIL_LEVEL != 0)
+		updateLegendDetails(m_drawLegendLabel);}
+
+void DataCollector::updateLegendDetails(const std::string& description)
+{
+	int _cmp = description.compare(m_drawLegendLabel); // if = 0 the same description
+		
+	m_drawLegendLabel = description;
+	if (LEGEND_DETAIL_LEVEL != 0)
+	{
+		std::string _hlp, _hlp1;
+		std::stringstream _ss;
+		//_ss.precision(2);
+		//_hlp.precision(2);
+		//for scope (min, max) 16 characters
+		_ss.str(std::string());
+		_ss << m_min;
+		if (m_min>=0) _hlp1=" "; else _hlp1="";
+		_hlp1 +=_ss.str().substr(0,7);
+		if (_hlp1.length()<8) _hlp1.append(8-_hlp1.length(),' ');
+		//if (_ss.str().length() < 6
+		_hlp ="<" +_hlp1+", ";
+		_ss.str(std::string());
+		_ss << m_max;
+		if (m_max>=0) _hlp1=" "; else _hlp1="";
+		_hlp1 +=_ss.str().substr(0,7);
+		if (_hlp1.length()<8) _hlp1.append(8-_hlp1.length(),' ');
+		_hlp.append(_hlp1 +">");
+		// for offset 6 characters
+		_ss.str(std::string());
+		_ss << m_drawOffset;
+		if (m_drawOffset>=0) _hlp1=" "; else _hlp1="";
+		_hlp1 +=_ss.str().substr(0,7);
+		if (_hlp1.length()<8) _hlp1.append(8-_hlp1.length(),' ');
+		_hlp.append("("+_hlp1+")");
+		// for scale 6 characters
+		_ss.str(std::string());
+		_ss << m_drawScale;
+		if (m_drawScale>=0) _hlp1=" "; else _hlp1="";
+		_hlp1 +=_ss.str().substr(0,7);
+		if (_hlp1.length()<8) _hlp1.append(8-_hlp1.length(),' ');
+		_hlp.append("["+_hlp1+"] - ");
+		if(_cmp==0){
+			int _end = m_drawLegendLabel.find("]");
+			m_drawLegendLabel.erase(0,_end+4);
+		}
+
+		m_drawLegendLabel.insert(0,_hlp);
+	}
 }

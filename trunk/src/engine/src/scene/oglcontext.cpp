@@ -66,7 +66,6 @@ bool OGLContext::Init()
 	m_yscope = abs(m_ymin) + abs(m_ymax);
 	m_dvpW = m_width;
 	m_dvpH = m_height/4;
-	SetDataViewportLegend(-100,100);
 	GLfloat light_ambient[]  = { 0.5f, 0.5f, 0.5f, 1.0f };
 	GLfloat light_diffuse[]  = { 0.5f, 0.5f, 0.5f, 1.0f };
 	GLfloat light_specular[] = { 0.1f, 0.1f, 0.1f, 1.0f };
@@ -435,25 +434,6 @@ void OGLContext::DrawDataViewPortPrimitives()
 	glPopMatrix();
 }
 
-void OGLContext::SetDataViewportLegend(const float y_min, const float y_max)
-{
-	float scope  = y_max - y_min;
-	float scope_5 = scope/5.0f;
-	float res = 0.0f;
-	stringstream s, s1;
-	for (int i = 1; i<5; i++)
-	{
-		res = y_min+scope_5*i;
-		
-		s << res;
-		//m_dvpLegend[i-1].precision(5);
-		if (res >= 0)
-			m_dvpLegend[i-1] = " " + s.str().substr(0,8);
-		else
-			m_dvpLegend[i-1] = s.str().substr(0,8);
-	}
-}
-
 void OGLContext::RenderLogo()
 {
 	// use GLOrtho2DCorrection before calling this
@@ -464,19 +444,6 @@ void OGLContext::RenderLogo()
 			glCallList(OGL_DL_LOGO);
 		glPopMatrix();
 	}
-
-	//glPushMatrix();
-	//	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//	glEnable(GL_BLEND);
-	//	glEnable(GL_LINE_SMOOTH);
-	//	//glLineWidth(2.0);
-	//	glColor4f(1,1,1,0.1f);
-	//	//OGLWriteStroke(-m_width/-10, -m_height/2+20, "This is antialiased.");
-	//	OGLWriteBitmap(6,-m_width/2+5, -m_height/2+65, "This is antialiased.");
-	//	glDisable(GL_LINE_SMOOTH);
-	//	glDisable(GL_BLEND);
-	//glPopMatrix();
-
 }
 
 void OGLContext::GLOrtho2DCorrection()

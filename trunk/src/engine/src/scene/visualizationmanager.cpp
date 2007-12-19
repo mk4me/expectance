@@ -127,7 +127,8 @@ void VisualizationManager::OnRender()
 
 void VisualizationManager::DrawLegend()
 {
-    glPushMatrix();
+    int _labDetails = Config::getInstance()->GetIntVal("data_viewport_legend_details");
+	glPushMatrix();
   	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -141,10 +142,13 @@ void VisualizationManager::DrawLegend()
     int y = dvpHeight - text_height;
     int text_x = dvpWidth/2+4;
 
-    string legend = "Legend:";
+	
 	glEnable(GL_LINE_SMOOTH);
 	glColor4f(1,1,1,0.8f);
-	OGLContext::getInstance()->OGLWriteBitmap(1, text_x, y, legend.c_str());
+	if (_labDetails == 0)
+		OGLContext::getInstance()->OGLWriteBitmap(1, text_x, y, "Legend:");
+	else
+		OGLContext::getInstance()->OGLWriteBitmap(1, text_x, y, "Legend:   MIN,     MAX  |  OFFSET |  SCALE |    DESCRIPTION");
 	glDisable(GL_LINE_SMOOTH);
 
     
@@ -351,7 +355,6 @@ void VisualizationManager::RenderDataObjects()
 			}
 		}
 	}
-	OGLContext::getInstance()->SetDataViewportLegend(_min, _max);
 
 	
 	it=m_DataObjects.begin();

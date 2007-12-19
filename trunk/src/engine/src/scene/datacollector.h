@@ -45,26 +45,28 @@ namespace ft {
 		//! set size of buffer for data 0 means neverending buffer size
 		void setBufferSize(const long bufferSize);
 
-        void setDrawScale(float scale) { m_drawScale = scale; }
+        void setDrawScale(float scale);
         float getDrawScale() { return m_drawScale; }
 
-        void setDrawOffset(float offset) { m_drawOffset = offset; }
+        void setDrawOffset(float offset);
         float getDrawOffset() { return m_drawOffset; }
 
-        void setLegendLabel(const std::string& label) { m_drawLegendLabel = label; }
+        void setLegendLabel(const std::string& label) { updateLegendDetails(label); }
         const std::string&  getLegendLabel() { return m_drawLegendLabel; }
 
 
 	protected:
+		void updateLegendDetails(const std::string& description);
 		std::list <float> m_DataList;
 		float m_min, m_max, m_scope;
 		bool m_blending, m_points;
 		unsigned long m_bufferSize;
-
+		int LEGEND_DETAIL_LEVEL;
         float m_drawScale;
         float m_drawOffset;
-
         std::string m_drawLegendLabel;
+	private:
+		int m_cntr;
 	};
 };
 
