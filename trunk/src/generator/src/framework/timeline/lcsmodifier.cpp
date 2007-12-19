@@ -48,18 +48,18 @@ LCSModifier::LCSModifier()
 		curve_anim_rotation = new DataCollector(toString() + "curve_anim_rotation");
         VisualizationManager::getInstance()->AddDataObject(curve_anim_rotation);
         curve_anim_rotation->HidePoints();       curve_anim_rotation->setColor(VisualizationHelper::COLOR_YELLOW);
-        curve_anim_rotation->setDrawScale(20);        
+        curve_anim_rotation->setDrawScale(20);   curve_anim_rotation->setLegendLabel("root rotation in animation");
 
 		curve_global_rotation = new DataCollector(toString() + "curve_global_rotation");
         VisualizationManager::getInstance()->AddDataObject(curve_global_rotation);
         curve_global_rotation->HidePoints();       curve_global_rotation->setColor(VisualizationHelper::COLOR_WHITE);
-        curve_global_rotation->setDrawScale(20);        
+        curve_global_rotation->setDrawScale(20);   curve_anim_rotation->setLegendLabel("global rotation offset");     
 
         
 		curve_final_rotation = new DataCollector(toString() + "curve_final_rotation");
         VisualizationManager::getInstance()->AddDataObject(curve_final_rotation);
         curve_final_rotation->HidePoints();        curve_final_rotation->setColor(VisualizationHelper::COLOR_SKYBLUE);
-        curve_final_rotation->setDrawScale(20);
+        curve_final_rotation->setDrawScale(20);  curve_final_rotation->setLegendLabel("final rotation of avatar");
     }
 
     if(DRAW_CURVES_TRANSLATION_DETAILED)
@@ -67,18 +67,18 @@ LCSModifier::LCSModifier()
 		curve_trans_diff_X = new DataCollector(toString() + "curve_trans_diff_X");
         VisualizationManager::getInstance()->AddDataObject(curve_trans_diff_X);
         curve_trans_diff_X->HidePoints();       curve_trans_diff_X->setColor(VisualizationHelper::COLOR_RED);
-        curve_trans_diff_X->setDrawScale(5);
+        curve_trans_diff_X->setDrawScale(5);  curve_trans_diff_X->setLegendLabel("translation diff for X axis");
         //curve_trans_X->setDrawOffset(-90);
 
    		curve_trans_diff_Z = new DataCollector(toString() + "curve_trans_diff_Z");
         VisualizationManager::getInstance()->AddDataObject(curve_trans_diff_Z);
         curve_trans_diff_Z->HidePoints();       curve_trans_diff_Z->setColor(VisualizationHelper::COLOR_GREEN);
-        curve_trans_diff_Z->setDrawScale(5);
+        curve_trans_diff_Z->setDrawScale(5);  curve_trans_diff_Z->setLegendLabel("translation diff for Z axis");
 
 		curve_trans_diff_Y = new DataCollector(toString() + "curve_trans_diff_Y");
         VisualizationManager::getInstance()->AddDataObject(curve_trans_diff_Y);
         curve_trans_diff_Y->HidePoints();       curve_trans_diff_Y->setColor(VisualizationHelper::COLOR_BLUE);
-        curve_trans_diff_Y->setDrawOffset(5);        
+        curve_trans_diff_Y->setDrawOffset(5);  curve_trans_diff_Y->setLegendLabel("translation diff for Y axis");
     }
 
     if(DRAW_CURVES_TRANSLATION)
@@ -86,12 +86,12 @@ LCSModifier::LCSModifier()
 		curve_trans_diff = new DataCollector(toString() + "curve_trans_diff");
         VisualizationManager::getInstance()->AddDataObject(curve_trans_diff);
         curve_trans_diff->HidePoints();       curve_trans_diff->setColor(VisualizationHelper::COLOR_SKYBLUE);
-        curve_trans_diff->setDrawScale(4);
+        curve_trans_diff->setDrawScale(4);  curve_trans_diff->setLegendLabel("translation diff");
 
 		curve_trans_Y = new DataCollector(toString() + "curve_trans_Y");
         VisualizationManager::getInstance()->AddDataObject(curve_trans_Y);
         curve_trans_Y->HidePoints();       curve_trans_Y->setColor(VisualizationHelper::COLOR_YELLOW);
-        curve_trans_Y->setDrawOffset(-50);        //curve_trans_Y->setDrawScale(0.8f);
+        curve_trans_Y->setDrawOffset(-50);        curve_trans_Y->setLegendLabel("translation Y value (offset: -50)");
     }
 
     if(DRAW_ANIM_TIME_CURVE)
@@ -99,7 +99,7 @@ LCSModifier::LCSModifier()
 		curve_anim_time = new DataCollector(toString() + "curve_anim_time");
         VisualizationManager::getInstance()->AddDataObject(curve_anim_time);
         curve_anim_time->HidePoints();       curve_anim_time->setColor(VisualizationHelper::COLOR_WHITE);
-        curve_anim_time->setDrawScale(30);
+        curve_anim_time->setDrawScale(30); curve_anim_time->setLegendLabel("time of current animation");
     }
 
 

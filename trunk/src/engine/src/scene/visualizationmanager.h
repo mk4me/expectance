@@ -94,6 +94,9 @@ namespace ft
 		/*! Calls all Data objects for rendering */
 		void RenderDataObjects();
 
+        /*! Draws legens for data vieport */
+        void DrawLegend();
+
 
         /*! Checks if object of given type can be traced by camera */
         virtual bool IsObjectTraceableByCamera(SceneObject* pObj);

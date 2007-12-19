@@ -51,6 +51,9 @@ namespace ft {
         void setDrawOffset(float offset) { m_drawOffset = offset; }
         float getDrawOffset() { return m_drawOffset; }
 
+        void setLegendLabel(const std::string& label) { m_drawLegendLabel = label; }
+        const std::string&  getLegendLabel() { return m_drawLegendLabel; }
+
 
 	protected:
 		std::list <float> m_DataList;
@@ -60,6 +63,8 @@ namespace ft {
 
         float m_drawScale;
         float m_drawOffset;
+
+        std::string m_drawLegendLabel;
 	};
 };
 

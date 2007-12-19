@@ -17,6 +17,8 @@ DataCollector::DataCollector(const std::string& name)
 	m_min=m_max = 0.0f;
     m_drawScale = 1.0f;
     m_drawOffset = 0.0f;
+
+    setLegendLabel(name);
 }
 
 

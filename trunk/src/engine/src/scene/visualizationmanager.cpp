@@ -117,11 +117,68 @@ void VisualizationManager::OnRender()
 		OGLContext::getInstance()->setDataViewport();
 		OGLContext::getInstance()->DrawDataViewPortPrimitives(); 
 		RenderDataObjects();
+        DrawLegend();
 	}
 	// swap the front- and back-buffer
 	glutSwapBuffers();
 	// increase frame counter
 	ft::UpdateManager::getInstance()->increraseFramesCounter();
+}
+
+void VisualizationManager::DrawLegend()
+{
+    glPushMatrix();
+  	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
+    OGLContext* ctx = OGLContext::getInstance();
+    
+    float dvpHeight = ctx->getDataViewportHeight();
+    float dvpWidth = ctx->getDataViewportWidth();
+
+    int text_height = 15;
+    int y = dvpHeight - text_height;
+    int text_x = dvpWidth/2+4;
+
+    string legend = "Legend:";
+	glEnable(GL_LINE_SMOOTH);
+	glColor4f(1,1,1,0.8f);
+	OGLContext::getInstance()->OGLWriteBitmap(1, text_x, y, legend.c_str());
+	glDisable(GL_LINE_SMOOTH);
+
+    
+    int line_width = 30;
+    int line_start = text_x;
+    text_x += line_width + 4;
+    
+    DataCollector* pObj;
+  	std::map<std::string,SceneObject*>::iterator it=m_DataObjects.begin();
+	for( ; it != m_DataObjects.end(); ++it ) {
+		if ((pObj = dynamic_cast<DataCollector*>(it->second))!=NULL)
+		{
+			if (pObj->isVisible())
+			{
+                y -= text_height;
+
+                CalVector vColor = pObj->getColor();
+    		    glColor4f(vColor.x,vColor.y,vColor.z,1);
+                glBegin(GL_LINES);
+                glVertex2d(line_start,y); glVertex2d(line_start+line_width,y);
+                glEnd();
+
+                string curveDesc =pObj->getLegendLabel();
+	            glEnable(GL_LINE_SMOOTH);
+	            glColor4f(1,1,1,0.5f);
+	            OGLContext::getInstance()->OGLWriteBitmap(1, text_x, y-3, curveDesc.c_str());
+	            glDisable(GL_LINE_SMOOTH);
+			}
+		}
+	}
+
+
+    glPopMatrix();
+    
 }
 
 void VisualizationManager::CleanUp()
