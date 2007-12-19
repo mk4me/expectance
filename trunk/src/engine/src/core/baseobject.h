@@ -7,7 +7,7 @@
 #define _GEN_BASE_OBJECT_H
 
 #include "../core/global.h"
-#include <typeinfo>
+
 
 namespace ft
 {

@@ -4,6 +4,14 @@
  */
 
 #include "inputmanager.h"
+//comented by MKA
+//#include <iostream>
+//#include "../utility/debug.h"
+//#include "../ui/menumanager.h"
+//#include "../scene/oglcontext.h"
+//#include "UpdateManager.h"
+//#include "message.h"
+
 
 using namespace ft;
 

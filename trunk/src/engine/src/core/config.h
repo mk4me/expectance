@@ -7,13 +7,7 @@
 #define _GEN_CONFIG_H
 
 #define CONFIG_FILE "data/application.cfg"
-
 #include "global.h"
-#include "../utility/debug.h"
-#include <string>
-#include <map>
-
-//#include <string>
 
 namespace ft
 {

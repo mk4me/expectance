@@ -4,6 +4,8 @@
  */
 
 #include "baseobject.h"
+#include <typeinfo>
+
 using namespace ft;
 
 unsigned long long BaseObject::ID_COUNTER = 0;  // max 18446744073709551600;

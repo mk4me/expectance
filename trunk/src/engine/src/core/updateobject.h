@@ -7,7 +7,7 @@
 #define _GEN_CONTROL_OBJECT_H
 
 #include "message.h"
-#include "../scene/sceneobject.h"
+#include "baseobject.h"
 
 namespace ft
 {

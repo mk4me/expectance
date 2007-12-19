@@ -6,6 +6,13 @@
 
 #include "simulation.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <sys/time.h>
+#endif
+
+
 using namespace ft;
 
 #ifdef WIN32
