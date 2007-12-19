@@ -432,22 +432,6 @@ void OGLContext::DrawDataViewPortPrimitives()
         }
     }
 
-    // commented by abak 17-12-2007
-	//draw axis
-	//int hdiv = m_dvpH/5;
-	//for(int i = 1; i < 5; i++)
-	//{
-	//	glColor4f(1,1,1,0.1f);
-	//	glBegin(GL_LINES);
-	//	glVertex2d(4,hdiv*i); glVertex2d(m_dvpW/2-4,hdiv*i);
-	//	glEnd();
-	//	//get apropriate text
-	//	glEnable(GL_LINE_SMOOTH);
-	//	glColor4f(1,1,1,0.5f);
-	//	OGLContext::getInstance()->OGLWriteBitmap(1,1, hdiv*i-5, m_dvpLegend[i-1].c_str());
-	//	glDisable(GL_LINE_SMOOTH);
-
-	//}
 	glPopMatrix();
 }
 

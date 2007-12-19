@@ -176,9 +176,7 @@ void VisualizationManager::DrawLegend()
 		}
 	}
 
-
     glPopMatrix();
-    
 }
 
 void VisualizationManager::CleanUp()
