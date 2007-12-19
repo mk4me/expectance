@@ -177,6 +177,8 @@ AIAvatar* ControlManager::getActiveAvatar()
  **/
 void ControlManager::OnSpecial(int key, int x, int y)
 {
+  MovableAvatar* av = NULL;
+
   int controlMessage = -1;
   switch(key) 
   {
@@ -210,6 +212,17 @@ void ControlManager::OnSpecial(int key, int x, int y)
         setActiveAvatar(-1);
         UpdateActiveAvatarMarker();
         break;
+    case GLUT_KEY_F3:
+        av = getActiveAvatar();
+        if (av!=NULL)
+            av->setSpeedFactor(av->getSpeedFactor() * 1.1f);
+        break;
+    case GLUT_KEY_F4:
+        av = getActiveAvatar();
+        if (av!=NULL)
+            av->setSpeedFactor(av->getSpeedFactor() * 0.9f);
+        break;
+
     default:
         break;	
   }

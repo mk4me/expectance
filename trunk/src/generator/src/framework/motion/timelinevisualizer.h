@@ -25,6 +25,8 @@ namespace ft
 
         virtual void Reset(TimeLineContext * timeLineContext); // resets current object and its children
 
+        virtual std::string toString(); //OVERRIDEN
+
     private:
 		TraceLine *tracer_timeline_states;
     };

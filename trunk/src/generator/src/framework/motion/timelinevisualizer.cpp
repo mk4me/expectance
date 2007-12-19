@@ -94,3 +94,15 @@ void TimeLineVisualizer::Reset(TimeLineContext * timeLineContext)
     }
 }
 
+/**
+ * \brief Returns string representation of this TimeLineVisualizer
+ *
+ * \return std::string - string representation
+ **/
+std::string TimeLineVisualizer::toString()
+{
+    std::string result = TimeLineModifier::toString() + "[TimeLineVisualizer]";
+    return result;
+}
+
+

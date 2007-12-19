@@ -36,3 +36,13 @@ void AIController::Reset(TimeLineContext * timeLineContext)
     setGoalReached(false);
 }
 
+/**
+ * \brief Returns string representation of this AIController
+ *
+ * \return std::string - string representation
+ **/
+std::string AIController::toString()
+{
+    std::string result = TimeLineModifier::toString() + "[AIController]";
+    return result;
+}

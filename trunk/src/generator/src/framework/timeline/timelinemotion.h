@@ -40,7 +40,7 @@ namespace ft
         bool isInterupting() { return m_interrupting; }
 
         void Dump(int depth);   //OVERRIDEN
-        std::string toString(); //OVERRIDEN
+        virtual std::string toString(); //OVERRIDEN
 
         virtual TimeLineObject* CreateInstance();
         virtual TimeLineObject* Clone();

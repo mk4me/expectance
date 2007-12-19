@@ -111,7 +111,7 @@ void TimeLine::Reset(TimeLineContext* timeLineContext)
 void TimeLine::Dump()
 {
     _dbg << " TimeLine::Dump() for " << toString() << endl;
-    _dbg << " modifiers list: " << m_vModifiers.size();
+    _dbg << " modifiers list: " << m_vModifiers.size() << endl;
     if (m_vModifiers.size() > 0)
     {
         for (int m=0; m<(int)m_vModifiers.size(); m++)

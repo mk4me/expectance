@@ -3,6 +3,7 @@
  * author: abak
  */
 #include "physicsavatar.h"
+#include "speedcontroller.h"
 
 using namespace ft;
 using namespace std;
@@ -42,5 +43,17 @@ void PhysicsAvatar::Reset()
 {
     _dbg << toString() << " PhysicsAvatar::Reset() " << std::endl;
     MovableAvatar::Reset();
+}
+
+/**
+ * \brief Creates and initializes TimeLine object for this avatar
+ *
+ * \return ft::TimeLine * - TimeLine for testing framework
+ **/
+TimeLine* PhysicsAvatar::InitTimeLine()
+{
+    TimeLine* tl = MovableAvatar::InitTimeLine();
+    tl->AddModifier(new SpeedController());
+    return tl;
 }
 

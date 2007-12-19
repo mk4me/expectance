@@ -23,6 +23,8 @@ namespace ft
 		//! add set of limits for motion labeled by motionName		
 		bool AddLimits(const std::string& motionName, const float* limits);
 
+        virtual std::string toString(); //OVERRIDEN
+
 	private:
 		TraceLine *m_tracerL, *m_tracerR;
 		bool m_leftFootPlant, m_rightFootPlant;

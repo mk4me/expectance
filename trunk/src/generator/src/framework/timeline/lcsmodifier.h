@@ -43,8 +43,9 @@ namespace ft
         void UpdateRotation(float elapsedSeconds, TimeLineContext * timeLineContext);
         void UpdateTranslation(float elapsedSeconds, TimeLineContext * timeLineContext);
 
-
         virtual void Reset(TimeLineContext * timeLineContext); // resets current object and its children
+
+        virtual std::string toString(); //OVERRIDEN
 
     private:
         void ApplyAnimDirectionToGlobalRotation(TimeLineContext * timeLineContext);

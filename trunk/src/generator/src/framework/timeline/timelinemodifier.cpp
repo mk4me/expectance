@@ -23,3 +23,14 @@ void TimeLineModifier::Apply(float elapsedSeconds,TimeLineContext* timeLineConte
 
     // Here apply this modifier
 }
+
+/**
+ * \brief Returns string representation of this TimeLineModifier
+ *
+ * \return std::string - string representation
+ **/
+std::string TimeLineModifier::toString()
+{
+    std::string result = TimeLineObject::toString() + "[Modifier]";
+    return result;
+}

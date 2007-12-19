@@ -68,12 +68,20 @@ namespace ft
         void setTLExecutor(TimeLineExecutor* executor) { m_tlExecutor = executor; }
         TimeLineExecutor* getTLExecutor() { return m_tlExecutor; }
 
+        void setSpeedFactor(float factor) { m_speedFactor = factor; }
+        float getSpeedFactor() { return m_speedFactor; }
+
+    protected:
+        virtual TimeLine* InitTimeLine();
+
     private:
         //// ANIMATIONS
         int m_currentAnimationId;
         float m_leftAnimationTime;
         float m_blendTime;
         bool m_bPaused;
+
+        float m_speedFactor;
 
         TimeLine* m_timeLine;
         TimeLineContext* m_timeLineContext;
@@ -82,8 +90,6 @@ namespace ft
         void InitFootDetector();
 
         void UpdateTimeLine(float elapsedSeconds);
-
-        TimeLine* CreateTestTimeLine();
 
         TraceLine *tracer_start_pos;
 

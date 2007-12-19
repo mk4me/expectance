@@ -182,3 +182,14 @@ const float* FootDetector::getLimits(const std::string &motionName)
     }
     return _limits;
 }
+
+/**
+ * \brief Returns string representation of this FootDetector
+ *
+ * \return std::string - string representation
+ **/
+std::string FootDetector::toString()
+{
+    std::string result = TimeLineModifier::toString() + "[FootDetector]";
+    return result;
+}

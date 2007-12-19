@@ -28,6 +28,8 @@ namespace ft
         void setGoalReached(bool isReached) { m_goalReached = isReached; }
         bool isGoalReached() { return m_goalReached; } 
 
+        virtual std::string toString(); //OVERRIDEN
+
     private:
         bool m_goalReached;
     };

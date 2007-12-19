@@ -24,6 +24,10 @@ namespace ft
         void Init();
 
         virtual void Reset();
+
+    protected:
+        virtual TimeLine* InitTimeLine();
+
     };
 };
 

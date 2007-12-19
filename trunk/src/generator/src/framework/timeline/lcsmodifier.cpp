@@ -744,3 +744,14 @@ Transform* LCSModifier::GetTransformForType(Avatar* avatar)
     AvatarType* type = (AvatarType*)avatar->GetCalCoreModel();
     return type->getTransform();
 }
+
+/**
+ * \brief Returns string representation of this LCSModifier
+ *
+ * \return std::string - string representation
+ **/
+std::string LCSModifier::toString()
+{
+    std::string result = TimeLineModifier::toString() + "[LCSModifier]";
+    return result;
+}

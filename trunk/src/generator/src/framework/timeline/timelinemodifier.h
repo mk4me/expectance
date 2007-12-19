@@ -22,11 +22,7 @@ namespace ft
 
         virtual void Apply(float elapsedSeconds, TimeLineContext* timeLineContext);
 
-//        void setParentMotion(TimeLineObject* mot) { m_parentMotion = mot; }
-//        TimeLineObject* getParentMotion() { return m_parentMotion; }
-
-//    private:
-//        TimeLineObject* m_parentMotion;
+        virtual std::string toString(); //OVERRIDEN
     };
 };
 

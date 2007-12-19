@@ -25,6 +25,9 @@ MovableAvatar::MovableAvatar(CalModel* calModel, Cal3dType* calCoreModel, const 
 
     m_timeLine = NULL;
     m_tlExecutor = NULL;
+    
+    setSpeedFactor(1);
+
     setName(modelName);
 
     if (TRACE)
@@ -193,14 +196,13 @@ void MovableAvatar::UpdateTimeLine(float elapsedSeconds)
 
     bool timeLineStarted = (m_timeLine != NULL) ? m_timeLine->isStarted() : false;
     
-    m_calModel->update(elapsedSeconds);
+    m_calModel->update(elapsedSeconds * getSpeedFactor());
     
     if (m_tlExecutor != NULL)
-        m_tlExecutor->UpdateMotions(elapsedSeconds);
+        m_tlExecutor->UpdateMotions(elapsedSeconds * getSpeedFactor());
 
     if (m_tlExecutor != NULL)
-        m_tlExecutor->UpdateModifiers(elapsedSeconds);
-
+        m_tlExecutor->UpdateModifiers(elapsedSeconds * getSpeedFactor());
 }
 
 
@@ -248,7 +250,7 @@ void MovableAvatar::Init()
   m_tlExecutor = new TimeLineExecutor();
   setTLExecutor(m_tlExecutor);
 
-  CreateTestTimeLine();
+  InitTimeLine();
 
   m_bPaused = false;
   m_blendTime = 0.3f;
@@ -286,11 +288,11 @@ void MovableAvatar::Reset()
 }
 
 /**
- * \brief Creates TimeLine object for testing purpose
+ * \brief Creates and initializes TimeLine object for this avatar
  *
  * \return ft::TimeLine * - TimeLine for testing framework
  **/
-TimeLine* MovableAvatar::CreateTestTimeLine()
+TimeLine* MovableAvatar::InitTimeLine()
 {
 //    if (getName().compare("FirstAvatar") == 0   )
     {
