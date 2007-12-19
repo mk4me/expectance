@@ -729,6 +729,14 @@
 					RelativePath=".\src\framework\physics\physicsavatar.h"
 					>
 				</File>
+				<File
+					RelativePath=".\src\framework\physics\speedcontroller.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\physics\speedcontroller.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="app"
