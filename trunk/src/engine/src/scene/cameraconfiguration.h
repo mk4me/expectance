@@ -65,5 +65,5 @@ namespace ft
 		std::map<std::string, CameraDefinition*> m_cameraConfigurationContainer; 
 
 	};
-};
+}
 #endif //_GEN_CAMERA_CONFIGURATION_H

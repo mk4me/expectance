@@ -32,6 +32,6 @@ namespace ft
         static AvatarFactory* m_avatarFactoryInstance;
 
     };
-};
+}
 
 #endif //_GEN_AVATAR_FACTORY_H

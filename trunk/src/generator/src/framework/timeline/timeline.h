@@ -43,7 +43,7 @@ namespace ft
     private:
         bool m_started;
     };
-};
+}
 
 
 #endif //_GEN_TIMELINE_H

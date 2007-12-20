@@ -31,6 +31,6 @@ namespace ft
         Constraint* m_constraint;
         Goal* m_goal;
     };
-};
+}
 
 #endif //_GEN_AI_RULE_H

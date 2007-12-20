@@ -32,6 +32,6 @@ namespace ft
         TimeLineMotion* m_tlWalk;
         TimeLineMotion* m_tlStopWalk;
     };
-};
+}
 
 #endif //_GEN_WALKACTION_H

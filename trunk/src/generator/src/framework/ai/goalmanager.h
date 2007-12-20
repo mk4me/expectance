@@ -50,6 +50,6 @@ namespace ft
 
         std::vector<Rule*> m_vRules;
     };
-};
+}
 
 #endif //_GEN_AI_GOALMANAGER_H

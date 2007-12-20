@@ -26,7 +26,7 @@ namespace ft
 
         void OnKey(unsigned char key, int x, int y);
     };
-};
+}
 
 #endif //_GEN_APPLICATION_H
 

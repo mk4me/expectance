@@ -72,6 +72,6 @@ namespace ft
 		void RenderModelSkeleton(const bool shadow);
 		void RenderModelBoundingBox(const bool shadow);
     };
-};
+}
 
 #endif //_GEN_MESHOBJECT_H

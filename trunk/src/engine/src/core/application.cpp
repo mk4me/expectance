@@ -4,17 +4,15 @@
  */
 
 #include "application.h"
-
+#include "config.h"
+#include "UpdateManager.h"
 #include "GlobalMsgSender.h"
 #include "inputmanager.h"
 #include "../scene/cal3dobjectfactory.h"
 #include "../scene/transformmanager.h"
-//comented by MKA
-//#include "config.h"
-//#include "UpdateManager.h"
-//#include "../scene/scenemanager.h"
-//#include "../scene/visualizationmanager.h"
-//#include "../utility/debug.h"
+#include "../scene/scenemanager.h"
+#include "../scene/visualizationmanager.h"
+#include "../utility/debug.h"
 
 using namespace ft;
 

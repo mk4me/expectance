@@ -39,6 +39,6 @@ namespace ft
     private:
         int m_priority;
     };
-};
+}
 
 #endif //_GEN_AI_GOAL_H

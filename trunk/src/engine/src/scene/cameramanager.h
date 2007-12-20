@@ -109,6 +109,6 @@ namespace ft
 		CameraConfiguration m_cameraConfiguration;
 
     };
-};
+}
 
 #endif //_GEN_CAMERA_MANAGER_H

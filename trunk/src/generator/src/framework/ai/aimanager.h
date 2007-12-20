@@ -48,6 +48,6 @@ namespace ft
         bool m_bThink;
 
     };
-};
+}
 
 #endif //_GEN_AI_AIMANAGER_H

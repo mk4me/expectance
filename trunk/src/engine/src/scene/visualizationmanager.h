@@ -98,6 +98,6 @@ namespace ft
 		int m_ActiveCameraMarker;
 		RenderingOrder m_rendering;
     };
-};
+}
 
 #endif //_GEN_VIZUALIZATION_MANAGER_H

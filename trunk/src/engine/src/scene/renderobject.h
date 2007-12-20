@@ -45,6 +45,6 @@ namespace ft
 		bool m_visible;
 		CalVector m_color;
 	};
-};
+}
 
 #endif //_GEN_RENDERING_OBJECT_H

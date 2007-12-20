@@ -53,6 +53,6 @@ namespace ft
         int m_loopNumber; // defines length of looped motion by number of cycles (if value is -1 it is infinite)
         bool m_interrupting;  // indicates if this motion should immediately interuppt the previous motion
     };
-};
+}
 
 #endif //_GEN_TIMELINE_MOTION_H

@@ -174,7 +174,7 @@ inline bool checkNaN(Vec &v)
 	return isnan(v[0]) || isnan(v[1]) || isnan(v[2]);
 }
 
-};
+}
 
 
 //#include <iostream>

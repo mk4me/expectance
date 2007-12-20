@@ -41,6 +41,6 @@ namespace ft
         virtual int getActionToPerform();
         virtual AIController* CreateController(ActionAvatar *av);
     };
-};
+}
 
 #endif //_GEN_AI_RANDOMMOVEGOAL_H

@@ -62,6 +62,6 @@ namespace ft {
 		MarkerShape m_shape;
 		CalVector m_markerColor;
 	};
-};
+}
 
 #endif // GEN_TRACE_LINE

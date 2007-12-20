@@ -33,6 +33,6 @@ namespace ft
         
     };
 
-};
+}
 
 #endif //_GEN_MSGSENDER_H

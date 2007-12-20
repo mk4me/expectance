@@ -118,7 +118,7 @@ namespace ft
 	};
 
 
-};
+}
 #endif
 
 

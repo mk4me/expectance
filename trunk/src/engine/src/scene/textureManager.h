@@ -77,6 +77,6 @@ namespace ft
 		int LoadBmpImage( const std::string filename,  unsigned char** pixels,  unsigned int* w,  unsigned int* h,  unsigned int* bpp);
 		char *ExtractFileName(const char* path);	
     };
-};
+}
 
 #endif //_GEN_TEXTURE_MANAGER_H

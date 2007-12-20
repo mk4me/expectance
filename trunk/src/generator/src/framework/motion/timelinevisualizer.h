@@ -30,6 +30,6 @@ namespace ft
     private:
 		TraceLine *tracer_timeline_states;
     };
-};
+}
 
 #endif //_GEN_TIMELINE_VISUALIZER_H

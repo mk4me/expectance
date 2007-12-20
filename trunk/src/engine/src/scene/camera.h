@@ -152,6 +152,6 @@ namespace ft
 	((((x - minX) * (maxY - minY))/(maxX - minX)) + minY)
 
 
-};
+}
 
 #endif //_GEN_CAMERA_H

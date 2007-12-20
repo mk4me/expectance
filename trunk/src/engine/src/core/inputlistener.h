@@ -23,6 +23,6 @@ namespace ft
         virtual void OnMouseButtonUp(int button, int x, int y) { /*empty*/ }
         virtual void OnMouseMove(int x, int y) { /*empty*/ }
     };
-};
+}
 
 #endif //_GEN_INPUT_LISTENER_H

@@ -96,6 +96,6 @@ namespace ft
         LCSModifier* m_lcsModifier; //TODO: only temporarily here
         FootDetector* m_footDetector; //TODO: only temporarily here
     };
-};
+}
 
 #endif //_GEN_MOVABLE_AVATAR_H

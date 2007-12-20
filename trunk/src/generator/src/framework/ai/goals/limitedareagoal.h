@@ -39,6 +39,6 @@ namespace ft
         virtual ~LimitedAreaGoal(void);
         virtual AIController* CreateController(ActionAvatar *av);
     };
-};
+}
 
 #endif //_GEN_AI_LIMITEDAREAGOAL_H

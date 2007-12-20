@@ -23,6 +23,6 @@ namespace ft
 
         virtual bool IsObjectTraceableByCamera(SceneObject* pObj);
     };
-};
+}
 
 #endif //_GEN_GENVISUALIZATION_MANAGER_H

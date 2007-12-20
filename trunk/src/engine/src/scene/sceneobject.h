@@ -72,6 +72,6 @@ namespace ft
 		CalQuaternion m_orientation;     // rotation of object (axis of rotation and angle of rotation)
         CalQuaternion m_globalRotationOffset;     // offset added to rotation of object 
 	};
-};
+}
 
 #endif //_GEN_SCENE_OBJECT_H

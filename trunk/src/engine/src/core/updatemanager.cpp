@@ -5,8 +5,6 @@
 
 #include "UpdateManager.h"
 #include "../utility/debug.h"
-#include "simulation.h"
-//#include "message.h"
 
 using namespace ft;
 using namespace std;

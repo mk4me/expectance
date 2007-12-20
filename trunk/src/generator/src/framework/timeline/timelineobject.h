@@ -61,7 +61,7 @@ namespace ft
 
         TimeLineObject* m_parent;
     };
-};
+}
 
 
 #endif //_GEN_TIMELINE_OBJECT_H

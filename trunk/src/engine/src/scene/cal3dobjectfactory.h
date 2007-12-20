@@ -53,6 +53,6 @@ namespace ft
 
         GLuint LoadTexture(const std::string& strFilename);
     };
-};
+}
 
 #endif //_GEN_MESHOBJECT_FACTORY_H

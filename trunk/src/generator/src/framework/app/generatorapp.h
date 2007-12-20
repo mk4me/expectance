@@ -29,7 +29,7 @@ namespace ft
         Avatar* CreateAvatarOnScene(const std::string& calCoreModel,const std::string& name);
 
     };
-};
+}
 
 #endif //_GEN_GENERATORAPP_H
 

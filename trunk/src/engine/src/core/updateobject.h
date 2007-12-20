@@ -7,7 +7,7 @@
 #define _GEN_CONTROL_OBJECT_H
 
 #include "message.h"
-#include "baseobject.h"
+#include "../scene/sceneobject.h"
 
 namespace ft
 {
@@ -22,6 +22,6 @@ namespace ft
 
         virtual void OnUpdate(const double elapsedTime);  // updates by UpdateManager
     };
-};
+}
 
 #endif //_GEN_CONTROL_OBJECT_H

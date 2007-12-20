@@ -29,6 +29,6 @@ namespace ft
         virtual TimeLine* InitTimeLine();
 
     };
-};
+}
 
 #endif //_GEN_PHYSICS_AVATAR_H

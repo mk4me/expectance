@@ -40,6 +40,6 @@ namespace ft
 
         bool m_bThink;
     };
-};
+}
 
 #endif //_GEN_AI_AVATAR_H

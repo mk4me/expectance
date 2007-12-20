@@ -63,6 +63,6 @@ namespace ft
 
         Transform* m_transform;
     };
-};
+}
 
 #endif //_GEN_MOTION_H

@@ -16,6 +16,6 @@ namespace ft
     public:
         static int RanIntValue(int scope);
     };
-};
+}
 
 #endif //_GEN_RANDOMGEN_H

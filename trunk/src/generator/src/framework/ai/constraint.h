@@ -23,6 +23,6 @@ namespace ft
         
         virtual bool Check(ActionAvatar *av);
     };
-};
+}
 
 #endif //_GEN_AI_CONSTRAINT_H

@@ -68,6 +68,6 @@ namespace ft {
 	private:
 		int m_cntr;
 	};
-};
+}
 
 #endif //GEN_DATA_COLLECTOR_H

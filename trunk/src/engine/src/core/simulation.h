@@ -2,9 +2,14 @@
  * Copyright (c) 2007, FutureToday. All rights reserved.
  * author: mka
  */
-
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <sys/time.h>
+#endif
 #include "global.h"
 
+#pragma once
 #ifndef _GEN_SIMULATION_H
 #define _GEN_SIMULATION_H
 
@@ -37,6 +42,6 @@ namespace ft
 			timeval currentTime;
 		#endif
 	};
-};
+}
 
 #endif //_GEN_SIMULATION_H

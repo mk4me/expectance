@@ -59,6 +59,6 @@ namespace ft
 		std::list<SceneObject*> m_SceneGraph; // for future use :)
 		int m_ActiveCameraMarker;
     };
-};
+}
 
 #endif //_GEN_SCENEMANAGER_H

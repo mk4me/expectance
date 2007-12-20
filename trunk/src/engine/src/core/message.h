@@ -89,6 +89,6 @@ namespace ft
         int m_type;
         MessageParam* m_param;
     };
-};
+}
 
 #endif //_GEN_MESSAGE_H

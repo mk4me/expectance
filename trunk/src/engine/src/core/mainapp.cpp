@@ -7,14 +7,13 @@
 #include "config.h"
 #endif
 
-
+#include "global.h"
+#include "application.h"
+#include "config.h"
 #include "inputmanager.h"
 #include "../scene/visualizationmanager.h"
 #include "../utility/debug.h"
-// commented by mka
-//#include "global.h"
-//#include "application.h"
-//#include "config.h"
+
 
 using namespace ft;
 

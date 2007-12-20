@@ -31,6 +31,6 @@ namespace ft
         Transform* m_transform;
       
     };
-};
+}
 
 #endif //_SCENE_CAL3DTYPE_H

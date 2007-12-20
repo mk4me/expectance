@@ -6,8 +6,14 @@
 #ifndef _GEN_INPUT_MANAGER_H
 #define _GEN_INPUT_MANAGER_H
 
+#include <iostream>
 #include "inputlistener.h"
+#include "../utility/debug.h"
 #include "../scene/cameramanager.h"
+#include "../ui/menumanager.h"
+#include "../scene/oglcontext.h"
+#include "UpdateManager.h"
+#include "message.h"
 #include <vector>
 
 namespace ft
@@ -40,6 +46,6 @@ namespace ft
 
 
     };
-};
+}
 
 #endif //_GEN_INPUT_MANAGER_H

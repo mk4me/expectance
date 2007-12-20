@@ -6,8 +6,9 @@
 #ifndef _GEN_UPDATE_MANAGER_H
 #define _GEN_UPDATE_MANAGER_H
 
-
+#include "message.h"
 #include "UpdateObject.h" 
+#include "simulation.h"
 #include <map>
 
 namespace ft
@@ -61,6 +62,6 @@ namespace ft
     };
 
  
-};
+}
 
 #endif //_GEN_UPDATE_MANAGER_H

@@ -41,6 +41,6 @@ namespace ft
         static TransformManager* m_instance;
         
     };
-};
+}
 
 #endif //_SCENE_TRANSFORMMANAGER_H

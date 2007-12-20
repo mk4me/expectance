@@ -33,6 +33,6 @@ namespace ft
     private:
         bool m_goalReached;
     };
-};
+}
 
 #endif //_GEN_AICONTROLER_H

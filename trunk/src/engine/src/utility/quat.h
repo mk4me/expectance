@@ -229,7 +229,7 @@ public:
 
 Quat slerp(const Quat &q1, const Quat &q2, float t);
 
-};
+}
 
 //#include <iostream>
 

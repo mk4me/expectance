@@ -30,6 +30,6 @@ namespace ft
     private:
         MsgSender* m_localMsgSender;
     };
-};
+}
 
 #endif //_GEN_AVATAR_H

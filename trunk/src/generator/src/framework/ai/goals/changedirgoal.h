@@ -48,6 +48,6 @@ namespace ft
         int getActionToPerform();
         virtual AIController* CreateController(ActionAvatar *av);
     };
-};
+}
 
 #endif //_GEN_AI_CHANGEDIRGOAL_H

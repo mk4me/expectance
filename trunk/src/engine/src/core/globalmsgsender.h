@@ -26,6 +26,6 @@ namespace ft
         
         static GlobalMsgSender* m_instance;
     };
-};
+}
 
 #endif //_GEN_GlobalMsgSender_H

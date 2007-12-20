@@ -7,7 +7,7 @@
 #define _GEN_BASE_OBJECT_H
 
 #include "../core/global.h"
-
+#include <typeinfo>
 
 namespace ft
 {
@@ -36,6 +36,6 @@ namespace ft
 		std::string m_id;
         std::string m_name;
     };
-};
+}
 
 #endif //_GEN_CONTROL_OBJECT_H

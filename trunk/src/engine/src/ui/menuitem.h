@@ -57,7 +57,7 @@ namespace ft
 		int m_width, m_height;
 		unsigned int m_textureID;
     };
-};
+}
 
 #endif //_GEN_MENU_ITEM_H
 

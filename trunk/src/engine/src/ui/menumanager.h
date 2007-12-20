@@ -72,7 +72,7 @@ namespace ft
 		bool m_menuOGL;
 		int level; //how deep we are base level = 0 - for future use
     };
-};
+}
 
 #endif //_GEN_MENU_MANAGER_H
 

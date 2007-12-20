@@ -65,6 +65,6 @@ namespace ft
         bool anim_new_cycle;
         bool anim_stopped;
     };
-};
+}
 
 #endif //_GEN_TIMELINE_CONTEXT_H

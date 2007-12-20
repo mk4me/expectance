@@ -46,6 +46,6 @@ namespace ft {
 		float m_lenght;
 		bool m_arrow;
 	};
-};
+}
 
 #endif

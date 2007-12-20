@@ -32,5 +32,5 @@ namespace ft
 		std::map<std::string, const float*> m_limits;
 		
 	};
-};
+}
 #endif //_GEN_FOOT_DETECTOR_H

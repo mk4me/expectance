@@ -33,6 +33,6 @@ namespace ft
 		template <typename T> static T FromStringEx( const std::string& s, bool& bSuccess);
 		static string itos(int i);
 	};
-};
+}
 
 #endif // _GEN_STRING_HELPER_H

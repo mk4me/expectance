@@ -30,6 +30,6 @@ namespace ft
         static void TraceRotation(TraceLine *traceLine, CalVector vBaseDir, CalVector pos, CalQuaternion rot, float line_length, CalVector vColor);
         static void TraceVector(TraceLine *traceLine, CalVector vVector, CalVector pos, float line_length, CalVector vColor);
     };
-};
+}
 
 #endif //_GEN_VIS_HELPER_H

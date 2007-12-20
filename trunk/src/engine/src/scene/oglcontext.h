@@ -120,6 +120,6 @@ namespace ft
         bool m_dvpGrid;
         float m_dvpGridStep;
 	};
-}; 
+}
 
 #endif //_GEN_OGL_CONTEXT_H

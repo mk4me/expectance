@@ -20,6 +20,6 @@ namespace ft
 	    virtual ~MsgListener(void) { /*empty*/}
         virtual void OnMessage(Message* msg) { /*empty*/} // receives a message from MsgSender
     };
-};
+}
 
 #endif //_GEN_MSG_LISTENER_H

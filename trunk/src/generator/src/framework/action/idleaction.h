@@ -31,6 +31,6 @@ namespace ft
     private:
         TimeLineMotion* m_tlIdle;
     };
-};
+}
 
 #endif //_GEN_IDLEACTION_H

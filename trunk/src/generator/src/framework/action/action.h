@@ -36,6 +36,6 @@ namespace ft
     private:
         int m_action_id;
     };
-};
+}
 
 #endif //_GEN_ACTION_H

@@ -59,6 +59,6 @@ namespace ft
     private:
         static void LoadLevelsFromConfig();
     };
-};
+}
 
 #endif //_GEN_DEBUG_H

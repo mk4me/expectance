@@ -70,6 +70,6 @@ namespace ft
 
         TraceLine* m_forward_trace;
     };
-};
+}
 
 #endif //_SCENE_TRANSFORM_H

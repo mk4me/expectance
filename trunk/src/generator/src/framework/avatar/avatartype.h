@@ -35,6 +35,6 @@ namespace ft
         std::map<std::string,Motion*> m_motions;
        
     };
-};
+}
 
 #endif //_GEN_AVATARTYPE_H

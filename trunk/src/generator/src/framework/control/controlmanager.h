@@ -52,6 +52,6 @@ namespace ft
 
         void UpdateActiveAvatarMarker();
     };
-};
+}
 
 #endif //_GEN_CONTROL_MANAGER_H

@@ -28,6 +28,6 @@ namespace ft
 
         static void LoadLevelsFromConfig();
     };
-};
+}
 
 #endif //_GEN_GENDEBUG_H

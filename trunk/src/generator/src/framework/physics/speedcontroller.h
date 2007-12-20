@@ -26,6 +26,6 @@ namespace ft
 
         virtual std::string toString(); //OVERRIDEN
     };
-};
+}
 
 #endif //_GEN_PHYSICS_SPEEDCONTROLLER_H

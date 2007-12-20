@@ -147,6 +147,6 @@ namespace ft
         void UpdateFadeOutState();
         void UpdateTerminatedState();
     };
-};
+}
 
 #endif //_GEN_TIMELINEEXECUTOR_H

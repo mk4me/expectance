@@ -91,7 +91,7 @@ namespace ft
         //temp variables
         int counter;
     };
-};
+}
 
 
 #endif //_GEN_LCS_MODIFIER_H

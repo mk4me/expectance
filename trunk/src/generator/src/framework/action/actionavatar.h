@@ -57,6 +57,6 @@ namespace ft
         Action* m_action;
         
     };
-};
+}
 
 #endif //_GEN_ACTION_AVATAR_H

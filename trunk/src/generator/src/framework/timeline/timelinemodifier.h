@@ -24,7 +24,7 @@ namespace ft
 
         virtual std::string toString(); //OVERRIDEN
     };
-};
+}
 
 
 #endif //_GEN_TIMELINE_MODIFIER_H

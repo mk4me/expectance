@@ -29,7 +29,7 @@ namespace ft
     private:
         float m_overlap;
     };
-};
+}
 
 
 #endif //_GEN_TIMELINE_BLENDER_H

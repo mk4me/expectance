@@ -31,6 +31,6 @@ namespace ft
         TimeLineMotion* m_tlRun;
         TimeLineMotion* m_tlStopRun;
     };
-};
+}
 
 #endif //_GEN_RUNACTION_H
