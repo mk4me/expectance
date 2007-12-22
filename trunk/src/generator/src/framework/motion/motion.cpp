@@ -39,21 +39,13 @@ bool Motion::initFootLimits(const std::string animName)
     { // parse limits data for foot detection in that motion
 		//read foot limits and dispatch each parameter
 		_limitsStr = Config::getInstance()->GetStrVal(animName);
-		_limitsStr = StringHelper::ClearDelimiters(_limitsStr, '(',')');
-		_limitsStr = StringHelper::RemoveChar(_limitsStr,' ');
-		_tokens = StringHelper::Split(_limitsStr, ",");
-		if ((_tokens[0] == "<KEY_NOT_FOUND>")||(_tokens.size()!=4))
-			return false;
-		for (unsigned int i = 0; i <_tokens.size(); i++)
-		{
-			std::istringstream is(_tokens[i]);
-			is >> footLimits[i];
-			if( !is )
-				return false;
-		}
-		return true;
+
+        if (StringHelper::ReadFloatArrayFromString(_limitsStr, footLimits,4))
+        {
+    		return true;
+        }
 	}
-	return true;
+	return false;
 }
 
 /**
