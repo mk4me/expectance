@@ -68,8 +68,17 @@ namespace ft
         void setTLExecutor(TimeLineExecutor* executor) { m_tlExecutor = executor; }
         TimeLineExecutor* getTLExecutor() { return m_tlExecutor; }
 
-        void setSpeedFactor(float factor) { m_speedFactor = factor; }
-        float getSpeedFactor() { return m_speedFactor; }
+        void setCurrSpeedFactor(float factor) { m_currSpeedFactor = factor; }
+        float getCurrSpeedFactor() { return m_currSpeedFactor; }
+
+        void setDestSpeedFactor(float factor) { m_destSpeedFactor = factor; }
+        float getDestSpeedFactor() { return m_destSpeedFactor; }
+
+        void setSpeedFactorMin(float factorMin) { m_speedfactorMin = factorMin; }
+        float getSpeedFactorMin() { return m_speedfactorMin; }
+        void setSpeedFactorMax(float factorMax) { m_speedfactorMax = factorMax; }
+        float getSpeedFactorMax() { return m_speedfactorMax; }
+
 
     protected:
         virtual TimeLine* InitTimeLine();
@@ -81,7 +90,10 @@ namespace ft
         float m_blendTime;
         bool m_bPaused;
 
-        float m_speedFactor;
+        float m_currSpeedFactor;
+        float m_destSpeedFactor;
+        float m_speedfactorMin;
+        float m_speedfactorMax;
 
         TimeLine* m_timeLine;
         TimeLineContext* m_timeLineContext;

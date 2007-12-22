@@ -3,17 +3,53 @@
  * author: abak
  */
 #include "speedcontroller.h"
+#include "../motion/movableavatar.h"
+#include "utility/vishelper.h"
 
 using namespace ft;
 
 /// \brief constructor
 SpeedController::SpeedController()
 {
+    DRAW_SPEED_CURVE = ((Config::getInstance()->IsKey("speed_curve")) && (Config::getInstance()->GetIntVal("speed_curve")==1));
+
+    if (DRAW_SPEED_CURVE)
+    {
+	    curve_min_speed = new DataCollector(toString() + "curve_min_speed");
+        VisualizationManager::getInstance()->AddDataObject(curve_min_speed);
+        curve_min_speed->HidePoints();       curve_min_speed->setColor(VisualizationHelper::COLOR_RED);
+        curve_min_speed->setDrawScale(20);   curve_min_speed->setLegendLabel("min speed factor");
+
+	    curve_max_speed = new DataCollector(toString() + "curve_max_speed");
+        VisualizationManager::getInstance()->AddDataObject(curve_max_speed);
+        curve_max_speed->HidePoints();       curve_max_speed->setColor(VisualizationHelper::COLOR_GREEN);
+        curve_max_speed->setDrawScale(20);   curve_max_speed->setLegendLabel("max speed factor");
+
+	    curve_curr_speed = new DataCollector(toString() + "curve_curr_speed");
+        VisualizationManager::getInstance()->AddDataObject(curve_curr_speed);
+        curve_curr_speed->HidePoints();       curve_curr_speed->setColor(VisualizationHelper::COLOR_YELLOW);
+        curve_curr_speed->setDrawScale(20);   curve_curr_speed->setLegendLabel("current speed factor");
+
+    }
+
+    SPEEDFACTOR_CHANGE = 0.01;
+
 }
 
 /// \brief destructor
 SpeedController::~SpeedController(void)
 {
+    if(DRAW_SPEED_CURVE)
+    {
+        curve_min_speed->Clear();
+        VisualizationManager::getInstance()->RemoveDataObject(curve_min_speed);
+
+        curve_max_speed->Clear();
+        VisualizationManager::getInstance()->RemoveDataObject(curve_max_speed);
+        
+        curve_curr_speed->Clear();
+        VisualizationManager::getInstance()->RemoveDataObject(curve_curr_speed);
+    }
 }
 
 /**
@@ -25,6 +61,43 @@ SpeedController::~SpeedController(void)
 void SpeedController::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
     TimeLineModifier::Apply(elapsedSeconds, timeLineContext);
+
+    MovableAvatar* av = (MovableAvatar*)timeLineContext->getAvatar();
+
+    float currSpeed = av->getCurrSpeedFactor();
+    float destSpeed = av->getDestSpeedFactor();
+    float maxSpeed = av->getSpeedFactorMax();
+    float minSpeed = av->getSpeedFactorMin();
+
+    //adjust dest speed to limits
+    if (destSpeed > maxSpeed)
+        destSpeed = maxSpeed;
+    if (destSpeed < minSpeed)
+        destSpeed = minSpeed;
+
+    //do with currSpeed to destSpeed
+    if (currSpeed != destSpeed)
+    {
+        if (currSpeed < destSpeed)
+        {
+            currSpeed += SPEEDFACTOR_CHANGE;
+            currSpeed = currSpeed > destSpeed? destSpeed : currSpeed;
+        }
+        else 
+        {
+            currSpeed -= SPEEDFACTOR_CHANGE;
+            currSpeed = currSpeed < destSpeed? destSpeed : currSpeed;
+        }
+        av->setCurrSpeedFactor(currSpeed);
+    }
+
+
+    if(DRAW_SPEED_CURVE)
+    {
+        curve_curr_speed->AddValue(av->getCurrSpeedFactor());
+        curve_min_speed->AddValue(av->getSpeedFactorMin());
+        curve_max_speed->AddValue(av->getSpeedFactorMax());
+    }
 }
 
 
@@ -32,6 +105,13 @@ void SpeedController::Apply(float elapsedSeconds, TimeLineContext * timeLineCont
 void SpeedController::Reset(TimeLineContext * timeLineContext)
 {
     TimeLineObject::Reset(timeLineContext);
+
+    if(DRAW_SPEED_CURVE)
+    {
+        curve_curr_speed->Clear();
+        curve_min_speed->Clear();
+        curve_max_speed->Clear();
+    }
 }
 
 /**

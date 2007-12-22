@@ -17,6 +17,10 @@ namespace ft
     class SpeedController : public TimeLineModifier
     {
     public:
+        bool DRAW_SPEED_CURVE;
+
+        float SPEEDFACTOR_CHANGE;  // defines how quik the curr_speed_factor should drive at dest_speed_factor
+
         SpeedController();
         virtual ~SpeedController(void);
 
@@ -25,6 +29,10 @@ namespace ft
         virtual void Reset(TimeLineContext * timeLineContext); // resets current object and its children    
 
         virtual std::string toString(); //OVERRIDEN
+
+        DataCollector *curve_curr_speed;
+        DataCollector *curve_min_speed;
+        DataCollector *curve_max_speed;
     };
 }
 

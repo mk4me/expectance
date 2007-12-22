@@ -26,7 +26,10 @@ MovableAvatar::MovableAvatar(CalModel* calModel, Cal3dType* calCoreModel, const 
     m_timeLine = NULL;
     m_tlExecutor = NULL;
     
-    setSpeedFactor(1);
+    setCurrSpeedFactor(1);
+    setDestSpeedFactor(1);
+    setSpeedFactorMin(0.5f);
+    setSpeedFactorMax(1.5f);
 
     setName(modelName);
 
@@ -196,13 +199,13 @@ void MovableAvatar::UpdateTimeLine(float elapsedSeconds)
 
     bool timeLineStarted = (m_timeLine != NULL) ? m_timeLine->isStarted() : false;
     
-    m_calModel->update(elapsedSeconds * getSpeedFactor());
+    m_calModel->update(elapsedSeconds * getCurrSpeedFactor());
     
     if (m_tlExecutor != NULL)
-        m_tlExecutor->UpdateMotions(elapsedSeconds * getSpeedFactor());
+        m_tlExecutor->UpdateMotions(elapsedSeconds * getCurrSpeedFactor());
 
     if (m_tlExecutor != NULL)
-        m_tlExecutor->UpdateModifiers(elapsedSeconds * getSpeedFactor());
+        m_tlExecutor->UpdateModifiers(elapsedSeconds * getCurrSpeedFactor());
 }
 
 
