@@ -4,6 +4,7 @@
  */
 
 #include "motion.h"
+#include "utility/stringhelper.h"
 
 using namespace ft;
 
@@ -25,6 +26,8 @@ Motion::Motion(const std::string animName, int anim_id)
     {
 	footLimits[0] = footLimits[2] = footLimits[1] = footLimits[3] = 1000.0f; 
     }
+
+    InitSpeedFactorLimits(animName);
 }
 
 bool Motion::initFootLimits(const std::string animName)
@@ -51,4 +54,43 @@ bool Motion::initFootLimits(const std::string animName)
 		return true;
 	}
 	return true;
+}
+
+/**
+ * \brief Inits limits for speed factor
+ **/
+void Motion::InitSpeedFactorLimits(const std::string animName)
+{
+    string limitKeyStr = "speed_limits_" + animName;
+    bool limitsDefined = false;    
+	if ( Config::getInstance()->IsKey(limitKeyStr.c_str()) )
+    { 
+        float limits[2];
+		
+        std::string limitsStr = Config::getInstance()->GetStrVal(limitKeyStr);
+        if (StringHelper::ReadFloatArrayFromString(limitsStr, limits,2))
+        {
+            setMinSpeedfactor(limits[0]);
+            setMaxSpeedfactor(limits[1]);
+            limitsDefined = true;
+        }
+    }
+
+    if (!limitsDefined)
+    {
+        //sets dafault values
+        float minSpeed = 0.5f;
+        float maxSpeed = 1.5f;
+        if (Config::getInstance()->IsKey("default_min_speed_factor"))
+        {
+            minSpeed = Config::getInstance()->GetFloatVal("default_min_speed_factor");
+        }
+        setMinSpeedfactor(minSpeed);
+
+        if (Config::getInstance()->IsKey("default_max_speed_factor"))
+        {
+            maxSpeed = Config::getInstance()->GetFloatVal("default_max_speed_factor");
+        }
+        setMaxSpeedfactor(maxSpeed);
+    }
 }

@@ -7,6 +7,7 @@
 #define _GEN_PHYSICS_AVATAR_H
 
 #include "../motion/movableavatar.h"
+#include "speedcontroller.h"
 
 namespace ft
 {
@@ -25,8 +26,14 @@ namespace ft
 
         virtual void Reset();
 
+        void setSpeedController(SpeedController* ctl) { m_speedController = ctl; }
+        SpeedController* getSpeedController() { return m_speedController; }
+
     protected:
         virtual TimeLine* InitTimeLine();
+        void InitSpeedFactor();
+
+        SpeedController* m_speedController;
 
     };
 }

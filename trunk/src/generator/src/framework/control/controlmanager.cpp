@@ -219,7 +219,6 @@ void ControlManager::OnSpecial(int key, int x, int y)
             float newSpeedFactor = av->getDestSpeedFactor() * 1.1f;
             newSpeedFactor = newSpeedFactor > av->getSpeedFactorMax() ? av->getSpeedFactorMax() :  newSpeedFactor;
             av->setDestSpeedFactor(newSpeedFactor);
-            cout << "set new speed " << newSpeedFactor << endl;
         }
         break;
     case GLUT_KEY_F4:
@@ -229,7 +228,6 @@ void ControlManager::OnSpecial(int key, int x, int y)
             float newSpeedFactor = av->getDestSpeedFactor() * 0.9f;
             newSpeedFactor = newSpeedFactor < av->getSpeedFactorMin() ? av->getSpeedFactorMin() :  newSpeedFactor;
             av->setDestSpeedFactor(newSpeedFactor);
-            cout << "set new speed " << newSpeedFactor << endl;
         }
         break;
 

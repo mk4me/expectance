@@ -30,6 +30,7 @@ namespace ft
 		static vector<string> Split(const string& str,const string& delimiters);
 		static string ClearDelimiters(const string& str, const char start_bracket, const char end_bracket);
 		static string RemoveChar(const string& str, const char character);
+        static bool ReadFloatArrayFromString(const string& str, float* floatArray, int arraySize);
 		template <typename T> static T FromStringEx( const std::string& s, bool& bSuccess);
 		static string itos(int i);
 	};

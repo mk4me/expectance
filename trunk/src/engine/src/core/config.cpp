@@ -195,6 +195,17 @@ int Config::GetIntVal(const char * key)
     return atoi (val);
 }
 
+/**
+ * \brief Returns float representation of setting value related to given key
+ *
+ * \param const char * key - key for setting
+ * \return const char * - integer representation of setting value
+ **/
+float Config::GetFloatVal(const char * key)
+{
+    const char * val = GetStrVal(key);
+    return atof (val);
+}
 
 /**
  * \brief Add setting to Config

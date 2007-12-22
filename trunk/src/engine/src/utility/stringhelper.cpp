@@ -104,6 +104,36 @@ string StringHelper::RemoveChar(const string& str, const char character)
 	return a;
 }
 
+/**
+ * Parses string and extract drom it an array of float numbers
+ *
+ * \param const std::string & str - String to be parsed
+ * \param float* floatArray - array to which floatnumbers will be written
+ * \pamar int arraySize - size of array which string should define. If string has represents an array of different size this
+ *                           method failes nad returns false
+ * \return bool - true if parsing successfull, false otherwise
+ **/
+bool StringHelper::ReadFloatArrayFromString(const string& str, float* floatArray, int arraySize)
+{
+    vector<string> _tokens;
+    string _arrayStr(str);
+	_arrayStr = StringHelper::ClearDelimiters(_arrayStr, '(',')');
+	_arrayStr = StringHelper::RemoveChar(_arrayStr,' ');
+	_tokens = StringHelper::Split(_arrayStr, ",");
+
+    if ((_tokens[0] == "<KEY_NOT_FOUND>")||(_tokens.size()!=arraySize))
+		return false;
+
+	for (unsigned int i = 0; i <_tokens.size(); i++)
+	{
+		std::istringstream is(_tokens[i]);
+		is >> floatArray[i];
+		if( !is )
+			return false;
+	}
+	return true;
+}
+
 template <typename T> static T StringHelper::FromStringEx( const std::string& s, bool& bSuccess)
 // string conversion from string to typename T with a flag
 // the represents success or failure.

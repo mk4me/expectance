@@ -26,10 +26,6 @@ MovableAvatar::MovableAvatar(CalModel* calModel, Cal3dType* calCoreModel, const 
     m_timeLine = NULL;
     m_tlExecutor = NULL;
     
-    setCurrSpeedFactor(1);
-    setDestSpeedFactor(1);
-    setSpeedFactorMin(0.5f);
-    setSpeedFactorMax(1.5f);
 
     setName(modelName);
 

@@ -3,7 +3,6 @@
  * author: abak
  */
 #include "physicsavatar.h"
-#include "speedcontroller.h"
 
 using namespace ft;
 using namespace std;
@@ -35,6 +34,30 @@ void PhysicsAvatar::Destroy(void)
 void PhysicsAvatar::Init()
 {
     MovableAvatar::Init();
+    InitSpeedFactor();
+}
+
+/**
+ * \brief Init speed factor and all scopes for factor changing
+ **/
+void PhysicsAvatar::InitSpeedFactor()
+{
+    setCurrSpeedFactor(1);
+    setDestSpeedFactor(1);
+    
+    float minSpeed = 0.5f;
+    if (Config::getInstance()->IsKey("default_min_speed_factor"))
+    {
+        minSpeed = Config::getInstance()->GetFloatVal("default_min_speed_factor");
+    }
+    setSpeedFactorMin(minSpeed);
+
+    float maxSpeed = 1.5f;
+    if (Config::getInstance()->IsKey("default_max_speed_factor"))
+    {
+        maxSpeed = Config::getInstance()->GetFloatVal("default_max_speed_factor");
+    }
+    setSpeedFactorMax(maxSpeed);
 }
 
 
@@ -53,7 +76,9 @@ void PhysicsAvatar::Reset()
 TimeLine* PhysicsAvatar::InitTimeLine()
 {
     TimeLine* tl = MovableAvatar::InitTimeLine();
-    tl->AddModifier(new SpeedController());
+    setSpeedController(new SpeedController());
+    tl->AddModifier(getSpeedController());
+    
     return tl;
 }
 

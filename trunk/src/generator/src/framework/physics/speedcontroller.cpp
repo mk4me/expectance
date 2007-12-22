@@ -64,39 +64,68 @@ void SpeedController::Apply(float elapsedSeconds, TimeLineContext * timeLineCont
 
     MovableAvatar* av = (MovableAvatar*)timeLineContext->getAvatar();
 
-    float currSpeed = av->getCurrSpeedFactor();
-    float destSpeed = av->getDestSpeedFactor();
-    float maxSpeed = av->getSpeedFactorMax();
-    float minSpeed = av->getSpeedFactorMin();
+    float currSpeedFactor = av->getCurrSpeedFactor();
+    float destSpeedFactor = av->getDestSpeedFactor();
+    float minSpeedFactor;
+    float maxSpeedFactor;
+    
+
+    //define currents limits
+    if (timeLineContext->currMotion != NULL)
+    {
+        if (timeLineContext->exec_state == EXEC_STATE_OVERLAP && timeLineContext->prevMotion != NULL)
+        {
+            //INTERPOLATION
+            float timeFactor =  timeLineContext->currAnimTime/timeLineContext->prevOverlap;
+            minSpeedFactor = (1 - timeFactor)*timeLineContext->prevMotion->getMinSpeedfactor() 
+                                + timeFactor*timeLineContext->currMotion->getMinSpeedfactor();
+            maxSpeedFactor = (1 - timeFactor)*timeLineContext->prevMotion->getMaxSpeedfactor() 
+                                + timeFactor*timeLineContext->currMotion->getMaxSpeedfactor();
+        }
+        else
+        {
+            minSpeedFactor = timeLineContext->currMotion->getMinSpeedfactor();
+            maxSpeedFactor = timeLineContext->currMotion->getMaxSpeedfactor();
+        }
+
+    }
+    else
+    {
+        minSpeedFactor = av->getSpeedFactorMin();
+        maxSpeedFactor = av->getSpeedFactorMax();
+    }
 
     //adjust dest speed to limits
-    if (destSpeed > maxSpeed)
-        destSpeed = maxSpeed;
-    if (destSpeed < minSpeed)
-        destSpeed = minSpeed;
+    if (destSpeedFactor < minSpeedFactor)
+        destSpeedFactor = minSpeedFactor;
+    if (destSpeedFactor > maxSpeedFactor)
+        destSpeedFactor = maxSpeedFactor;
 
-    //do with currSpeed to destSpeed
-    if (currSpeed != destSpeed)
+    //go with currSpeed to destSpeed
+    if (currSpeedFactor != destSpeedFactor)
     {
-        if (currSpeed < destSpeed)
+        if (currSpeedFactor < destSpeedFactor)
         {
-            currSpeed += SPEEDFACTOR_CHANGE;
-            currSpeed = currSpeed > destSpeed? destSpeed : currSpeed;
+            currSpeedFactor += SPEEDFACTOR_CHANGE;
+            currSpeedFactor = currSpeedFactor > destSpeedFactor? destSpeedFactor : currSpeedFactor;
         }
         else 
         {
-            currSpeed -= SPEEDFACTOR_CHANGE;
-            currSpeed = currSpeed < destSpeed? destSpeed : currSpeed;
+            currSpeedFactor -= SPEEDFACTOR_CHANGE;
+            currSpeedFactor = currSpeedFactor < destSpeedFactor ? destSpeedFactor : currSpeedFactor;
         }
-        av->setCurrSpeedFactor(currSpeed);
+        av->setCurrSpeedFactor(currSpeedFactor);
     }
+
+    av->setSpeedFactorMin(minSpeedFactor);
+    av->setSpeedFactorMax(maxSpeedFactor);
 
 
     if(DRAW_SPEED_CURVE)
     {
         curve_curr_speed->AddValue(av->getCurrSpeedFactor());
-        curve_min_speed->AddValue(av->getSpeedFactorMin());
-        curve_max_speed->AddValue(av->getSpeedFactorMax());
+        curve_min_speed->AddValue(minSpeedFactor);
+        curve_max_speed->AddValue(maxSpeedFactor);
     }
 }
 

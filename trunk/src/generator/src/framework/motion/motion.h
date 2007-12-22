@@ -50,11 +50,18 @@ namespace ft
         void setTransform(Transform* transform) { m_transform = transform; }
         Transform* getTransform() { return m_transform; }
 
-	//! init foot limits from configuration for given animName
-	bool initFootLimits(const std::string animName); 
+        void setMinSpeedfactor(float minFactor) { m_minSpeedFactor = minFactor; }
+        float getMinSpeedfactor() { return m_minSpeedFactor; } 
 
-       
+        void setMaxSpeedfactor(float maxFactor) { m_maxSpeedFactor = maxFactor; }
+        float getMaxSpeedfactor() { return m_maxSpeedFactor; } 
+
+	    //! init foot limits from configuration for given animName
+	    bool initFootLimits(const std::string animName); 
+        void InitSpeedFactorLimits(const std::string animName);
+
         bool isNullAnim() { return (m_anim_id == -1);}
+
 	float footLimits[4];
 
     private:
@@ -62,6 +69,9 @@ namespace ft
         int m_anim_id;
 
         Transform* m_transform;
+
+        float m_minSpeedFactor;
+        float m_maxSpeedFactor;
     };
 }
 

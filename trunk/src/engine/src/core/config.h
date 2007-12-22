@@ -33,6 +33,7 @@ namespace ft
         const char* GetStrVal(const char * key);
 		const std::string Config::GetStrVal(const std::string& key);
         int GetIntVal(const char * key);
+        float GetFloatVal(const char * key);
 
         static void TEST_CONFIG();  // to test if Config works properly
 
