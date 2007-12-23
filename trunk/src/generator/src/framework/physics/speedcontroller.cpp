@@ -117,6 +117,7 @@ void SpeedController::Apply(float elapsedSeconds, TimeLineContext * timeLineCont
         av->setCurrSpeedFactor(currSpeedFactor);
     }
 
+    av->setDestSpeedFactor(destSpeedFactor);
     av->setSpeedFactorMin(minSpeedFactor);
     av->setSpeedFactorMax(maxSpeedFactor);
 
