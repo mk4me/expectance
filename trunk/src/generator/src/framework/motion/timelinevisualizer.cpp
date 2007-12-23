@@ -7,27 +7,37 @@
 
 using namespace ft;
 
-bool TimeLineVisualizer::TRACK_TIMELINE = true;
+bool TimeLineVisualizer::CURVE_ANIM_WEIGHT = false;
 
 /// \brief constructor
 TimeLineVisualizer::TimeLineVisualizer()
 {
-    if (TRACK_TIMELINE)
+    CURVE_ANIM_WEIGHT = (Config::getInstance()->IsKey("anim_weight_curve")) && (Config::getInstance()->GetIntVal("anim_weight_curve")==1);
+
+    if (CURVE_ANIM_WEIGHT)
     {
-        tracer_timeline_states = new TraceLine(toString() + "TimeLineVisualizer_tracer_timeline_states");
-        SceneManager::getInstance()->AddObject(tracer_timeline_states);
-        tracer_timeline_states->HideMarker();
-        tracer_timeline_states->setBlending(false);
-    }	
+        curve_prev_anim_weight = new DataCollector(toString() + "curve_prev_anim_weight");
+        VisualizationManager::getInstance()->AddDataObject(curve_prev_anim_weight);
+        curve_prev_anim_weight->HidePoints();       curve_prev_anim_weight->setColor(VisualizationHelper::COLOR_GREEN);
+        curve_prev_anim_weight->setDrawScale(40);   curve_prev_anim_weight->setLegendLabel("weight of prev anim");
+
+        curve_curr_anim_weight = new DataCollector(toString() + "curve_curr_anim_weight");
+        VisualizationManager::getInstance()->AddDataObject(curve_curr_anim_weight);
+        curve_curr_anim_weight->HidePoints();       curve_curr_anim_weight->setColor(VisualizationHelper::COLOR_YELLOW);
+        curve_curr_anim_weight->setDrawScale(40);   curve_curr_anim_weight->setLegendLabel("weight of curr anim");
+    }
 }
 
 /// \brief destructor
 TimeLineVisualizer::~TimeLineVisualizer(void)
 {
-    if (tracer_timeline_states != NULL)
+    if (CURVE_ANIM_WEIGHT)
     {
-        tracer_timeline_states->ClearTrace();
-        SceneManager::getInstance()->RemoveObject(tracer_timeline_states);
+        curve_prev_anim_weight->Clear();
+        VisualizationManager::getInstance()->RemoveDataObject(curve_prev_anim_weight);
+
+        curve_curr_anim_weight->Clear();
+        VisualizationManager::getInstance()->RemoveDataObject(curve_curr_anim_weight);
     }
 }
 
@@ -41,22 +51,26 @@ void TimeLineVisualizer::Apply(float elapsedSeconds, TimeLineContext * timeLineC
 {
     TimeLineModifier::Apply(elapsedSeconds, timeLineContext);
 
-    CalVector vAvatarPos = timeLineContext->getAvatar()->getPosition();
-
-    if (TRACK_TIMELINE)
+    if (CURVE_ANIM_WEIGHT)
     {
-        int state = timeLineContext->exec_state;
+        float prevAnimValue = 0;
+        float currAnimValue = 0;
 
-        if (timeLineContext->exec_event == EXEC_EVENT_STATE_CHANGED)
+        if (timeLineContext->prevAnim != NULL)
         {
-            tracer_timeline_states->ClearTrace();
+            prevAnimValue = timeLineContext->prevAnim->getWeight();
         }
 
-        if (state == EXEC_STATE_SINGLE || state == EXEC_STATE_FADE_IN 
-            || state == EXEC_STATE_FADE_OUT || state == EXEC_STATE_OVERLAP)
+        if (timeLineContext->currAnim != NULL)
         {
-            tracer_timeline_states->AddPoint(vAvatarPos);
+            currAnimValue = timeLineContext->currAnim->getWeight();
+        }
+        curve_prev_anim_weight->AddValue(prevAnimValue);
+        curve_curr_anim_weight->AddValue(currAnimValue);
+    }
 
+
+/*
             switch(state)
             {
             case EXEC_STATE_SINGLE:
@@ -73,13 +87,7 @@ void TimeLineVisualizer::Apply(float elapsedSeconds, TimeLineContext * timeLineC
                 break;
             default:
                 break;
-            }
-        }
-        else
-        {
-            tracer_timeline_states->ClearTrace();
-        }
-    }
+*/
 }
 
 
@@ -87,10 +95,10 @@ void TimeLineVisualizer::Apply(float elapsedSeconds, TimeLineContext * timeLineC
 void TimeLineVisualizer::Reset(TimeLineContext * timeLineContext)
 {
     TimeLineObject::Reset(timeLineContext);
-
-    if (TRACK_TIMELINE)
+    if (CURVE_ANIM_WEIGHT)
     {
-        tracer_timeline_states->ClearTrace();
+        curve_prev_anim_weight->Clear();
+        curve_curr_anim_weight->Clear();
     }
 }
 

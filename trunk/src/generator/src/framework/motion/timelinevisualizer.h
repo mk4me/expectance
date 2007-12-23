@@ -16,7 +16,7 @@ namespace ft
     class TimeLineVisualizer : public TimeLineModifier
     {
     public:
-        static bool TRACK_TIMELINE; 
+        static bool CURVE_ANIM_WEIGHT; 
 
         TimeLineVisualizer();
         virtual ~TimeLineVisualizer(void);
@@ -29,6 +29,9 @@ namespace ft
 
     private:
 		TraceLine *tracer_timeline_states;
+
+        DataCollector *curve_prev_anim_weight;
+        DataCollector *curve_curr_anim_weight;
     };
 }
 
