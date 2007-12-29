@@ -8,8 +8,7 @@
 
 #include "cal3dtype.h"
 #include "../core/msglistener.h"
-#include "sceneobject.h"
-#include "OGLContext.h"
+#include "../core/updateobject.h"
 
 #define MAXBONESPERMESH 29
 
@@ -49,7 +48,7 @@ namespace ft
 
         void setStartPosition(const CalVector& pos) { m_vStartPosition = pos; }  //TODO : should be move to MovablaAvatar
         const CalVector& getStartPosition() { return m_vStartPosition; }
-
+		mutable int DynamicObjectID; 
     protected:
         CalVector m_vStartPosition; //TODO : should be move to MovablaAvatar        
 		bool loadBufferObject();
@@ -61,7 +60,8 @@ namespace ft
 		unsigned int m_bufferObject[6];
 
     private:
-   	    int m_vertexCount;  //tmp
+		static int m_counter;
+		int m_vertexCount;  //tmp
 		int m_faceCount;    //tmp
 		bool m_shadow; 
 		bool m_hardwareRendering;

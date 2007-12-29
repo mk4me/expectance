@@ -204,7 +204,7 @@ int Config::GetIntVal(const char * key)
 float Config::GetFloatVal(const char * key)
 {
     const char * val = GetStrVal(key);
-    return atof (val);
+    return static_cast<float>(atof (val));
 }
 
 /**

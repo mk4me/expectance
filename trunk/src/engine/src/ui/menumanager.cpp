@@ -4,8 +4,12 @@
  */
 
 #include "menumanager.h"
+
+
 #include "../core/inputmanager.h"
 #include "../core/globalmsgsender.h"
+#include "../scene/texturemanager.h"
+#include "../scene/oglcontext.h"
 
 using namespace ft;
 

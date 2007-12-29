@@ -6,9 +6,8 @@
 #ifndef _SCENE_TRANSFORMMANAGER_H
 #define _SCENE_TRANSFORMMANAGER_H
 
-//#include "transform.h"
 #include "../utility/mathconversions.h"
-#include <string>
+
 
 namespace ft
 {
@@ -34,8 +33,6 @@ namespace ft
 
         static TransformManager* getInstance();
         static void DestroyInstance();
-
-        //Transform* CreateTransform(const std::string& transformType);
 
     private:
         static TransformManager* m_instance;

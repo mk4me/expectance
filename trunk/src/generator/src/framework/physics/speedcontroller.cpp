@@ -5,7 +5,7 @@
 #include "speedcontroller.h"
 #include "../motion/movableavatar.h"
 #include "utility/vishelper.h"
-
+#include "scene/scenemanager.h"
 using namespace ft;
 
 /// \brief constructor
@@ -16,23 +16,23 @@ SpeedController::SpeedController()
     if (DRAW_SPEED_CURVE)
     {
 	    curve_min_speed = new DataCollector(toString() + "curve_min_speed");
-        VisualizationManager::getInstance()->AddDataObject(curve_min_speed);
+        SceneManager::getInstance()->AddDataObject(curve_min_speed);
         curve_min_speed->HidePoints();       curve_min_speed->setColor(VisualizationHelper::COLOR_RED);
         curve_min_speed->setDrawScale(20);   curve_min_speed->setLegendLabel("min speed factor");
 
 	    curve_max_speed = new DataCollector(toString() + "curve_max_speed");
-        VisualizationManager::getInstance()->AddDataObject(curve_max_speed);
+        SceneManager::getInstance()->AddDataObject(curve_max_speed);
         curve_max_speed->HidePoints();       curve_max_speed->setColor(VisualizationHelper::COLOR_GREEN);
         curve_max_speed->setDrawScale(20);   curve_max_speed->setLegendLabel("max speed factor");
 
 	    curve_curr_speed = new DataCollector(toString() + "curve_curr_speed");
-        VisualizationManager::getInstance()->AddDataObject(curve_curr_speed);
+        SceneManager::getInstance()->AddDataObject(curve_curr_speed);
         curve_curr_speed->HidePoints();       curve_curr_speed->setColor(VisualizationHelper::COLOR_YELLOW);
         curve_curr_speed->setDrawScale(20);   curve_curr_speed->setLegendLabel("current speed factor");
 
     }
 
-    SPEEDFACTOR_CHANGE = 0.01;
+    SPEEDFACTOR_CHANGE = 0.01f;
 
 }
 
@@ -42,13 +42,13 @@ SpeedController::~SpeedController(void)
     if(DRAW_SPEED_CURVE)
     {
         curve_min_speed->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_min_speed);
+        SceneManager::getInstance()->RemoveDataObject(curve_min_speed);
 
         curve_max_speed->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_max_speed);
+        SceneManager::getInstance()->RemoveDataObject(curve_max_speed);
         
         curve_curr_speed->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_curr_speed);
+        SceneManager::getInstance()->RemoveDataObject(curve_curr_speed);
     }
 }
 

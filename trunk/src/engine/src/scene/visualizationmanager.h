@@ -6,22 +6,9 @@
 #ifndef _GEN_VISUALIZATION_MANAGER_H
 #define _GEN_VISUALIZATION_MANAGER_H
 
-#include <map>
-#include "../utility/debug.h"
-#include "line.h"
-#include "traceline.h"
+
+
 #include "sceneobject.h"
-#include "datacollector.h"
-#include "cameramanager.h"
-#include "oglcontext.h"
-#include "texturemanager.h"
-#include "../ui/menumanager.h"
-#include "../core/application.h"
-#include "../core/UpdateManager.h"
-#include "../core/config.h"
-
-
-
 
 namespace ft
 {

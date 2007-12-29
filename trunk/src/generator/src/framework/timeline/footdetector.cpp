@@ -5,7 +5,7 @@
 #include "footdetector.h"
 #include "cal3d/coretrack.h"
 #include "../app/gendebug.h"
-
+#include "scene/scenemanager.h"
 using namespace ft;
 
 FootDetector::FootDetector(void)

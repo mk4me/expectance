@@ -4,7 +4,7 @@
  */
 
 #include "cal3dobjectfactory.h"
-#include "../utility/debug.h"
+
 
 using namespace ft;
 

@@ -6,15 +6,13 @@
 #ifndef _GEN_CAMERA_MANAGER_H
 #define _GEN_CAMERA_MANAGER_H
 
-#include <iostream>
-#include <algorithm>
-#include <map>
-#include "../utility/debug.h"
+
 #include "../core/global.h"
-#include "../core/UpdateObject.h"
+#include "../core/updateobject.h"
+#include "../core/inputlistener.h"
 #include "camera.h"
 #include "cameraconfiguration.h"
-#include "../core/inputlistener.h"
+
 
 
 namespace ft

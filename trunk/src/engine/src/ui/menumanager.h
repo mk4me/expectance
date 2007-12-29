@@ -6,13 +6,8 @@
 #ifndef _GEN_MENU_MANAGER_H
 #define _GEN_MENU_MANAGER_H
 
-#include "../core/config.h"
-#include "../utility/stringhelper.h"
-#include "../scene/oglcontext.h"
 #include "menuitem.h"
 #include "../core/inputlistener.h"
-
-
 
 namespace ft
 {

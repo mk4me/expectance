@@ -14,16 +14,7 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #endif
 
-
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
-#include <GL/glut.h>
-#include <iostream>
-#include <string>
-#include <map>
-#include "../utility/debug.h"
-
+#include "../core/global.h"
 
 namespace ft
 {

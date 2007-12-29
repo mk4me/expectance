@@ -15,9 +15,6 @@
 #endif
 
 #include "sceneobject.h"
-#include "../utility/mtxlib.h"
-#include <cstring>
-#include <cstdlib>
 
 namespace ft
 {

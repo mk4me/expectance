@@ -8,9 +8,9 @@
 #ifndef GEN_DATA_COLLECTOR_H
 #define GEN_DATA_COLLECTOR_H
 
-#include "../core/global.h"
+
 #include "sceneobject.h"
-#include "line.h"
+
 
 namespace ft {
 	//! A DataCollector class

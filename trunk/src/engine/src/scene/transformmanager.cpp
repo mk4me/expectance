@@ -3,7 +3,6 @@
  * author: abak
  */
 #include "transformmanager.h"
-#include "../utility/debug.h"
 #include "../core/config.h"
 
 using namespace ft;

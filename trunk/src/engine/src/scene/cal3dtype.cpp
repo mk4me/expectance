@@ -5,7 +5,6 @@
 
 #include "cal3dtype.h"
 #include "transformmanager.h"
-#include "../utility/debug.h"
 #include "../utility/vishelper.h"
 
 using namespace ft;

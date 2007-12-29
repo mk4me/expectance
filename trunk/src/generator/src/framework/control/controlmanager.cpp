@@ -8,7 +8,7 @@
 #include "scene/oglcontext.h"
 #include "core/inputmanager.h"
 #include "core/globalmsgsender.h"
-
+#include "scene/scenemanager.h"
 
 using namespace ft;
 using namespace std;

@@ -6,11 +6,7 @@
 #ifndef _GEN_CAMERA_CONFIGURATION_H
 #define _GEN_CAMERA_CONFIGURATION_H
 
-#include <map>
-#include <sstream>
-#include "../core/global.h"
-#include "../core/config.h"
-#include "../utility/stringhelper.h"
+
 #include "camera.h"
 
 

@@ -7,10 +7,10 @@
 #define _GEN_MESHOBJECT_FACTORY_H
 
 
-#include "../core/global.h"
+
 #include "cal3dobject.h"
-#include "cal3dtype.h"
-#include <map>
+
+
 
 namespace ft
 {

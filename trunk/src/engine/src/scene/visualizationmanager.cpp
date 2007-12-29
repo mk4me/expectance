@@ -5,6 +5,14 @@
 
 #include "visualizationmanager.h"
 
+#include "oglcontext.h"
+#include "datacollector.h"
+#include "cameramanager.h"
+#include "../core/updatemanager.h"
+#include "../ui/menumanager.h"
+#include "texturemanager.h"
+
+
 using namespace ft;
 
 VisualizationManager* VisualizationManager::m_instance = NULL;
@@ -233,17 +241,12 @@ bool VisualizationManager::AddObject(SceneObject* pObj)
 				break;
 			}
 			_iteratorRObj++;
-
-
-			//SortSceneObjectsList();
 		}
 
 		if (result) // for new object
 		{
 		    m_SceneObjects.push_back( pObj );
 			SortSceneObjectsList();
-			//m_SceneObjects.sort(); //CompareSO);			//m_SceneObjects.sort(greater<PSO>());
-			//std::sort(m_SceneObjects.begin(), m_SceneObjects.end());   // sort ascending
 			
 			if (IsObjectTraceableByCamera(pObj))
 			{

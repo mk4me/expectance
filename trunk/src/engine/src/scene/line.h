@@ -8,7 +8,6 @@
 #ifndef LINE_H
 #define LINE_H
 
-#include "../core/global.h"
 #include "sceneobject.h"
 
 namespace ft {

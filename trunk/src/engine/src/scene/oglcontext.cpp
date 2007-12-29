@@ -4,6 +4,8 @@
  */
 
 #include "oglcontext.h"
+#include "texturemanager.h"
+
 using namespace ft;
 
 OGLContext* OGLContext::m_instance = NULL;
@@ -12,7 +14,7 @@ OGLContext* OGLContext::getInstance()
 {
     if (m_instance == NULL)
     {
-        _dbg << "OGLContext::getInstace(): instance of OGLContext created " << endl;
+		_dbg << "OGLContext::getInstace(): instance of OGLContext created " << std::endl;
         m_instance = new OGLContext();
     }
 

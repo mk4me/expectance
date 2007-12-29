@@ -14,9 +14,7 @@
 
 
 #include "../core/global.h"
-#include "../core/config.h"
-#include "texturemanager.h"
-#include "cameramanager.h"
+
 
 namespace ft
 {
@@ -115,7 +113,6 @@ namespace ft
 		bool m_floorType, m_logoFT;
 		float m_dvpW,m_dvpH;
 		int m_width, m_height;
-		string m_dvpLegend[5];
 
         bool m_dvpGrid;
         float m_dvpGridStep;

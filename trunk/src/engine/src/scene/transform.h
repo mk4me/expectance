@@ -6,11 +6,9 @@
 #ifndef _SCENE_TRANSFORM_H
 #define _SCENE_TRANSFORM_H
 
-#include <string>
-#include "../utility/mathconversions.h"
 #include "../core/baseobject.h"
-#include "scenemanager.h"
 #include "traceline.h"
+
 
 namespace ft
 {

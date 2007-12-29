@@ -8,8 +8,8 @@
 
 #include <limits>
 #include "mtxlib.h"
-#include "Quat.h"
-#include "Vec.h"
+#include "quat.h"
+#include "vec.h"
 #include <cal3d/cal3d.h>
 
 using ft::Vec;

@@ -5,6 +5,7 @@
  */
 
 #include "TextureManager.h"
+#include <assert.h>
 
 
 // openGL extensions if not present, define them

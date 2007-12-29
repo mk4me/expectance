@@ -5,6 +5,9 @@
 
 #include "cameramanager.h"
 
+
+#include "../utility/stringhelper.h"
+
 using namespace ft;
 
 CameraConfiguration::~CameraConfiguration()

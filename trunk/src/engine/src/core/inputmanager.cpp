@@ -4,6 +4,7 @@
  */
 
 #include "inputmanager.h"
+#include "../utility/debug.h"
 
 using namespace ft;
 
@@ -18,7 +19,7 @@ InputManager* InputManager::getInstance()
 {
     if (m_instance == NULL)
     {
-        _dbg << "InputManager::getInstace(): instance of InputManager created " << endl;
+		_dbg << "InputManager::getInstace(): instance of InputManager created " << std::endl;
         m_instance = new InputManager();
     }
 
@@ -147,7 +148,7 @@ void InputManager::OnSpecial(int key, int x, int y)
 void InputManager::OnMouseButtonDown(int button, int x, int y)
 {
     if (Debug::INPUT>0)
-	    _dbg << "Nacisnieto button: " << button <<"w pozycji (x,y) = (" <<x<<", "<<y<<")"<<endl;
+		_dbg << "Nacisnieto button: " << button <<"w pozycji (x,y) = (" <<x<<", "<<y<<")"<< std::endl;
 
     if (m_vListeners.size() > 0)
     {

@@ -3,7 +3,8 @@
  * author: mka
  */
 
-#include "SceneManager.h"
+#include "scenemanager.h"
+#include "visualizationmanager.h"
 
 using namespace ft;
 
@@ -52,7 +53,9 @@ void SceneManager::DestroyInstance()
 
 bool SceneManager::AddObject(SceneObject* pObj)
 {
+	bool result = false;
 	std::string _id = pObj->getID();
+//	Cal3DObject *_C3DObj = dynamic_cast<Cal3DObject*>(pObj);
 	if (!_id.empty())
 	{
 	 	std::map<std::string,SceneObject*>::iterator it = m_SceneObjectsMap.find(_id);
@@ -61,7 +64,9 @@ bool SceneManager::AddObject(SceneObject* pObj)
 		}
 	    m_SceneObjectsMap.insert( std::make_pair( std::string(_id), pObj ) );
 
-		VisualizationManager::getInstance()->AddObject(pObj);
+		result = VisualizationManager::getInstance()->AddObject(pObj);
+//		if (_C3DObj!=NULL)
+//			m_SceneGraph.push_back(_C3DObj);
 
   //      if (IsObjectTraceableByCamera(pObj))
   //      {
@@ -70,9 +75,19 @@ bool SceneManager::AddObject(SceneObject* pObj)
 		//}
 
 	}
-	return true;
+	return result;
 }  
 
+bool SceneManager::AddDataObject(SceneObject* pObj)
+{
+	bool result = false;
+	std::string _id = pObj->getID();
+	if (!_id.empty())
+	{
+		result = VisualizationManager::getInstance()->AddDataObject(pObj);
+	}
+	return result;
+}  
 
 SceneObject* SceneManager::getObject(std::string id)
 {
@@ -121,6 +136,34 @@ bool SceneManager::RemoveObject(std::string id)
 }
 
 
+bool SceneManager::RemoveDataObject(SceneObject* pObj)
+{
+	bool result = false;
+	std::string _id = pObj->getID();
+	if (!_id.empty())
+	{
+		result = VisualizationManager::getInstance()->RemoveDataObject(pObj);
+	}
+	return result;
+}
 
+bool SceneManager::RemoveDataObject(std::string id)
+{
+	if (!id.empty())
+	{
+		return VisualizationManager::getInstance()->RemoveDataObject(id);
+	}
+	return false;
+}
 
+void SceneManager::OnUpdate(const double elapsedSeconds)  // OVERRIDEN, updates by UpdateManager 
+{
+	//TODO update collision detection matrix
+}
 
+void SceneManager::UpdateDistanceMatrix()
+{
+	//calculate distances between every pair of dynamic object
+	//SceneObject*
+	//for (int
+}

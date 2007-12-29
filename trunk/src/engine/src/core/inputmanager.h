@@ -6,15 +6,9 @@
 #ifndef _GEN_INPUT_MANAGER_H
 #define _GEN_INPUT_MANAGER_H
 
-#include <iostream>
-#include "inputlistener.h"
-#include "../utility/debug.h"
-#include "../scene/cameramanager.h"
-#include "../ui/menumanager.h"
-#include "../scene/oglcontext.h"
-#include "UpdateManager.h"
-#include "message.h"
+
 #include <vector>
+#include "inputlistener.h"
 
 namespace ft
 {
@@ -41,8 +35,7 @@ namespace ft
 
     private:
         static InputManager* m_instance;
-
-        vector<InputListener*> m_vListeners;
+		std::vector<InputListener*> m_vListeners;
 
 
     };

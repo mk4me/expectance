@@ -11,6 +11,7 @@
 #include "../avatar/avatartype.h"
 #include "scene/transformmanager.h"
 
+#include "scene/scenemanager.h" 
 using namespace ft;
 
 /// \brief constructor
@@ -46,18 +47,18 @@ LCSModifier::LCSModifier()
     if (DRAW_ROTATION_CURVES)
     {
 		curve_anim_rotation = new DataCollector(toString() + "curve_anim_rotation");
-        VisualizationManager::getInstance()->AddDataObject(curve_anim_rotation);
+        SceneManager::getInstance()->AddDataObject(curve_anim_rotation);
         curve_anim_rotation->HidePoints();       curve_anim_rotation->setColor(VisualizationHelper::COLOR_YELLOW);
         curve_anim_rotation->setDrawScale(20);   curve_anim_rotation->setLegendLabel("root rotation in animation");
 
 		curve_global_rotation = new DataCollector(toString() + "curve_global_rotation");
-        VisualizationManager::getInstance()->AddDataObject(curve_global_rotation);
+        SceneManager::getInstance()->AddDataObject(curve_global_rotation);
         curve_global_rotation->HidePoints();       curve_global_rotation->setColor(VisualizationHelper::COLOR_WHITE);
         curve_global_rotation->setDrawScale(20);   curve_anim_rotation->setLegendLabel("global rotation offset");     
 
         
 		curve_final_rotation = new DataCollector(toString() + "curve_final_rotation");
-        VisualizationManager::getInstance()->AddDataObject(curve_final_rotation);
+        SceneManager::getInstance()->AddDataObject(curve_final_rotation);
         curve_final_rotation->HidePoints();        curve_final_rotation->setColor(VisualizationHelper::COLOR_SKYBLUE);
         curve_final_rotation->setDrawScale(20);  curve_final_rotation->setLegendLabel("final rotation of avatar");
     }
@@ -65,18 +66,18 @@ LCSModifier::LCSModifier()
     if(DRAW_CURVES_TRANSLATION_DETAILED)
     {
 		curve_trans_diff_X = new DataCollector(toString() + "curve_trans_diff_X");
-        VisualizationManager::getInstance()->AddDataObject(curve_trans_diff_X);
+        SceneManager::getInstance()->AddDataObject(curve_trans_diff_X);
         curve_trans_diff_X->HidePoints();       curve_trans_diff_X->setColor(VisualizationHelper::COLOR_RED);
         curve_trans_diff_X->setDrawScale(5);  curve_trans_diff_X->setLegendLabel("translation diff for X axis");
         //curve_trans_X->setDrawOffset(-90);
 
    		curve_trans_diff_Z = new DataCollector(toString() + "curve_trans_diff_Z");
-        VisualizationManager::getInstance()->AddDataObject(curve_trans_diff_Z);
+        SceneManager::getInstance()->AddDataObject(curve_trans_diff_Z);
         curve_trans_diff_Z->HidePoints();       curve_trans_diff_Z->setColor(VisualizationHelper::COLOR_GREEN);
         curve_trans_diff_Z->setDrawScale(5);  curve_trans_diff_Z->setLegendLabel("translation diff for Z axis");
 
 		curve_trans_diff_Y = new DataCollector(toString() + "curve_trans_diff_Y");
-        VisualizationManager::getInstance()->AddDataObject(curve_trans_diff_Y);
+        SceneManager::getInstance()->AddDataObject(curve_trans_diff_Y);
         curve_trans_diff_Y->HidePoints();       curve_trans_diff_Y->setColor(VisualizationHelper::COLOR_BLUE);
         curve_trans_diff_Y->setDrawOffset(5);  curve_trans_diff_Y->setLegendLabel("translation diff for Y axis");
     }
@@ -84,12 +85,12 @@ LCSModifier::LCSModifier()
     if(DRAW_CURVES_TRANSLATION)
     {
 		curve_trans_diff = new DataCollector(toString() + "curve_trans_diff");
-        VisualizationManager::getInstance()->AddDataObject(curve_trans_diff);
+        SceneManager::getInstance()->AddDataObject(curve_trans_diff);
         curve_trans_diff->HidePoints();       curve_trans_diff->setColor(VisualizationHelper::COLOR_SKYBLUE);
         curve_trans_diff->setDrawScale(4);  curve_trans_diff->setLegendLabel("translation diff");
 
 		curve_trans_Y = new DataCollector(toString() + "curve_trans_Y");
-        VisualizationManager::getInstance()->AddDataObject(curve_trans_Y);
+        SceneManager::getInstance()->AddDataObject(curve_trans_Y);
         curve_trans_Y->HidePoints();       curve_trans_Y->setColor(VisualizationHelper::COLOR_YELLOW);
         curve_trans_Y->setDrawOffset(-50);        curve_trans_Y->setLegendLabel("translation Y value (offset: -50)");
     }
@@ -97,7 +98,7 @@ LCSModifier::LCSModifier()
     if(DRAW_ANIM_TIME_CURVE)
     {
 		curve_anim_time = new DataCollector(toString() + "curve_anim_time");
-        VisualizationManager::getInstance()->AddDataObject(curve_anim_time);
+        SceneManager::getInstance()->AddDataObject(curve_anim_time);
         curve_anim_time->HidePoints();       curve_anim_time->setColor(VisualizationHelper::COLOR_WHITE);
         curve_anim_time->setDrawScale(30); curve_anim_time->setLegendLabel("time of current animation");
     }
@@ -172,35 +173,35 @@ LCSModifier::~LCSModifier(void)
     if(DRAW_CURVES_TRANSLATION_DETAILED)
     {
         curve_trans_diff_X->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_trans_diff_X);
+        SceneManager::getInstance()->RemoveDataObject(curve_trans_diff_X);
         curve_trans_diff_Y->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_trans_diff_Y);
+        SceneManager::getInstance()->RemoveDataObject(curve_trans_diff_Y);
         curve_trans_diff_Z->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_trans_diff_Z);
+        SceneManager::getInstance()->RemoveDataObject(curve_trans_diff_Z);
     }
 
     if(DRAW_CURVES_TRANSLATION)
     {
         curve_trans_diff->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_trans_diff);
+        SceneManager::getInstance()->RemoveDataObject(curve_trans_diff);
         curve_trans_Y->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_trans_Y);
+        SceneManager::getInstance()->RemoveDataObject(curve_trans_Y);
     }
     
     if (DRAW_ROTATION_CURVES)
     {
 		curve_anim_rotation->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_anim_rotation);
+        SceneManager::getInstance()->RemoveDataObject(curve_anim_rotation);
 		curve_global_rotation->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_global_rotation);
+        SceneManager::getInstance()->RemoveDataObject(curve_global_rotation);
         curve_final_rotation->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_final_rotation);
+        SceneManager::getInstance()->RemoveDataObject(curve_final_rotation);
     }
 
     if (DRAW_ANIM_TIME_CURVE)
     {
 		curve_anim_time->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_anim_time);
+        SceneManager::getInstance()->RemoveDataObject(curve_anim_time);
     }
     
     if (TRACE_ROOT_ROTATION)

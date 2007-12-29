@@ -8,7 +8,7 @@
 #include "timelinevisualizer.h"
 #include "../app/gendebug.h"
 #include "../avatar/avatartype.h"
-
+#include "scene/scenemanager.h"
 
 
 using namespace ft;

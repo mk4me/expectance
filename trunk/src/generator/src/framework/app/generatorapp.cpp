@@ -11,6 +11,7 @@
 #include "gendebug.h"
 #include "scene/transformmanager.h"
 
+#include "scene/scenemanager.h"
 
 using namespace ft;
 

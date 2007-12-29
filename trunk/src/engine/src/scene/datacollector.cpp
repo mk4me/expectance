@@ -31,6 +31,7 @@ bool DataCollector::Render()
 	if(_size > 1) //minimum two elements
 	{
 		float dvpHeight = OGLContext::getInstance()->getDataViewportHeight();
+		setBufferSize(OGLContext::getInstance()->getWidth()/2); //secure against manual resize
 
         glPushMatrix();
 		glDisable(GL_CULL_FACE);
@@ -79,7 +80,7 @@ bool DataCollector::Render()
 		
 		glEnable(GL_CULL_FACE);
 		glPopMatrix();
-
+		
 		if ((m_bufferSize != 0)&&(_size > m_bufferSize))
         {
 		    m_DataList.pop_front();

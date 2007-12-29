@@ -3,12 +3,13 @@
  * author: abak
  */
 #include "transform.h"
+
 #include "transformmanager.h"
-#include "../utility/debug.h"
 #include "../utility/vishelper.h"
 #include "../utility/mathutil.h"
 #include "cal3d/coretrack.h"
 #include "cal3d/corekeyframe.h"
+#include "scenemanager.h"
 
 using namespace ft;
 

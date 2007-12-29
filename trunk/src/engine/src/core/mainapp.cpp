@@ -9,11 +9,11 @@
 
 #include "global.h"
 #include "application.h"
-#include "config.h"
-#include "inputmanager.h"
-#include "../scene/visualizationmanager.h"
-#include "../utility/debug.h"
 
+#include "inputmanager.h"
+#include "updatemanager.h"
+#include "../scene/visualizationmanager.h"
+#include "../scene/oglcontext.h"
 
 using namespace ft;
 

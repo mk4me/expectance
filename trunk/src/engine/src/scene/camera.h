@@ -6,11 +6,8 @@
 #ifndef _GEN_CAMERA_H
 #define _GEN_CAMERA_H
 
-#include <iostream>
 #include "../utility/mtxlib.h"
-#include "../utility/debug.h"
 #include "../core/global.h"
-#include "sceneobject.h"
 #include "spline.h"
 
 namespace ft

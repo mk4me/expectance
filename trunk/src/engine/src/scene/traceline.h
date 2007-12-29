@@ -8,9 +8,8 @@
 #ifndef GEN_TRACE_LINE_H
 #define GEN_TRACE_LINE_H
 
-#include "../core/global.h"
 #include "sceneobject.h"
-#include "line.h"
+
 
 namespace ft {
 	//! A TraceLine class

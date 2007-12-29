@@ -4,8 +4,9 @@
  */
 
 #include "cameramanager.h"
-#include "oglcontext.h"
 #include "../core/inputmanager.h"
+#include <algorithm>
+#include "oglcontext.h"
 
 using namespace ft;
 

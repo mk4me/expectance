@@ -4,7 +4,7 @@
  */
 #include "timelinevisualizer.h"
 #include "utility/vishelper.h"
-
+#include "scene/scenemanager.h"
 using namespace ft;
 
 bool TimeLineVisualizer::CURVE_ANIM_WEIGHT = false;
@@ -17,12 +17,12 @@ TimeLineVisualizer::TimeLineVisualizer()
     if (CURVE_ANIM_WEIGHT)
     {
         curve_prev_anim_weight = new DataCollector(toString() + "curve_prev_anim_weight");
-        VisualizationManager::getInstance()->AddDataObject(curve_prev_anim_weight);
+        SceneManager::getInstance()->AddDataObject(curve_prev_anim_weight);
         curve_prev_anim_weight->HidePoints();       curve_prev_anim_weight->setColor(VisualizationHelper::COLOR_GREEN);
         curve_prev_anim_weight->setDrawScale(40);   curve_prev_anim_weight->setLegendLabel("weight of prev anim");
 
         curve_curr_anim_weight = new DataCollector(toString() + "curve_curr_anim_weight");
-        VisualizationManager::getInstance()->AddDataObject(curve_curr_anim_weight);
+        SceneManager::getInstance()->AddDataObject(curve_curr_anim_weight);
         curve_curr_anim_weight->HidePoints();       curve_curr_anim_weight->setColor(VisualizationHelper::COLOR_YELLOW);
         curve_curr_anim_weight->setDrawScale(40);   curve_curr_anim_weight->setLegendLabel("weight of curr anim");
     }
@@ -34,10 +34,10 @@ TimeLineVisualizer::~TimeLineVisualizer(void)
     if (CURVE_ANIM_WEIGHT)
     {
         curve_prev_anim_weight->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_prev_anim_weight);
+        SceneManager::getInstance()->RemoveDataObject(curve_prev_anim_weight);
 
         curve_curr_anim_weight->Clear();
-        VisualizationManager::getInstance()->RemoveDataObject(curve_curr_anim_weight);
+        SceneManager::getInstance()->RemoveDataObject(curve_curr_anim_weight);
     }
 }
 

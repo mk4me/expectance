@@ -3,11 +3,11 @@
  * author: abak
  */
 
-#include "UpdateManager.h"
-#include "../utility/debug.h"
+#include "updatemanager.h"
+#include "simulation.h"
+
 
 using namespace ft;
-using namespace std;
 
 
 UpdateManager* UpdateManager::m_instance = NULL;
@@ -22,7 +22,7 @@ UpdateManager* UpdateManager::getInstance()
     if (m_instance == NULL)
     {
         if (Debug::UPDATE>0)
-            _dbg << "UpdateManager::getInstace(): instance of UpdateManager created " << endl;
+			_dbg << "UpdateManager::getInstace(): instance of UpdateManager created " << std::endl;
 
         m_instance = new UpdateManager();
     }

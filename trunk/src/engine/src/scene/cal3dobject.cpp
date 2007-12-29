@@ -4,9 +4,11 @@
  */
 
 #include "cal3dobject.h"
-#include "../utility/debug.h"
+#include "oglcontext.h"
 
 using namespace ft;
+
+int Cal3DObject::m_counter = 0;
 
 /**
  * \brief Constructor for Cal3DObject
@@ -17,7 +19,8 @@ using namespace ft;
  **/
 Cal3DObject::Cal3DObject(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName):
 m_renderMethod(0), 
-m_shadow(true)
+m_shadow(true),
+DynamicObjectID(m_counter++)
 {
     m_calModel = calModel;
     m_calCoreModel = calCoreModel;
@@ -29,6 +32,8 @@ m_shadow(true)
 	}
 	else
 		m_hardwareRendering = false;
+
+	//m_counter++;
 }
 
 /**

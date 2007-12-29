@@ -4,15 +4,14 @@
  */
 
 #include "application.h"
-#include "config.h"
-#include "UpdateManager.h"
-#include "GlobalMsgSender.h"
+#include "globalmsgsender.h"
 #include "inputmanager.h"
 #include "../scene/cal3dobjectfactory.h"
 #include "../scene/transformmanager.h"
-#include "../scene/scenemanager.h"
 #include "../scene/visualizationmanager.h"
-#include "../utility/debug.h"
+#include "../scene/scenemanager.h"
+#include "../scene/cameramanager.h"
+#include "../scene/oglcontext.h"
 
 using namespace ft;
 
@@ -73,7 +72,8 @@ bool Application::InitModules()
 		return false;
 	}
 
-	UpdateManager::getInstance()->AddUpdateObject(CameraManager::getInstance()); //synchronize cameramanager from global timer
+	UpdateManager::getInstance()->AddUpdateObject(CameraManager::getInstance()); // synchronize cameramanager from global timer
+	UpdateManager::getInstance()->AddUpdateObject(SceneManager::getInstance());  // synchronize scenegraph elements updating from global timer
 
 	return true;
 }

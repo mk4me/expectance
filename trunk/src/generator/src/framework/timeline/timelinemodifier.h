@@ -8,7 +8,7 @@
 
 #include "timelineobject.h"
 #include "timelinecontext.h"
-
+#include "scene/datacollector.h"
 namespace ft
 {
 	/**

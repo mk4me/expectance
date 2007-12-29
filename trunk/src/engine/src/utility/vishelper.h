@@ -6,7 +6,6 @@
 #ifndef _GEN_VIS_HELPER_H
 #define _GEN_VIS_HELPER_H
 
-#include "../core/global.h"
 #include "../scene/traceline.h"
 
 namespace ft

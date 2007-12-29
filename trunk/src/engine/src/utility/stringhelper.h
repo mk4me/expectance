@@ -9,11 +9,11 @@
 #define _GEN_STRING_HELPER_H
 
 
-#include <vector>
+
 #include <string>
 #include <iostream>
 #include <sstream>
-
+#include <vector>
 
 using namespace std;
 

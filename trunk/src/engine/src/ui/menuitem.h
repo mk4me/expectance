@@ -6,7 +6,6 @@
 #ifndef _GEN_MENU_ITEM_H
 #define _GEN_MENU_ITEM_H
 
-#include "../core/global.h"
 #include "../scene/sceneobject.h"
 
 
