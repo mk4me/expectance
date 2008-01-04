@@ -12,6 +12,7 @@
 #include "scene/transformmanager.h"
 
 #include "scene/scenemanager.h"
+#include "../physics/cdmanager.h"
 
 using namespace ft;
 
@@ -38,10 +39,11 @@ bool GeneratorApp::InitModules()
     AvatarFactory::getAvatarFactoryInstance();   //enforced creation of singleton
     ControlManager::getInstance()->Init(); //enforced creation of singleton
     AIManager::getInstance()->Init();  //enforced creation of singleton
+	CollisionDetectionManager::getInstance();
 
     UpdateManager::getInstance()->AddUpdateObject(ControlManager::getInstance());
     UpdateManager::getInstance()->AddUpdateObject(AIManager::getInstance());
-
+	UpdateManager::getInstance()->AddUpdateObject(CollisionDetectionManager::getInstance());
     return true;
 }
 

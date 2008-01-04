@@ -8,6 +8,7 @@
 
 #include "../motion/movableavatar.h"
 #include "speedcontroller.h"
+#include "magnetcontroller.h"
 
 namespace ft
 {
@@ -29,11 +30,15 @@ namespace ft
         void setSpeedController(SpeedController* ctl) { m_speedController = ctl; }
         SpeedController* getSpeedController() { return m_speedController; }
 
+		void setMagnetController(MagnetController* ctl) { m_magnetController = ctl; }
+        MagnetController* getMagnetController() { return m_magnetController; }
+
     protected:
         virtual TimeLine* InitTimeLine();
         void InitSpeedFactor();
 
         SpeedController* m_speedController;
+		MagnetController* m_magnetController;
 
     };
 }

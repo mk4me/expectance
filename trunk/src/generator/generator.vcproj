@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="windows-1250"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
@@ -722,6 +722,14 @@
 				Name="physics"
 				>
 				<File
+					RelativePath=".\src\framework\physics\magnetcontroller.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\physics\magnetcontroller.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\physics\physicsavatar.cpp"
 					>
 				</File>
@@ -737,6 +745,18 @@
 					RelativePath=".\src\framework\physics\speedcontroller.h"
 					>
 				</File>
+				<Filter
+					Name="collision"
+					>
+					<File
+						RelativePath=".\src\framework\physics\cdmanager.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\framework\physics\cdmanager.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="app"

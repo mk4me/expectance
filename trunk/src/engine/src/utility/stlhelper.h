@@ -32,7 +32,8 @@ namespace ft
 	  inline std::vector<T> & operator[](int i) { return _data[i]; }
 
 	  inline const std::vector<T> & operator[] (int i) const { return _data[i]; }
-
+	  
+	  inline unsigned long size(){ return _data.size(); }
 	  // other accessors, like at() ...
 
 	  void resize(int rows, int cols)

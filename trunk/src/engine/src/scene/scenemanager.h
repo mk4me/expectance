@@ -8,7 +8,7 @@
 
 
 #include "sceneobject.h"
-#include "../core/updatemanager.h" //temporary before collision separation
+//#include "../core/updatemanager.h" //temporary before collision separation
 
 
 
@@ -22,7 +22,7 @@ namespace ft
 	 *	This class is responsible for registering, releasing and communication with the rest parts of the system in the scope of sceneobjects. 
 	 *  It creates visual objects collection. Registers all requiring objects to scene.  
 	 */ 
-	class SceneManager : public UpdateObject
+	class SceneManager //: public UpdateObject
     {
     public:
 		SceneManager (void) { }//m_distanceMatrix.reserve(100,100); } //reserve one continous memory block 
@@ -57,8 +57,9 @@ namespace ft
 		//! unregister DataObject and destroy it
 		bool RemoveDataObject(std::string id);
 
-        void OnUpdate(const double elapsedSeconds);  // OVERRIDEN, updates by UpdateManager 
+        //void OnUpdate(const double elapsedSeconds);  // OVERRIDEN, updates by UpdateManager 
 		std::map<std::string,SceneObject*>& getSceneObjectsMap(void){ return m_SceneObjectsMap;}; //tmp
+		std::vector<SceneObject*>& getSceneGraph(void){ return m_SceneGraph;}; //tmp
 			
 		//DoubleDynamicArray2D DistanceMtx(){ return m_distanceMatrix;}; 
 		//DoubleDynamicArray2D m_distanceMatrix;
@@ -68,7 +69,7 @@ namespace ft
 		std::map<std::string,SceneObject*> m_SceneObjectsMap;
 		std::vector<SceneObject*> m_SceneGraph; // for all dynamic objects
 	private:
-		void UpdateDistanceMatrix();
+
     };
 
 

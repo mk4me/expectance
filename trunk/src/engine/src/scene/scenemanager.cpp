@@ -5,6 +5,7 @@
 
 #include "scenemanager.h"
 #include "visualizationmanager.h"
+#include "cal3dobject.h"
 
 using namespace ft;
 
@@ -55,7 +56,7 @@ bool SceneManager::AddObject(SceneObject* pObj)
 {
 	bool result = false;
 	std::string _id = pObj->getID();
-//	Cal3DObject *_C3DObj = dynamic_cast<Cal3DObject*>(pObj);
+	Cal3DObject *_C3DObj = dynamic_cast<Cal3DObject*>(pObj);
 	if (!_id.empty())
 	{
 	 	std::map<std::string,SceneObject*>::iterator it = m_SceneObjectsMap.find(_id);
@@ -65,8 +66,8 @@ bool SceneManager::AddObject(SceneObject* pObj)
 	    m_SceneObjectsMap.insert( std::make_pair( std::string(_id), pObj ) );
 
 		result = VisualizationManager::getInstance()->AddObject(pObj);
-//		if (_C3DObj!=NULL)
-//			m_SceneGraph.push_back(_C3DObj);
+		if (_C3DObj!=NULL)
+			m_SceneGraph.push_back(_C3DObj);
 
   //      if (IsObjectTraceableByCamera(pObj))
   //      {
@@ -156,14 +157,3 @@ bool SceneManager::RemoveDataObject(std::string id)
 	return false;
 }
 
-void SceneManager::OnUpdate(const double elapsedSeconds)  // OVERRIDEN, updates by UpdateManager 
-{
-	//TODO update collision detection matrix
-}
-
-void SceneManager::UpdateDistanceMatrix()
-{
-	//calculate distances between every pair of dynamic object
-	//SceneObject*
-	//for (int
-}

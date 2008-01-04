@@ -6,6 +6,7 @@
 #include "application.h"
 #include "globalmsgsender.h"
 #include "inputmanager.h"
+#include "../core/updatemanager.h"
 #include "../scene/cal3dobjectfactory.h"
 #include "../scene/transformmanager.h"
 #include "../scene/visualizationmanager.h"
@@ -73,7 +74,7 @@ bool Application::InitModules()
 	}
 
 	UpdateManager::getInstance()->AddUpdateObject(CameraManager::getInstance()); // synchronize cameramanager from global timer
-	UpdateManager::getInstance()->AddUpdateObject(SceneManager::getInstance());  // synchronize scenegraph elements updating from global timer
+//	UpdateManager::getInstance()->AddUpdateObject(SceneManager::getInstance());  // synchronize scenegraph elements updating from global timer
 
 	return true;
 }

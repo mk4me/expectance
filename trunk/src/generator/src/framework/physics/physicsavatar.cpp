@@ -79,6 +79,9 @@ TimeLine* PhysicsAvatar::InitTimeLine()
     setSpeedController(new SpeedController());
     tl->AddModifier(getSpeedController());
     
-    return tl;
+    setMagnetController(new MagnetController());
+    tl->AddModifier(getMagnetController());
+
+	return tl;
 }
 
