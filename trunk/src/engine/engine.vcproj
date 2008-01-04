@@ -677,6 +677,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\utility\stlhelper.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\utility\stringhelper.cpp"
 				>
 			</File>

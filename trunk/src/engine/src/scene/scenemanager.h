@@ -16,54 +16,6 @@
 
 namespace ft
 {
-	template <typename T>
-	class DynamicArray2D
-	{
-	public:
-	  DynamicArray2D(){};
-	  DynamicArray2D(int rows, int cols)
-	  {
-		for(int i=0; i<rows; ++i)
-		{
-		  _data.push_back(std::vector<T>(cols));
-		}
-	  }
-	  
-	  // other ctors ....
-
-	  inline std::vector<T> & operator[](int i) { return _data[i]; }
-
-	  inline const std::vector<T> & operator[] (int i) const { return _data[i]; }
-
-	  // other accessors, like at() ...
-
-	  void resize(int rows, int cols)
-	  {
-		_data.resize(rows);
-		for(int i = 0; i < rows; ++i)
-		  _data[i].resize(cols);
-	  }
-	  
-	  void push_back(const double value)
-	  {
-		_data.push_back(value);
-		for(int i = 0; i < _data.size(); ++i)
-		  _data[i].push_back(value); //for each column
-	  }
-	
-	  void erase (int index)
-	  {
-		_data.erase(_data.begin()+index);
-		for(int i = 0; i < _data.size(); ++i)
-		  _data[i].erase(_data.begin()+index); //for each column	
-	  }
-	  // other member functions, like reserve()....
-
-	private:
-	  std::vector<std::vector<T> > _data;  
-	};
-
-	typedef DynamicArray2D <double> DoubleDynamicArray2D;
 	
 	//! A SceneManager class
 	/*!
@@ -109,7 +61,7 @@ namespace ft
 		std::map<std::string,SceneObject*>& getSceneObjectsMap(void){ return m_SceneObjectsMap;}; //tmp
 			
 		//DoubleDynamicArray2D DistanceMtx(){ return m_distanceMatrix;}; 
-		DoubleDynamicArray2D m_distanceMatrix;
+		//DoubleDynamicArray2D m_distanceMatrix;
     protected:
 		
         static SceneManager* m_instance;
