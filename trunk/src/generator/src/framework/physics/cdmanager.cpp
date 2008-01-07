@@ -70,6 +70,7 @@ void CollisionDetectionManager::UpdateDistanceMatrix()
 					//count direction vector (from j-th point to i-th point) to the center
 					m_directionMatrix[i][j] =  SceneManager::getInstance()->getSceneGraph()[j]->getPosition() 
 						- SceneManager::getInstance()->getSceneGraph()[i]->getPosition();
+					m_directionMatrix[i][j].y = 0;
 					m_directionMatrix[j][i] = m_directionMatrix[i][j]*(-1);
 
 					// compute distance
@@ -86,4 +87,30 @@ void CollisionDetectionManager::UpdateDistanceMatrix()
 			}
 
 	}
+}
+
+const CalVector CollisionDetectionManager::getObjectCummulativeForce(const unsigned int id, const double threshold)
+{
+	CalVector _cumForce; // cummulative force
+	CalVector _tmp;
+	double _mdm;
+	unsigned long _dms = m_distanceMatrix.size();
+
+	if (id < _dms)
+	{
+		for(unsigned long i = 0; i < _dms; i++)
+		{
+			_mdm = m_distanceMatrix[i][id];
+			if ( _mdm < threshold )
+			{
+				if (_mdm < 0.0000001) _mdm = 1;
+				_tmp = m_directionMatrix[i][id]/(_mdm*_mdm); //normalization
+				_tmp *= MAGNETCONTROLLER_CONST; // const force component value addition
+				_cumForce += _tmp;
+			}
+		}
+		_cumForce.y = 0; 
+	}
+	return _cumForce;
+
 }

@@ -4,19 +4,45 @@
  */
 #include "magnetcontroller.h"
 #include "../motion/movableavatar.h"
-//#include "utility/vishelper.h"
 #include "cdmanager.h"
+#include "utility/mathutil.h"
+
+#include "scene/scenemanager.h"
+#include "utility/vishelper.h"
+
 using namespace ft;
 
 /// \brief constructor
 MagnetController::MagnetController()
 {
- 
+    DRAW_MAGNET_CURVE = ((Config::getInstance()->IsKey("magnet_curve")) && (Config::getInstance()->GetIntVal("magnet_curve")==1));
+
+    if (DRAW_MAGNET_CURVE)
+    {
+	    curve_curr_angle = new DataCollector(toString() + "curve_curr_angle");
+        SceneManager::getInstance()->AddDataObject(curve_curr_angle);
+        curve_curr_angle->HidePoints();       curve_curr_angle->setColor(VisualizationHelper::COLOR_RED);
+        curve_curr_angle->setDrawScale(0.2f);   curve_curr_angle->setLegendLabel("current angle");
+
+	    curve_cummForce_angle = new DataCollector(toString() + "curve_cummForce_angle");
+        SceneManager::getInstance()->AddDataObject(curve_cummForce_angle);
+        curve_cummForce_angle->HidePoints();       curve_cummForce_angle->setColor(VisualizationHelper::COLOR_GREEN);
+        curve_cummForce_angle->setDrawScale(0.2f);   curve_cummForce_angle->setLegendLabel("cummulative force angle");
+
+	} 
 }
 
 /// \brief destructor
 MagnetController::~MagnetController(void)
 {
+	if(DRAW_MAGNET_CURVE)
+    {
+        curve_curr_angle->Clear();
+        SceneManager::getInstance()->RemoveDataObject(curve_curr_angle);
+
+        curve_cummForce_angle->Clear();
+        SceneManager::getInstance()->RemoveDataObject(curve_cummForce_angle);
+	}
 }
 
 /**
@@ -27,12 +53,33 @@ MagnetController::~MagnetController(void)
  **/
 void MagnetController::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
-    TimeLineModifier::Apply(elapsedSeconds, timeLineContext);
+    
+
+	TimeLineModifier::Apply(elapsedSeconds, timeLineContext);
 
     MovableAvatar* av = (MovableAvatar*)timeLineContext->getAvatar();
 
-    float currSpeedFactor = av->getCurrSpeedFactor();
-    float destSpeedFactor = av->getDestSpeedFactor();
+	// get current cummulative force and direction angle
+	CalVector _tmpCummForce  = CollisionDetectionManager::getInstance()->getObjectCummulativeForce(av->DynamicObjectID, 800.0);
+	CalQuaternion _dirAngleQ = av->getGlobalRotationOffset();
+	float _dirAngleValue = CalQuatToQuat(_dirAngleQ).Yangle();
+	// compute angle for cummulative force vector
+	float _forceAngValue = UTIL_GetVectorsAngle(_tmpCummForce,CalVector(1,0,0));
+	CalQuaternion _forceAngleQ = QuatToCalQuat( Quat(degToRad(_forceAngValue), Vec(0,1,0)) );
+	// set new value for direction angle according to forceAngle
+	_dirAngleQ.blend(0.1f, _forceAngleQ);
+
+	// apply changes to global direciton
+	//timeLineContext->getAvatar()->setGlobalRotationOffset(_dirAngleQ);
+
+	//_dbg << "Wektor sily F=(" <<_tmpCummForce.x << _tmpCummForce.z << ") avatara" << av->getName() << std::endl;
+	_dbg << "Wektor sily F=(" <<_forceAngValue << endl; // << _direction.z << ") avatara" << av->getName() << std::endl;
+
+	//
+
+	//for (long int i = 0; i < CollisionDetectionManager::getInstance()->)
+	//float currSpeedFactor = av->getCurrSpeedFactor();
+    //float destSpeedFactor = av->getDestSpeedFactor();
     //float minSpeedFactor;
     //float maxSpeedFactor;
     
@@ -89,12 +136,11 @@ void MagnetController::Apply(float elapsedSeconds, TimeLineContext * timeLineCon
     //av->setSpeedFactorMax(maxSpeedFactor);
 
 
-    //if(DRAW_SPEED_CURVE)
-    //{
-    //    curve_curr_speed->AddValue(av->getCurrSpeedFactor());
-    //    curve_min_speed->AddValue(minSpeedFactor);
-    //    curve_max_speed->AddValue(maxSpeedFactor);
-    //}
+    if(DRAW_MAGNET_CURVE)
+    {
+        curve_cummForce_angle->AddValue(RadToDeg(_forceAngValue));
+        curve_curr_angle->AddValue(RadToDeg(_dirAngleValue));
+    }
 }
 
 

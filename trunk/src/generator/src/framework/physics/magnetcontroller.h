@@ -14,6 +14,8 @@ namespace ft
 	 * Class MagnetController: class responsible for controling direction of avatar. It makes each avatar behaving as magnet. It works as modifier of timeline.
      * 
      **/
+
+
     class MagnetController : public TimeLineModifier
     {
     public:
@@ -26,10 +28,14 @@ namespace ft
 
         virtual std::string toString(); //OVERRIDEN
 
-        //DataCollector *curve_curr_speed;
-        //DataCollector *curve_min_speed;
-        //DataCollector *curve_max_speed;
-    };
+	private:
+		double m_threshold;   // threshold value 
+		CalVector m_cumForce; // cummulative force
+
+		DataCollector *curve_curr_angle;
+        DataCollector *curve_cummForce_angle;
+		bool DRAW_MAGNET_CURVE;
+	};
 }
 
 #endif //_GEN_PHYSICS_MAGNETCONTROLLER_H

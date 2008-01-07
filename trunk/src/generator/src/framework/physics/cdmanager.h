@@ -11,6 +11,7 @@
 
 namespace ft
 {
+	static const int MAGNETCONTROLLER_CONST = 100;	
 
 	class CollisionDetectionManager : public UpdateObject
 	{
@@ -26,8 +27,8 @@ namespace ft
         static void DestroyInstance();
 
 		void OnUpdate(const double elapsedSeconds);  // OVERRIDEN, updates by UpdateManager
-		//brief gets distance vector of object given by id
-		const Vec getObjectDistance(const int id);
+		//brief gets cummulative force vector of object given by id
+		const CalVector getObjectCummulativeForce(const unsigned int id, const double threshold);
 
 	protected:
 		static CollisionDetectionManager* m_instance;
