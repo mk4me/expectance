@@ -39,9 +39,9 @@ float UTIL_GetSignForDirChange(CalVector& oldDir, CalVector& newDir)
     float dot = newDir * rightDir;
     float angle = radToDeg( acos(UTIL_GetRightArgForArcCos(dot)) );
     if (angle < 90.0f)
-        return -1;
+        return -1.0f;
     else
-        return 1;
+        return 1.0f;
 }
 
 /**

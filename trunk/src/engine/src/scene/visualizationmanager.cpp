@@ -125,7 +125,7 @@ void VisualizationManager::OnRender()
 		OGLContext::getInstance()->setDataViewport();
 		OGLContext::getInstance()->DrawDataViewPortPrimitives(); 
 		RenderDataObjects();
-        DrawLegend();
+
 	}
 	// swap the front- and back-buffer
 	glutSwapBuffers();
@@ -154,9 +154,9 @@ void VisualizationManager::DrawLegend()
 	glEnable(GL_LINE_SMOOTH);
 	glColor4f(1,1,1,0.8f);
 	if (_labDetails == 0)
-		OGLContext::getInstance()->OGLWriteBitmap(1, text_x, y, "Legend:");
+		OGLWriteBitmap(1, text_x, y, "Legend:");
 	else
-		OGLContext::getInstance()->OGLWriteBitmap(1, text_x, y, "Legend:   MIN,     MAX  |  OFFSET |  SCALE |    DESCRIPTION");
+		OGLWriteBitmap(1, text_x, y, "Legend:   MIN,     MAX  |  OFFSET |  SCALE |    DESCRIPTION");
 	glDisable(GL_LINE_SMOOTH);
 
     
@@ -182,7 +182,7 @@ void VisualizationManager::DrawLegend()
                 string curveDesc =pObj->getLegendLabel();
 	            glEnable(GL_LINE_SMOOTH);
 	            glColor4f(1,1,1,0.5f);
-	            OGLContext::getInstance()->OGLWriteBitmap(1, text_x, y-3, curveDesc.c_str());
+	            OGLWriteBitmap(1, text_x, y-3, curveDesc.c_str());
 	            glDisable(GL_LINE_SMOOTH);
 			}
 		}
@@ -351,7 +351,7 @@ void VisualizationManager::Render2DSceneObjects()
 {
 	if ((OGLContext::getInstance()->IsLogoFTActive())||(MenuManager::getInstance()->IsMenuVisible()))
 	{
-		OGLContext::getInstance()->GLOrtho2DCorrection();
+		GLOrtho2DCorrection(OGLContext::getInstance()->getWidth(), OGLContext::getInstance()->getHeight());
 
 		//2D context for rendering
 		MenuManager::getInstance()->Render();
@@ -395,6 +395,8 @@ void VisualizationManager::RenderDataObjects()
 			}
 		}
 	}
+	
+	DrawLegend();
 
 }
 

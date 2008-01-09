@@ -65,7 +65,9 @@ void MagnetController::Apply(float elapsedSeconds, TimeLineContext * timeLineCon
 	float _dirAngleValue = CalQuatToQuat(_dirAngleQ).Yangle();
 	// compute angle for cummulative force vector
 	float _forceAngValue = UTIL_GetVectorsAngle(_tmpCummForce,CalVector(1,0,0));
-	CalQuaternion _forceAngleQ = QuatToCalQuat( Quat(degToRad(_forceAngValue), Vec(0,1,0)) );
+	
+	float sign = UTIL_GetSignForDirChange(_tmpCummForce,CalVector(1,0,0));
+	CalQuaternion _forceAngleQ = QuatToCalQuat( Quat(sign*_forceAngValue, Vec(0,1,0)) );
 	// set new value for direction angle according to forceAngle
 	_dirAngleQ.blend(0.1f, _forceAngleQ);
 
@@ -73,7 +75,7 @@ void MagnetController::Apply(float elapsedSeconds, TimeLineContext * timeLineCon
 	//timeLineContext->getAvatar()->setGlobalRotationOffset(_dirAngleQ);
 
 	//_dbg << "Wektor sily F=(" <<_tmpCummForce.x << _tmpCummForce.z << ") avatara" << av->getName() << std::endl;
-	_dbg << "Wektor sily F=(" <<_forceAngValue << endl; // << _direction.z << ") avatara" << av->getName() << std::endl;
+	//_dbg << "Wektor sily F=(" <<_forceAngValue << endl; // << _direction.z << ") avatara" << av->getName() << std::endl;
 
 	//
 

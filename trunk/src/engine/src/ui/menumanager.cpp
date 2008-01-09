@@ -169,7 +169,7 @@ bool MenuManager::Render()
 				//get apropriate text
 				glEnable(GL_LINE_SMOOTH);
 					glColor4f(1,1,1,0.5f);
-					OGLContext::getInstance()->OGLWriteBitmap(5,5, 50, lab.c_str());
+					OGLWriteBitmap(5,5, 50, lab.c_str());
 				glDisable(GL_LINE_SMOOTH);
 			}
 

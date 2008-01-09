@@ -85,6 +85,7 @@ bool ChangeDirGoal::ExecuteAction(ActionAvatar *av)
     {
         //do nothing - leve walk or run
         result = true;
+		//av->setAnnotation(av->getCurrAction()->toString()); as an example mka
     }
     else
     {

@@ -33,20 +33,7 @@ Spline::Spline(char * fileName) {
 	curveIndx = 0;
 	curveType = 0;
 	shortestDistance = 0;
-	displayControlMode = 0;
-	displayCurveMode = 0;
-	displayCurveModulo = 0;
-	displayOrientMode = 0;
-	displayOrientModulo = 0;
-	displayOrientLen = 0;
 
-	// Colors
-	SET_COLOR(controlClr, 0xFF, 0x00, 0x00, 0xFF);
-	SET_COLOR(curveClr, 0x00, 0xFF, 0x00, 0xFF);
-	SET_COLOR(tanClr, 0x80, 0x00, 0xFF, 0xFF);
-	SET_COLOR(nrmClr, 0xFF, 0x00, 0xFF, 0xFF);
-	SET_COLOR(sidClr, 0x00, 0xFF, 0x00, 0xFF);
-	
 	// Fill Structure
 	ParseDefinitionFile(fileName);
 
@@ -102,8 +89,8 @@ void Spline::ParseDefinitionFile(char * fileName) {
 		// EOF
 		if (feof(file)) {
 			assert(state == STATE_BEGIN && "Spline:: Couldn't Parse File");
-			assert(displayOrientModulo && "Spline:: No Modulo Set!");
-			assert(displayCurveModulo && "Spline:: No Modulo Set!");
+//			assert(displayOrientModulo && "Spline:: No Modulo Set!");
+//			assert(displayCurveModulo && "Spline:: No Modulo Set!");
 			return;
 		}
 
@@ -123,22 +110,22 @@ void Spline::ParseDefinitionFile(char * fileName) {
 					curveType = (int)param;
 				}
 				else if (sscanf(buffer, " display_control_mode %lf", &param) == 1) {
-					displayControlMode = (int)param;
+//					displayControlMode = (int)param;
 				}
 				else if (sscanf(buffer, " display_curve_mode %lf", &param) == 1) {
-					displayCurveMode = (int)param;
+//					displayCurveMode = (int)param;
 				}
 				else if (sscanf(buffer, " display_curve_modulo %lf", &param) == 1) {
-					displayCurveModulo = (int)param;
+//					displayCurveModulo = (int)param;
 				}
 				else if (sscanf(buffer, " display_orientation_mode %lf", &param) == 1) {
-					displayOrientMode = (int)param;
+//					displayOrientMode = (int)param;
 				}
 				else if (sscanf(buffer, " display_orientation_modulo %lf", &param) == 1) {
-					displayOrientModulo = (int)param;
+//					displayOrientModulo = (int)param;
 				}
 				else if (sscanf(buffer, " display_orientation_len %lf", &param) == 1) {
-					displayOrientLen = (float)param;
+//					displayOrientLen = (float)param;
 				}
 				else if (strstr(buffer, "begin_points")) {
 					// Allocate Point Space

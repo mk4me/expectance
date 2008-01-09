@@ -5,6 +5,7 @@
 
 #include "oglcontext.h"
 #include "texturemanager.h"
+#include "../utility/mathconversions.h"
 
 using namespace ft;
 
@@ -65,7 +66,6 @@ bool OGLContext::Init()
 	m_floorType = 0;
 	m_logoFT = 0;
 
-	m_yscope = abs(m_ymin) + abs(m_ymax);
 	m_dvpW = m_width;
 	m_dvpH = m_height/4;
 	GLfloat light_ambient[]  = { 0.5f, 0.5f, 0.5f, 1.0f };
@@ -133,30 +133,7 @@ bool OGLContext::Init()
     return true;
 }
 
-//void OGLContext::InitCursorDL()
-//{
-//	glNewList(5,GL_COMPILE);
-//		// switch to orthogonal projection for the cursor
-//		glMatrixMode(GL_PROJECTION);
-//		glLoadIdentity();
-//		glOrtho(0, (GLdouble)m_width, 0, (GLdouble)m_height, -1.0f, 1.0f);
-//
-//		glMatrixMode(GL_MODELVIEW);
-//		glLoadIdentity();
-//
-//		// render the cursor
-//		glEnable(GL_BLEND);
-//		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//
-//		glBegin(GL_TRIANGLES);
-//			////glColor4f(1.0f, 1.0f, 1.0f, 1.0f); glVertex2i(m_mouseX, m_mouseY);
-//			////glColor4f(1.0f, 1.0f, 1.0f, 0.2f); glVertex2i(m_mouseX + 16, m_mouseY - 32);
-//			////glColor4f(1.0f, 1.0f, 1.0f, 0.2f); glVertex2i(m_mouseX + 32, m_mouseY - 16);
-//		glEnd();
-//
-//		glDisable(GL_BLEND);
-//	glEndList();
-//}
+
 
 void OGLContext::InitNormalFloorDL(int size)
 {
@@ -293,8 +270,7 @@ bool OGLContext::InitLogoDL()
 		glEnable(GL_TEXTURE_2D);	
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-		////glEnable(GL_ALPHA_TEST); //alternative method
-		////glAlphaFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+
 		if ((logoTexture = ft::TextureManager::getInstance()-> LoadTexture(FT_TEXTUREPATH + Config::getInstance()->GetStrVal("logo_texture")))==0)
 			return false;
 
@@ -307,25 +283,11 @@ bool OGLContext::InitLogoDL()
 			glTexCoord2f(0.0f, 0.0f); glVertex2i(0, _height);
 	    glEnd();
 
-		////glDisable(GL_ALPHA_TEST);
 		glDisable(GL_BLEND);
 		glDisable(GL_TEXTURE_2D);
 	glEndList();
 	return true;
 }
-
-//void OGLContext::InitRendering()
-//{
-//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//
-//	glMatrixMode(GL_PROJECTION);
-//	glLoadIdentity();
-//	gluPerspective(45.0f, (GLdouble)m_width / (GLdouble)m_height, 1, 100000);
-//	glMatrixMode(GL_MODELVIEW);
-//	glLoadIdentity();
-//
-//
-//}
 
 
 void OGLContext::setSceneViewport(const bool zoom)
@@ -379,6 +341,7 @@ void OGLContext::setDataViewport()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
+
 void OGLContext::DrawSceneViewPortPrimitives()
 {
 	//render floor
@@ -392,7 +355,6 @@ void OGLContext::DrawSceneViewPortPrimitives()
 			glCallList(OGL_DL_TEXTURED_FLOOR);
 		}
 	glPopMatrix();
-
 	glEnable(GL_CULL_FACE);
 }
 
@@ -448,263 +410,351 @@ void OGLContext::RenderLogo()
 	}
 }
 
-void OGLContext::GLOrtho2DCorrection()
-{
-	int w;
-	int h;
-	GLdouble size;
-	GLdouble aspect;
-
-	w = m_width;
-	h = m_height;
-	aspect = (GLdouble)w / (GLdouble)h;
-
-	// Use the whole window.
-	//glViewport(0, 0, w, h);
-
-	// We are going to do some 2-D orthographic drawing.
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	size = (GLdouble)((w >= h) ? w : h) / 2.0;
-	if (w <= h) 
-	{
-		aspect = (GLdouble)h/(GLdouble)w;
-		glOrtho(-size, size, -size*aspect, size*aspect,	-100000.0, 100000.0);
-	}
-	else 
-	{
-		aspect = (GLdouble)w/(GLdouble)h;
-		glOrtho(-size*aspect, size*aspect, -size, size,	-100000.0, 100000.0);
-	}
-
-	// Make the world and window coordinates coincide so that 1.0 in
-	// model space equals one pixel in window space.
-	glScaled(aspect, aspect, 1.0);
-
-	// Now determine where to draw things.
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-}
-
-/*-----  prepare shadow projection for current model    -----*/
-// Multiply the current ModelView-Matrix with a shadow-projetion
-// matrix.
-// l is the position of the light source
-// e is a point on within the plane on which the shadow is to be
-//   projected.  
-// n is the normal vector of the plane.
-// Everything that is drawn after this call is "squashed" down
-// to the plane. Hint: Gray or black color and no lighting 
-// looks good for shadows *g*
-void OGLContext::GlShadowProjection(float * l, float * e, float * n)
-{
-  float d, c;
-  float mat[16];
-
-  // These are c and d (corresponding to the tutorial)
-  
-  d = n[0]*l[0] + n[1]*l[1] + n[2]*l[2];
-  c = e[0]*n[0] + e[1]*n[1] + e[2]*n[2] - d;
-
-  // Create the matrix. OpenGL uses column by column
-  // ordering
-
-  mat[0]  = l[0]*n[0]+c; 
-  mat[4]  = n[1]*l[0]; 
-  mat[8]  = n[2]*l[0]; 
-  mat[12] = -l[0]*c-l[0]*d;
-  
-  mat[1]  = n[0]*l[1];        
-  mat[5]  = l[1]*n[1]+c;
-  mat[9]  = n[2]*l[1]; 
-  mat[13] = -l[1]*c-l[1]*d;
-  
-  mat[2]  = n[0]*l[2];        
-  mat[6]  = n[1]*l[2]; 
-  mat[10] = l[2]*n[2]+c; 
-  mat[14] = -l[2]*c-l[2]*d;
-  
-  mat[3]  = n[0];        
-  mat[7]  = n[1]; 
-  mat[11] = n[2]; 
-  mat[15] = -d;
-
-  // Finally multiply the matrices together 
-  glMultMatrixf(mat);
-}
-
-void OGLContext::GlShadowProjection()
-{
-    float lightPosition[] ={3000,6000,0}; // Coordinates of the light source
-	float normal[] = {0,-1,0};            // Normal vector for the plane
-    float point[] = {0,0,0};              // Point of the plane
-
-	GlShadowProjection(lightPosition,point,normal);
-}
-
-//void OGLContext::RenderInfo(const char *text)
-//{
-//	int _x,_y;
-//	_x = getWidth() / 2;
-//	_y = getHeight() / 2;
-//	static float _alpha = 0.0f;
-//	static float _p = 0.0f;
-//	glPushMatrix();
-//		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-//		glEnable(GL_BLEND);
-//		glTranslatef(-_x,-_y,0);
-//		
-//		if ((_alpha < 1)&&(_p<1)) _alpha+=0.001f;
-//		else if (_alpha == 1) 
-//		{
-//			_p+=0.001f;
-//			if(_p == 1)
-//			{
-//				_alpha+=0.1f;
-//			}
-//		}
-//		else if ((_alpha > 1.0f)&&(_p==1)) _alpha-=0.001f;
-//
-//		//get apropriate text
-//		glEnable(GL_LINE_SMOOTH);
-//			glColor4f(1.0f,0.0f,0.0f,_alpha);
-//			OGLContext::getInstance()->OGLWriteBitmap(5,5, _y-50, text);
-//		glDisable(GL_LINE_SMOOTH);
-//
-//		glDisable(GL_BLEND);
-//	glPopMatrix();
-//
-////} TODO MKA DELETE IT - now for alpha timing purpose.
-
-void OGLContext::OGLWriteBitmap(int font, int x, int y, const char *text)
-{
-	int len, i;
-	if ((font>6)||(font<0)) font = 4;
-	glRasterPos2f(x, y);
-	len = (int) strlen(text);
-	for (i = 0; i < len; i++)
-	{
-		glutBitmapCharacter(bitmap_fonts[font], text[i]);
-	}
-}
-
-void OGLContext::OGLWriteStroke(int x, int y, const char *text)
-{
-	int i, len;
-    glPushMatrix();
-    glTranslatef(x, y, 0);
-	glScaled(0.1,0.1,0.1);
-	len = (int) strlen(text);
-	for (i = 0; i < len; i++)
-	{
-        glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
-	}
-    glPopMatrix();
-}
 
 bool OGLContext::IsLogoFTActive()
 {
 	return m_logoFT;
 }
 
-GLuint OGLContext::loadVertexProgram(const std::string fn)
-{
-   FILE *fp;
-   GLubyte *buf;
-   int length;
-   bool ret = true;
-   GLuint vp;
-
-   if (!(fp = fopen(fn.c_str(),"rb")))
-   {
-      return false;
-   }
-   
-   if (Debug::RENDER>0)
-        _dbg << "Loading vertex program: " << fn << std::endl;
-   
-   fseek(fp, 0, SEEK_END);
-   length = ftell(fp);
-   fseek(fp, 0, SEEK_SET);
-
-   buf = new GLubyte[length+1];
-
-   fread( buf, 1, length, fp);
-   buf[length] = '\0'; // make it a regular C string so str* functions work
-
-   glGenProgramsARB( 1, &vp);
-   glBindProgramARB( GL_VERTEX_PROGRAM_ARB, vp);
-
-   glProgramStringARB( GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB, length, buf);
-
-   if (glGetError() != 0)
-   {
-      int lineno;
-      printf("%s\n", glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-      glGetIntegerv( GL_PROGRAM_ERROR_POSITION_ARB, &lineno);
-      printf(" @%d\n", lineno);
-      ret = false;
-   }
-   else
-   {
-      if (Debug::RENDER>0)
-        printf(" Vertex Program - Load succeeded\n");
-
-	  glBindProgramARB( GL_VERTEX_PROGRAM_ARB, 0 );
-   }
-
-   fclose(fp);
-
-   delete []buf;
-   return ret ? vp :0;
-}
 
 
-GLuint OGLContext::loadFragmentProgram(const std::string fn)
-{
-   FILE *fp;
-   GLubyte *buf;
-   int length;
-   bool ret = true;
-   GLuint rp;
+//OpenGL utility functions ================================================================ //
 
-   if (!(fp = fopen(fn.c_str(),"rb")))
-   {
-      return false;
-   }
+namespace ft {
 
-   printf("\nLoading fragment program: '%s'\n", fn);
 
-   fseek(fp, 0, SEEK_END);
-   length = ftell(fp);
-   fseek(fp, 0, SEEK_SET);
 
-   buf = new GLubyte[length+1];
+	// projection functions ------------------------------------------------------------------ //
 
-   fread( buf, 1, length, fp);
-   buf[length] = '\0'; // make it a regular C string so str* functions work
+	void GLOrtho2DCorrection(const int width, const int height)
+	{
+		int w;
+		int h;
+		GLdouble size;
+		GLdouble aspect;
 
-   glGenProgramsARB( 1, &rp);
-   glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, rp);
+		w = width;
+		h = height;
+		aspect = (GLdouble)w / (GLdouble)h;
 
-   glProgramStringARB( GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB, length, buf);
+		// Use the whole window.
+		//glViewport(0, 0, w, h);
 
-   if (glGetError() != 0)
-   {
-      int position;
-      printf("%s\n", glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-      glGetIntegerv( GL_PROGRAM_ERROR_POSITION_ARB, &position);
-      printf(" @%d\n", position);
-      ret = false;
-   }
-   else
-   {
-      printf(" Fragment Program - Load succeeded\n");
-	  glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, 0 );
-   }
+		// We are going to do some 2-D orthographic drawing.
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		size = (GLdouble)((w >= h) ? w : h) / 2.0;
+		if (w <= h) 
+		{
+			aspect = (GLdouble)h/(GLdouble)w;
+			glOrtho(-size, size, -size*aspect, size*aspect,	-100000.0, 100000.0);
+		}
+		else 
+		{
+			aspect = (GLdouble)w/(GLdouble)h;
+			glOrtho(-size*aspect, size*aspect, -size, size,	-100000.0, 100000.0);
+		}
 
-   fclose(fp);
+		// Make the world and window coordinates coincide so that 1.0 in
+		// model space equals one pixel in window space.
+		glScaled(aspect, aspect, 1.0);
 
-   delete []buf;
-   return ret ? rp : 0;
-}
+		// Now determine where to draw things.
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+	}
+
+	/*-----  prepare shadow projection for current model    -----*/
+	// Multiply the current ModelView-Matrix with a shadow-projetion
+	// matrix.
+	// l is the position of the light source
+	// e is a point on within the plane on which the shadow is to be
+	//   projected.  
+	// n is the normal vector of the plane.
+	// Everything that is drawn after this call is "squashed" down
+	// to the plane. Hint: Gray or black color and no lighting 
+	// looks good for shadows *g*
+	void GlShadowProjection(float * l, float * e, float * n)
+	{
+	  float d, c;
+	  float mat[16];
+
+	  // These are c and d (corresponding to the tutorial)
+	  
+	  d = n[0]*l[0] + n[1]*l[1] + n[2]*l[2];
+	  c = e[0]*n[0] + e[1]*n[1] + e[2]*n[2] - d;
+
+	  // Create the matrix. OpenGL uses column by column
+	  // ordering
+
+	  mat[0]  = l[0]*n[0]+c; 
+	  mat[4]  = n[1]*l[0]; 
+	  mat[8]  = n[2]*l[0]; 
+	  mat[12] = -l[0]*c-l[0]*d;
+	  
+	  mat[1]  = n[0]*l[1];        
+	  mat[5]  = l[1]*n[1]+c;
+	  mat[9]  = n[2]*l[1]; 
+	  mat[13] = -l[1]*c-l[1]*d;
+	  
+	  mat[2]  = n[0]*l[2];        
+	  mat[6]  = n[1]*l[2]; 
+	  mat[10] = l[2]*n[2]+c; 
+	  mat[14] = -l[2]*c-l[2]*d;
+	  
+	  mat[3]  = n[0];        
+	  mat[7]  = n[1]; 
+	  mat[11] = n[2]; 
+	  mat[15] = -d;
+
+	  // Finally multiply the matrices together 
+	  glMultMatrixf(mat);
+	}
+
+	void GlShadowProjection()
+	{
+		float lightPosition[] ={3000,6000,0}; // Coordinates of the light source
+		float normal[] = {0,-1,0};            // Normal vector for the plane
+		float point[] = {0,0,0};              // Point of the plane
+
+		GlShadowProjection(lightPosition,point,normal);
+	}
+
+
+	void OGLdrawCircleXZ(const float radius, const CalVector& center, const CalVector& color, const int segments, const bool filled)
+	{
+		const float step = (2 * Pi) / segments;
+		// set drawing color
+		glColor3f (color.x, color.y, color.z);
+		if (filled){
+			glPushAttrib (GL_ENABLE_BIT);
+			glDisable (GL_CULL_FACE);
+		}
+		// begin drawing a triangle fan (for disk) or line loop (for circle)
+		glBegin (filled ? GL_TRIANGLE_FAN : GL_LINE_LOOP);
+		const int vertexCount = filled ? segments+1 : segments;
+		float _x, _z;
+		for (int i = 0; i < vertexCount; i++)
+		{
+			_x = cos(step*i)*radius + center.x;
+			_z = sin(step*i)*radius + center.z;
+			glVertex3f(_x,1,_z);
+		}
+		glEnd();
+		if (filled) glPopAttrib();
+	}
+
+
+	// text functions ------------------------------------------------------------------ //
+	//internal helpers
+   inline GLint begin2dDrawing (void)
+    {
+        // store OpenGL matrix mode
+        GLint originalMatrixMode;
+        glGetIntegerv (GL_MATRIX_MODE, &originalMatrixMode);
+
+        // clear projection transform
+        glMatrixMode (GL_PROJECTION);
+        glPushMatrix ();
+        glLoadIdentity ();
+
+        // set up orthogonal projection onto window's screen space
+        const float w = glutGet (GLUT_WINDOW_WIDTH);
+        const float h = glutGet (GLUT_WINDOW_HEIGHT);
+        glOrtho (0.0f, w, 0.0f, h, -1.0f, 1.0f);
+
+        // clear model transform
+        glMatrixMode (GL_MODELVIEW);
+        glPushMatrix ();
+        glLoadIdentity ();
+
+        // return original matrix mode for saving (stacking)
+        return originalMatrixMode;
+    }
+
+
+    inline void end2dDrawing (GLint originalMatrixMode)
+    {
+        // restore previous model/projection transformation state
+        glPopMatrix ();
+        glMatrixMode (GL_PROJECTION);
+        glPopMatrix ();
+
+        // restore OpenGL matrix mode
+        glMatrixMode (originalMatrixMode);
+    }
+
+
+	void OGLdraw2DTextAt3D(const char& text, const CalVector& location, const CalVector& color)
+	{
+		// set text color and raster position
+		glEnable(GL_LINE_SMOOTH);
+		glColor3f (color.x, color.y, color.z);
+		glRasterPos3f (location.x, location.y, location.z);
+
+		// switch into 2d screen space in case we need to handle a new-line
+		GLint rasterPosition[4];
+		glGetIntegerv (GL_CURRENT_RASTER_POSITION, rasterPosition);
+		const GLint originalMatrixMode = begin2dDrawing ();
+
+		// loop over each character in string (until null terminator)
+		int lines = 0;
+		for (const char* p = &text; *p; p++)
+		{
+			if (*p == '\n')
+			{
+				// handle new-line character, reset raster position
+				lines++;
+				const int fontHeight = 13; // for GLUT_BITMAP_9_BY_15
+				const int vOffset = lines * (fontHeight + 1);
+				glRasterPos2i (rasterPosition[0], rasterPosition[1] - vOffset);
+			}
+			else
+			{
+				// otherwise draw character bitmap
+				glutBitmapCharacter (GLUT_BITMAP_8_BY_13, *p);
+			}
+		}
+
+		// switch back out of 2d screen space
+		end2dDrawing (originalMatrixMode);
+		glDisable(GL_LINE_SMOOTH);
+	}
+
+	void OGLdraw2DTextAt3D(const std::ostringstream& text, const CalVector& location, const CalVector& color)
+	{
+		OGLdraw2DTextAt3D(*text.str().c_str(), location, color);
+	}
+
+
+	void OGLWriteBitmap(int font, int x, int y, const char *text)
+	{
+		int len, i;
+		if ((font>6)||(font<0)) font = 4;
+		glRasterPos2f(x, y);
+		len = (int) strlen(text);
+		for (i = 0; i < len; i++)
+		{
+			glutBitmapCharacter(bitmap_fonts[font], text[i]);
+		}
+	}
+
+	void OGLWriteStroke(int x, int y, const char *text)
+	{
+		int i, len;
+		glPushMatrix();
+		glTranslatef(x, y, 0);
+		glScaled(0.1,0.1,0.1);
+		len = (int) strlen(text);
+		for (i = 0; i < len; i++)
+		{
+			glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
+		}
+		glPopMatrix();
+	}
+
+
+	// shader functions ------------------------------------------------------------------ //
+	GLuint loadVertexProgram(const std::string fn)
+	{
+	   FILE *fp;
+	   GLubyte *buf;
+	   int length;
+	   bool ret = true;
+	   GLuint vp;
+
+	   if (!(fp = fopen(fn.c_str(),"rb")))
+	   {
+		  return false;
+	   }
+	   
+	   if (Debug::RENDER>0)
+			_dbg << "Loading vertex program: " << fn << std::endl;
+	   
+	   fseek(fp, 0, SEEK_END);
+	   length = ftell(fp);
+	   fseek(fp, 0, SEEK_SET);
+
+	   buf = new GLubyte[length+1];
+
+	   fread( buf, 1, length, fp);
+	   buf[length] = '\0'; // make it a regular C string so str* functions work
+
+	   glGenProgramsARB( 1, &vp);
+	   glBindProgramARB( GL_VERTEX_PROGRAM_ARB, vp);
+
+	   glProgramStringARB( GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB, length, buf);
+
+	   if (glGetError() != 0)
+	   {
+		  int lineno;
+		  printf("%s\n", glGetString(GL_PROGRAM_ERROR_STRING_ARB));
+		  glGetIntegerv( GL_PROGRAM_ERROR_POSITION_ARB, &lineno);
+		  printf(" @%d\n", lineno);
+		  ret = false;
+	   }
+	   else
+	   {
+		  if (Debug::RENDER>0)
+			printf(" Vertex Program - Load succeeded\n");
+
+		  glBindProgramARB( GL_VERTEX_PROGRAM_ARB, 0 );
+	   }
+
+	   fclose(fp);
+
+	   delete []buf;
+	   return ret ? vp :0;
+	}
+
+
+	GLuint loadFragmentProgram(const std::string fn)
+	{
+	   FILE *fp;
+	   GLubyte *buf;
+	   int length;
+	   bool ret = true;
+	   GLuint rp;
+
+	   if (!(fp = fopen(fn.c_str(),"rb")))
+	   {
+		  return false;
+	   }
+
+	   printf("\nLoading fragment program: '%s'\n", fn);
+
+	   fseek(fp, 0, SEEK_END);
+	   length = ftell(fp);
+	   fseek(fp, 0, SEEK_SET);
+
+	   buf = new GLubyte[length+1];
+
+	   fread( buf, 1, length, fp);
+	   buf[length] = '\0'; // make it a regular C string so str* functions work
+
+	   glGenProgramsARB( 1, &rp);
+	   glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, rp);
+
+	   glProgramStringARB( GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB, length, buf);
+
+	   if (glGetError() != 0)
+	   {
+		  int position;
+		  printf("%s\n", glGetString(GL_PROGRAM_ERROR_STRING_ARB));
+		  glGetIntegerv( GL_PROGRAM_ERROR_POSITION_ARB, &position);
+		  printf(" @%d\n", position);
+		  ret = false;
+	   }
+	   else
+	   {
+		  printf(" Fragment Program - Load succeeded\n");
+		  glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, 0 );
+	   }
+
+	   fclose(fp);
+
+	   delete []buf;
+	   return ret ? rp : 0;
+	}
+
+};

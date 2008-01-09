@@ -40,7 +40,6 @@ namespace ft
 		/// \brief Changes object global rotation offset by given deltaRotation value
 		SceneObject& changeGlobalRotationOffset(const CalQuaternion &deltaRotation);
 
-		bool operator < (SceneObject *p) { return getRenderingOrder() > p->getRenderingOrder(); };
 
 		/// \brief Sets object direction to given direction value
 		SceneObject& setDirection(const CalVector &direction);
@@ -63,7 +62,11 @@ namespace ft
 
 		/// \brief Prints general information about values of object properties  
 		const void PrintInfo(void) const;
-
+		
+		//! set the object annotation on given annotation value
+		SceneObject& setAnnotation(const std::string& annote) {m_annote = annote; return *this;};
+		//! get the value of object annotation
+		const std::string& getAnnotation() {return m_annote;};
 
 	protected:
 
@@ -71,6 +74,7 @@ namespace ft
 			      m_direction;	         // direction of object (ux,uy,uz)
 		CalQuaternion m_orientation;     // rotation of object (axis of rotation and angle of rotation)
         CalQuaternion m_globalRotationOffset;     // offset added to rotation of object 
+		std::string m_annote;
 	};
 }
 

@@ -71,6 +71,8 @@ namespace ft
 		void HardwareRenderModelMesh(const bool shadow);
 		void RenderModelSkeleton(const bool shadow);
 		void RenderModelBoundingBox(const bool shadow);
+		void RenderControlParameters();
+		bool RENDER_CONTROL_PARAMETERS;
     };
 }
 

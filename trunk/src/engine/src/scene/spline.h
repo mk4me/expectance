@@ -71,13 +71,8 @@ namespace ft
 #define DISPLAY_MODE_POINTS 1
 #define DISPLAY_MODE_LINES 2
 
-typedef struct {unsigned char r, g, b, a;} COLOR;
 
-#define SET_COLOR(c, rIn, gIn, bIn, aIn) \
-	c.r = rIn; \
-	c.g = gIn; \
-	c.b = bIn; \
-	c.a = aIn
+
 
 typedef struct SplineControlData_Str {
 	vector3 pos;
@@ -137,19 +132,6 @@ public:
 	int curveType;
 	float shortestDistance;
 
-	//-------------------------------------------------
-	// Display Parameters
-	int displayControlMode;
-	int displayCurveMode;
-	int displayCurveModulo;
-	int displayOrientMode;
-	int displayOrientModulo;
-	float displayOrientLen;
-	COLOR controlClr;
-	COLOR curveClr;
-	COLOR tanClr;
-	COLOR nrmClr;
-	COLOR sidClr;
 
 public:
 	void ParseDefinitionFile(char * fileName);

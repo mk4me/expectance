@@ -84,31 +84,16 @@ namespace ft
 		const float getDataViewportHeight() { return m_dvpH;};
 		/// \brief Renders FT logo 
 		void RenderLogo();
-		/// \brief Calculates projection matrix for shadow effect with customized parameters
-		void GlShadowProjection(float * l, float * e, float * n);
-		//! calculate projecton matrix for shadow effect with default parameters
-		void GlShadowProjection();
-		//! calculate correct ortho2D surface
-		void GLOrtho2DCorrection();
-		/// \brief Writes bitmap text on the 2D area given by parameters: location (x,y), font type and text to be displayed
-		void OGLWriteBitmap(int font, int x, int y, const char *text);
-		//! write stroked text on the 2D area given by parameters: location (x,y), and text to be displayed
-		void OGLWriteStroke(int x, int y, const char *text);
+
 		//! inform about FT logo visibility
 		bool IsLogoFTActive();
 
-		//! load vertex program from file
-		GLuint loadVertexProgram(const std::string fn);
-		//! load fragment program from file
-		GLuint loadFragmentProgram(const std::string fn);
-
     	mutable int HardwareAcceleration;
 		bool DATA_VIEWPORT;
-		int DATA_VIEWPORT_TYPE;
 
 	private:
 		
-		double m_ymin, m_ymax, m_yscope;
+		double m_ymin, m_ymax;
 		static OGLContext* m_instance;
 		bool m_floorType, m_logoFT;
 		float m_dvpW,m_dvpH;
@@ -117,6 +102,30 @@ namespace ft
         bool m_dvpGrid;
         float m_dvpGridStep;
 	};
+
+	/// \brief Calculates projection matrix for shadow effect with customized parameters
+	void GlShadowProjection(float * l, float * e, float * n);
+	//! calculate projecton matrix for shadow effect with default parameters
+	void GlShadowProjection();
+	//! calculate correct ortho2D surface
+	void GLOrtho2DCorrection(const int width, const int height);
+	
+	//! draw circle given by radius, segments, color, center and info about filling it by color
+	void OGLdrawCircleXZ(const float radius, const CalVector& center, const CalVector& color, const int segments, const bool filled);
+
+	// \brief Writes bitmap text on the 3D area given by parameters: text to be displayed, location(x,y,z) and text color
+	void OGLdraw2DTextAt3D(const char& text, const CalVector& location, const CalVector& color);
+	// \brief Writes bitmap text on the 3D area given by parameters: text to be displayed, location(x,y,z) and text color
+	void OGLdraw2DTextAt3D(const std::ostringstream& text, const CalVector& location, const CalVector& color);
+
+	/// \brief Writes bitmap text on the 2D area given by parameters: location (x,y), font type and text to be displayed
+	void OGLWriteBitmap(int font, int x, int y, const char *text);
+	//! write stroked text on the 2D area given by parameters: location (x,y), and text to be displayed
+	void OGLWriteStroke(int x, int y, const char *text);
+	//! load vertex program from file
+	GLuint loadVertexProgram(const std::string fn);
+	//! load fragment program from file
+	GLuint loadFragmentProgram(const std::string fn);
 }
 
 #endif //_GEN_OGL_CONTEXT_H

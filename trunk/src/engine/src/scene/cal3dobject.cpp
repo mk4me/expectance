@@ -32,8 +32,12 @@ DynamicObjectID(m_counter++)
 	}
 	else
 		m_hardwareRendering = false;
+    
+	RENDER_CONTROL_PARAMETERS = ((Config::getInstance()->IsKey("RENDER_CONTROL_PARAMETERS")) && (Config::getInstance()->GetIntVal("RENDER_CONTROL_PARAMETERS")==1));
+	std::ostringstream _oss;
+	_oss << "id " << DynamicObjectID  << std::endl;
+	setAnnotation(_oss.str());
 
-	//m_counter++;
 }
 
 /**
@@ -95,7 +99,7 @@ bool Cal3DObject::InitHardwareAcceleration()
 	  return false;
 	}
 
-	if ((m_vertexProgramId = OGLContext::getInstance()->loadVertexProgram(FT_SHADERPATH + Config::getInstance()->GetStrVal("mesh_vertex_program"))) == 0)
+	if ((m_vertexProgramId = loadVertexProgram(FT_SHADERPATH + Config::getInstance()->GetStrVal("mesh_vertex_program"))) == 0)
 	{
       if (Debug::ERR)
           _dbg << Debug::ERR_STR << "Error loading vertex program." << std::endl;
@@ -182,11 +186,15 @@ bool Cal3DObject::Render()
 	// draw the object that casts the shadow
 	glEnable(GL_DEPTH_TEST);
 	glShadeModel(GL_SMOOTH);
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
 	//
 	glPushMatrix();
+		if (RENDER_CONTROL_PARAMETERS) 
+			RenderControlParameters();
 		//glRotatef(-90,1.0f,0.0f,0.0f); //unnecessary while XYZ order in cal files
+		
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+
 		RenderMeshObject(m_renderMethod, false);
 	glPopMatrix();
 
@@ -208,7 +216,7 @@ bool Cal3DObject::RenderShadow()
 	{
 		m_calModel->setLodLevel(0.0f);
 		glPushMatrix();
-			OGLContext::getInstance()->GlShadowProjection();
+			GlShadowProjection();
 			glColor4f(0.1f,0.1f,0.1f,0.5f);
 			//glRotatef(-90,1.0f,0.0f,0.0f); //unnecessary while XYZ order in cal files
 			RenderMeshObject(m_renderMethod, m_shadow); 	
@@ -545,15 +553,16 @@ void Cal3DObject::RenderModelSkeleton(const bool shadow)
 	// draw the bone lines
 	float lines[1024][2][3];
 	int nrLines = m_calModel->getSkeleton()->getBoneLines(&lines[0][0][0]);
+	static int _starting_index = ((nrLines > 3)?3:0);
 
-	glLineWidth(3.0f);
+	glLineWidth(1.0f);
 	if (!shadow)
 		glColor3f(1.0f, 1.0f, 0.0f);
 	else 
 		glColor3f(0.0f, 0.0f, 0.0f);
 
 	glBegin(GL_LINES);
-	for(int currLine = 0; currLine < nrLines; currLine++)
+	for(int currLine = _starting_index; currLine < nrLines; currLine++)
 	{
 		glVertex3f(lines[currLine][0][0], lines[currLine][0][1], lines[currLine][0][2]);
 		glVertex3f(lines[currLine][1][0], lines[currLine][1][1], lines[currLine][1][2]);
@@ -568,10 +577,10 @@ void Cal3DObject::RenderModelSkeleton(const bool shadow)
 	glPointSize(4.0f);
 	glBegin(GL_POINTS);
 	if (!shadow)
-		glColor3f(0.0f, 0.0f, 1.0f);
+		glColor3f(1.0f, 0.0f, 0.0f);
 	else
 		glColor3f(0.0f, 0.0f, 0.0f);
-	for(int currPoint = 0; currPoint < nrPoints; currPoint++)
+	for(int currPoint = _starting_index; currPoint < nrPoints; currPoint++)
 	{
 		glVertex3f(points[currPoint][0], points[currPoint][1], points[currPoint][2]);
 	}
@@ -648,6 +657,24 @@ void Cal3DObject::RenderModelBoundingBox(const bool shadow)
 	glEnd();
 	glDisable(GL_COLOR_MATERIAL);	
 
+}
+
+
+
+/**
+ * \brief Renders Cal3DObject Parameters using software rendering method
+ **/
+void Cal3DObject::RenderControlParameters()
+{
+	glEnable(GL_COLOR_MATERIAL);
+
+	const char* _annote = getAnnotation().c_str(); 
+
+	OGLdrawCircleXZ(50,getPosition(), CalVector(1,1,1),20,false);
+
+	OGLdraw2DTextAt3D(*_annote ,getPosition()+CalVector(1,100,1),CalVector(1,1,0) );
+
+	glDisable(GL_COLOR_MATERIAL);	
 }
 
 /**
