@@ -15,6 +15,8 @@ Global
 		Debug Max 5|Win32 = Debug Max 5|Win32
 		Debug Max 6|Win32 = Debug Max 6|Win32
 		Debug|Win32 = Debug|Win32
+		DLL Debug Max 6|Win32 = DLL Debug Max 6|Win32
+		DLL Release Max 6|Win32 = DLL Release Max 6|Win32
 		FT Full Debug Max 6|Win32 = FT Full Debug Max 6|Win32
 		FT Full Release Max 6|Win32 = FT Full Release Max 6|Win32
 		Release Max 6|Win32 = Release Max 6|Win32
@@ -25,6 +27,8 @@ Global
 		{86AD39B7-DDE7-4F46-B5BF-2154B047C112}.Debug Max 5|Win32.Build.0 = Debug|Win32
 		{86AD39B7-DDE7-4F46-B5BF-2154B047C112}.Debug Max 6|Win32.ActiveCfg = Debug|Win32
 		{86AD39B7-DDE7-4F46-B5BF-2154B047C112}.Debug|Win32.ActiveCfg = Debug|Win32
+		{86AD39B7-DDE7-4F46-B5BF-2154B047C112}.DLL Debug Max 6|Win32.ActiveCfg = DLL Debug Max 6|Win32
+		{86AD39B7-DDE7-4F46-B5BF-2154B047C112}.DLL Release Max 6|Win32.ActiveCfg = DLL Release Max 6|Win32
 		{86AD39B7-DDE7-4F46-B5BF-2154B047C112}.FT Full Debug Max 6|Win32.ActiveCfg = FT Full Debug Max 6|Win32
 		{86AD39B7-DDE7-4F46-B5BF-2154B047C112}.FT Full Debug Max 6|Win32.Build.0 = FT Full Debug Max 6|Win32
 		{86AD39B7-DDE7-4F46-B5BF-2154B047C112}.FT Full Release Max 6|Win32.ActiveCfg = FT Full Release Max 6|Win32
@@ -38,6 +42,10 @@ Global
 		{39E62386-7293-42DC-8549-216FC8A7E079}.Debug Max 6|Win32.Build.0 = Debug|Win32
 		{39E62386-7293-42DC-8549-216FC8A7E079}.Debug|Win32.ActiveCfg = Debug|Win32
 		{39E62386-7293-42DC-8549-216FC8A7E079}.Debug|Win32.Build.0 = Debug|Win32
+		{39E62386-7293-42DC-8549-216FC8A7E079}.DLL Debug Max 6|Win32.ActiveCfg = DLL Debug Max 6|Win32
+		{39E62386-7293-42DC-8549-216FC8A7E079}.DLL Debug Max 6|Win32.Build.0 = DLL Debug Max 6|Win32
+		{39E62386-7293-42DC-8549-216FC8A7E079}.DLL Release Max 6|Win32.ActiveCfg = DLL Release Max 6|Win32
+		{39E62386-7293-42DC-8549-216FC8A7E079}.DLL Release Max 6|Win32.Build.0 = DLL Release Max 6|Win32
 		{39E62386-7293-42DC-8549-216FC8A7E079}.FT Full Debug Max 6|Win32.ActiveCfg = FT Full Debug Max 6|Win32
 		{39E62386-7293-42DC-8549-216FC8A7E079}.FT Full Debug Max 6|Win32.Build.0 = FT Full Debug Max 6|Win32
 		{39E62386-7293-42DC-8549-216FC8A7E079}.FT Full Release Max 6|Win32.ActiveCfg = FT Full Release Max 6|Win32
@@ -52,6 +60,10 @@ Global
 		{564697FF-3F8B-4C3B-ADC4-9082BB636050}.Debug Max 6|Win32.Build.0 = FT Full Debug Max 6|Win32
 		{564697FF-3F8B-4C3B-ADC4-9082BB636050}.Debug|Win32.ActiveCfg = Debug|Win32
 		{564697FF-3F8B-4C3B-ADC4-9082BB636050}.Debug|Win32.Build.0 = Debug|Win32
+		{564697FF-3F8B-4C3B-ADC4-9082BB636050}.DLL Debug Max 6|Win32.ActiveCfg = DLL Debug Max 6|Win32
+		{564697FF-3F8B-4C3B-ADC4-9082BB636050}.DLL Debug Max 6|Win32.Build.0 = DLL Debug Max 6|Win32
+		{564697FF-3F8B-4C3B-ADC4-9082BB636050}.DLL Release Max 6|Win32.ActiveCfg = DLL Release Max 6|Win32
+		{564697FF-3F8B-4C3B-ADC4-9082BB636050}.DLL Release Max 6|Win32.Build.0 = DLL Release Max 6|Win32
 		{564697FF-3F8B-4C3B-ADC4-9082BB636050}.FT Full Debug Max 6|Win32.ActiveCfg = FT Full Debug Max 6|Win32
 		{564697FF-3F8B-4C3B-ADC4-9082BB636050}.FT Full Debug Max 6|Win32.Build.0 = FT Full Debug Max 6|Win32
 		{564697FF-3F8B-4C3B-ADC4-9082BB636050}.FT Full Release Max 6|Win32.ActiveCfg = FT Full Release Max 6|Win32
