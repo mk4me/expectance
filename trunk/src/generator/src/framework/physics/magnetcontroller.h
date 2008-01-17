@@ -7,7 +7,7 @@
 #define _GEN_PHYSICS_MAGNETCONTROLLER_H
 
 #include "../timeline/timelinemodifier.h"
-
+#include "scene/line.h"
 namespace ft
 {
 	/**
@@ -35,6 +35,7 @@ namespace ft
 		DataCollector *curve_curr_angle;
         DataCollector *curve_cummForce_angle;
 		bool DRAW_MAGNET_CURVE;
+		Line *m_forceVector, *m_directionVector;
 	};
 }
 

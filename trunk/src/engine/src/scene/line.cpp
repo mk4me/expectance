@@ -11,6 +11,7 @@ Line::Line(const std::string& name):m_arrow(false)
 {
 	setName(name);
 	setRenderingOrder(ft_Rendering_Trace_Level);
+	setLenght(1);
 	
 }
 
@@ -23,9 +24,10 @@ Line::Line(const CalVector& position, const Quat& orientation, float lenght, con
 	Vec _axis;
 	orientation.getAngleAxis(_angle,_axis);
 	_axis.normalize(); //is it necessary???
-	m_end = (m_start + VecToCalVec(_axis*lenght));
+	m_direction = VecToCalVec(_axis);
+	m_end = (m_position + m_direction*lenght);
 
-	setLenght(lenght).setStart(position);
+	setLenght(lenght);
 	setPosition(position).setOrientation( QuatToCalQuat(orientation) );
 	setName(name);
 	setRenderingOrder(ft_Rendering_Trace_Level);
@@ -34,7 +36,7 @@ Line::Line(const CalVector& position, const Quat& orientation, float lenght, con
 
 Line::Line(const CalVector& start, const CalVector& end, const std::string& name):m_arrow(false)
 {
-	m_start = start;
+	m_position = start;
 	m_end = end;
 
 	setName(name);
@@ -51,12 +53,12 @@ bool Line::Render()
 	glPushMatrix();
 
 		//set position, orientation
-		glTranslatef(m_start.x, m_start.y, m_start.z);
+		//glTranslatef(m_start.x, m_start.y, m_start.z);
 		//set object parameters
 		//draw it	
 		glColor4f(m_color.x, m_color.y, m_color.z, 1.0);
 		glBegin(GL_LINES);
-			glVertex3f(m_start.x, m_start.y, m_start.z);
+			glVertex3f(m_position.x, m_position.y, m_position.z);
 			glVertex3f(m_end.x, m_end.y, m_end.z);
 		glEnd();
 		glEnable(GL_BLEND);
@@ -67,13 +69,14 @@ bool Line::Render()
 		{
 			GLUquadricObj* pQuadric = gluNewQuadric();
 
-			CalVector v = m_end-m_start;
+			CalVector v = m_end-m_position;
 			float height = v.normalize();
 			float angle = 0.0f;
-			if(sqrt(v.x*v.x+v.y*v.y) > 1)
+			double _lenXY = sqrt(v.x*v.x+v.y*v.y); 
+			if( _lenXY > 1)
 				angle = 90.0f;
 			else
-				angle = (float)asin(sqrt(v.x*v.x+v.y*v.y))/3.14159f*180.0f;
+				angle = (float)asin(_lenXY)/3.14159f*180.0f;
 			if(v.z < 0.0f)
 				angle = 180.0f-angle;
 
@@ -98,21 +101,37 @@ bool Line::Render()
 	return true;
 }
 
-Line& Line::setStart(const CalVector& start)
-{
-	m_start = start;
-	return *this;
-}
+
+
 
 Line& Line::setEnd(const CalVector& end)
 {
 	m_end = end;
+	CalVector _diff = m_position- m_end;
+	// correction for lenght
+	m_lenght = _diff.length(); 
+	// correction for direction
+	m_direction = _diff;
+	m_direction.normalize();
+
 	return *this;
 }
 
 Line& Line::setLenght(const float lenght)
 {
+	m_end = (m_position + m_direction*lenght);
 	m_lenght = lenght;
+	
+	return *this;
+}
+
+
+Line& Line::setDirection(const CalVector &direction)
+{
+	m_direction = direction;
+	m_direction.normalize();
+	m_end = m_position + m_direction*m_lenght;
+
 	return *this;
 }
 

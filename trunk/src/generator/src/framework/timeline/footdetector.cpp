@@ -21,7 +21,7 @@ FootDetector::FootDetector(void)
 		SceneManager::getInstance()->AddObject(m_tracerL);
 		m_tracerR  = new TraceLine("rightFootMarker");
 		m_tracerR->setMarkerShape(ft_Cross);
-		m_tracerR->setBufferSize(20);
+		m_tracerR->setBufferSize(2);
 		m_tracerR->setColor(CalVector(1,0,0));
 		m_tracerR->setMarkerColor(CalVector(1,1,0));
 		SceneManager::getInstance()->AddObject(m_tracerR);

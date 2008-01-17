@@ -32,15 +32,16 @@ namespace ft {
 		virtual bool Render();
 		//! set the value of line length
 		Line& setLenght(const float lenght);
-		//! set the value of line start point
-		Line& setStart(const CalVector &start);
+
+		/// \brief Sets object direction to given direction value
+		Line& setDirection(const CalVector &direction);
+		
 		//! set the value of line end point
 		Line& setEnd(const CalVector &end);
 		//! set Arrow visible or not
 		Line& setArrow(const bool arrow);
 
 	private:
-		CalVector m_start;
 		CalVector m_end;
 		float m_lenght;
 		bool m_arrow;

@@ -10,6 +10,7 @@
 #include "scene/scenemanager.h"
 #include "utility/vishelper.h"
 
+
 using namespace ft;
 
 /// \brief constructor
@@ -29,6 +30,14 @@ MagnetController::MagnetController()
         curve_cummForce_angle->HidePoints();       curve_cummForce_angle->setColor(VisualizationHelper::COLOR_GREEN);
         curve_cummForce_angle->setDrawScale(0.2f);   curve_cummForce_angle->setLegendLabel("cummulative force angle");
 
+		m_forceVector = new Line("ForceHelper");
+		SceneManager::getInstance()->AddObject(m_forceVector);
+		m_forceVector->setArrow(true).setColor(CalVector(1,0,0));
+
+		m_directionVector = new Line("directionHelper");
+		SceneManager::getInstance()->AddObject(m_directionVector);
+		m_directionVector->setArrow(true);
+
 	} 
 }
 
@@ -42,6 +51,9 @@ MagnetController::~MagnetController(void)
 
         curve_cummForce_angle->Clear();
         SceneManager::getInstance()->RemoveDataObject(curve_cummForce_angle);
+
+		SceneManager::getInstance()->RemoveObject(m_forceVector);
+		SceneManager::getInstance()->RemoveObject(m_directionVector);
 	}
 }
 
@@ -142,7 +154,28 @@ void MagnetController::Apply(float elapsedSeconds, TimeLineContext * timeLineCon
     {
         curve_cummForce_angle->AddValue(RadToDeg(_forceAngValue));
         curve_curr_angle->AddValue(RadToDeg(_dirAngleValue));
-    }
+		std::ostringstream st;
+		st.precision(0);
+		CalVector _start =  av->getPosition();
+		CalVector _endDir = av->getDirection(); 
+		CalVector _endForce =_tmpCummForce*100;
+		_endDir*=50; // scale
+		_endDir+=_start; // offset according to start point
+		_endForce+= _start;
+		_start.y = _endDir.y =  _endForce.y = 1;
+
+
+		st << std::fixed << "Av (" << av->getPosition().x <<", " << av->getPosition().z <<")";
+		st << " F["<< _endForce.length() <<"]" << std::endl;
+		//string _hlpr = Avatar"x="+StringHelper::itos(av->getPosition().x) + "z="+StringHelper::itos(av->getPosition().z);
+		av->setAnnotation(st.str());
+
+		m_directionVector->setPosition(_start);
+		m_directionVector->setEnd(_endDir);
+
+		m_forceVector->setPosition(_start);
+		m_forceVector->setEnd(_endForce);
+	}
 }
 
 
