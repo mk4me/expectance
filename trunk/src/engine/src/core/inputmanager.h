@@ -6,16 +6,15 @@
 #ifndef _GEN_INPUT_MANAGER_H
 #define _GEN_INPUT_MANAGER_H
 
-
-#include <vector>
 #include "inputlistener.h"
+#include "../utility/stlhelper.h"
 
 namespace ft
 {
 	/**
 	 * Class InputManager: handles inputs from keyboard and mouse and passes them to appropriate modules
 	 **/
-    class InputManager
+    class ENGINE_API InputManager
     {
     public:
         InputManager(void) { /*empty*/}
@@ -35,8 +34,8 @@ namespace ft
 
     private:
         static InputManager* m_instance;
-		std::vector<InputListener*> m_vListeners;
 
+        STL_WrappedVector<InputListener*> m_vListeners;
 
     };
 }

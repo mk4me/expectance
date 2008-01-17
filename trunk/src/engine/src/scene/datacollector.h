@@ -17,7 +17,7 @@ namespace ft {
 	/*!
 	 *	This class creates collection of data and creates points/lines reciprocally conected. This is useful for graphics objects debugging on the scene. 
 	 */
-	class DataCollector : public SceneObject
+	class ENGINE_API DataCollector : public SceneObject
 	{
 	public:
 		/*! Constructs object with a given name */

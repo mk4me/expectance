@@ -5,6 +5,7 @@
 #ifndef _GEN_DEBUG_H
 #define _GEN_DEBUG_H
 
+#include "../core/platform.h"
 #include <fstream>
 #include <iostream>
 
@@ -22,7 +23,7 @@ namespace ft
 	/*!
 	 *	Provides a set of methods and properties that help debug your code. 
 	 */
-    class Debug
+    class ENGINE_API Debug
     {
     public:
 

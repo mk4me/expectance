@@ -6,6 +6,7 @@
 #ifndef _GEN_BASE_OBJECT_H
 #define _GEN_BASE_OBJECT_H
 
+#include "../core/platform.h"
 #include "../core/global.h"
 #include <typeinfo>
 
@@ -15,7 +16,7 @@ namespace ft
 	/**
 	 * Class BaseObject: base class for all objects that can be managed by Generator application
 	 **/
-    class BaseObject 
+    class ENGINE_API BaseObject 
     {
     public:
         static bool SHORT_DESC;

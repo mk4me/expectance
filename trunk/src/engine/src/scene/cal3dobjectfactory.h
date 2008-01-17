@@ -19,7 +19,7 @@ namespace ft
      * and use of CalModel-s and CalCoreModel-s to which specific cal3dobject refers.
      * 
 	 **/
-    class Cal3DObjectFactory
+    class ENGINE_API Cal3DObjectFactory
     {
     public:
         Cal3DObjectFactory (void) { /*empty*/ }

@@ -8,6 +8,7 @@
 #endif
 
 #include "global.h"
+#include "mainapp.h"
 #include "application.h"
 
 #include "inputmanager.h"

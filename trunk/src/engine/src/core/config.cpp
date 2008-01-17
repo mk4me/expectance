@@ -140,8 +140,8 @@ bool Config::ReloadConfigFile()
 bool Config::IsKey(const char * key)
 {
     bool result = false;
-  	std::map<std::string,std::string>::iterator it = m_entries.find(key);
-    if ( it!=m_entries.end()) 
+  	std::map<std::string,std::string>::iterator it = m_entries.map.find(key);
+    if ( it!=m_entries.map.end()) 
         result = true;
 
     return result;
@@ -156,8 +156,8 @@ bool Config::IsKey(const char * key)
 const char* Config::GetStrVal(const char * key)
 {
     const char* result;
-  	std::map<std::string,std::string>::iterator it = m_entries.find(key);
-    if ( it!=m_entries.end()) 
+  	std::map<std::string,std::string>::iterator it = m_entries.map.find(key);
+    if ( it!=m_entries.map.end()) 
         result = it->second.c_str();
     else
         result = "<KEY_NOT_FOUND>";
@@ -174,8 +174,8 @@ const char* Config::GetStrVal(const char * key)
 const std::string Config::GetStrVal(const std::string& key)
 {
 	std::string result;
-  	std::map<std::string,std::string>::iterator it = m_entries.find(key);
-    if ( it!=m_entries.end()) 
+  	std::map<std::string,std::string>::iterator it = m_entries.map.find(key);
+    if ( it!=m_entries.map.end()) 
         result = it->second;
     else
         result = "<KEY_NOT_FOUND>";
@@ -215,13 +215,13 @@ float Config::GetFloatVal(const char * key)
  **/
 void Config::AddEntry(std::string key, std::string val)
 {
-	std::map<std::string,std::string>::iterator it = m_entries.find(key);
+	std::map<std::string,std::string>::iterator it = m_entries.map.find(key);
 
-    if ( it!=m_entries.end()) {
+    if ( it!=m_entries.map.end()) {
         std::cerr << "Error: Key " << key << " duplicated in config file .. " << std::endl;
 	}
 
-    m_entries.insert( std::make_pair( std::string(key), std::string(val) ) );
+    m_entries.map.insert( std::make_pair( std::string(key), std::string(val) ) );
 }
 
 /**
@@ -231,7 +231,7 @@ void Config::AddEntry(std::string key, std::string val)
 void Config::ClearEntries()
 {
     //TODO: abak:  is there need to delete each string separately
-    m_entries.clear();
+    m_entries.map.clear();
 }
 
 /**

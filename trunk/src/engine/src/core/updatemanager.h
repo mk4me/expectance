@@ -14,7 +14,7 @@ namespace ft
 	/**
 	 * Class UpdateManager: manages messages flow and updating objects 
 	 **/
-    class UpdateManager
+    class ENGINE_API UpdateManager
     {
     public:
         UpdateManager(void) { /*empty*/}

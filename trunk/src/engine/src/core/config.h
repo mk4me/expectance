@@ -9,15 +9,15 @@
 #define CONFIG_FILE "data/application.cfg"
 
 #include "../utility/debug.h"
+#include "../utility/stlhelper.h"
 #include <string>
-#include <map>
 
 namespace ft
 {
 	/**
 	 * Class Config: handles settings loaded from configuration file of Generator application
 	 **/
-    class Config
+    class ENGINE_API Config
     {
     public:
         static Config* getInstance();
@@ -34,9 +34,10 @@ namespace ft
 
         static void TEST_CONFIG();  // to test if Config works properly
 
-    private:
+    protected:
         static Config* m_instance;
-        std::map<std::string,std::string> m_entries;
+    
+        STL_WrappedMap<std::string,std::string> m_entries;
 
         void AddEntry(std::string key, std::string val);
         void ClearEntries();

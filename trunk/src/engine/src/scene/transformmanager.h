@@ -7,6 +7,7 @@
 #define _SCENE_TRANSFORMMANAGER_H
 
 #include "../utility/mathconversions.h"
+#include "../core/platform.h"
 
 
 namespace ft
@@ -16,7 +17,7 @@ namespace ft
 	/* A TransformManager class 
 	 * Responsible for proper creation and initialization of Transform objects
 	 */
-    class TransformManager
+    class ENGINE_API TransformManager
     {
     public:
         bool TRACK_TRANSFORM; 

@@ -13,7 +13,7 @@ namespace ft
 	/**
 	 * Class Application: is responsible for lifecycle of Generator application
 	 **/
-    class Application : public InputListener
+    class ENGINE_API Application : public InputListener
     {
     public:
         virtual int Init();

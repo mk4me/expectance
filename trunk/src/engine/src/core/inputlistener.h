@@ -6,12 +6,14 @@
 #ifndef _GEN_INPUT_LISTENER_H
 #define _GEN_INPUT_LISTENER_H
 
+#include "../core/platform.h"
+
 namespace ft
 {
 	/**
 	 * Class InputListener: class to implement by listeners for input events
 	 **/
-    class InputListener
+    class ENGINE_API InputListener
     {
     public:
         InputListener(void) { /*empty*/}

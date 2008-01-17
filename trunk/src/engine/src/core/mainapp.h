@@ -4,4 +4,4 @@
  */
 #include "application.h"
 
-int InitGlutApplication(int argc, char *argv[], ft::Application *app);
+ENGINE_API int InitGlutApplication(int argc, char *argv[], ft::Application *app);

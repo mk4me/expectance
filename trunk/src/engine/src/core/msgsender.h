@@ -7,15 +7,14 @@
 #define _GEN_MSGSENDER_H
 
 #include "msglistener.h"
-#include <vector>
-
+#include "../utility/stlhelper.h"
 
 namespace ft
 {
 	/**
 	 * Class MsgSender: class which can send messages to listeners
 	 **/
-    class MsgSender
+    class ENGINE_API MsgSender
     {
     public:
         MsgSender(void) { /*empty*/}
@@ -29,7 +28,7 @@ namespace ft
         void Destroy();
 
     private:
-        std::vector<MsgListener*> m_vListeners;
+        STL_WrappedVector<MsgListener*> m_vListeners;
         
     };
 

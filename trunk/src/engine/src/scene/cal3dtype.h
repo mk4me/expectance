@@ -6,6 +6,7 @@
 #ifndef _SCENE_CAL3DTYPE_H
 #define _SCENE_CAL3DTYPE_H
 
+#include "../core/platform.h"
 #include "transform.h"
 
 
@@ -14,7 +15,7 @@ namespace ft
 	/* 
      * An Cal3dType class is extension of CalCoreModel for Cal3d objects
 	 */
-    class Cal3dType : public CalCoreModel
+    class ENGINE_API Cal3dType : public CalCoreModel
     {
     public:
 		Cal3dType(const std::string &typeName);

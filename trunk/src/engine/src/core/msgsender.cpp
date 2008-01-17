@@ -17,7 +17,7 @@ void MsgSender::AddMsgListener(MsgListener* listener)
     if (Debug::MESSAGE>0)
         _dbg << " MsgSender::AddListener " << listener << std::endl;
 
-    m_vListeners.push_back(listener);
+    m_vListeners.vector.push_back(listener);
 }
 
 bool  MsgSender::RemoveMsgListener(MsgListener* listener)
@@ -25,15 +25,15 @@ bool  MsgSender::RemoveMsgListener(MsgListener* listener)
     bool result = false;
 
     std::vector<MsgListener*>::iterator iteratorListener;
-    iteratorListener = m_vListeners.begin();
+    iteratorListener = m_vListeners.vector.begin();
 
-    while(iteratorListener != m_vListeners.end())
+    while(iteratorListener != m_vListeners.vector.end())
     {
         // find the specified action and remove it
         if((*iteratorListener) == listener)
         {
             // found, so remove
-            m_vListeners.erase(iteratorListener);
+            m_vListeners.vector.erase(iteratorListener);
             result = true;
             break;
         }
@@ -53,8 +53,8 @@ bool  MsgSender::RemoveMsgListener(MsgListener* listener)
 
 void MsgSender::Destroy()
 {
-    if (m_vListeners.size() > 0)
-        m_vListeners.clear();
+    if (m_vListeners.vector.size() > 0)
+        m_vListeners.vector.clear();
 }
 
 /**
@@ -69,11 +69,11 @@ void MsgSender::SendMsg(Message* msg, bool deleteAfterSent)
         _dbg << "MsgSender " << this << " SendMsg: "<< Message::_GET_MSG_NAME(msg->getType())  << std::endl;
 
 
-    if (m_vListeners.size() > 0)
+    if (m_vListeners.vector.size() > 0)
     {
-        for (int m=0; m<(int)m_vListeners.size(); m++)
+        for (int m=0; m<(int)m_vListeners.vector.size(); m++)
         {
-            m_vListeners[m]->OnMessage(msg);
+            m_vListeners.vector[m]->OnMessage(msg);
         }
     }
     if (deleteAfterSent && msg != NULL)

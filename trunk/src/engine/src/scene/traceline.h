@@ -16,7 +16,7 @@ namespace ft {
 	/*!
 	 *	This class creates collection of points/lines reciprocally conected. This is useful for graphics objects debugging on the scene. 
 	 */
-	class TraceLine : public SceneObject
+	class ENGINE_API TraceLine : public SceneObject
 	{
 	public:
 		/*! Constructs object with a given name */

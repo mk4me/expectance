@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="windows-1250"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\src;utils\textures;..\engine\src"
+				AdditionalIncludeDirectories="..\..\src;utils\textures;..\engine\src;C:\Boost\include\boost-1_34_1"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -409,10 +409,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\src;utils\textures;..\engine\src"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="..\..\src;utils\textures;..\engine\src;C:\Boost\include\boost-1_34_1"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;ENGINE_TO_DLL"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\Debug/generator.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
@@ -436,7 +436,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d_d.lib glew32d.lib"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d_d.lib glew32d.lib engine_d.lib boost_python_debug.lib "
 				OutputFile="../../bin/Debug/generator_d.dll"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
@@ -503,9 +503,9 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="..\;..\engine\src"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;ENGINE_TO_DLL"
 				StringPooling="true"
-				RuntimeLibrary="0"
+				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile=".\Release/generator.pch"
 				AssemblerListingLocation=".\Release/"
@@ -528,7 +528,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d.lib glew32.lib"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d.lib glew32.lib engine.lib boost_python.lib"
 				OutputFile="../../bin/Release/generator.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -988,6 +988,10 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\app\main.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\app\main.h"
 					>
 				</File>
 			</Filter>

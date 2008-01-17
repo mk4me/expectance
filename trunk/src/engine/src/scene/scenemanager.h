@@ -22,7 +22,7 @@ namespace ft
 	 *	This class is responsible for registering, releasing and communication with the rest parts of the system in the scope of sceneobjects. 
 	 *  It creates visual objects collection. Registers all requiring objects to scene.  
 	 */ 
-	class SceneManager //: public UpdateObject
+	class ENGINE_API SceneManager //: public UpdateObject
     {
     public:
 		SceneManager (void) { }//m_distanceMatrix.reserve(100,100); } //reserve one continous memory block 

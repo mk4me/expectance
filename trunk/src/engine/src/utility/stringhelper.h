@@ -14,17 +14,17 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include "../core/platform.h"
 
 using namespace std;
 
 namespace ft 
 {
-
 	/**
 	 * Class StringHelper:
 	 * Utilities for String formatting, manipulation, and queries
 	 **/
-	class StringHelper
+	class ENGINE_API StringHelper
 	{
 		public:
 		static vector<string> Split(const string& str,const string& delimiters);

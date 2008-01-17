@@ -14,7 +14,7 @@ namespace ft
 	/**
 	 * Class UpdateObject: base class for objects that can be registered in UpdateManager
 	 **/
-    class UpdateObject : public virtual BaseObject
+    class ENGINE_API UpdateObject : public virtual BaseObject
     {
     public:
         UpdateObject(void) { /*empty*/}

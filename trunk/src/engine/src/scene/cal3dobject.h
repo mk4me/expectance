@@ -18,7 +18,7 @@ namespace ft
 	 *! Base class for all objects that has refernce in Cal3d (which contain meshes, materials, skeleton and animations)
      * \param CalModel * calModel -- model in Cal3d which is referenced by this Cal3DObject
 	 **/
-    class Cal3DObject : public MsgListener, public UpdateObject, public SceneObject
+    class ENGINE_API Cal3DObject : public MsgListener, public UpdateObject, public SceneObject
     {
     public:
 		Cal3DObject(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName);

@@ -8,6 +8,8 @@
 #define _GEN_RENDERING_OBJECT_H
 
 #include "../core/global.h"
+#include "../core/platform.h"
+
 
 namespace ft
 {
@@ -15,7 +17,7 @@ namespace ft
 	/*!
 	 *	This is the base class for rendering. It contains all basic rendering interface utilized by other scene objects 
 	 */
-	class RenderObject
+	class ENGINE_API RenderObject
 	{
 	public:
 		RenderObject(void);

@@ -15,7 +15,7 @@ namespace ft
 	/* A Transform class 
 	 * Base class for objects responsible for transformation of motion data from original for to application scene
 	 */
-    class Transform : public BaseObject
+    class ENGINE_API Transform : public BaseObject
     {
     public:
         Transform(const std::string type); 

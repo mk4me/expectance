@@ -19,7 +19,7 @@ namespace ft
 	 *  It creates visual scene. Registers all requiring object to rendering pipeline from messages from InputManager and sends by UpdateManager 
 	 *  messages to interested listeners.  
 	 */ 
-	class VisualizationManager
+	class ENGINE_API VisualizationManager
     {
     public:
         VisualizationManager (void) { /*empty*/ }

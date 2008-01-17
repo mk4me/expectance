@@ -7,9 +7,32 @@
 #define _GEN_STLHELPER_H
 
 #include <vector>
+#include <map>
+#include "../core/platform.h"
 
 namespace ft
 {
+	//! Wrapper for map<string,T>
+	/*!
+	 *	This struct is useful when one wants to export STL collection to DLL without warnings
+	 */ 
+    template <typename T1, typename T2> struct STL_WrappedMap
+    {
+         std::map<T1,T2> map;
+    };
+
+	//! Wrapper for vector<T>
+	/*!
+	 *	This struct is useful when one wants to export STL collection to DLL without warnings
+	 */ 
+    template <typename T> struct STL_WrappedVector
+    {
+        std::vector<T> vector;
+    };
+
+    
+    //StringMap_t<std::string> StringMap;
+
 	//! A Dynamic Array class
 	/*!
 	 *	This class is responsible creating, releasing and operating on dynamic array based on stl vector. 

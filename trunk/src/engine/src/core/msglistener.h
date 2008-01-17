@@ -6,6 +6,7 @@
 #ifndef _GEN_MSG_LISTENER_H
 #define _GEN_MSG_LISTENER_H
 
+#include "../core/platform.h"
 #include "message.h"
 
 namespace ft
@@ -13,7 +14,7 @@ namespace ft
 	/**
 	 * Class InputListener: class to implement by listeners for messages
 	 **/
-    class MsgListener
+    class ENGINE_API MsgListener
     {
     public:
         MsgListener(void) { /*empty*/}

@@ -40,6 +40,7 @@
 #include <math.h>
 #include <float.h>
 #include <vector>
+#include "../core/platform.h"
 
 #ifdef WIN32
 	#define isnan _isnan
@@ -52,7 +53,7 @@ namespace ft {
  *	This should be a fairly standard implementation of 3-space vectors, with most normal operations.
  *	They are represented as an array of three floats.
  */ 
-class Vec
+class ENGINE_API Vec
 {
 	float vals[3];
 public:

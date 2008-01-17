@@ -22,7 +22,7 @@ namespace ft
 	/*!
 	 *	This class is responsible for global current camera operations and management of all system cameras. 
 	 */
-	class CameraManager : public UpdateObject, public InputListener
+	class ENGINE_API CameraManager : public UpdateObject, public InputListener
     {
     public:
         CameraManager(void) { /*empty*/}

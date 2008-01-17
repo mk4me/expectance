@@ -13,7 +13,7 @@ namespace ft
 	/**
 	 * Class GlobalMsgSender: manages global messages flow 
 	 **/
-    class GlobalMsgSender : public MsgSender
+    class ENGINE_API GlobalMsgSender : public MsgSender
     {
     public:
         GlobalMsgSender(void) { /*empty*/}

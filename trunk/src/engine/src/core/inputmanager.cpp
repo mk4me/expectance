@@ -46,7 +46,7 @@ void InputManager::AddListener(InputListener* listener)
     if (Debug::INPUT>0)
         _dbg << " InputManager::AddListener " << listener << std::endl;
 
-    m_vListeners.push_back(listener);
+    m_vListeners.vector.push_back(listener);
 }
 
 bool  InputManager::RemoveListener(InputListener* listener)
@@ -54,15 +54,15 @@ bool  InputManager::RemoveListener(InputListener* listener)
     bool result = false;
 
     std::vector<InputListener*>::iterator iteratorListener;
-    iteratorListener = m_vListeners.begin();
+    iteratorListener = m_vListeners.vector.begin();
 
-    while(iteratorListener != m_vListeners.end())
+    while(iteratorListener != m_vListeners.vector.end())
     {
         // find the specified action and remove it
         if((*iteratorListener) == listener)
         {
             // found, so remove
-            m_vListeners.erase(iteratorListener);
+            m_vListeners.vector.erase(iteratorListener);
             result = true;
             break;
         }
@@ -91,11 +91,11 @@ bool  InputManager::RemoveListener(InputListener* listener)
  **/
 void InputManager::OnKey(unsigned char key, int x, int y)
 {
-    if (m_vListeners.size() > 0)
+    if (m_vListeners.vector.size() > 0)
     {
-        for (int m=0; m<(int)m_vListeners.size(); m++)
+        for (int m=0; m<(int)m_vListeners.vector.size(); m++)
         {
-            m_vListeners[m]->OnKey(key, x, y);
+            m_vListeners.vector[m]->OnKey(key, x, y);
         }
     }
 }
@@ -129,11 +129,11 @@ void InputManager::OnSpecial(int key, int x, int y)
       break;	
   }
   */
-    if (m_vListeners.size() > 0)
+    if (m_vListeners.vector.size() > 0)
     {
-        for (int m=0; m<(int)m_vListeners.size(); m++)
+        for (int m=0; m<(int)m_vListeners.vector.size(); m++)
         {
-            m_vListeners[m]->OnSpecial(key, x, y);
+            m_vListeners.vector[m]->OnSpecial(key, x, y);
         }
     }
 }
@@ -150,11 +150,11 @@ void InputManager::OnMouseButtonDown(int button, int x, int y)
     if (Debug::INPUT>0)
 		_dbg << "Nacisnieto button: " << button <<"w pozycji (x,y) = (" <<x<<", "<<y<<")"<< std::endl;
 
-    if (m_vListeners.size() > 0)
+    if (m_vListeners.vector.size() > 0)
     {
-        for (int m=0; m<(int)m_vListeners.size(); m++)
+        for (int m=0; m<(int)m_vListeners.vector.size(); m++)
         {
-            m_vListeners[m]->OnMouseButtonDown(button, x, y);
+            m_vListeners.vector[m]->OnMouseButtonDown(button, x, y);
         }
     }
 }
@@ -168,11 +168,11 @@ void InputManager::OnMouseButtonDown(int button, int x, int y)
  **/
 void InputManager::OnMouseButtonUp(int button, int x, int y)
 {
-    if (m_vListeners.size() > 0)
+    if (m_vListeners.vector.size() > 0)
     {
-        for (int m=0; m<(int)m_vListeners.size(); m++)
+        for (int m=0; m<(int)m_vListeners.vector.size(); m++)
         {
-            m_vListeners[m]->OnMouseButtonUp(button, x, y);
+            m_vListeners.vector[m]->OnMouseButtonUp(button, x, y);
         }
     }
 }
@@ -185,11 +185,11 @@ void InputManager::OnMouseButtonUp(int button, int x, int y)
  **/
 void InputManager::OnMouseMove(int x, int y)
 {
-    if (m_vListeners.size() > 0)
+    if (m_vListeners.vector.size() > 0)
     {
-        for (int m=0; m<(int)m_vListeners.size(); m++)
+        for (int m=0; m<(int)m_vListeners.vector.size(); m++)
         {
-            m_vListeners[m]->OnMouseMove(x, y);
+            m_vListeners.vector[m]->OnMouseMove(x, y);
         }
     }
 }

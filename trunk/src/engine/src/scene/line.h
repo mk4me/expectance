@@ -15,7 +15,7 @@ namespace ft {
 	/*!
 	 *	This class creates line. It is possible to define: start and end of the line, color, length, arrow. 
 	 */
-	class Line : public SceneObject  
+	class ENGINE_API Line : public SceneObject  
 	{
 	public:
 		//! construct line given by name

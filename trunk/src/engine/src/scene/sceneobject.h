@@ -17,7 +17,7 @@ namespace ft
 	/*!
 	 *	This is the base class for sceneobject. It contains all basic properties utilized by other scene objects 
 	 */
-	class SceneObject: public virtual BaseObject, public RenderObject
+	class ENGINE_API SceneObject: public virtual BaseObject, public RenderObject
 	{
 	public:
 		/// \brief Default constructor. Creates object on the scene. Sets position on (0,0,0), 

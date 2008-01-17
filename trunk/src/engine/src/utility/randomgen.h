@@ -6,12 +6,14 @@
 #ifndef _GEN_RANDOMGEN_H
 #define _GEN_RANDOMGEN_H
 
+#include "../core/platform.h"
+
 namespace ft
 {
 	/**
 	 * Class RandomGenerator: useful methods for generating random values
 	 **/
-    class RandomGenerator
+    class ENGINE_API RandomGenerator
     {
     public:
         static int RanIntValue(int scope);

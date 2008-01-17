@@ -38,6 +38,7 @@
 
 //#include "PiavcaDefs.h"
 #include "Vec.h"
+#include "../core/platform.h"
 
 namespace ft
 {
@@ -56,7 +57,7 @@ namespace ft
  *	axis of rotation. All the components also depend on the angle. The quaternions always have to have a 
  *	magnitude of one to represent a valid rotation.
  */
-class Quat
+class ENGINE_API Quat
 {
 	float vals[4];
 public:

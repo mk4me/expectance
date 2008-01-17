@@ -13,7 +13,7 @@ namespace ft
 	/**
 	 * Class VisualizationHelper: useful methods to vizualization adorments
 	 **/
-    class VisualizationHelper
+    class ENGINE_API VisualizationHelper
     {
     public:
         static CalVector COLOR_WHITE;
