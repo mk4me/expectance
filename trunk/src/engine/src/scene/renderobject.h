@@ -30,11 +30,17 @@ namespace ft
 		const byte getRenderingOrder();
 		//! set the value of object rendering order: 1 - static objects, 2 - tracers and other dodads, 3 - dynamic objects
 		RenderObject& setRenderingOrder(const RenderingOrder ro);
+		
+		//! set the value of object alpha
+		RenderObject& setAlpha(const float alpha=1) {m_alpha = alpha; return *this;};
+
+		//! get the value of object alpha
+		const float getAlpha(){return m_alpha;};
 
 		//! get the value of object color
 		const CalVector& getColor() const;
-		/// \brief Sets object color by vector of RGB values 
-		RenderObject& setColor(const CalVector &color);
+		/// \brief Sets object color by vector of RGB values and alpha
+		RenderObject& setColor(const CalVector &color, const float alpha = 1);
 
 		/// \brief Sets object visible or not
 		RenderObject& setVisible( bool vis);
@@ -45,6 +51,7 @@ namespace ft
 	protected:
 		RenderingOrder m_renderingOrder;
 		bool m_visible;
+		float m_alpha;
 		CalVector m_color;
 	};
 }

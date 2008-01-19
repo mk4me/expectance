@@ -709,6 +709,22 @@
 				Name="object"
 				>
 				<File
+					RelativePath=".\src\scene\circle.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\scene\circle.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\scene\circulararc.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\scene\circulararc.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\scene\datacollector.cpp"
 					>
 				</File>

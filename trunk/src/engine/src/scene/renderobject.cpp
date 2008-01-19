@@ -39,8 +39,9 @@ const CalVector& RenderObject::getColor() const
 	return m_color;
 }
 
-RenderObject& RenderObject::setColor(const CalVector& col)
+RenderObject& RenderObject::setColor(const CalVector& col, const float alpha)
 {
+	setAlpha(alpha);
 	m_color = col;
 	return *this;
 }

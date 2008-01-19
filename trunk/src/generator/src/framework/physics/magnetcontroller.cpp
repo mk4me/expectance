@@ -38,6 +38,9 @@ MagnetController::MagnetController()
 		SceneManager::getInstance()->AddObject(m_directionVector);
 		m_directionVector->setArrow(true);
 
+		m_boundaryParameters = new Circle("boundaryHelper");
+		SceneManager::getInstance()->AddObject(m_boundaryParameters);
+		m_boundaryParameters->setRadius(50).setDisk(true).setColor(CalVector(1,1,1), 0.3f);
 	} 
 }
 
@@ -54,6 +57,7 @@ MagnetController::~MagnetController(void)
 
 		SceneManager::getInstance()->RemoveObject(m_forceVector);
 		SceneManager::getInstance()->RemoveObject(m_directionVector);
+		SceneManager::getInstance()->RemoveObject(m_boundaryParameters);
 	}
 }
 
@@ -169,7 +173,10 @@ void MagnetController::Apply(float elapsedSeconds, TimeLineContext * timeLineCon
 		st << " F["<< _endForce.length() <<"]" << std::endl;
 		//string _hlpr = Avatar"x="+StringHelper::itos(av->getPosition().x) + "z="+StringHelper::itos(av->getPosition().z);
 		av->setAnnotation(st.str());
-
+//		m_boundaryParameters->setEnd(_endDir);
+//		m_boundaryParameters->setStart(_endForce);
+		m_boundaryParameters->setPosition(av->getPosition());
+		
 		m_directionVector->setPosition(_start);
 		m_directionVector->setEnd(_endDir);
 

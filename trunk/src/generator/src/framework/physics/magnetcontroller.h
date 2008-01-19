@@ -8,6 +8,9 @@
 
 #include "../timeline/timelinemodifier.h"
 #include "scene/line.h"
+#include "scene/circle.h"
+#include "scene/circle.h"
+
 namespace ft
 {
 	/**
@@ -36,6 +39,7 @@ namespace ft
         DataCollector *curve_cummForce_angle;
 		bool DRAW_MAGNET_CURVE;
 		Line *m_forceVector, *m_directionVector;
+		Circle *m_boundaryParameters;
 	};
 }
 
