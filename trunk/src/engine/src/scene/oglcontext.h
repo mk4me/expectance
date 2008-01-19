@@ -110,8 +110,15 @@ namespace ft
 	//! calculate correct ortho2D surface
 	void GLOrtho2DCorrection(const int width, const int height);
 	
-	//! draw circle given by radius, segments, color, center and info about filling it by color
-	void OGLdrawCircleXZ(const float radius, const CalVector& center, const CalVector& color, const int segments, const bool filled);
+	//! draw circle or disk given by radius, segments, color, center and info about filling it by color
+	void OGLdrawCircleXZ(const float radius, const CalVector& center, const CalVector& color, const int segments = 20, const bool filled = false);
+
+	//! draw arc or pie given by start point, center, color, segments and info about filling it by color
+	void OGLdrawArcXZ(const CalVector &start, const CalVector& center, const CalVector& color, const float alpha = 1.0f, const float arcLength = 0.0f, const int segments = 20, const bool filled = false);
+
+	//! draw arc or pie given by two vectors start point, end point , center, color, segments and info about filling it by color
+	void OGLdrawArcXZ(const CalVector &start, const CalVector &end, const CalVector& center, const CalVector& color, const float alpha = 1.0f, const int segments = 20, const bool filled = false);
+
 
 	// \brief Writes bitmap text on the 3D area given by parameters: text to be displayed, location(x,y,z) and text color
 	void OGLdraw2DTextAt3D(const char& text, const CalVector& location, const CalVector& color);

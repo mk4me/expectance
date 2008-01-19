@@ -6,6 +6,7 @@
 #include "oglcontext.h"
 #include "texturemanager.h"
 #include "../utility/mathconversions.h"
+#include "../utility/mathutil.h"
 
 using namespace ft;
 
@@ -544,6 +545,105 @@ namespace ft {
 		if (filled) glPopAttrib();
 	}
 
+	void OGLdrawArcXZ(const CalVector &start, const CalVector& center, const CalVector& color, const float alpha,  
+					  const float arcLength, const int segments, const bool filled)
+	{
+		
+
+
+		// determine the angular step per segment
+		const float radius = start.length ();
+		const float twoPi = 2 * Pi;
+		const float circumference = twoPi * radius;
+		const float arcAngle = twoPi* arcLength / circumference;
+		const float step = arcAngle / segments;
+
+		CalVector _start = start;
+		_start.normalize();
+		float _startAngValue = UTIL_GetVectorsAngle(_start,CalVector(1,0,0));
+
+
+//		const float step = (2 * Pi) / segments;
+		// set drawing color
+		glColor4f (color.x, color.y, color.z, alpha);
+		if (filled){
+			glPushAttrib (GL_ENABLE_BIT);
+			glDisable (GL_CULL_FACE);
+		}
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_BLEND);		
+		// begin drawing a triangle fan (for disk) or line loop (for circle)
+		glBegin (filled ? GL_TRIANGLE_FAN : GL_LINE_LOOP);
+		const int vertexCount = filled ? segments+1 : segments;
+		float _x, _z;
+		for (int i = 0; i < vertexCount; i++)
+		{
+			_x = cos(_startAngValue+step*i)*radius + center.x;
+			_z = sin(_startAngValue+step*i)*radius + center.z;
+			glVertex3f(_x,1,_z);
+		}
+		glVertex3f(center.x,1,center.z);
+		glEnd();
+		glDisable(GL_BLEND);		
+		if (filled) glPopAttrib();
+		
+	}
+
+	void OGLdrawArcXZ(const CalVector &start, const CalVector &end, const CalVector& center, 
+					  const CalVector& color, const float alpha, const int segments, const bool filled)
+	{
+
+
+		CalVector _start = start;
+		CalVector _end = end;
+		_start.normalize();
+		_end.normalize();
+		float _startAngValue = UTIL_GetVectorsAngle(_start,CalVector(1,0,0));
+		float sign = UTIL_GetSignForDirChange(CalVector(1,0,0),_start);
+		if (sign==-1)
+			_startAngValue = 2*Pi - _startAngValue;
+
+		float _angleStartEndValue = UTIL_GetVectorsAngle(_start,_end);
+		sign = UTIL_GetSignForDirChange(_start,_end);
+		// determine the angular step per segment
+		if (sign==-1)
+			_angleStartEndValue = 2*Pi - _angleStartEndValue;
+
+		const float radius = start.length ();
+		//const float twoPi = 2 * Pi;
+		//const float circumference = twoPi * radius;
+		//const float arcAngle = twoPi* arcLength / circumference;
+		//const float step = arcAngle / segments;
+
+		const float step = _angleStartEndValue / segments;
+		// set drawing color
+		glColor4f (color.x, color.y, color.z,alpha);
+		if (filled){
+			glPushAttrib (GL_ENABLE_BIT);
+			glDisable (GL_CULL_FACE);
+		}
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_BLEND);		
+		// begin drawing a triangle fan (for disk) or line loop (for circle)
+		glBegin (filled ? GL_TRIANGLE_FAN : GL_LINE_LOOP);
+		const int vertexCount = filled ? segments+1 : segments;
+		float _x, _z;
+		glVertex3f(center.x,1,center.z);
+		for (int i = 0; i < vertexCount; i++)
+		{
+			_x = cos(_startAngValue+step*i)*radius + center.x;
+			_z = sin(_startAngValue+step*i)*radius + center.z;
+			glVertex3f(_x,1,_z);
+		}
+
+//			_x = cos(_startAngValue)*radius + center.x;
+//			_z = sin(_startAngValue)*radius + center.z;
+//			glVertex3f(_x,1,_z);
+
+		glEnd();
+		glDisable(GL_BLEND);		
+		if (filled) glPopAttrib();
+	}
 
 	// text functions ------------------------------------------------------------------ //
 	//internal helpers

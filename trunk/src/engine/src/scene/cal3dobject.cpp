@@ -672,6 +672,10 @@ void Cal3DObject::RenderControlParameters()
 
 	OGLdrawCircleXZ(50,getPosition(), CalVector(1,1,1),20,false);
 
+	//OGLdrawArcXZ(CalVector(50,0,50),getPosition(), CalVector(0,0,1),90,20,true);
+
+	OGLdrawArcXZ(CalVector(0,0,50), getDirection(),  getPosition(), CalVector(0,1,0), 0.5f, 20, true);
+
 	OGLdraw2DTextAt3D(*_annote ,getPosition()+CalVector(1,100,1),CalVector(1,1,0) );
 
 	glDisable(GL_COLOR_MATERIAL);	
