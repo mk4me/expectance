@@ -16,6 +16,7 @@ Circle::Circle(const std::string& name)
 	setRadius(50);
 	setDisk(false);
 	setSegmentsNumber(20);
+	setStippleParameters(); // false but initialize pattern for eventual stipple
 }
 
 Circle::~Circle(void)
@@ -35,7 +36,12 @@ bool Circle::Render()
 			glDisable (GL_CULL_FACE);
 		}
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_BLEND);	
+		glEnable(GL_BLEND);
+		if(m_lineStipple)
+		{
+			glEnable(GL_LINE_STIPPLE);
+			glLineStipple(1, 0x00ff);
+		}
 		// begin drawing a triangle fan (for disk) or line loop (for circle)
 		glColor4f (m_color.x, m_color.y, m_color.z, getAlpha());
 		glBegin (m_filled ? GL_TRIANGLE_FAN : GL_LINE_LOOP);
@@ -47,6 +53,7 @@ bool Circle::Render()
 		}
 		glEnd();
 		glDisable(GL_BLEND);	
+		if(m_lineStipple) glDisable(GL_LINE_STIPPLE);
 		if (m_filled) glPopAttrib();
 	glPopMatrix();
 	return true;
@@ -70,6 +77,13 @@ Circle&  Circle::setSegmentsNumber(const int segments)
 	return *this;
 }
 
+Circle& Circle::setStippleParameters(bool const lineStipple, const GLint factor, const GLshort pattern)
+{
+	m_lineStipple = lineStipple;
+	m_lineStippleFactor = factor;
+	m_lineStipplePattern = pattern;
+	return *this;
+}
 
 void Circle::setParameters(const float radius, const CalVector& center, const CalVector& color, 
 				   const int segments, const bool filled)

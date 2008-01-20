@@ -38,10 +38,18 @@ namespace ft {
 		//! set the value of segments (20 by default)
 		Circle& setSegmentsNumber(const int segments);
 
+		//! set the value of line stipple: pattern and factor
+		Circle& setStippleParameters(bool const lineStipple = false, const GLint factor = 1, const GLshort pattern =0x00ff);
+
+		//! set the value of line stipple 
+		Circle& setLineStipple(bool const lineStipple = false){m_lineStipple = lineStipple; return *this;};
 	private:
 		float m_radius;
 		bool m_filled;
 		int m_segments;
+		bool m_lineStipple;
+		int m_lineStippleFactor;
+		short m_lineStipplePattern;
 	};
 }
 
