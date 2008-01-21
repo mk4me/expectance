@@ -365,7 +365,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="cal3d_d.lib"
+				AdditionalDependencies="opengl32.lib glut32.lib glu32.lib cal3d_d.lib"
 				OutputFile="../../bin/Debug/engine_d.dll"
 				AdditionalLibraryDirectories="../../bin/Debug"
 			/>
@@ -428,7 +428,7 @@
 				AdditionalIncludeDirectories="..\"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;ENGINE_TO_DLL;ENGINE_EXPORTS"
 				StringPooling="true"
-				RuntimeLibrary="3"
+				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile=".\Release/generator.pch"
 				AssemblerListingLocation=".\Release/"
@@ -451,7 +451,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="cal3d.lib"
+				AdditionalDependencies="opengl32.lib glut32.lib glu32.lib cal3d.lib"
 				OutputFile="../../bin/Release/engine.dll"
 				AdditionalLibraryDirectories="../../bin/Release"
 			/>

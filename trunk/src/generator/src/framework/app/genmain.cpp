@@ -7,6 +7,7 @@
 #include "core/glutapp.h"
 #include "generatorapp.h"
 
+
 void RunGlutApp(int argc, char *argv[])
 {
     ft::Application* app = new ft::GeneratorApp();
