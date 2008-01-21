@@ -409,8 +409,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\src;utils\textures;..\engine\src;C:\Boost\include\boost-1_34_1"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;ENGINE_TO_DLL"
+				AdditionalIncludeDirectories="..\..\src;utils\textures;..\engine\src"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;ENGINE_TO_DLL;GENERATOR_TO_DLL;GENERATOR_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\Debug/generator.pch"
@@ -436,7 +436,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d_d.lib glew32d.lib engine_d.lib boost_python_debug.lib "
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d_d.lib glew32d.lib engine_d.lib"
 				OutputFile="../../bin/Debug/generator_d.dll"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
@@ -503,7 +503,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="..\;..\engine\src"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;ENGINE_TO_DLL"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;ENGINE_TO_DLL;GENERATOR_EXPORTS"
 				StringPooling="true"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
@@ -528,14 +528,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d.lib glew32.lib engine.lib boost_python.lib"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d.lib glew32.lib engine.lib"
 				OutputFile="../../bin/Release/generator.dll"
-				LinkIncremental="1"
+				LinkIncremental="0"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="../../bin/Release"
-				ProgramDatabaseFile=".\Release/generator.pdb"
-				SubSystem="1"
-				TargetMachine="1"
+				GenerateDebugInformation="false"
+				ProgramDatabaseFile=""
+				SubSystem="0"
+				TargetMachine="0"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -979,6 +980,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\framework\app\genmain.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\app\genmain.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\app\genvisualizationmanager.cpp"
 					>
 				</File>
@@ -987,11 +996,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\app\main.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\app\main.h"
+					RelativePath=".\src\framework\app\platform.h"
 					>
 				</File>
 			</Filter>

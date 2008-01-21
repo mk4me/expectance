@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="engine"
-	ProjectGUID="{564697FF-3F8B-4C3B-ADC4-9082BB636050}"
-	RootNamespace="engine"
+	Name="pygen"
+	ProjectGUID="{96E7B560-258B-4FC8-9B24-746261CF41F6}"
+	RootNamespace="pygen"
 	>
 	<Platforms>
 		<Platform
@@ -18,7 +18,7 @@
 			Name="Debug|Win32"
 			OutputDirectory=".\Debug"
 			IntermediateDirectory=".\Debug"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -38,17 +38,17 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\Debug/engine.tlb"
+				TypeLibraryName=".\Debug/pygen.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\src; utils\textures"
+				AdditionalIncludeDirectories="..\..\src;utils\textures;..\engine\src;C:\Boost\include\boost-1_34_1"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				PrecompiledHeaderFile=".\Debug/engine.pch"
+				PrecompiledHeaderFile=".\Debug/pygen.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -70,10 +70,22 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d_d.lib glew32d.lib"
+				OutputFile="../../bin/Debug/pygen.exe"
+				LinkIncremental="0"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="../../bin/Debug"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=".\Debug/pygen.pdb"
+				SubSystem="1"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -85,6 +97,12 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -92,7 +110,7 @@
 			Name="Release|Win32"
 			OutputDirectory=".\Release"
 			IntermediateDirectory=".\Release"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -112,19 +130,19 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\Release/generator.tlb"
+				TypeLibraryName=".\Release/pygen.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\"
+				AdditionalIncludeDirectories="..\;..\engine\src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\Release/engine.pch"
+				PrecompiledHeaderFile=".\Release/pygen.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
@@ -144,10 +162,21 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d.lib glew32.lib"
+				OutputFile="../../bin/Release/pygen.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="../../bin/Release"
+				ProgramDatabaseFile=".\Release/pygen.pdb"
+				SubSystem="1"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -159,6 +188,12 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -166,7 +201,7 @@
 			Name="FT Full Debug Max 6|Win32"
 			OutputDirectory="$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -186,17 +221,17 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\Debug/engine.tlb"
+				TypeLibraryName=".\Debug/pygen.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\src; utils\textures"
+				AdditionalIncludeDirectories="..\..\src; utils\textures;..\engine\src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				PrecompiledHeaderFile=".\Debug/engine.pch"
+				PrecompiledHeaderFile=".\Debug/pygen.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -217,10 +252,22 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib"
+				OutputFile="../../bin/Debug/pygen.exe"
+				LinkIncremental="0"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="../cal3d/Debug"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=".\Debug/pygen.pdb"
+				SubSystem="1"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -232,6 +279,12 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -239,7 +292,7 @@
 			Name="FT Full Release Max 6|Win32"
 			OutputDirectory="$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -259,19 +312,19 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\Release/generator.tlb"
+				TypeLibraryName=".\Release/pygen.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\"
+				AdditionalIncludeDirectories="..\;..\engine\src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\Release/generator.pch"
+				PrecompiledHeaderFile=".\Release/pygen.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
@@ -291,10 +344,21 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib"
+				OutputFile="../../bin/Release/pygen.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="../cal3d/Release"
+				ProgramDatabaseFile=".\Release/pygen.pdb"
+				SubSystem="1"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -304,6 +368,12 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -333,17 +403,17 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\Debug/engine.tlb"
+				TypeLibraryName=".\Debug/pygen.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\src; utils\textures"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;ENGINE_EXPORTS;ENGINE_TO_DLL"
+				AdditionalIncludeDirectories="..\..\src;utils\textures;..\engine\src;..\generator\src\framework"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;ENGINE_TO_DLL;GENERATOR_TO_DLL"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\Debug/engine.pch"
+				PrecompiledHeaderFile=".\Debug/pygen.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -351,6 +421,7 @@
 				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
 				CompileAs="0"
+				ShowIncludes="false"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -365,9 +436,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="cal3d_d.lib"
-				OutputFile="../../bin/Debug/engine_d.dll"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d_d.lib glew32d.lib generator_d.lib boost_python_debug.lib  python25_d.lib"
+				OutputFile="../../bin/Debug/pygen_d.pyd"
+				LinkIncremental="0"
+				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="../../bin/Debug"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=".\Debug/pygen.pdb"
+				SubSystem="1"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -418,19 +495,19 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\Release/generator.tlb"
+				TypeLibraryName=".\Release/pygen.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;ENGINE_TO_DLL;ENGINE_EXPORTS"
+				AdditionalIncludeDirectories="..\;..\engine\src;..\generator\src\framework"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;ENGINE_TO_DLL"
 				StringPooling="true"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\Release/generator.pch"
+				PrecompiledHeaderFile=".\Release/pygen.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
@@ -451,9 +528,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="cal3d.lib"
-				OutputFile="../../bin/Release/engine.dll"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d.lib glew32.lib generator.lib boost_python.lib  python25.lib"
+				OutputFile="../../bin/Release/pygen.pyd"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="../../bin/Release"
+				ProgramDatabaseFile=".\Release/pygen.pdb"
+				SubSystem="1"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -485,416 +567,32 @@
 	</References>
 	<Files>
 		<Filter
-			Name="core"
+			Name="app"
 			>
 			<File
-				RelativePath=".\src\core\application.cpp"
+				RelativePath=".\src\app\genthread.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\core\application.h"
+				RelativePath=".\src\app\genthread.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\core\baseobject.cpp"
+				RelativePath=".\src\app\pyapp.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\src\core\baseobject.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\config.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\config.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\global.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\globalmsgsender.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\globalmsgsender.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\glutapp.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\glutapp.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\inputlistener.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\inputmanager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\inputmanager.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\message.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\message.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\msglistener.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\msgsender.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\msgsender.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\platform.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\simulation.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\simulation.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\updatemanager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\updatemanager.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\updateobject.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\core\updateobject.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="scene"
-			>
 			<Filter
-				Name="GL"
+				Name="threads"
 				>
 				<File
-					RelativePath=".\src\scene\glew.c"
+					RelativePath=".\src\app\threads\threads.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\scene\GL\glew.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\GL\glxew.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\oglcontext.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\oglcontext.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\GL\wglew.h"
+					RelativePath=".\src\app\threads\threads.h"
 					>
 				</File>
 			</Filter>
-			<Filter
-				Name="core"
-				>
-				<File
-					RelativePath=".\src\scene\renderobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\renderobject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\sceneobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\sceneobject.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="camera"
-				>
-				<File
-					RelativePath=".\src\scene\camera.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\camera.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\cameraconfiguration.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\cameraconfiguration.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="manager"
-				>
-				<File
-					RelativePath=".\src\scene\cameramanager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\cameramanager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\scenemanager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\scenemanager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\textureManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\textureManager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\transformmanager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\transformmanager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\visualizationmanager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\visualizationmanager.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="object"
-				>
-				<File
-					RelativePath=".\src\scene\circle.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\circle.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\circulararc.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\circulararc.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\datacollector.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\datacollector.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\line.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\line.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\spline.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\spline.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\traceline.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\traceline.h"
-					>
-				</File>
-				<Filter
-					Name="cal3d"
-					>
-					<File
-						RelativePath=".\src\scene\cal3dobject.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\scene\cal3dobject.h"
-						>
-					</File>
-					<File
-						RelativePath=".\src\scene\cal3dobjectfactory.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\scene\cal3dobjectfactory.h"
-						>
-					</File>
-					<File
-						RelativePath=".\src\scene\cal3dtype.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\scene\cal3dtype.h"
-						>
-					</File>
-				</Filter>
-			</Filter>
-			<Filter
-				Name="operations"
-				>
-				<File
-					RelativePath=".\src\scene\transform.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\scene\transform.h"
-					>
-				</File>
-			</Filter>
-		</Filter>
-		<Filter
-			Name="ui"
-			>
-			<File
-				RelativePath=".\src\ui\menuitem.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\ui\menuitem.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\ui\menumanager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\ui\menumanager.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="utility"
-			>
-			<File
-				RelativePath=".\src\utility\debug.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\debug.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\mathconversions.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\mathutil.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\mathutil.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\mtxlib.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\mtxlib.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\quat.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\quat.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\randomgen.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\randomgen.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\stlhelper.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\stringhelper.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\stringhelper.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\vec.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\vec.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\vishelper.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\utility\vishelper.h"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>
