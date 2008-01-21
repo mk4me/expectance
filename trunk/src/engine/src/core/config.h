@@ -6,8 +6,8 @@
 #ifndef _GEN_CONFIG_H
 #define _GEN_CONFIG_H
 
-#define CONFIG_FILE "data/application.cfg"
 
+#include "../core/global.h"
 #include "../utility/debug.h"
 #include "../utility/stlhelper.h"
 #include <string>

@@ -48,7 +48,7 @@ void Config::DestroyInstance()
 bool Config::LoadConfigFile()
 {
 
-    std::string strFilename(CONFIG_FILE);
+    std::string strFilename(FT_DATA_PATH + "application.cfg");
 
     std::ifstream file;
     file.open(strFilename.c_str(), std::ios::in);

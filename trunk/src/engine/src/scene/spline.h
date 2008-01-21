@@ -7,6 +7,9 @@
  * below is included in the resulting source code, for example:
  * "Portions Copyright (C) Dante Treglia II, 2000"
  */
+
+//abak: 2008-01-21: some changes like 'char *' changed to 'const char *'  (See 'abak' keyword in this file)
+
 #ifndef _SPLINE_H
 #define _SPLINE_H
 
@@ -96,7 +99,7 @@ typedef struct SplineCurveData_Str {
 //---------------------------------------------------------------------------
 class Spline : public SceneObject {
 public:
-	Spline(char * fileName);
+	Spline(const char * fileName);  //abak: 2008-01-21: 'char *' changed to 'const char *'
 	Spline(SplineControlData * data, int controlCntIn, int curveSubD);
 	~Spline() {free(controlData); free(curveData);}
 
@@ -134,7 +137,7 @@ public:
 
 
 public:
-	void ParseDefinitionFile(char * fileName);
+	void ParseDefinitionFile(const char * fileName);  //abak: 2008-01-21: 'char *' changed to 'const char *'
 	int GetIndexAtDistanceFromIndex(float distance, int startIndex);
 	int GetIndexAtDistance(float distance);
 	void Build();

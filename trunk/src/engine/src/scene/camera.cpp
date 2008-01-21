@@ -50,8 +50,8 @@ void Camera::Init(float yaw, float pitch, float roll, float dist, CameraMode mod
 	m_viewMtx = LookAtMatrix44(m_camPos, m_camAt, m_camUp);
 
 	//tmp
-	cameraSpline = new Spline("data\\spline\\curve.sdf");
-
+    std::string splinePath = FT_DATA_PATH + "spline\\curve.sdf";
+    cameraSpline = new Spline(splinePath.c_str());
 }
 
 void Camera::UpdateView()

@@ -23,9 +23,10 @@
 
 namespace ft
 {
-	static const std::string FT_SHADERPATH = "data\\shaders\\";
-	static const std::string FT_TEXTUREPATH = "data\\textures\\";
-	static const std::string FT_MODELPATH = "data\\models\\";
+    static const std::string FT_DATA_PATH = "data\\";  
+	static const std::string FT_SHADERPATH = FT_DATA_PATH + "shaders\\";
+	static const std::string FT_TEXTUREPATH = FT_DATA_PATH + "textures\\";
+	static const std::string FT_MODELPATH = FT_DATA_PATH + "models\\";
 
 	static char *CameraModeId[] = {"Static Camera", "3rd Person Camera", "Fly Camera", "Orbit Camera"};
 

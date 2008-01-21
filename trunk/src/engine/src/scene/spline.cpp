@@ -23,7 +23,7 @@ static int state = STATE_BEGIN;
 //---------------------------------------------------------------------------
 // Contstruct a Spline using a Definition File
 //---------------------------------------------------------------------------
-Spline::Spline(char * fileName) {
+Spline::Spline(const char * fileName) {
 	// Initialization
 	controlCnt = 0;
 	controlIndx = 0;
@@ -73,7 +73,7 @@ Spline::Spline(SplineControlData * data, int controlCntIn, int curveSubDIn) {
 //---------------------------------------------------------------------------
 // Parse a Spline Definitions File
 //---------------------------------------------------------------------------
-void Spline::ParseDefinitionFile(char * fileName) {
+void Spline::ParseDefinitionFile(const char * fileName) {
 	char buffer[256];
 	double x, y, z, param;
 	FILE * file;
