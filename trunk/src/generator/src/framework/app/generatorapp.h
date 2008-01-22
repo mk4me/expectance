@@ -8,13 +8,14 @@
 
 #include "core/application.h"
 #include "../avatar/avatar.h"
+#include "platform.h"
 
 namespace ft
 {
 	/**
 	 * Class Application: is responsible for lifecycle of Generator application
 	 **/
-    class GeneratorApp : public Application
+    class GENERATOR_API GeneratorApp : public Application
     {
     public:
         virtual int Init();
@@ -27,6 +28,8 @@ namespace ft
         void StartAISimulation();
 
         Avatar* CreateAvatarOnScene(const std::string& calCoreModel,const std::string& name);
+
+        void printSomeText();  //to test python iface
 
     };
 }

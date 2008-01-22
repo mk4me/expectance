@@ -16,6 +16,11 @@
 
 using namespace ft;
 
+void GeneratorApp::printSomeText()  //to test python iface
+{
+    std::cout << " Text from GeneratorApp in engine project " << std::endl;
+}
+
 // \brief OVERRIDEN from ft::Application
 int GeneratorApp::Init()
 {

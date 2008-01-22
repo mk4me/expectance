@@ -7,8 +7,8 @@
 #include <iostream>
 
 #include "genthread.h"
-#include <boost/python.hpp>
-using namespace boost::python;
+//#include <boost/python.hpp>
+//using namespace boost::python;
 
 
 class GlutThread : public GenThread
@@ -27,11 +27,11 @@ void runApp()
 
 void printSomeText()
 {
-    std::cout << " Some text from generator " << std::endl;
+    std::cout << " Some text from pygen.cpp " << std::endl;
 }
 
-BOOST_PYTHON_MODULE(pygen)
-{
-    def("runApp", runApp);
-    def("printSomeText", printSomeText);
-}
+//BOOST_PYTHON_MODULE(pygen_)
+//{
+//    def("runApp", runApp);
+//    def("printSomeText", printSomeText);
+//}

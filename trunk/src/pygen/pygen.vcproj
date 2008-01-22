@@ -581,6 +581,10 @@
 				RelativePath=".\src\app\pyapp.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\src\app\pyapp.h"
+				>
+			</File>
 			<Filter
 				Name="threads"
 				>
@@ -593,6 +597,14 @@
 					>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="bindings"
+			>
+			<File
+				RelativePath=".\src\bindings\test_bindings.cpp"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
