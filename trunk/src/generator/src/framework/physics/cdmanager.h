@@ -11,7 +11,7 @@
 
 namespace ft
 {
-	static const int MAGNETCONTROLLER_CONST = 100;	
+	static const int MAGNETCONTROLLER_CONST = 200;	
 
 	class CollisionDetectionManager : public UpdateObject
 	{

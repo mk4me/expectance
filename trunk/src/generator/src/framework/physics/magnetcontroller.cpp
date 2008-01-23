@@ -44,8 +44,10 @@ MagnetController::MagnetController()
 
 		m_boundaryScope = new Circle("boundaryHelper");
 		SceneManager::getInstance()->AddObject(m_boundaryScope);
-		m_boundaryScope->setRadius(800).setDisk(true).setSegmentsNumber(50).setColor(CalVector(0,0.001f,0.001f), 0.1f);	
+		m_boundaryScope->setRadius(50).setDisk(false).setSegmentsNumber(50).setColor(CalVector(0,0.001f,0.001f), 0.5f);	
 	} 
+
+	setThreshold(800);
 }
 
 /// \brief destructor
@@ -74,120 +76,80 @@ MagnetController::~MagnetController(void)
  **/
 void MagnetController::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
-    
+	//algorithm for one frame
+	//1. get current the smallest difference angle between cummulative force and direction vector
+	//2. check sign
+	//3. set turn letf if sign==-1 otherwise set turn right
+	//Everything is working under condition that cummulative force exists (is > 0)
+
+	double _currLenForce, _currArcF2D;
+	float sign = 0;
+	_currLenForce = _currArcF2D = sign = 0;
 
 	TimeLineModifier::Apply(elapsedSeconds, timeLineContext);
-
     MovableAvatar* av = (MovableAvatar*)timeLineContext->getAvatar();
 
-	// get current cummulative force and direction angle
-	CalVector _tmpCummForce  = CollisionDetectionManager::getInstance()->getObjectCummulativeForce(av->DynamicObjectID, 800.0);
+	CalVector _cummForce  = CollisionDetectionManager::getInstance()->getObjectCummulativeForce(av->DynamicObjectID, m_threshold);
 	CalQuaternion _dirAngleQ = av->getGlobalRotationOffset();
 	float _dirAngleValue = CalQuatToQuat(_dirAngleQ).Yangle();
-	// compute angle for cummulative force vector
-	float _forceAngValue = UTIL_GetVectorsAngle(_tmpCummForce,CalVector(1,0,0));
+	_currLenForce = _cummForce.length();
+	if (_currLenForce > 0)
+	{
+		CalVector _currDir = av->getDirection();
 	
-	float sign = UTIL_GetSignForDirChange(_tmpCummForce,CalVector(1,0,0));
-	CalQuaternion _forceAngleQ = QuatToCalQuat( Quat(sign*_forceAngValue, Vec(0,1,0)) );
-	// set new value for direction angle according to forceAngle
-	_dirAngleQ.blend(0.1f, _forceAngleQ);
+		//(1.)
+		_currArcF2D = UTIL_GetVectorsAngle(_currDir, _cummForce);
+		//(2.)
+		sign = UTIL_GetSignForDirChange(_currDir,_cummForce);
+	
+		CalQuaternion _currArcF2DQ = QuatToCalQuat( Quat(sign*_currArcF2D, Vec(0,1,0)) );
 
-	// apply changes to global direciton
-	//timeLineContext->getAvatar()->setGlobalRotationOffset(_dirAngleQ);
+		double _cmFA = _currLenForce*0.1f;
 
-	//_dbg << "Wektor sily F=(" <<_tmpCummForce.x << _tmpCummForce.z << ") avatara" << av->getName() << std::endl;
-	//_dbg << "Wektor sily F=(" <<_forceAngValue << endl; // << _direction.z << ") avatara" << av->getName() << std::endl;
+		// set new value for direction angle according to forceAngle
+		_dirAngleQ.blend(_cmFA, _currArcF2DQ);
 
-	//
-
-	//for (long int i = 0; i < CollisionDetectionManager::getInstance()->)
-	//float currSpeedFactor = av->getCurrSpeedFactor();
-    //float destSpeedFactor = av->getDestSpeedFactor();
-    //float minSpeedFactor;
-    //float maxSpeedFactor;
-    
-
-    //define currents limits
-    //if (timeLineContext->currMotion != NULL)
-    //{
-    //    if (timeLineContext->exec_state == EXEC_STATE_OVERLAP && timeLineContext->prevMotion != NULL)
-    //    {
-    //        //INTERPOLATION
-    //        float timeFactor =  timeLineContext->currAnimTime/timeLineContext->prevOverlap;
-    //        minSpeedFactor = (1 - timeFactor)*timeLineContext->prevMotion->getMinSpeedfactor() 
-    //                            + timeFactor*timeLineContext->currMotion->getMinSpeedfactor();
-    //        maxSpeedFactor = (1 - timeFactor)*timeLineContext->prevMotion->getMaxSpeedfactor() 
-    //                            + timeFactor*timeLineContext->currMotion->getMaxSpeedfactor();
-    //    }
-    //    else
-    //    {
-    //        minSpeedFactor = timeLineContext->currMotion->getMinSpeedfactor();
-    //        maxSpeedFactor = timeLineContext->currMotion->getMaxSpeedfactor();
-    //    }
-
-    //}
-    //else
-    //{
-    //    minSpeedFactor = av->getSpeedFactorMin();
-    //    maxSpeedFactor = av->getSpeedFactorMax();
-    //}
-
-    ////adjust dest speed to limits
-    //if (destSpeedFactor < minSpeedFactor)
-    //    destSpeedFactor = minSpeedFactor;
-    //if (destSpeedFactor > maxSpeedFactor)
-    //    destSpeedFactor = maxSpeedFactor;
-
-    ////go with currSpeed to destSpeed
-    //if (currSpeedFactor != destSpeedFactor)
-    //{
-    //    if (currSpeedFactor < destSpeedFactor)
-    //    {
-    //        currSpeedFactor += SPEEDFACTOR_CHANGE;
-    //        currSpeedFactor = currSpeedFactor > destSpeedFactor? destSpeedFactor : currSpeedFactor;
-    //    }
-    //    else 
-    //    {
-    //        currSpeedFactor -= SPEEDFACTOR_CHANGE;
-    //        currSpeedFactor = currSpeedFactor < destSpeedFactor ? destSpeedFactor : currSpeedFactor;
-    //    }
-    //    av->setCurrSpeedFactor(currSpeedFactor);
-    //}
-
-    //av->setDestSpeedFactor(destSpeedFactor);
-    //av->setSpeedFactorMin(minSpeedFactor);
-    //av->setSpeedFactorMax(maxSpeedFactor);
+		// apply changes to global direciton
+		timeLineContext->getAvatar()->setGlobalRotationOffset(_dirAngleQ);
+	}
 
 
     if(DRAW_MAGNET_CURVE)
     {
-        curve_cummForce_angle->AddValue(RadToDeg(_forceAngValue));
+        curve_cummForce_angle->AddValue(RadToDeg(_currArcF2D));
         curve_curr_angle->AddValue(RadToDeg(_dirAngleValue));
 		std::ostringstream st;
 		st.precision(0);
-		CalVector _start =  av->getPosition();
-		CalVector _endDir = av->getDirection(); 
-		CalVector _endForce =_tmpCummForce*100;
-		_endDir*=50; // scale
-		_endDir+=_start; // offset according to start point
-		_endForce+= _start;
-		_start.y = _endDir.y =  _endForce.y = 1;
+		CalVector _o =  av->getPosition();
+		CalVector _direction = av->getDirection(); 
+		CalVector _force =_cummForce*100;
+		_direction*=50; // scale
+		_direction+=_o; // offset according to start point
+		_force+= _o;
+		_o.y = _direction.y =  _force.y = 1;
 
 
 		st << std::fixed << "Av (" << av->getPosition().x <<", " << av->getPosition().z <<")";
-		st << " F["<< _endForce.length() <<"]" << std::endl;
-		//string _hlpr = Avatar"x="+StringHelper::itos(av->getPosition().x) + "z="+StringHelper::itos(av->getPosition().z);
-		av->setAnnotation(st.str());
-		m_boundaryParameters->setEnd(av->getDirection());
-		m_boundaryParameters->setStart(_tmpCummForce);
+		st << " F["<< _force.length() <<"], sign[" << _currLenForce << "]"<<std::endl;
+		//av->setAnnotation(st.str());
+		if (sign==-1) {
+			m_boundaryParameters->setEnd(av->getDirection());
+			m_boundaryParameters->setStart(_cummForce);
+		}
+		else
+		{
+			m_boundaryParameters->setStart(av->getDirection());
+			m_boundaryParameters->setEnd(_cummForce);
+
+		}
 		m_boundaryParameters->setPosition(av->getPosition());
 		m_boundaryScope->setPosition(av->getPosition());
 
-		m_directionVector->setPosition(_start);
-		m_directionVector->setEnd(_endDir);
+		m_directionVector->setPosition(_o);
+		m_directionVector->setEnd(_direction);
 
-		m_forceVector->setPosition(_start);
-		m_forceVector->setEnd(_endForce);
+		m_forceVector->setPosition(_o);
+		m_forceVector->setEnd(_force);
 	}
 }
 

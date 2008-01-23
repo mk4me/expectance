@@ -30,6 +30,8 @@ namespace ft
         virtual void Reset(TimeLineContext * timeLineContext); // resets current object and its children    
 
         virtual std::string toString(); //OVERRIDEN
+		void setThreshold(const double threshold){m_threshold = threshold;};
+		double getThreshold(){return m_threshold;};
 
 	private:
 		double m_threshold;   // threshold value 
