@@ -6,7 +6,7 @@
 #ifndef _GEN_AVATARTYPE_H
 #define _GEN_AVATARTYPE_H
 
-#include "scene/cal3dType.h"
+#include "scene/cal3dtype.h"
 #include "../motion/motion.h"
 
 

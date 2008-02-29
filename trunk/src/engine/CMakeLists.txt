@@ -47,9 +47,13 @@ set(SOURCES
 )
 
 include_directories( 
-  utils/textures
-  ../../src
-  ../../src/cal3d
+  ../
+  ../cal3d
+)
+
+link_directories (
+    ../../src/cal3d
+     ../cal3d
 )
 
 add_definitions( 
@@ -59,3 +63,4 @@ add_definitions(
 
 add_library( engine STATIC ${SOURCES} )
 
+target_link_libraries ( engine Cal3D )

@@ -45,18 +45,17 @@ set(SOURCES
 )
 
 include_directories( 
-  ../../src
-  ../../src/cal3d
-  ../../src/engine
-  ../../src/engine/src
-  utils/textures
+   ../
+   ../cal3d
+   ../engine/src
 )
 
 link_directories (
-    ../../src/engine
-    ../engine
-    ../../src/cal3d
-    ../cal3d
+#     ../../src/engine
+     ../engine
+#     ../../src/cal3d
+     ../cal3d
+#    /usr/lib
 )
 
 add_definitions( 

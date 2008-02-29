@@ -28,7 +28,7 @@ namespace ft
 
         bool IsKey(const char * key);
         const char* GetStrVal(const char * key);
-		const std::string Config::GetStrVal(const std::string& key);
+		const std::string GetStrVal(const std::string& key);
         int GetIntVal(const char * key);
         float GetFloatVal(const char * key);
 

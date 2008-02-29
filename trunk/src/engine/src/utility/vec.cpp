@@ -38,7 +38,7 @@
 //#define PIAVCA_EXPORT
 //#endif
 
-#include "Vec.h"
+#include "vec.h"
 
 using namespace ft;
 
