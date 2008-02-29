@@ -37,7 +37,7 @@
 
 //#include "PiavcaDefs.h"
 
-#include <math.h>
+#include <cmath>
 #include <float.h>
 #include <vector>
 #include "../core/platform.h"

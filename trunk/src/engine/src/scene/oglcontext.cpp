@@ -278,10 +278,10 @@ bool OGLContext::InitLogoDL()
 		glBindTexture(GL_TEXTURE_2D,logoTexture);
 		glColor4f(1.0f, 1.0f, 1.0f, 0.3f);
 		glBegin(GL_QUADS);
-			glTexCoord2f(0.0f, 1.0f); glVertex2i(0, 0);
-			glTexCoord2f(1.0f, 1.0f); glVertex2i(_width, 0);
-			glTexCoord2f(1.0f, 0.0f); glVertex2i(_width, _height);
-			glTexCoord2f(0.0f, 0.0f); glVertex2i(0, _height);
+			glTexCoord2f(0.0f, 1.0f); glVertex2f(0, 0);
+			glTexCoord2f(1.0f, 1.0f); glVertex2f(_width, 0);
+			glTexCoord2f(1.0f, 0.0f); glVertex2f(_width, _height);
+			glTexCoord2f(0.0f, 0.0f); glVertex2f(0, _height);
 	    glEnd();
 
 		glDisable(GL_BLEND);
@@ -334,11 +334,11 @@ void OGLContext::setSceneViewport(const bool zoom)
 
 void OGLContext::setDataViewport()
 {
-	glViewport(0, 0, m_dvpW, m_dvpH);
+	glViewport(0, 0, (int)m_dvpW, (int)m_dvpH);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	gluOrtho2D(0, m_dvpW, 0, m_dvpH);
+	gluOrtho2D(0, (int)m_dvpW, 0, (int)m_dvpH);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
@@ -557,10 +557,11 @@ namespace ft {
 		const float circumference = twoPi * radius;
 		const float arcAngle = twoPi* arcLength / circumference;
 		const float step = arcAngle / segments;
-
+		
+		CalVector _ox = CalVector(1,0,0);
 		CalVector _start = start;
 		_start.normalize();
-		float _startAngValue = UTIL_GetVectorsAngle(_start,CalVector(1,0,0));
+		float _startAngValue = UTIL_GetVectorsAngle(_start, _ox);
 
 
 //		const float step = (2 * Pi) / segments;
@@ -593,13 +594,13 @@ namespace ft {
 					  const CalVector& color, const float alpha, const int segments, const bool filled)
 	{
 
-
+		CalVector _ox = CalVector(1,0,0);
 		CalVector _start = start;
 		CalVector _end = end;
 		_start.normalize();
 		_end.normalize();
-		float _startAngValue = UTIL_GetVectorsAngle(_start,CalVector(1,0,0));
-		float sign = UTIL_GetSignForDirChange(CalVector(1,0,0),_start);
+		float _startAngValue = UTIL_GetVectorsAngle(_start, _ox);
+		float sign = UTIL_GetSignForDirChange(_ox, _start);
 		if (sign==-1)
 			_startAngValue = 2*Pi - _startAngValue;
 
@@ -821,7 +822,7 @@ namespace ft {
 		  return false;
 	   }
 
-	   printf("\nLoading fragment program: '%s'\n", fn);
+	   printf("\nLoading fragment program: '%s'\n", fn.c_str());
 
 	   fseek(fp, 0, SEEK_END);
 	   length = ftell(fp);

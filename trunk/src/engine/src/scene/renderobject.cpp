@@ -23,7 +23,7 @@ bool RenderObject::RenderShadow()
 	return true;
 }
 
-const byte RenderObject::getRenderingOrder()
+const short RenderObject::getRenderingOrder()
 {
 	return m_renderingOrder; 
 }

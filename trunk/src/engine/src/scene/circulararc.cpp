@@ -27,10 +27,11 @@ CircularArc::~CircularArc(void)
 bool CircularArc::Render()
 {
 
+		CalVector _ox = CalVector(1,0,0);
 		m_start.normalize();
 		m_end.normalize();
-		float _startAngValue = UTIL_GetVectorsAngle(m_start,CalVector(1,0,0));
-		float sign = UTIL_GetSignForDirChange(CalVector(1,0,0),m_start);
+		float _startAngValue = UTIL_GetVectorsAngle(m_start, _ox);
+		float sign = UTIL_GetSignForDirChange(_ox, m_start);
 		if (sign==-1)
 			_startAngValue = 2*Pi - _startAngValue;
 

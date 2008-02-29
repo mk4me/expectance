@@ -8,7 +8,7 @@
 
 //#include "cal3d/cal3d.h"
 #include "../avatar/avatar.h"
-#include "utility/Quat.h"
+#include "utility/quat.h"
 #include "../timeline/timelineexecutor.h"
 #include "../timeline/lcsmodifier.h"
 #include "../timeline/footdetector.h"

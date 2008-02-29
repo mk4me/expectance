@@ -134,7 +134,7 @@ bool StringHelper::ReadFloatArrayFromString(const string& str, float* floatArray
 	return true;
 }
 
-template <typename T> static T StringHelper::FromStringEx( const std::string& s, bool& bSuccess)
+template <typename T> T StringHelper::FromStringEx( const std::string& s, bool& bSuccess)
 // string conversion from string to typename T with a flag
 // the represents success or failure.
 //

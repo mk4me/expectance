@@ -17,3 +17,4 @@ BOOST_PYTHON_MODULE(pygen){
         .def( init< >() )    
         .def( "printSomeText", &GeneratorApp::printSomeText );
 }
+

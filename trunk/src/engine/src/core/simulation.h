@@ -39,7 +39,7 @@ namespace ft
 		#ifdef WIN32
 			static unsigned long long currentTime;
 		#else
-			timeval currentTime;
+			static timeval currentTime;
 		#endif
 	};
 }

@@ -3,7 +3,7 @@
  * author: mka
  */
 
-#include "DataCollector.h"
+#include "datacollector.h"
 #include "oglcontext.h"
 using namespace ft;
 

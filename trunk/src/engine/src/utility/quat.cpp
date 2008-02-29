@@ -39,7 +39,7 @@
 //#endif
 
 //#include "PiavcaDefs.h"
-#include "Quat.h"
+#include "quat.h"
 //#include "PiavcaError.h"
 #include <math.h>
 #include <limits>

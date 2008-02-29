@@ -139,7 +139,7 @@ public:
 	  // calculate the length of the vector
 	  float length;
 	  length = (float) sqrt(x * x + y * y + z * z);
-	  
+	  if ( length < 0.00000001f) length = 1; // for secure
 	  float	lenRecip = 1.0f / length;
 	  
 	  // normalize the vector

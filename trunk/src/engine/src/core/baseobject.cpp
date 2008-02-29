@@ -7,7 +7,7 @@
 using namespace ft;
 
 unsigned long long BaseObject::ID_COUNTER = 0;  // max 18446744073709551600;
-bool BaseObject::SHORT_DESC = TRUE;
+bool BaseObject::SHORT_DESC = true;
 
 /**
  * \brief Constructor 

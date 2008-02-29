@@ -34,3 +34,4 @@ namespace ft
 	};
 }
 #endif //_GEN_FOOT_DETECTOR_H
+

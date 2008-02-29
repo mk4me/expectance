@@ -18,3 +18,4 @@ TimeLineObject* TimeLineBlender::Clone()
     TimeLineObject* cloneOfThis = (TimeLineBlender*)TimeLineObject::Clone();
     return cloneOfThis;
 }
+

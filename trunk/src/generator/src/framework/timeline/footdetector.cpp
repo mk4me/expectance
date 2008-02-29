@@ -193,3 +193,4 @@ std::string FootDetector::toString()
     std::string result = TimeLineModifier::toString() + "[FootDetector]";
     return result;
 }
+

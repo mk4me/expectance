@@ -31,7 +31,7 @@ namespace ft
         void setGoalController(AIController* controller) { m_currGoalController = controller; }
         AIController* getGoalController() { return m_currGoalController; }
 
-        void SetThink(boolean set);
+        void SetThink(bool set);
         bool isThink() { return m_bThink; }
 
     private:

@@ -155,7 +155,7 @@ Cal3dType* Cal3DObjectFactory::LoadCalCoreModel(const std::string modelName)
 bool Cal3DObjectFactory::ParseModelConfiguration(const std::string& modelName, CalCoreModel* coreModel)
 {
   // open the model configuration file
-  std::string modelWorkDir = FT_MODELPATH + modelName + "\\";
+  std::string modelWorkDir = FT_MODELPATH + modelName + "/";
   std::ifstream file;
   std::string fn = modelWorkDir + modelName + ".cfg";
   file.open(fn.c_str(), std::ios::in | std::ios::binary);
@@ -390,7 +390,13 @@ void Cal3DObjectFactory::ReleaseCalCoreModels()
 GLuint Cal3DObjectFactory::LoadTexture(const std::string& strFilename)
 {
   GLuint textureId=0;
-  if(_stricmp(strrchr(strFilename.c_str(),'.'),".raw")==0)
+  int _fnok=-1;
+#ifdef WIN32
+	_fnok = _stricmp(strrchr(strFilename.c_str(),'.'),".raw");
+#else
+	_fnok = stricmp(strrchr(strFilename.c_str(),'.'),".raw");
+#endif
+  if(_fnok == 0)
   {
 
      // open the texture file

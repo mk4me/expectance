@@ -37,7 +37,7 @@
 #define QUAT_H
 
 //#include "PiavcaDefs.h"
-#include "Vec.h"
+#include "vec.h"
 #include "../core/platform.h"
 
 namespace ft

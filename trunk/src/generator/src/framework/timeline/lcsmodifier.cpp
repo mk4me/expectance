@@ -756,3 +756,4 @@ std::string LCSModifier::toString()
     std::string result = TimeLineModifier::toString() + "[LCSModifier]";
     return result;
 }
+

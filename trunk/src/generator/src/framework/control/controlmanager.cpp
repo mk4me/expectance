@@ -66,7 +66,7 @@ void ControlManager::DestroyInstance()
  **/
 void ControlManager::Init()
 {
-    setActiveAvatar(NULL);
+    setActiveAvatar(-1);
     m_activeAvatarInd = -1;
 
     TRACE = true;

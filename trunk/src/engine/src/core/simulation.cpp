@@ -11,7 +11,7 @@ using namespace ft;
 #ifdef WIN32
 	unsigned long long Simulation::currentTime;
 #else
-	timeval currentTime;
+	timeval Simulation::currentTime;
 #endif
 
 ft::TimePrecision Simulation::m_timePrecision = ft_Microseconds;

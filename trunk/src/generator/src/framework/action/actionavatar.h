@@ -39,7 +39,7 @@ namespace ft
 
         virtual void Reset();
 
-        void ActionAvatar::Dump();
+        void Dump();
 		
 		const bool canTurnLeft(){ return m_turnLeft;};
 		const bool canTurnRight(){ return m_turnRight;};

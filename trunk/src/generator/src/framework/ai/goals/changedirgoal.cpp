@@ -15,7 +15,7 @@ ChangeDirController::ChangeDirController(float minAngle, float maxAngle)
     m_changeToLeft = (changingDir==0) ? true : false;
     m_changeSpeed = 1;
 
-    int scope = maxAngle - minAngle;
+    int scope = (int)(maxAngle - minAngle);
     int angle = RandomGenerator::RanIntValue(scope);
 
     m_fAngle = minAngle + angle;

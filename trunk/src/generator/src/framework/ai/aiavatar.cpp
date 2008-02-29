@@ -49,7 +49,7 @@ void AIAvatar::Reset()
         _dbg << toString() << " AIAvatar::Reset() " << std::endl;
 }
 
-void AIAvatar::SetThink(boolean set)
+void AIAvatar::SetThink(bool set)
 {
     if (set)
     {
@@ -75,3 +75,4 @@ void AIAvatar::SetThink(boolean set)
     }
 
 }
+

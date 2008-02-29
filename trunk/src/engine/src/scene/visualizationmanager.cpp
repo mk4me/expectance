@@ -147,9 +147,8 @@ void VisualizationManager::DrawLegend()
     float dvpWidth = ctx->getDataViewportWidth();
 
     int text_height = 15;
-    int y = dvpHeight - text_height;
-    int text_x = dvpWidth/2+4;
-
+    int y = (int)(dvpHeight - text_height);
+    int text_x = (int)(dvpWidth/2+4);
 	
 	glEnable(GL_LINE_SMOOTH);
 	glColor4f(1,1,1,0.8f);

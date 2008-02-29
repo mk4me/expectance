@@ -35,7 +35,7 @@ namespace ft
 		  * file (application.cfg) */
 		bool Init(int x, int y);
 		//! locate button index for given coordinates (x,y), return id or -1 otherwise  
-		int MenuManager::checkScope(int x, int y);	
+		int checkScope(int x, int y);	
 		//! render menu 
 		/*! renders menu context (hightlights active/selected control and deactivates remaining) */
 		bool Render();
@@ -73,3 +73,4 @@ namespace ft
 
 //for future use
 //void Update(); //wysyla informacje i updaetuje kontrolki
+

@@ -80,3 +80,4 @@ AIController* RandomMoveGoal::CreateController(ActionAvatar *av)
 {
     return new RandomMoveController(3);
 }
+

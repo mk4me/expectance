@@ -27,7 +27,7 @@ namespace ft
 		/// \brief virtual base for inherited objects for rendering shadows
 		virtual bool RenderShadow();
 		//! get the value of object rendering order: 1 - static objects, 2 - tracers and other dodads, 3 - dynamic objects
-		const byte getRenderingOrder();
+		const short getRenderingOrder();
 		//! set the value of object rendering order: 1 - static objects, 2 - tracers and other dodads, 3 - dynamic objects
 		RenderObject& setRenderingOrder(const RenderingOrder ro);
 		

@@ -596,7 +596,7 @@
 			Name="scene"
 			>
 			<Filter
-				Name="GL"
+				Name="gl"
 				>
 				<File
 					RelativePath=".\src\scene\glew.c"
@@ -683,11 +683,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\scene\textureManager.cpp"
+					RelativePath=".\src\scene\texturemanager.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\scene\textureManager.h"
+					RelativePath=".\src\scene\texturemanager.h"
 					>
 				</File>
 				<File

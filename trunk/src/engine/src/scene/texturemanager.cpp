@@ -4,7 +4,7 @@
  * based on Rob Bateman examples code
  */
 
-#include "TextureManager.h"
+#include "texturemanager.h"
 #include <assert.h>
 
 
@@ -839,22 +839,22 @@ int TextureManager::LoadTgaImage(const std::string filename,unsigned char** ppDa
 			switch( header.m_ImageType )
 			{
 			case 0:
-				printf("[ERROR] The file %s contains no image data\n",filename);
+				printf("[ERROR] The file %s contains no image data\n",filename.c_str());
 				break;
 			case 3:
-				printf("[ERROR] The file %s contains black & white data which is unsupported\n",filename);
+				printf("[ERROR] The file %s contains black & white data which is unsupported\n",filename.c_str());
 				break;
 			case 11:
-				printf("[ERROR] The file %s contains compressed black & white data which is unsupported\n",filename);
+				printf("[ERROR] The file %s contains compressed black & white data which is unsupported\n",filename.c_str());
 				break;
 			case 32:
-				printf("[ERROR] The file %s contains compressed color map data which is un-supported\n",filename);
+				printf("[ERROR] The file %s contains compressed color map data which is un-supported\n",filename.c_str());
 				break;
 			case 33:
-				printf("[ERROR] The file %s contains compressed color map data which is un-supported (4pass quad tree process)\n",filename);
+				printf("[ERROR] The file %s contains compressed color map data which is un-supported (4pass quad tree process)\n",filename.c_str());
 				break;
 			default:
-				printf("[ERROR] The file %s does not appear to be valid\n",filename);
+				printf("[ERROR] The file %s does not appear to be valid\n",filename.c_str());
 				break;
 
 			}
@@ -1183,7 +1183,7 @@ int TextureManager::LoadPcxImage( const std::string filename, unsigned char** pi
 		}
 		else
 		{
-			printf("[ERROR] %s is not a pcx file!!\n" , filename );
+			printf("[ERROR] %s is not a pcx file!!\n" , filename.c_str());
 			fclose(fp);
 			return 0;
 		}
