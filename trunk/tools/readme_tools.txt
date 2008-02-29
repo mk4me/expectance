@@ -40,3 +40,9 @@ Prerequisites:
 USAGE: documentation.cmd 
 EXAMPLE: documentation.cmd
 It builds documentation on the base generator.doxy file from tools directory, compilation of TeX documentation from ..\doc\ directory. All documentation is gathered automatically under ..\dc directory.
+
+
+5. vproj2cmake
+Generates CMakeLists.txt on the base of existing Visual Studio C++ project file (.vproj)
+Prerequisities:
+- Ruby interpreter is required to be installed in the system
