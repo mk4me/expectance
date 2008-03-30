@@ -16,6 +16,7 @@ rmdir /S /Q "src/generator/FT Full Debug Max 6"
 rmdir /S /Q "src/generator/FT Full Release Max 6"
 rmdir /S /Q _ReSharper.Generator
 rmdir /S /Q "_doc"
+rmdir /S /Q "_deploy"
 
 del /F doc\generator.log
 del /F doc\generator.aux
@@ -37,3 +38,4 @@ del /F Cal3d.resharper
 del /F Cal3d.resharper.user
 del /F tools\build_all.log
 del /F null
+
