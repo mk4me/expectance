@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="FT Release Linux" />
-	<File name="src/utility/vec.h" open="1" top="0" tabpos="1">
+	<File name="src/core/glutapp.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2277" topLine="86" />
+	</File>
+	<File name="src/utility/vec.h" open="0" top="0" tabpos="1">
 		<Cursor position="6338" topLine="157" />
 	</File>
 </CodeBlocks_layout_file>

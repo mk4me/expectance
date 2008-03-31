@@ -6,7 +6,7 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="FT Debug Linux">
+			<Target title="FT Debug Static Linux">
 				<Option platforms="Unix;" />
 				<Option output="../../bin/linux/debug/generator" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../../genesvn" />
@@ -29,14 +29,16 @@
 					<Add directory="../engine/src" />
 				</ResourceCompiler>
 				<Linker>
-					<Add library="libglut" />
 					<Add library="../../bin/linux/debug/libengine_d.a" />
+					<Add library="../../bin/linux/debug/libCal3D_d.a" />
+					<Add library="libglut" />
 					<Add directory="../cal3d/Debug" />
 				</Linker>
 			</Target>
-			<Target title="FT Release Linux">
+			<Target title="FT Release Static Linux">
 				<Option platforms="Unix;" />
 				<Option output="../../bin/linux/release/generator" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../../genesvn" />
 				<Option object_output="Release" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -53,9 +55,9 @@
 					<Add directory="../engine/src" />
 				</ResourceCompiler>
 				<Linker>
-					<Add library="libglut" />
-					<Add library="../../bin/linux/release/cal3d.so" />
 					<Add library="../../bin/linux/release/libengine.a" />
+					<Add library="../../bin/linux/release/libCal3D.a" />
+					<Add library="libglut" />
 					<Add directory="../cal3d/Release" />
 				</Linker>
 			</Target>
