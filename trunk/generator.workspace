@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Generator workspace">
+		<Project filename="src/cal3d/cal3d.cbp" />
+		<Project filename="src/engine/engine.cbp">
+			<Depends filename="src/cal3d/cal3d.cbp" />
+		</Project>
+		<Project filename="src/generator/generator.cbp" active="1">
+			<Depends filename="src/engine/engine.cbp" />
+		</Project>
+		<Project filename="src/pygen/pygen.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

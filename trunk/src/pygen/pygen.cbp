@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="pygen" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="FT Debug Linux">
+				<Option output="../../bin/linux/debug/pygen" prefix_auto="1" extension_auto="1" />
+				<Option object_output="Debug" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-DWIN32" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add option="-W" />
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add directory="../../src" />
+					<Add directory="utils/textures" />
+					<Add directory="../engine/src" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../../src" />
+					<Add directory="utils/textures" />
+					<Add directory="../engine/src" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="glut32" />
+					<Add library="glu32" />
+					<Add library="opengl32" />
+					<Add library="odbc32" />
+					<Add library="odbccp32" />
+					<Add directory="../cal3d/Debug" />
+				</Linker>
+			</Target>
+			<Target title="FT Release Linux">
+				<Option output="../../bin/linux/release/pygen" prefix_auto="1" extension_auto="1" />
+				<Option object_output="Release" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-DWIN32" />
+					<Add option="-DNDEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add option="-W" />
+					<Add option="-O2" />
+					<Add directory="../" />
+					<Add directory="../engine/src" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../" />
+					<Add directory="../engine/src" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="glut32" />
+					<Add library="glu32" />
+					<Add library="opengl32" />
+					<Add library="odbc32" />
+					<Add library="odbccp32" />
+					<Add directory="../cal3d/Release" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="src/app/genthread.cpp" />
+		<Unit filename="src/app/genthread.h" />
+		<Unit filename="src/app/pyapp.cpp" />
+		<Unit filename="src/app/pyapp.h" />
+		<Unit filename="src/app/threads/threads.cpp" />
+		<Unit filename="src/app/threads/threads.h" />
+		<Unit filename="src/bindings/test_bindings.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

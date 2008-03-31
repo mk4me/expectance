@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="FT Debug Linux" />
+	<File name="src/framework/action/actionavatar.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="6562" topLine="220" />
+	</File>
+	<File name="src/framework/avatar/avatartype.cpp" open="1" top="1" tabpos="2">
+		<Cursor position="3681" topLine="121" />
+	</File>
+</CodeBlocks_layout_file>

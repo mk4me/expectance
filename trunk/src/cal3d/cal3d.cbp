@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Cal3D" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="FT Debug Linux">
+				<Option platforms="Unix;" />
+				<Option output="../../bin/linux/debug/cal3d_d" prefix_auto="1" extension_auto="1" />
+				<Option object_output="Debug" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-W" />
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add option="-D_DEBUG" />
+					<Add option="-DCAL3D_EXPORTS" />
+					<Add directory=".." />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory=".." />
+				</ResourceCompiler>
+			</Target>
+			<Target title="FT Release Linux">
+				<Option platforms="Unix;" />
+				<Option output="./../../bin/linux/release/cal3d" prefix_auto="1" extension_auto="1" />
+				<Option object_output="Release" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-W" />
+					<Add option="-DNDEBUG" />
+					<Add option="-DCAL3D_EXPORTS" />
+					<Add directory=".." />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory=".." />
+				</ResourceCompiler>
+			</Target>
+		</Build>
+		<Unit filename="animation.cpp" />
+		<Unit filename="animation.h" />
+		<Unit filename="animation_action.cpp" />
+		<Unit filename="animation_action.h" />
+		<Unit filename="animation_cycle.cpp" />
+		<Unit filename="animation_cycle.h" />
+		<Unit filename="animcallback.h" />
+		<Unit filename="bone.cpp" />
+		<Unit filename="bone.h" />
+		<Unit filename="buffersource.cpp" />
+		<Unit filename="buffersource.h" />
+		<Unit filename="cal3d.h" />
+		<Unit filename="cal3d.rc">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="cal3d_wrapper.cpp" />
+		<Unit filename="cal3d_wrapper.h" />
+		<Unit filename="coreanimation.cpp" />
+		<Unit filename="coreanimation.h" />
+		<Unit filename="corebone.cpp" />
+		<Unit filename="corebone.h" />
+		<Unit filename="corekeyframe.cpp" />
+		<Unit filename="corekeyframe.h" />
+		<Unit filename="corematerial.cpp" />
+		<Unit filename="corematerial.h" />
+		<Unit filename="coremesh.cpp" />
+		<Unit filename="coremesh.h" />
+		<Unit filename="coremodel.cpp" />
+		<Unit filename="coremodel.h" />
+		<Unit filename="coremorphanimation.cpp" />
+		<Unit filename="coremorphanimation.h" />
+		<Unit filename="coreskeleton.cpp" />
+		<Unit filename="coreskeleton.h" />
+		<Unit filename="coresubmesh.cpp" />
+		<Unit filename="coresubmesh.h" />
+		<Unit filename="coresubmorphtarget.cpp" />
+		<Unit filename="coresubmorphtarget.h" />
+		<Unit filename="coretrack.cpp" />
+		<Unit filename="coretrack.h" />
+		<Unit filename="datasource.h" />
+		<Unit filename="dualquaternion.cpp" />
+		<Unit filename="dualquaternion.h" />
+		<Unit filename="error.cpp" />
+		<Unit filename="error.h" />
+		<Unit filename="global.cpp" />
+		<Unit filename="global.h" />
+		<Unit filename="hardwaremodel.cpp" />
+		<Unit filename="hardwaremodel.h" />
+		<Unit filename="loader.cpp" />
+		<Unit filename="loader.h" />
+		<Unit filename="matrix.cpp" />
+		<Unit filename="matrix.h" />
+		<Unit filename="mesh.cpp" />
+		<Unit filename="mesh.h" />
+		<Unit filename="mixer.cpp" />
+		<Unit filename="mixer.h" />
+		<Unit filename="model.cpp" />
+		<Unit filename="model.h" />
+		<Unit filename="morphtargetmixer.cpp" />
+		<Unit filename="morphtargetmixer.h" />
+		<Unit filename="physique.cpp" />
+		<Unit filename="physique.h" />
+		<Unit filename="physiquedualquaternion.cpp" />
+		<Unit filename="physiquedualquaternion.h" />
+		<Unit filename="platform.cpp" />
+		<Unit filename="platform.h" />
+		<Unit filename="quaternion.cpp" />
+		<Unit filename="quaternion.h" />
+		<Unit filename="refcounted.h" />
+		<Unit filename="refptr.h" />
+		<Unit filename="renderer.cpp" />
+		<Unit filename="renderer.h" />
+		<Unit filename="resource.h" />
+		<Unit filename="saver.cpp" />
+		<Unit filename="saver.h" />
+		<Unit filename="skeleton.cpp" />
+		<Unit filename="skeleton.h" />
+		<Unit filename="springsystem.cpp" />
+		<Unit filename="springsystem.h" />
+		<Unit filename="streamsource.cpp" />
+		<Unit filename="streamsource.h" />
+		<Unit filename="submesh.cpp" />
+		<Unit filename="submesh.h" />
+		<Unit filename="tinyxml.cpp" />
+		<Unit filename="tinyxml.h" />
+		<Unit filename="tinyxmlerror.cpp" />
+		<Unit filename="tinyxmlparser.cpp" />
+		<Unit filename="vector.cpp" />
+		<Unit filename="vector.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
