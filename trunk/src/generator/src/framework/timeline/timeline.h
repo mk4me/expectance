@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, FutureToday. All rights reserved.
+ * Copyright (c) 2007-2008, FutureToday. All rights reserved.
  * author: abak
  */
 
