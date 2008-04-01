@@ -10,7 +10,7 @@
 #include "mtxlib.h"
 #include "quat.h"
 #include "vec.h"
-#include <cal3d/cal3d.h>
+#include <cal3d/src/cal3d.h>
 
 using ft::Vec;
 using ft::Quat;

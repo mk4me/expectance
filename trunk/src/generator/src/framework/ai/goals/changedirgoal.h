@@ -8,7 +8,7 @@
 
 #include "../goal.h"
 #include "../aicontroller.h"
-#include <cal3d/cal3d.h>
+#include <cal3d/src/cal3d.h>
 
 namespace ft
 {

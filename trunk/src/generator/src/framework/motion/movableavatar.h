@@ -6,7 +6,7 @@
 #ifndef _GEN_MOVABLE_AVATAR_H
 #define _GEN_MOVABLE_AVATAR_H
 
-//#include "cal3d/cal3d.h"
+//#include "cal3d/src/cal3d.h"
 #include "../avatar/avatar.h"
 #include "utility/quat.h"
 #include "../timeline/timelineexecutor.h"

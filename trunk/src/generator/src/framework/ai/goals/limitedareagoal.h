@@ -7,7 +7,7 @@
 #define _GEN_AI_LIMITEDAREAGOAL_H
 
 #include "changedirgoal.h"
-#include <cal3d/cal3d.h>
+#include <cal3d/src/cal3d.h>
 
 namespace ft
 {
