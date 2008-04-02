@@ -10,15 +10,17 @@ USAGE: automatic_build.cmd [revision number] [build mode: debug or release]
 EXAMPLE: automatic_build.cmd 137 debug        
 It starts taking revision number 137 and builds it in debug mode, next copies all output files to \deploy\tests\rev_137\debug\ directory and tries to start application
 
-2. build_all.cmd
+2. build.cmd
 It builds project without Visual Studio environment. Runs from tools directory.
 Prerequisites:
 -visual studio tool vcbuild.exe is required
--revision directory must have format rev_[number] - where number stands for revision number we want to take
 
-USAGE: build_all.cmd [revision number] [build mode: debug or release] where revision number stands for actual revision number
-EXAMPLE: build_all.cmd 137 debug        
-It builds revision 137 in debug mode, next copies all output files to ..\..\deploy\tests\rev_137\debug\ directory and tries to start application
+USAGE: build.cmd [project] [build mode] 
+where 
+	project: cal3d, engine.lib, engine.dll, generator, generator.dll, pygen.dll, all
+	build mode: debug, release, all
+EXAMPLE: build.cmd all all        
+It builds all projects in all build modes, next copies all output files to ..\_out\win32\tst\ directory and all build logs to ..\_out\win32\tst\logs
 
 3. backup.cmd
 Creates backup on the base of the given revision directory but without .svn directories. It works from the tools directory. On the same level you should keep the file no.svn.txt

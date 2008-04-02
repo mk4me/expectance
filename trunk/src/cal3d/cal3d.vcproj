@@ -17,7 +17,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="./../../lib/win32/Debug"
-			IntermediateDirectory="./win32/Debug"
+			IntermediateDirectory="./win32/$(ConfigurationName)"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -113,7 +113,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="./../../lib/win32/Release"
-			IntermediateDirectory="./win32/Release"
+			IntermediateDirectory="./win32/$(ConfigurationName)"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -208,7 +208,7 @@
 		<Configuration
 			Name="Full Debug|Win32"
 			OutputDirectory="./../../lib/win32/Debug"
-			IntermediateDirectory="./win32/Debug"
+			IntermediateDirectory="./win32/$(ConfigurationName)"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -303,7 +303,7 @@
 		<Configuration
 			Name="Full Release|Win32"
 			OutputDirectory="./../../lib/win32/Release"
-			IntermediateDirectory="./win32/Release"
+			IntermediateDirectory="./win32/$(ConfigurationName)"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -398,7 +398,7 @@
 		<Configuration
 			Name="DLL Debug|Win32"
 			OutputDirectory="./../../lib/win32/Debug"
-			IntermediateDirectory="./win32/Debug"
+			IntermediateDirectory="./win32/$(ConfigurationName)"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -493,7 +493,7 @@
 		<Configuration
 			Name="DLL Release|Win32"
 			OutputDirectory="./../../lib/win32/Release"
-			IntermediateDirectory="./win32/Release"
+			IntermediateDirectory="./win32/$(ConfigurationName)"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
