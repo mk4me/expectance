@@ -29,8 +29,8 @@ make
 # generator needs /data directory in the same scope so must be copied into apropriate place (main source directory)
 echo "4. Moves output into _deploy/linux directory"
 mkdir -p -v _deploy/linux/data
-cp scr/generator/generator _deploy/linux
-cp -r -v data _deploy/linux/
+rsync scr/generator/generator _out/linux
+rsync -rv data _out/linux/ --exclude=\".svn\" 
 
 
 
