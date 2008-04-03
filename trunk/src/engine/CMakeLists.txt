@@ -56,10 +56,23 @@ link_directories (
      ../cal3d
 )
 
-add_definitions( 
-  -D_CONSOLE
-  -D_DEBUG
-)
+IF (DEBUG_BUILD)
+
+	add_definitions( 
+	   -D_CONSOLE
+	   -D_DEBUG
+	)
+        SET(CMAKE_BUILD_TYPE "Debug")
+
+ELSE (DEBUG_BUILD)
+
+	add_definitions( 
+	   -D_CONSOLE
+	   -D_NDEBUG
+	)
+        SET(CMAKE_BUILD_TYPE "Release")
+
+ENDIF(DEBUG_BUILD)
 
 add_library( engine STATIC ${SOURCES} )
 

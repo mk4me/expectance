@@ -9,6 +9,20 @@ project (generator)
 # cause another cmake executable to run.  The same process will walk through
 # the project's entire directory structure.
 
+#OPTION(DEBUG_BUILD "Compile projects in debug mode" ON)
+OPTION(DEBUG_BUILD "Compile projects in debug mode" OFF)
+
+OPTION(BUILD_FOR_PYTHON "Build library for use in python" OFF)
+#OPTION(BUILD_FOR_PYTHON "Build library for use in python" ON)
+
+
 add_subdirectory (src/cal3d)
 add_subdirectory (src/engine)
 add_subdirectory (src/generator)
+
+IF (BUILD_FOR_PYTHON)
+	add_subdirectory (src/pygen)
+ENDIF(BUILD_FOR_PYTHON)
+
+
+

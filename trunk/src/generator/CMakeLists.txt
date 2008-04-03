@@ -51,18 +51,37 @@ include_directories(
 )
 
 link_directories (
-#     ../../src/engine
      ../engine
-#     ../../src/cal3d
      ../cal3d
-#    /usr/lib
 )
 
-add_definitions( 
-  -D_CONSOLE
-  -D_DEBUG
-)
 
-add_executable(generator ${SOURCES})
+IF (DEBUG_BUILD)
+
+	add_definitions( 
+	   -D_CONSOLE
+	   -D_DEBUG
+	)
+        SET(CMAKE_BUILD_TYPE "Debug")
+
+ELSE (DEBUG_BUILD)
+
+	add_definitions( 
+	   -D_CONSOLE
+	   -D_NDEBUG
+	)
+        SET(CMAKE_BUILD_TYPE "Release")
+
+ENDIF(DEBUG_BUILD)
+
+
+
+
+IF (BUILD_FOR_PYTHON)
+	add_library( generator STATIC ${SOURCES} )
+ELSE (BUILD_FOR_PYTHON)
+	add_executable(generator ${SOURCES})
+ENDIF(BUILD_FOR_PYTHON)
+
 
 target_link_libraries( generator Cal3D engine glut )

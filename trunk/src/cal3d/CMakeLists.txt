@@ -2,62 +2,77 @@
 project( Cal3D )
 
 set(SOURCES 
-  animation.cpp
-  animation_action.cpp
-  animation_cycle.cpp
-  bone.cpp
-  buffersource.cpp
-  cal3d.rc
-  cal3d_wrapper.cpp
-  coreanimation.cpp
-  corebone.cpp
-  corekeyframe.cpp
-  corematerial.cpp
-  coremesh.cpp
-  coremodel.cpp
-  coremorphanimation.cpp
-  coreskeleton.cpp
-  coresubmesh.cpp
-  coresubmorphtarget.cpp
-  coretrack.cpp
-  dualquaternion.cpp
-  error.cpp
-  global.cpp
-  hardwaremodel.cpp
-  loader.cpp
-  matrix.cpp
-  mesh.cpp
-  mixer.cpp
-  model.cpp
-  morphtargetmixer.cpp
-  physique.cpp
-  physiquedualquaternion.cpp
-  platform.cpp
-  quaternion.cpp
-  renderer.cpp
-  saver.cpp
-  skeleton.cpp
-  springsystem.cpp
-  streamsource.cpp
-  submesh.cpp
-  tinyxml.cpp
-  tinyxmlerror.cpp
-  tinyxmlparser.cpp
-  vector.cpp
+  src/animation.cpp
+  src/animation_action.cpp
+  src/animation_cycle.cpp
+  src/bone.cpp
+  src/buffersource.cpp
+  src/cal3d.rc
+  src/cal3d_wrapper.cpp
+  src/coreanimation.cpp
+  src/corebone.cpp
+  src/corekeyframe.cpp
+  src/corematerial.cpp
+  src/coremesh.cpp
+  src/coremodel.cpp
+  src/coremorphanimation.cpp
+  src/coreskeleton.cpp
+  src/coresubmesh.cpp
+  src/coresubmorphtarget.cpp
+  src/coretrack.cpp
+  src/dualquaternion.cpp
+  src/error.cpp
+  src/global.cpp
+  src/hardwaremodel.cpp
+  src/loader.cpp
+  src/matrix.cpp
+  src/mesh.cpp
+  src/mixer.cpp
+  src/model.cpp
+  src/morphtargetmixer.cpp
+  src/physique.cpp
+  src/physiquedualquaternion.cpp
+  src/platform.cpp
+  src/quaternion.cpp
+  src/renderer.cpp
+  src/saver.cpp
+  src/skeleton.cpp
+  src/springsystem.cpp
+  src/streamsource.cpp
+  src/submesh.cpp
+  src/tinyxml.cpp
+  src/tinyxmlerror.cpp
+  src/tinyxmlparser.cpp
+  src/vector.cpp
 )
 
 include_directories( 
   ..
 )
 
-add_definitions( 
-  -DCAL3D_EXPORTS
-#  -DWIN32
-  -D_DEBUG
-  -D_USRDLL
-#  -D_WINDOWS
-)
 
-#add_library( Cal3D STATIC ${SOURCES} )
-add_library( Cal3D SHARED ${SOURCES} )
+IF (DEBUG_BUILD)
+
+	add_definitions( 
+  	  -DCAL3D_EXPORTS
+	  -D_DEBUG
+ 	  -D_USRDLL
+	)
+        SET(CMAKE_BUILD_TYPE "Debug")
+
+ELSE (DEBUG_BUILD)
+
+	add_definitions( 
+  	  -DCAL3D_EXPORTS
+	  -D_NDEBUG
+ 	  -D_USRDLL
+	)
+
+        SET(CMAKE_BUILD_TYPE "Release")
+
+ENDIF(DEBUG_BUILD)
+
+
+add_library( Cal3D STATIC ${SOURCES} )
+#add_library( Cal3D SHARED ${SOURCES} )
 
