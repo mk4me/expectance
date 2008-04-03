@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="FT Release Static Linux" />
-	<File name="src/framework/action/actionavatar.cpp" open="0" top="0" tabpos="1">
+	<ActiveTarget name="Full Debug" />
+	<File name="src/framework/action/actionavatar.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="6562" topLine="220" />
 	</File>
-	<File name="src/framework/avatar/avatartype.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="3681" topLine="128" />
+	<File name="src/framework/avatar/avatartype.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="3685" topLine="121" />
+	</File>
+	<File name="src/framework/timeline/timelineexecutor.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="0" topLine="165" />
 	</File>
 </CodeBlocks_layout_file>

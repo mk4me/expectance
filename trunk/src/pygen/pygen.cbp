@@ -6,18 +6,18 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="FT Debug Static Linux">
-				<Option output="../../bin/linux/debug/pygen" prefix_auto="1" extension_auto="1" />
-				<Option object_output="Debug" />
-				<Option type="1" />
+			<Target title="Full Debug">
+				<Option platforms="Unix;" />
+				<Option output="../../lib/linux/debug/pygen" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./linux/FullDebug" />
+				<Option type="3" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-DWIN32" />
-					<Add option="-D_DEBUG" />
-					<Add option="-D_CONSOLE" />
 					<Add option="-W" />
 					<Add option="-g" />
 					<Add option="-O0" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D_CONSOLE" />
 					<Add directory="../../src" />
 					<Add directory="utils/textures" />
 					<Add directory="../engine/src" />
@@ -33,20 +33,20 @@
 					<Add library="opengl32" />
 					<Add library="odbc32" />
 					<Add library="odbccp32" />
-					<Add directory="../cal3d/Debug" />
+					<Add directory="../../lib/linux/Debug" />
 				</Linker>
 			</Target>
-			<Target title="FT Release Static Linux">
-				<Option output="../../bin/linux/release/pygen" prefix_auto="1" extension_auto="1" />
-				<Option object_output="Release" />
+			<Target title="Full Release">
+				<Option platforms="Unix;" />
+				<Option output="../../lib/linux/release/pygen" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./linux/FullRelease" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-DWIN32" />
+					<Add option="-O2" />
+					<Add option="-W" />
 					<Add option="-DNDEBUG" />
 					<Add option="-D_CONSOLE" />
-					<Add option="-W" />
-					<Add option="-O2" />
 					<Add directory="../" />
 					<Add directory="../engine/src" />
 				</Compiler>
@@ -60,16 +60,84 @@
 					<Add library="opengl32" />
 					<Add library="odbc32" />
 					<Add library="odbccp32" />
-					<Add directory="../cal3d/Release" />
+					<Add directory="../../lib/linux/Release" />
+				</Linker>
+			</Target>
+			<Target title="DLL Debug">
+				<Option platforms="Unix;" />
+				<Option output="../../lib/linux/debug/pygen_d" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./linux/DLLDebug" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-W" />
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add option="-lboost_pyhon" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add option="-DENGINE_TO_DLL" />
+					<Add option="-DGENERATOR_TO_DLL" />
+					<Add directory="../../src" />
+					<Add directory="utils/textures" />
+					<Add directory="../engine/src" />
+					<Add directory="../generator/src/framework" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../../src" />
+					<Add directory="utils/textures" />
+					<Add directory="../engine/src" />
+					<Add directory="../generator/src/framework" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="/usr/lib/libboost_python.so" />
+					<Add library="libpython2.5.so" />
+					<Add library="../../lib/linux/debug/generator_d.so" />
+					<Add directory="../../lib/linux/Debug" />
+				</Linker>
+			</Target>
+			<Target title="DLL Release">
+				<Option platforms="Unix;" />
+				<Option output="../../lib/linux/release/pygen" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./linux/DLLRelease" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-W" />
+					<Add option="-DNDEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add option="-DENGINE_TO_DLL" />
+					<Add directory="../" />
+					<Add directory="../engine/src" />
+					<Add directory="../generator/src/framework" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../" />
+					<Add directory="../engine/src" />
+					<Add directory="../generator/src/framework" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="glut32" />
+					<Add library="glu32" />
+					<Add library="opengl32" />
+					<Add library="odbc32" />
+					<Add library="odbccp32" />
+					<Add library="cal3d" />
+					<Add library="glew32" />
+					<Add library="generator" />
+					<Add library="boost_python" />
+					<Add library="python25" />
+					<Add directory="../../lib/linux/Release" />
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="src/app/genthread.cpp" />
-		<Unit filename="src/app/genthread.h" />
 		<Unit filename="src/app/pyapp.cpp" />
 		<Unit filename="src/app/pyapp.h" />
-		<Unit filename="src/app/threads/threads.cpp" />
-		<Unit filename="src/app/threads/threads.h" />
 		<Unit filename="src/bindings/test_bindings.cpp" />
 		<Extensions>
 			<code_completion />

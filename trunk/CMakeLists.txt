@@ -12,8 +12,8 @@ project (generator)
 #OPTION(DEBUG_BUILD "Compile projects in debug mode" ON)
 OPTION(DEBUG_BUILD "Compile projects in debug mode" OFF)
 
-OPTION(BUILD_FOR_PYTHON "Build library for use in python" OFF)
-#OPTION(BUILD_FOR_PYTHON "Build library for use in python" ON)
+#OPTION(BUILD_FOR_PYTHON "Build library for use in python" OFF)
+OPTION(BUILD_FOR_PYTHON "Build library for use in python" ON)
 
 
 add_subdirectory (src/cal3d)

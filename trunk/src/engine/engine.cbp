@@ -6,11 +6,11 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="FT Debug Static Linux">
+			<Target title="Full Debug">
 				<Option platforms="Unix;" />
-				<Option output="../../bin/linux/debug/libengine_d" prefix_auto="1" extension_auto="1" />
+				<Option output="../../lib/linux/debug/libengine_d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
-				<Option object_output="Debug" />
+				<Option object_output="./linux/FullDebug" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
@@ -27,20 +27,17 @@
 					<Add directory="../../src" />
 					<Add directory="utils/textures" />
 				</ResourceCompiler>
-				<Linker>
-					<Add library="../../bin/linux/debug/libCal3D_d.so" />
-				</Linker>
 			</Target>
-			<Target title="FT Release Static Linux">
+			<Target title="Full Release">
 				<Option platforms="Unix;" />
-				<Option output="../../bin/linux/release/libengine" prefix_auto="1" extension_auto="1" />
+				<Option output="../../lib/linux/release/libengine" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
-				<Option object_output="Release" />
+				<Option object_output="./linux/FullRelease" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-O3" />
 					<Add option="-W" />
 					<Add option="-DNDEBUG" />
 					<Add option="-D_CONSOLE" />
@@ -49,8 +46,59 @@
 				<ResourceCompiler>
 					<Add directory="../" />
 				</ResourceCompiler>
+			</Target>
+			<Target title="DLL Debug">
+				<Option platforms="Unix;" />
+				<Option output="../../lib/linux/debug/engine_d" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./linux/DLLDebug" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-W" />
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add option="-DENGINE_EXPORTS" />
+					<Add option="-DENGINE_TO_DLL" />
+					<Add directory="../../src" />
+					<Add directory="utils/textures" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../../src" />
+					<Add directory="utils/textures" />
+				</ResourceCompiler>
 				<Linker>
-					<Add library="../../bin/linux/release/libCal3D.so" />
+					<Add library="libglut" />
+					<Add directory="../../lib/linux/Debug/" />
+				</Linker>
+			</Target>
+			<Target title="DLL Release">
+				<Option platforms="Unix;" />
+				<Option output="../../lib/linux/release/engine" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./linux/DLLRelease" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-W" />
+					<Add option="-DNDEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add option="-DENGINE_TO_DLL" />
+					<Add option="-DENGINE_EXPORTS" />
+					<Add directory="../" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="libglut" />
+					<Add library="cal3d" />
+					<Add directory="../../lib/linux/Release/" />
 				</Linker>
 			</Target>
 		</Build>

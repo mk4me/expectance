@@ -6,11 +6,11 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="FT Debug Static Linux">
+			<Target title="Full Debug">
 				<Option platforms="Unix;" />
-				<Option output="../../bin/linux/debug/generator" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="../../../genesvn" />
-				<Option object_output="Debug" />
+				<Option output="../../lib/linux/debug/generator_d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../_out/linux" />
+				<Option object_output="./linux/FullDebug" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -29,17 +29,23 @@
 					<Add directory="../engine/src" />
 				</ResourceCompiler>
 				<Linker>
-					<Add library="../../bin/linux/debug/libengine_d.a" />
-					<Add library="../../bin/linux/debug/libCal3D_d.a" />
 					<Add library="libglut" />
-					<Add directory="../cal3d/Debug" />
+					<Add library="../../lib/linux/debug/libengine_d.a" />
+					<Add library="../../lib/linux/debug/libcal3d_d.a" />
+					<Add directory="../../lib/linux/Debug/" />
 				</Linker>
+				<ExtraCommands>
+					<Add before="mkdir -p -v ../../_out/linux/data" />
+					<Add before='find ../../_out/linux/ -maxdepth 1 -type f -name &quot;*&quot; -delete' />
+					<Add before='rsync -rv ../../data ../../_out/linux/ --exclude=\&quot;.svn\&quot;' />
+					<Add after="rsync -v ../../lib/linux/debug/generator_d ../../_out/linux/" />
+				</ExtraCommands>
 			</Target>
-			<Target title="FT Release Static Linux">
+			<Target title="Full Release">
 				<Option platforms="Unix;" />
-				<Option output="../../bin/linux/release/generator" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="../../../genesvn" />
-				<Option object_output="Release" />
+				<Option output="../../lib/linux/release/generator" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../_out/linux" />
+				<Option object_output="./linux/FullRelease" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -55,10 +61,79 @@
 					<Add directory="../engine/src" />
 				</ResourceCompiler>
 				<Linker>
-					<Add library="../../bin/linux/release/libengine.a" />
-					<Add library="../../bin/linux/release/libCal3D.a" />
 					<Add library="libglut" />
-					<Add directory="../cal3d/Release" />
+					<Add library="../../lib/linux/release/engine.so" />
+					<Add library="../../lib/linux/release/libcal3d.a" />
+					<Add directory="../../lib/linux/Release" />
+				</Linker>
+				<ExtraCommands>
+					<Add before="mkdir -p -v ../../_out/linux/data" />
+					<Add before='find ../../_out/linux/ -maxdepth 1 -type f -name &quot;*&quot; -delete' />
+					<Add before='rsync -rv ../../data ../../_out/linux/ --exclude=\&quot;.svn\&quot;' />
+					<Add after="rsync -v ../../lib/linux/release/generator ../../_out/linux/" />
+				</ExtraCommands>
+			</Target>
+			<Target title="DLL Debug">
+				<Option platforms="Unix;" />
+				<Option output="../../lib/linux/debug/generator_d" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./linux/DLLDebug" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-W" />
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add option="-DENGINE_TO_DLL" />
+					<Add option="-DGENERATOR_TO_DLL" />
+					<Add option="-DGENERATOR_EXPORTS" />
+					<Add directory="../../src" />
+					<Add directory="utils/textures" />
+					<Add directory="../engine/src" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../../src" />
+					<Add directory="utils/textures" />
+					<Add directory="../engine/src" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="libglut" />
+					<Add library="../../lib/linux/debug/engine_d.so" />
+					<Add library="../../lib/linux/debug/libcal3d_d.a" />
+					<Add directory="../../lib/linux/Debug/" />
+				</Linker>
+			</Target>
+			<Target title="DLL Release">
+				<Option platforms="Unix;" />
+				<Option output="../../lib/linux/release/generator" prefix_auto="1" extension_auto="1" />
+				<Option object_output="./linux/DLLRelease" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-W" />
+					<Add option="-DNDEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add option="-DENGINE_TO_DLL" />
+					<Add option="-DGENERATOR_TO_DLL" />
+					<Add option="-DGENERATOR_EXPORTS" />
+					<Add directory="../" />
+					<Add directory="../engine/src" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../" />
+					<Add directory="../engine/src" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="libglut" />
+					<Add library="../../lib/linux/release/libengine.a" />
+					<Add library="../../lib/linux/release/libcal3d.a" />
+					<Add directory="../../lib/linux/Release/" />
 				</Linker>
 			</Target>
 		</Build>

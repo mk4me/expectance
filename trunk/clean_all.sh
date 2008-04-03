@@ -3,15 +3,14 @@ echo "Cleans all unnnecesary files in project (C) ftoday 2008"
 echo "by MKA"
 pwd
 echo "1. Recursively removing .svn folders"
-rm -rf `find . -type d -name .svn`
+#rm -rf `find . -type d -name .svn`
 echo "2. Recursively removing CMakeCache.txt files and CMakeFiles folders"
 rm -rf `find . -type f -name CMakeCache.txt`
 rm -rf `find . -type f -name cmake_install.cmake`
 rm -rf `find . -type d -name CMakeFiles`
 
-echo "3. Recursively removing all folders starting with Debug and Release from /src"
-rm -rf `find src -type d -name Debug*`
-rm -rf `find src -type d -name Release*`
+echo "3. Recursively removing all folders starting with linux from main directory"
+rm -rf `find . -type d -name linux*`
 
 echo "4. Remove the rest unnecessary files"
 
@@ -35,4 +34,4 @@ rm -f Cal3d.resharper
 rm -f Cal3d.resharper.user
 rm -f tools/build_all.log
 rm -f generator
-rm -rf _deploy
+rm -rf _out
