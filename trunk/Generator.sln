@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+# Visual C++ Express 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cal3D", "src\cal3d\cal3d.vcproj", "{86AD39B7-DDE7-4F46-B5BF-2154B047C112}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "generator", "src\generator\generator.vcproj", "{39E62386-7293-42DC-8549-216FC8A7E079}"
@@ -47,7 +47,9 @@ Global
 		{564697FF-3F8B-4C3B-ADC4-9082BB636050}.Full Release|Win32.ActiveCfg = Full Release|Win32
 		{564697FF-3F8B-4C3B-ADC4-9082BB636050}.Full Release|Win32.Build.0 = Full Release|Win32
 		{96E7B560-258B-4FC8-9B24-746261CF41F6}.DLL Debug|Win32.ActiveCfg = DLL Debug|Win32
+		{96E7B560-258B-4FC8-9B24-746261CF41F6}.DLL Debug|Win32.Build.0 = DLL Debug|Win32
 		{96E7B560-258B-4FC8-9B24-746261CF41F6}.DLL Release|Win32.ActiveCfg = DLL Release|Win32
+		{96E7B560-258B-4FC8-9B24-746261CF41F6}.DLL Release|Win32.Build.0 = DLL Release|Win32
 		{96E7B560-258B-4FC8-9B24-746261CF41F6}.Full Debug|Win32.ActiveCfg = Full Debug|Win32
 		{96E7B560-258B-4FC8-9B24-746261CF41F6}.Full Release|Win32.ActiveCfg = Full Release|Win32
 	EndGlobalSection

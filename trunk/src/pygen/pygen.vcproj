@@ -576,14 +576,6 @@
 			Name="app"
 			>
 			<File
-				RelativePath=".\src\app\genthread.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\app\genthread.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\app\pyapp.cpp"
 				>
 			</File>
@@ -591,18 +583,6 @@
 				RelativePath=".\src\app\pyapp.h"
 				>
 			</File>
-			<Filter
-				Name="threads"
-				>
-				<File
-					RelativePath=".\src\app\threads\threads.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\app\threads\threads.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="bindings"

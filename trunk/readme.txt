@@ -60,5 +60,48 @@ after that each location (project) has it's own makefile
 
 c) under main directory run make clean and then make all - it will build the project under linux
 
+------------------------------------------
+5. Building and using python scripting
+
+5.1. Windows platform
+
+
+a) Release version:
+
+- select DLL Release configuration in Visual C++
+- build all projects
+- copy from /lib/win32/release  to 'deploy' directory following files: boost_python.dll, cal3d.dll, engine.dll, generator.dll
+	pygen.pyd
+
+- copy to 'deploy' the directory wiht data
+- start 'python' interpreter
+- run in python following commands:
+	import pygen
+	pygem.runApp()
+
+- Generator should start in separate hread and python interpreter should be ready for next commands
+
+
+a) Debug version:
+
+- select DLL Debug configuration in Visual C++
+- build all projects
+- copy from /lib/win32/debug  to 'deploy' directory following files: boost_python_debug.dll, 
+	cal3d_d.dll, engine_d.dll, generator_d.dll, pygen_d.pyd
+
+- copy to 'deploy' the directory wiht data
+- start 'python_d' interpreter
+- run in python following commands:
+	import pygen
+	pygem.runApp()
+
+- Generator should start in separate hread and python_d interpreter should be ready for next commands
+
+
+5.2. Linux platform
+	...
+
+
+
 
 

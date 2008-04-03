@@ -62,7 +62,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="FT Full Debug Max 6|Win32"
+			Name="Full Debug|Win32"
 			>
 			<DebugSettings
 				Command="$(TargetPath)"
@@ -90,7 +90,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="FT Full Release Max 6|Win32"
+			Name="Full Release|Win32"
 			>
 			<DebugSettings
 				Command="$(TargetPath)"
@@ -118,7 +118,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="DLL Debug Max 6|Win32"
+			Name="DLL Debug|Win32"
 			>
 			<DebugSettings
 				Command=""
@@ -146,7 +146,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="DLL Release Max 6|Win32"
+			Name="DLL Release|Win32"
 			>
 			<DebugSettings
 				Command=""

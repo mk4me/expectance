@@ -3,25 +3,19 @@
  * author: abak
  */
 #include "app/genmain.h"
-
 #include <iostream>
+#include <boost/thread/thread.hpp>
 
-#include "genthread.h"
-//#include <boost/python.hpp>
-//using namespace boost::python;
-
-
-class GlutThread : public GenThread
+void runLoop()
 {
-    virtual void Run () 
-    { 
-        RunGlutApp(0,NULL);
-    }
-};
+    RunGlutApp(0,NULL);
+}
 
 void runApp()
 {
-    GlutThread *thread = new GlutThread();
+    std::cout << " New thread will be started for Generator ..." << std::endl;
+    boost::thread thrd(&runLoop);
+    
     //TODO:  add somewhere deletion of above thread object 
 }
 
@@ -30,9 +24,4 @@ void printSomeText()
     std::cout << " Some text from pygen.cpp " << std::endl;
 }
 
-//BOOST_PYTHON_MODULE(pygen_)
-//{
-//    def("runApp", runApp);
-//    def("printSomeText", printSomeText);
-//}
 
