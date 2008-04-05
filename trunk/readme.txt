@@ -99,7 +99,22 @@ a) Debug version:
 
 
 5.2. Linux platform
-	...
+
+To build Generator as library for python you must perform following steps:
+- switch ON the option BUILD_FOR_PYTHON in main  CMakeList.txt file (main directory)
+	OPTION(BUILD_FOR_PYTHON "Build library for use in python" ON)
+- goto /tools directory and execute build_all.sh command (ensure that you have rights execute this file)
+- libypygen.so shuld be built in /src/pygen directory
+
+To use library for python:
+- place libpygen.so in any ´deploy´ directory together with /data directory
+- run python interpreter
+- run in python following commands:
+	import pygen
+	pygem.runApp()
+
+- NOTE that both  DEBUG and RELEASE version of libpygen.so shoud work correctly in the same ´python´ interpreter in linux system
+
 
 
 
