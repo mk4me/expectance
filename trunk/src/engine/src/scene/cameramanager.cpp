@@ -50,8 +50,8 @@ bool CameraManager::Init()
 	m_bLeftMouseButtonDown = false;
 	m_bRightMouseButtonDown = false;
 	m_bMiddleMouseButtonDown = false;
-	
-	AddCamera(new Camera("mainCamera"));	
+
+	AddCamera(new Camera("mainCamera"));
 	setCurrentCamera("mainCamera");
 	m_currentCamera->setOrbitCameraRadius(1000.0f); // bigger radius for global scene view for mainCamera
 	m_currentSceneObjectID = "mainCamera"; //set for current camera to avoid current empty object
@@ -70,7 +70,7 @@ void CameraManager::UpdateView()
 	}
 }
 
-void CameraManager::OnUpdate(const double elapsedSeconds)  // OVERRIDEN, updates by UpdateManager 
+void CameraManager::OnUpdate(const double elapsedSeconds)  // OVERRIDEN, updates by UpdateManager
 {
 	if(m_currentCamera!=NULL)
 	{
@@ -84,7 +84,7 @@ bool CameraManager::AddCamera(SceneObject *pScObj)
 	if (!_id.empty())
 	{
 	 	std::map<std::string,Camera*>::iterator it = m_cameraContainer.find(_id);
-		if ( it!=m_cameraContainer.end()) { 
+		if ( it!=m_cameraContainer.end()) {
 			return false;
 		}
 		else
@@ -103,7 +103,7 @@ bool CameraManager::AddCamera(Camera *pCamObj)
 	if (!_id.empty())
 	{
 	 	std::map<std::string,Camera*>::iterator it = m_cameraContainer.find(_id);
-		if ( it!=m_cameraContainer.end()) { 
+		if ( it!=m_cameraContainer.end()) {
 			return false;
 		}
 		else
@@ -125,7 +125,7 @@ bool CameraManager::AddCamera(std::string camName, float yaw, float pitch, float
 Camera* CameraManager::getCamera(std::string id)
 {
  	std::map<std::string,Camera*>::iterator it = m_cameraContainer.find(id);
-	if ( it!=m_cameraContainer.end()) { 
+	if ( it!=m_cameraContainer.end()) {
 		return it->second;
 	}
 	return NULL;
@@ -148,7 +148,7 @@ void CameraManager::changeCurrentCamera(ft::Direction direction)
 		else
 			--m_currentCameraIndex;
 	}
-	
+
 	setCurrentCamera(m_cameraIndexContainer[m_currentCameraIndex]);
 }
 
@@ -174,7 +174,7 @@ void CameraManager::setCurrentCamera(std::string id)
 		////m_distance = 800.0f;
 		////m_camUpDown = 0.0f;
 		////m_camLeftRight = 0.0f;
-		if ((m_currentCamera = getCamera("mainCamera")) == NULL) 
+		if ((m_currentCamera = getCamera("mainCamera")) == NULL)
 			AddCamera(new Camera("mainCamera"));
 		m_currentCamera = new Camera("mainCamera");
 		setCurrentCameraIndex("mainCamera");
@@ -185,14 +185,14 @@ void CameraManager::setCurrentCamera(std::string id)
 void CameraManager::setCurrentCameraFromConfiguration(int key)
 {
 	Camera *_cam;
-	std::string _id; 
+	std::string _id;
 	float _yaw = 0, _pitch = 20, _roll = 0;
 	_id.clear();
 
 	//1. check configuration KEY
 	CameraDefinition *_camDef = m_cameraConfiguration.getConfiguration(key);
 	if (_camDef==NULL) return; // wrong key pressed?
-	
+
 	//2. select apropriate action for camera type
 	switch(_camDef->type)
 	{
@@ -209,10 +209,10 @@ void CameraManager::setCurrentCameraFromConfiguration(int key)
 	_cam = getCamera(_id);
 	if (_cam==NULL)
 		return; //there is no such camera in camera container
-	
+
 	//4. change camera parameters
 	_cam->setCameraMode(_camDef->mode);
-	
+
 	switch(_camDef->location)
 	{
 		case ft_AutoLocation:		break;
@@ -220,7 +220,7 @@ void CameraManager::setCurrentCameraFromConfiguration(int key)
 		case ft_FrontCenter:		_pitch = 0;		_yaw = 0.0f;   break;
 		case ft_TopFrontCenter:		_pitch = 20;	_yaw = 0.0f;   break;
 		case ft_BottomFrontCenter:	_pitch = -20;	_yaw = 0.0f;   break;
-			
+
 		case ft_FrontLeft:			_pitch = 0;		_yaw = 45.0f;  break;
 		case ft_TopFrontLeft:		_pitch = 20;	_yaw = 45.0f;  break;
 		case ft_BottomFrontLeft:	_pitch = -20;	_yaw = 45.0f;  break;
@@ -252,13 +252,13 @@ void CameraManager::setCurrentCameraFromConfiguration(int key)
 		case ft_Center:				_pitch = 0;		_yaw = 0.0f; break;
 		case ft_TopCenter:			_pitch = 90;	_yaw = 90.0f; break;
 		case ft_BottomCenter:		_pitch = -90;	_yaw = 90.0f; break;
-		
-		default:	break;	
+
+		default:	break;
 	}
-	
+
 
 	//enum CameraLocation {ft_FrontLeft, ft_FrontCenter, ft_FrontRight, ft_Left, ft_Center, ft_Right, ft_BackLeft, ft_BackCenter, ft_BackRight,
-	//					 ft_TopFrontLeft, ft_TopFrontCenter, ft_TopFrontRight, ft_TopLeft, ft_TopCenter, ft_TopRight, ft_TopBackLeft, 
+	//					 ft_TopFrontLeft, ft_TopFrontCenter, ft_TopFrontRight, ft_TopLeft, ft_TopCenter, ft_TopRight, ft_TopBackLeft,
 	//					 ft_TopBackCenter, ft_TopBackRight, ft_BottomFrontLeft, ft_BottomFrontCenter, ft_BottomFrontRight, ft_BottomLeft,
 	//					 ft_BottomCenter, ft_BottomRight, ft_BottomBackLeft, ft_BottomBackCenter, ft_BottomBackRight, ft_AutoLocation
 	//					 };
@@ -290,8 +290,8 @@ bool CameraManager::RemoveCamera(std::string id)
 	if (!id.empty())
 	{
 	 	std::map<std::string,Camera*>::iterator it = m_cameraContainer.find(id);
-		if ( it!=m_cameraContainer.end()) 
-		{ 
+		if ( it!=m_cameraContainer.end())
+		{
 			delete it->second;
 			m_cameraContainer.erase(it);
 			RemoveCameraIndex(id);
@@ -326,11 +326,11 @@ const void CameraManager::setCurrentSceneObjectID(const std::string id)
 
 int CameraManager::getCurrentCameraIndex()
 {
-	return m_currentCameraIndex;	
+	return m_currentCameraIndex;
 }
 
 void CameraManager::setCurrentCameraIndex(const std::string id)
-{	
+{
 	std::vector< std::string >::iterator location;
 	location = std::find( m_cameraIndexContainer.begin(), m_cameraIndexContainer.end(), id );
 	if ( location != m_cameraIndexContainer.end() ) // founded
@@ -340,7 +340,7 @@ void CameraManager::setCurrentCameraIndex(const std::string id)
 
 void CameraManager::RemoveCameraIndex(const std::string id)
 {
-	int _index;
+	unsigned int _index;
 	std::vector< std::string >::iterator location;
 	location = std::find( m_cameraIndexContainer.begin(), m_cameraIndexContainer.end(), id );
 	if ( location != m_cameraIndexContainer.end() ) // founded
@@ -349,7 +349,7 @@ void CameraManager::RemoveCameraIndex(const std::string id)
 		//check if current camera index isn't equal to founded camera
 		if ( m_currentCameraIndex == _index )
 			setCurrentCameraIndex("mainCamera");
-		
+
 		//remove selected camera index
 		m_cameraIndexContainer.erase(m_cameraIndexContainer.begin()+ _index);
 	}

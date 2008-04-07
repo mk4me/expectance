@@ -41,7 +41,7 @@ bool MenuManager::Init(int x, int y)
 	vector<string> _tokens;
 	std::string _menuOptions;
 	GLuint _logoTexture;
-	
+
 	m_menuOGL = (Config::getInstance()->GetIntVal("main_menu_visible")==0)? false : true; //set if menu is visible from configuration
 
 	m_avtiveButton = -1;
@@ -54,7 +54,7 @@ bool MenuManager::Init(int x, int y)
 	_menuOptions = StringHelper::RemoveChar(_menuOptions,' ');
 	_tokens = StringHelper::Split(_menuOptions, ",");
 	if (_tokens[0] == "<KEY_NOT_FOUND>")
-		return false;	
+		return false;
 	for (unsigned int i = 0; i <_tokens.size(); i++) //create main menu
 	{
 		vector<string> _menuParameters;
@@ -63,7 +63,7 @@ bool MenuManager::Init(int x, int y)
 		_menuOption = StringHelper::ClearDelimiters(_menuOption, '(', ')');
 		_menuParameters = StringHelper::Split(_menuOption,",");
 		_menuParameters[1] = StringHelper::RemoveChar(_menuParameters[1],' ');
-		if (_menuParameters.size() == 1) 
+		if (_menuParameters.size() == 1)
 			continue;
 		else
 		{
@@ -101,7 +101,7 @@ bool MenuManager::Init(int x, int y)
 	}
     // count global width and height taking into consideration all options in menu (on the top level)
 	m_width = m_mainMenu->getWidth()*m_mainMenu->getSubMenu().size();
-	m_height = m_mainMenu->getHeight();	
+	m_height = m_mainMenu->getHeight();
 	return _final;
 }
 
@@ -137,19 +137,19 @@ bool MenuManager::Render()
 			glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 			glEnable(GL_BLEND);
 			glTranslatef(-x,-y,0);
-		
+
 			glColor4f(0.9f,0.0f,0.0f,0.6f); // menu color
 			glRectf(0,0,w,h);
 			//glColor4f(0.5f, 0.5f, 0.5f, 0.5f);
-			
+
 			//draw menu
 			for (unsigned int i = 0; i < menuCounter; i++)
 			{
-				if (i==0) 
+				if (i==0)
 					glTranslatef(0,0,0);
 				else
 					glTranslatef(32,0,0);
-				
+
 				glColor4f(0.5f, 0.5f, 0.5f, 0.3f);
 				glRectf(2,2,32,32);
 				glPushMatrix();
@@ -157,7 +157,7 @@ bool MenuManager::Render()
 				glPopMatrix();
 			}
 			// set active button and text for it
-			if (m_avtiveButton != -1) //-1 index is out of scope of menuitems collection 
+			if (m_avtiveButton != -1) //-1 index is out of scope of menuitems collection
 			{
 				std::string lab = m_mainMenu->getSubMenu().at(m_avtiveButton)->getLabel();
 				glLoadIdentity();

@@ -49,12 +49,12 @@
 			</Target>
 			<Target title="DLL Debug">
 				<Option platforms="Unix;" />
-				<Option output="../../lib/linux/debug/engine_d" prefix_auto="1" extension_auto="1" />
+				<Option output="../../lib/linux/debug/libengine_d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
 				<Option object_output="./linux/DLLDebug" />
-				<Option type="3" />
+				<Option type="2" />
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
-				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-W" />
 					<Add option="-g" />
@@ -77,12 +77,12 @@
 			</Target>
 			<Target title="DLL Release">
 				<Option platforms="Unix;" />
-				<Option output="../../lib/linux/release/engine" prefix_auto="1" extension_auto="1" />
+				<Option output="../../lib/linux/release/libengine" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
 				<Option object_output="./linux/DLLRelease" />
-				<Option type="3" />
+				<Option type="2" />
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
-				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-W" />

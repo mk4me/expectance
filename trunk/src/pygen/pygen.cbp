@@ -6,66 +6,9 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="Full Debug">
-				<Option platforms="Unix;" />
-				<Option output="../../lib/linux/debug/pygen" prefix_auto="1" extension_auto="1" />
-				<Option object_output="./linux/FullDebug" />
-				<Option type="3" />
-				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-W" />
-					<Add option="-g" />
-					<Add option="-O0" />
-					<Add option="-D_DEBUG" />
-					<Add option="-D_CONSOLE" />
-					<Add directory="../../src" />
-					<Add directory="utils/textures" />
-					<Add directory="../engine/src" />
-				</Compiler>
-				<ResourceCompiler>
-					<Add directory="../../src" />
-					<Add directory="utils/textures" />
-					<Add directory="../engine/src" />
-				</ResourceCompiler>
-				<Linker>
-					<Add library="glut32" />
-					<Add library="glu32" />
-					<Add library="opengl32" />
-					<Add library="odbc32" />
-					<Add library="odbccp32" />
-					<Add directory="../../lib/linux/Debug" />
-				</Linker>
-			</Target>
-			<Target title="Full Release">
-				<Option platforms="Unix;" />
-				<Option output="../../lib/linux/release/pygen" prefix_auto="1" extension_auto="1" />
-				<Option object_output="./linux/FullRelease" />
-				<Option type="1" />
-				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-O2" />
-					<Add option="-W" />
-					<Add option="-DNDEBUG" />
-					<Add option="-D_CONSOLE" />
-					<Add directory="../" />
-					<Add directory="../engine/src" />
-				</Compiler>
-				<ResourceCompiler>
-					<Add directory="../" />
-					<Add directory="../engine/src" />
-				</ResourceCompiler>
-				<Linker>
-					<Add library="glut32" />
-					<Add library="glu32" />
-					<Add library="opengl32" />
-					<Add library="odbc32" />
-					<Add library="odbccp32" />
-					<Add directory="../../lib/linux/Release" />
-				</Linker>
-			</Target>
 			<Target title="DLL Debug">
 				<Option platforms="Unix;" />
-				<Option output="../../lib/linux/debug/pygen_d" prefix_auto="1" extension_auto="1" />
+				<Option output="../../lib/linux/debug/libpygen" prefix_auto="1" extension_auto="1" />
 				<Option object_output="./linux/DLLDebug" />
 				<Option type="3" />
 				<Option compiler="gcc" />
@@ -75,15 +18,16 @@
 					<Add option="-W" />
 					<Add option="-g" />
 					<Add option="-O0" />
-					<Add option="-lboost_pyhon" />
+					<Add option="-lboost_python" />
+					<Add option="-lboost_thread-mt" />
+					<Add option="-fPIC" />
 					<Add option="-D_DEBUG" />
 					<Add option="-D_CONSOLE" />
-					<Add option="-DENGINE_TO_DLL" />
-					<Add option="-DGENERATOR_TO_DLL" />
+					<Add option="-DPYGEN_EXPORTS" />
 					<Add directory="../../src" />
-					<Add directory="utils/textures" />
 					<Add directory="../engine/src" />
 					<Add directory="../generator/src/framework" />
+					<Add directory="/usr/include/python2.5" />
 				</Compiler>
 				<ResourceCompiler>
 					<Add directory="../../src" />
@@ -92,15 +36,28 @@
 					<Add directory="../generator/src/framework" />
 				</ResourceCompiler>
 				<Linker>
-					<Add library="/usr/lib/libboost_python.so" />
-					<Add library="libpython2.5.so" />
-					<Add library="../../lib/linux/debug/generator_d.so" />
-					<Add directory="../../lib/linux/Debug" />
+					<Add option="-lboost_python" />
+					<Add option="-lboost_thread-mt" />
+					<Add option="-fPIC" />
+					<Add library="libpython2.5" />
+					<Add library="libboost_python" />
+					<Add library="../../lib/linux/debug/libgenerator_d.a" />
+					<Add library="../../lib/linux/debug/libengine_d.a" />
+					<Add library="../../lib/linux/debug/libcal3d_d.a" />
+					<Add library="libglut" />
+					<Add directory="../../lib/linux/debug" />
 				</Linker>
+				<ExtraCommands>
+					<Add before="mkdir -p -v ../../_out/linux/data" />
+					<Add before='find ../../_out/linux/ -maxdepth 1 -type f -name &quot;*&quot; -delete' />
+					<Add before='rsync -rv ../../data ../../_out/linux/ --exclude=\&quot;.svn\&quot;' />
+					<Add after="rsync -v ../../lib/linux/debug/libpygen.so ../../_out/linux/" />
+				</ExtraCommands>
 			</Target>
 			<Target title="DLL Release">
 				<Option platforms="Unix;" />
-				<Option output="../../lib/linux/release/pygen" prefix_auto="1" extension_auto="1" />
+				<Option output="../../lib/linux/release/libpygen" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../lib/linux/release" />
 				<Option object_output="./linux/DLLRelease" />
 				<Option type="3" />
 				<Option compiler="gcc" />
@@ -109,12 +66,16 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-W" />
+					<Add option="-lboost_python" />
+					<Add option="-lboost_thread-mt" />
+					<Add option="-fPIC" />
+					<Add option="-DPYGEN_EXPORTS" />
 					<Add option="-DNDEBUG" />
 					<Add option="-D_CONSOLE" />
-					<Add option="-DENGINE_TO_DLL" />
-					<Add directory="../" />
+					<Add directory="../../src" />
 					<Add directory="../engine/src" />
 					<Add directory="../generator/src/framework" />
+					<Add directory="/usr/include/python2.5" />
 				</Compiler>
 				<ResourceCompiler>
 					<Add directory="../" />
@@ -122,18 +83,23 @@
 					<Add directory="../generator/src/framework" />
 				</ResourceCompiler>
 				<Linker>
-					<Add library="glut32" />
-					<Add library="glu32" />
-					<Add library="opengl32" />
-					<Add library="odbc32" />
-					<Add library="odbccp32" />
-					<Add library="cal3d" />
-					<Add library="glew32" />
-					<Add library="generator" />
-					<Add library="boost_python" />
-					<Add library="python25" />
-					<Add directory="../../lib/linux/Release" />
+					<Add option="-lboost_python" />
+					<Add option="-lboost_thread-mt" />
+					<Add option="-fPIC" />
+					<Add library="libpython2.5" />
+					<Add library="libboost_python" />
+					<Add library="../../lib/linux/release/libgenerator.a" />
+					<Add library="../../lib/linux/release/libengine.a" />
+					<Add library="../../lib/linux/release/libcal3d.a" />
+					<Add library="libglut" />
+					<Add directory="../../lib/linux/release" />
 				</Linker>
+				<ExtraCommands>
+					<Add before="mkdir -p -v ../../_out/linux/data" />
+					<Add before='find ../../_out/linux/ -maxdepth 1 -type f -name &quot;*&quot; -delete' />
+					<Add before='rsync -rv ../../data ../../_out/linux/ --exclude=\&quot;.svn\&quot;' />
+					<Add after="rsync -v ../../lib/linux/release/libpygen.so ../../_out/linux/" />
+				</ExtraCommands>
 			</Target>
 		</Build>
 		<Unit filename="src/app/pyapp.cpp" />

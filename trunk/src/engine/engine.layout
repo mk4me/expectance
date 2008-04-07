@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="DLL Release" />
+	<ActiveTarget name="DLL Debug" />
 	<File name="src/scene/cal3dobject.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="21924" topLine="709" />
+	</File>
+	<File name="src/scene/camera.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1421" topLine="52" />
+	</File>
+	<File name="src/scene/cameramanager.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="9504" topLine="334" />
+	</File>
+	<File name="src/scene/cameramanager.h" open="0" top="0" tabpos="0">
+		<Cursor position="3569" topLine="82" />
+	</File>
+	<File name="src/scene/texturemanager.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="5228" topLine="162" />
+	</File>
+	<File name="src/ui/menumanager.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="3591" topLine="101" />
+	</File>
+	<File name="src/utility/stringhelper.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="3452" topLine="108" />
 	</File>
 </CodeBlocks_layout_file>

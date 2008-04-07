@@ -17,10 +17,10 @@
 
 namespace ft
 {
-	
+
 	//! A Camera Manager class
 	/*!
-	 *	This class is responsible for global current camera operations and management of all system cameras. 
+	 *	This class is responsible for global current camera operations and management of all system cameras.
 	 */
 	class ENGINE_API CameraManager : public UpdateObject, public InputListener
     {
@@ -31,21 +31,21 @@ namespace ft
         static CameraManager* getInstance();
 		//! destroy all resources owned by Camera Manager
         static void DestroyInstance();
-		
+
 		/// \brief Initializes basic Camera Manager parameters
 		bool Init();
 
 		/// \brief Updates current camera View
 		void UpdateView();
-        void OnUpdate(const double elapsedSeconds);  // OVERRIDEN, updates by UpdateManager 
+        void OnUpdate(const double elapsedSeconds);  // OVERRIDEN, updates by UpdateManager
 
 		/*! Add camera and register object to be tracked by camera */
-		bool AddCamera(SceneObject *pScObj);   
+		bool AddCamera(SceneObject *pScObj);
 		/*! Add independent camera with id */
-		bool AddCamera(Camera *pCamObj);   
-		
+		bool AddCamera(Camera *pCamObj);
+
 		/*! Add independent camera with id */
-		bool AddCamera(std::string camName, float yaw=0.0f, float pitch=20.0f, float roll=0.0f, float dist=800.0f, CameraMode mode=ft_StaticCamera);   
+		bool AddCamera(std::string camName, float yaw=0.0f, float pitch=20.0f, float roll=0.0f, float dist=800.0f, CameraMode mode=ft_StaticCamera);
 
 		//! get the pointer value of Camera object by unique id
 		Camera* getCamera(std::string id);
@@ -53,7 +53,7 @@ namespace ft
 		void setCurrentCamera(std::string id);
 		//! set current camera according to choosen configuration
 		void setCurrentCameraFromConfiguration(int key);
-		//! change current camera 
+		//! change current camera
 		void changeCurrentCamera(ft::Direction direction);
 		//! remove CameraObject
 		/*! Unregisters Camera object from m_cameraContainer list and deactivate it in object */
@@ -63,7 +63,7 @@ namespace ft
 		//! check if zoom is on
 		const bool IsZoom() { return m_currentCamera->IsZoom();};
 
-		
+
 		//! get Information about current Camera
 		const std::string getCurrentCameraInfo();
 		//! draw/show current camera position
@@ -78,11 +78,11 @@ namespace ft
         void OnKey(unsigned char key, int x, int y);
 		/// \brief Handles special keys (F1, F2, UP, DOWN, etc.)
 		void OnSpecial(int key, int x, int y);
-		/// \brief Handles a mouse button down event 
+		/// \brief Handles a mouse button down event
         void OnMouseButtonDown(int button, int x, int y);
         /// \brief Handles a mouse button up event
 		void OnMouseButtonUp(int button, int x, int y);
-        /// \brief Handles a mouse move event 
+        /// \brief Handles a mouse move event
 		void OnMouseMove(int x, int y);
 
     private:
@@ -96,9 +96,9 @@ namespace ft
 		static CameraManager* m_instance;
 		Camera* m_currentCamera;
 		std::map<std::string,Camera*> m_cameraContainer;
-		
+
 		//helpers for numerical indexing camera container
-		int m_currentCameraIndex;
+        unsigned int m_currentCameraIndex;
 		std::vector<std::string> m_cameraIndexContainer;
 		std::string m_currentSceneObjectID;
 		bool m_bLeftMouseButtonDown, m_bRightMouseButtonDown, m_bMiddleMouseButtonDown;
