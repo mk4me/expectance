@@ -54,7 +54,7 @@ void TextureManager::DestroyInstance()
 
 //--------------------------------------------------------------------------
 /// \brief	This function takes raw image data and converts it to an openGL
-///			texture. 
+///			texture.
 /// \param	Format		-	GL_RGB,GL_RGBA,GL_ALPHA
 /// \param	pixels		-	the pixel data
 /// \param	w			-	the image width
@@ -122,7 +122,7 @@ unsigned int TextureManager::MakeGlTexture(GLenum Format,const unsigned char *pi
 
 
 //--------------------------------------------------------------------------
-/// \brief	This function loads the specified image file and returns the 
+/// \brief	This function loads the specified image file and returns the
 ///			openGL texture object for it. Only tga, bmp and pcx images are
 ///			supported.
 /// \param	filename	-	the image file to use for the texture
@@ -141,7 +141,7 @@ unsigned int TextureManager::LoadTexture(const std::string filename,bool compres
 	unsigned int w=0,h=0,bpp=0;
 	unsigned char* pixels=0;
 
-	int len = filename.length(); 
+	int len = filename.length();
 
 	// load a bmp
 	if( (filename[len-3] == 'b' || filename[len-3] == 'B') &&
@@ -159,7 +159,7 @@ unsigned int TextureManager::LoadTexture(const std::string filename,bool compres
 			return 0;
 	}
 	else
-	// load a tga 
+	// load a tga
 	if( (filename[len-3] == 't' || filename[len-3] == 'T') &&
 		(filename[len-2] == 'g' || filename[len-2] == 'G') &&
 		(filename[len-1] == 'a' || filename[len-1] == 'A') ) {
@@ -172,7 +172,7 @@ unsigned int TextureManager::LoadTexture(const std::string filename,bool compres
 	}
 
 	// generat the correct texture type for the image
-	unsigned int tex_object;
+	unsigned int tex_object = 0;
 	switch(bpp) {
 	case 1:
 		tex_object = MakeGlTexture(GL_ALPHA,pixels,w,h,compressed);
@@ -186,6 +186,9 @@ unsigned int TextureManager::LoadTexture(const std::string filename,bool compres
 		tex_object = MakeGlTexture(GL_RGBA,pixels,w,h,compressed);
 		break;
 	default:
+        tex_object = 0;
+			_dbg << "Unsupported texture type\n";
+		return 0;
 		break;
 	}
 
@@ -200,7 +203,7 @@ unsigned int TextureManager::LoadTexture(const std::string filename,bool compres
 
 	// delete the pixel data because we no longer need it
 	free(pixels);
-	
+
 	// insert the texture into a map to keep track of it
 	m_Textures.insert( std::make_pair( std::string(filename), TexRef(tex_object,data_size) ) );
 
@@ -210,7 +213,7 @@ unsigned int TextureManager::LoadTexture(const std::string filename,bool compres
 }
 
 //--------------------------------------------------------------------------
-/// \brief	This function will release the specified texture (as long as 
+/// \brief	This function will release the specified texture (as long as
 ///			it's not used elsewhere).
 /// \param	the OpenGL texture object
 ///
@@ -237,8 +240,8 @@ void TextureManager::ReleaseTexture(unsigned int idx) {
 
 
 //--------------------------------------------------------------------------
-/// \brief	This function returns the amount of memory used to store the 
-///			specified openGL texture. 
+/// \brief	This function returns the amount of memory used to store the
+///			specified openGL texture.
 /// \param	idx	-	the openGL texture object
 /// \return	the amount of memory used (in bytes)
 ///
@@ -258,7 +261,7 @@ unsigned int TextureManager::GetTextureSize(unsigned int idx) {
 }
 
 //--------------------------------------------------------------------------
-/// \brief	This returns the amount of memory used to store all textures 
+/// \brief	This returns the amount of memory used to store all textures
 ///			currently loaded. The size returned is in bytes
 /// \return	the total amount of memory used (in bytes)
 ///
@@ -267,7 +270,7 @@ unsigned int TextureManager::GetTotalTextureSize() {
 	// iterate through the textures to find the requested texture
 	std::map<std::string,TexRef>::iterator it=m_Textures.begin();
 	for( ; it != m_Textures.end(); ++it ) {
-		sz += it->second.size;		
+		sz += it->second.size;
 	}
 	return sz;
 }
@@ -1412,7 +1415,7 @@ int TextureManager::LoadBmpImage(const std::string filename, unsigned char** pix
 
 		/* read colour map */
 		fread( map, sizeof(ColorMapEntry), 256, fp );
-		
+
 		{
 			unsigned int i;
 			for(i=0;i<256;++i)
@@ -1423,8 +1426,8 @@ int TextureManager::LoadBmpImage(const std::string filename, unsigned char** pix
 					i != map[i].b ) {
 					goto hacky_hacky_moo;
 				}
-			}		
-			
+			}
+
 			/* ignore colour map */
 			*bpp = 1;
 			free( map );
@@ -1435,7 +1438,7 @@ int TextureManager::LoadBmpImage(const std::string filename, unsigned char** pix
 			fread( *pixels, (*w) * (*h), 1, fp );
 			return 1;
 		}
-		
+
 		hacky_hacky_moo: ;
 
 		/*

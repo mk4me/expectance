@@ -35,9 +35,9 @@ void Camera::Init(float yaw, float pitch, float roll, float dist, CameraMode mod
 	_x = sinf(DegToRad(yaw))*dist;
 	_y = sinf(DegToRad(pitch))*dist;
 	_z = cosf(DegToRad(yaw))*dist;
-	
+
 	setYaw(yaw); setPitch(pitch); setRoll(roll); setDistance(dist); setCameraMode(mode);
-	
+
 	m_tracingRadius = 500.0f;
 	m_zoom = 0;
 	m_camPos.set(_x, _y, _z);
@@ -66,6 +66,7 @@ void  Camera::Render()
 	static vector3 _pos(0.0,0.0,0.0); //default position definition
 	static float _tempAng = -1.57079633f;
 	float _alpha, _r, _g, _b;
+    _alpha = _r =_g = _b = 0.0f;
 
 	if ( (m_scObj!=NULL) || (m_id=="mainCamera") ) //update translation from sceneobject
 	{
@@ -73,7 +74,7 @@ void  Camera::Render()
 			_tempAng += 0.02f;
 		else
 			_tempAng = -1.57079633f;
-		
+
 		_alpha = cos(_tempAng);
 
 		// draw grid for indicating camera target
@@ -83,7 +84,7 @@ void  Camera::Render()
 			_sc = 1280; _st = 420;
 			_pos.set(0.0,0.0,0.0);
 			_r=0.6f;
-		} 
+		}
 		else
 		{
 			_pos = CalVecToVector3(m_scObj->getPosition());
@@ -94,14 +95,14 @@ void  Camera::Render()
 		{
 			case ft_FlyCamera: _r=0.0f; _g=1.0f; _b=1.0f; //blue
 				break;
-			case ft_StaticCamera: _r=0.0f; _g=1.0f; _b=0.0f; //green 
+			case ft_StaticCamera: _r=0.0f; _g=1.0f; _b=0.0f; //green
 				break;
 			case ft_OrbitCamera: _r=1.0f; _g=0.0f; _b=0.5f; //red
 				break;
 			case ft_ThirdPersonCamera: _g=_r/2; _b=0.0f; //leave it orange
 				break;
 		}
-		
+
 		_pos.y = 0;
 		vector3 _p1 = _pos+vector3(_sc,0,_sc), _p2 = _pos+vector3(_sc,0,-_sc),_p3= _pos+vector3(-_sc,0,-_sc),_p4=_pos+vector3(-_sc,0,_sc);
 		glPushMatrix();
@@ -111,28 +112,28 @@ void  Camera::Render()
 			glLineWidth(1.0f);
 			glColor4d(_r, _g, _b, _alpha);
 			glBegin(GL_LINES);
-				glVertex3f(_p1.x-_st, _p1.y, _p1.z); 
-				glVertex3f(_p1.x, _p1.y, _p1.z); 
-				glVertex3f(_p1.x, _p1.y, _p1.z-_st); 
-				glVertex3f(_p1.x, _p1.y, _p1.z); 
+				glVertex3f(_p1.x-_st, _p1.y, _p1.z);
+				glVertex3f(_p1.x, _p1.y, _p1.z);
+				glVertex3f(_p1.x, _p1.y, _p1.z-_st);
+				glVertex3f(_p1.x, _p1.y, _p1.z);
 			glEnd();
 			glBegin(GL_LINES);
-				glVertex3f(_p2.x, _p2.y, _p2.z+_st); 
-				glVertex3f(_p2.x, _p2.y, _p2.z); 
-				glVertex3f(_p2.x-_st, _p2.y, _p2.z); 
-				glVertex3f(_p2.x, _p2.y, _p2.z); 
+				glVertex3f(_p2.x, _p2.y, _p2.z+_st);
+				glVertex3f(_p2.x, _p2.y, _p2.z);
+				glVertex3f(_p2.x-_st, _p2.y, _p2.z);
+				glVertex3f(_p2.x, _p2.y, _p2.z);
 			glEnd();
 			glBegin(GL_LINES);
-				glVertex3f(_p3.x+_st, _p3.y, _p3.z); 
-				glVertex3f(_p3.x, _p3.y, _p3.z); 
-				glVertex3f(_p3.x, _p3.y, _p3.z+_st); 
-				glVertex3f(_p3.x, _p3.y, _p3.z); 
+				glVertex3f(_p3.x+_st, _p3.y, _p3.z);
+				glVertex3f(_p3.x, _p3.y, _p3.z);
+				glVertex3f(_p3.x, _p3.y, _p3.z+_st);
+				glVertex3f(_p3.x, _p3.y, _p3.z);
 			glEnd();
 			glBegin(GL_LINES);
-				glVertex3f(_p4.x, _p4.y, _p4.z-_st); 
-				glVertex3f(_p4.x, _p4.y, _p4.z); 
-				glVertex3f(_p4.x+_st, _p4.y, _p4.z); 
-				glVertex3f(_p4.x, _p4.y, _p4.z); 
+				glVertex3f(_p4.x, _p4.y, _p4.z-_st);
+				glVertex3f(_p4.x, _p4.y, _p4.z);
+				glVertex3f(_p4.x+_st, _p4.y, _p4.z);
+				glVertex3f(_p4.x, _p4.y, _p4.z);
 			glEnd();
 			glLineWidth(1.0f);
 			glDisable(GL_BLEND);
@@ -152,7 +153,7 @@ void Camera::OnUpdate(const double deltaTime)
 	static float _targetSpeed = 40.0;
 	// Temp
 	int _index;
-	// Spring 
+	// Spring
 	static vector3 _prevTrgPos(0.0, 0.0, 0.0), _currTrgPos;
 	matrix44 _orbitViewMtx;
 	matrix44 _thirdPersonViewMtx;
@@ -167,7 +168,7 @@ void Camera::OnUpdate(const double deltaTime)
 	// Update Distances
 	_cameraDistance += (deltaTime*5) * _cameraSpeed;
 	//_targetDistance += (deltaTime) * _targetSpeed; //if (movementMode) jesli sie nie rusza to trzeba zmienic speed na 0
-    
+
 	if(_currTrgPos!=_prevTrgPos)
 	{
 		_prevTrgPos = _currTrgPos;
@@ -176,10 +177,10 @@ void Camera::OnUpdate(const double deltaTime)
 
 	// *** Update Spring Cmamera
 	_thirdPersonViewMtx = LookAtMatrix44(_currTrgPos + vector3(0.0, 100.0, 400.0), _currTrgPos , vector3(0.0, 1.0, 0.0));
-	
+
 
 	// *** Update Spline Camera
-	_index = cameraSpline->getSplineIndex(cameraSpline, &_cameraDistance, m_tracingRadius); 
+	_index = cameraSpline->getSplineIndex(cameraSpline, &_cameraDistance, m_tracingRadius);
 	_orbitViewMtx = LookAtMatrix44(cameraSpline->curveData[_index].pos+_currTrgPos, _currTrgPos, vector3(0.0, 1.0, 0.0));
 
 	// for testing purposes _dbg << deltaTime <<" elapsed time \n";
@@ -187,7 +188,7 @@ void Camera::OnUpdate(const double deltaTime)
 	// *** Set Proper View Matrix
 	switch (m_cameraMode) {
 		case ft_StaticCamera:
-		if (m_scObj!=NULL) 
+		if (m_scObj!=NULL)
 			m_viewMtx = LookAtMatrix44(m_camPos, _currTrgPos, m_camUp);
 		else
 			m_viewMtx = LookAtMatrix44(m_camPos, m_camAt, m_camUp);
@@ -242,7 +243,7 @@ const void Camera::PrintInfo() const
     if (Debug::CAMERA>0)
 	    _dbg << "Camera <" << m_id <<">: mode [" << CameraModeId[m_cameraMode] <<"] \n";
 
-	//	", location = [" << m_position.x <<", " << m_position.y << ", " << m_position.z 
+	//	", location = [" << m_position.x <<", " << m_position.y << ", " << m_position.z
 	//<<"], m_color = [" << m_color.x << ", "<<m_color.y<<", "<< m_color.z <<"] \n";
 }
 const std::string Camera::getCameraInfo()
@@ -316,7 +317,7 @@ void Camera::OnMouseMove(float x, float y)
 	YT = RANGE(x, 0.0F, 1.0F, -3.141592F, 3.141592F);
 	PT = RANGE(y, 0.0F, 1.0F, -1.5707F/2, 1.5707F/2);
 
-	m_angTrg.set(YT, PT, 0.0);	
+	m_angTrg.set(YT, PT, 0.0);
 }
 
 void Camera::OnKey(unsigned char key)
@@ -346,7 +347,7 @@ void Camera::UpdateFlyCamera(const double deltaTime)
 		if (m_key=='f') m_eyeTrg -= deltaTime * m_fwdS * m_up*40;
 		m_key=255;
 	}
-	m_eye = SpringDamp(m_eye, m_eyeTrg, m_eyeTrgPrev, deltaTime, 2.5F, 0.5F, 1.0F);	
+	m_eye = SpringDamp(m_eye, m_eyeTrg, m_eyeTrgPrev, deltaTime, 2.5F, 0.5F, 1.0F);
 }
 
 void Camera::setOrbitCameraRadius(float radius)
@@ -407,16 +408,16 @@ vector3 Camera::SpringDamp(
 		const double deltaTime,    // Change in Time
 		float springConst,  // Hooke's Constant
 		float dampConst,    // Damp Constant
-		float springLen) 
+		float springLen)
 {
 	vector3 disp;           // Displacement
-	vector3 velocity;       // Velocity   
+	vector3 velocity;       // Velocity
 	float forceMag;         // Force Magnitude
 
 	// Calculate Spring Force
 	disp = currPos - trgPos;
 	velocity = (prevTrgPos - trgPos) * (float)deltaTime;
-	forceMag = springConst * (springLen - disp.length()) + 
+	forceMag = springConst * (springLen - disp.length()) +
 		dampConst * (DotProduct(disp, velocity) / disp.length());
 
 	// Apply Spring Force

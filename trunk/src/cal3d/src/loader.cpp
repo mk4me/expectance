@@ -69,7 +69,14 @@ void CalLoader::setLoadingMode(int flags)
 
 CalCoreAnimationPtr CalLoader::loadCoreAnimation(const std::string& strFilename, CalCoreSkeleton *skel)
 {
-  if(strFilename.size()>= 3 && _stricmp(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::ANIMATION_XMLFILE_MAGIC)==0)
+	int _cmpANIMATION;
+  	#if defined(FT_STRICMP)
+		_cmpANIMATION = FT_STRICMP(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::ANIMATION_XMLFILE_MAGIC);
+	#else
+		_cmpANIMATION = stricmp(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::ANIMATION_XMLFILE_MAGIC);
+	#endif
+
+	if(strFilename.size()>= 3 && _cmpANIMATION==0)
     return loadXmlCoreAnimation(strFilename, skel);
 
   // open the file
@@ -108,8 +115,14 @@ CalCoreAnimationPtr CalLoader::loadCoreAnimation(const std::string& strFilename,
 
 CalCoreMaterialPtr CalLoader::loadCoreMaterial(const std::string& strFilename)
 {
+	int _cmpMATERIAL;
+  	#if defined(FT_STRICMP)
+		_cmpMATERIAL = FT_STRICMP(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::MATERIAL_XMLFILE_MAGIC);
+	#else
+		_cmpMATERIAL = stricmp(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::MATERIAL_XMLFILE_MAGIC);
+	#endif
 
-  if(strFilename.size()>= 3 && _stricmp(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::MATERIAL_XMLFILE_MAGIC)==0)
+  if(strFilename.size()>= 3 && _cmpMATERIAL==0)
     return loadXmlCoreMaterial(strFilename);
 
   // open the file
@@ -151,8 +164,14 @@ CalCoreMaterialPtr CalLoader::loadCoreMaterial(const std::string& strFilename)
 
 CalCoreMeshPtr CalLoader::loadCoreMesh(const std::string& strFilename)
 {
+	int _cmpMESH;
+  	#if defined(FT_STRICMP)
+		_cmpMESH = FT_STRICMP(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::MESH_XMLFILE_MAGIC);
+	#else
+		_cmpMESH = stricmp(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::MESH_XMLFILE_MAGIC);
+	#endif
 
-  if(strFilename.size()>= 3 && _stricmp(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::MESH_XMLFILE_MAGIC)==0)
+  if(strFilename.size()>= 3 && _cmpMESH==0)
     return loadXmlCoreMesh(strFilename);
 
   // open the file
@@ -195,8 +214,14 @@ CalCoreMeshPtr CalLoader::loadCoreMesh(const std::string& strFilename)
 
 CalCoreSkeletonPtr CalLoader::loadCoreSkeleton(const std::string& strFilename)
 {
+	int _cmpSKELETON;
+  	#if defined(FT_STRICMP)
+		_cmpSKELETON = FT_STRICMP(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::SKELETON_XMLFILE_MAGIC);
+	#else
+		_cmpSKELETON = stricmp(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::SKELETON_XMLFILE_MAGIC);
+	#endif
 
-  if(strFilename.size()>= 3 && _stricmp(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::SKELETON_XMLFILE_MAGIC)==0)
+  if(strFilename.size()>= 3 && _cmpSKELETON==0)
     return loadXmlCoreSkeleton(strFilename);
 
   // open the file
@@ -1467,9 +1492,19 @@ CalCoreAnimationPtr CalLoader::loadXmlCoreAnimation(const std::string& strFilena
 		return false;
 	}
 
-	if(_stricmp(animation->Value(),"HEADER")==0)
+	int _cmpHEADER, _cmpMAGIC, _cmpANIMATION;
+  	
+	#if defined(FT_STRICMP)
+		_cmpHEADER = FT_STRICMP(animation->Value(),"HEADER");
+		_cmpMAGIC = FT_STRICMP(animation->Attribute("MAGIC"),Cal::ANIMATION_XMLFILE_MAGIC);
+	#else
+		_cmpHEADER = stricmp(animation->Value(),"HEADER");
+		_cmpMAGIC = stricmp(animation->Attribute("MAGIC"),Cal::ANIMATION_XMLFILE_MAGIC);
+	#endif
+
+	if(_cmpHEADER==0)
 	{
-		if(_stricmp(animation->Attribute("MAGIC"),Cal::ANIMATION_XMLFILE_MAGIC)!=0)
+		if(_cmpMAGIC!=0)
 		{
 			CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, strFilename);
 			return false;
@@ -1484,13 +1519,25 @@ CalCoreAnimationPtr CalLoader::loadXmlCoreAnimation(const std::string& strFilena
 		animation = animation->NextSiblingElement();
 	}
 
-	if(!animation || _stricmp(animation->Value(),"ANIMATION")!=0)
+	#if defined(FT_STRICMP)
+		_cmpANIMATION = FT_STRICMP(animation->Value(),"ANIMATION");		
+	#else
+		_cmpANIMATION = stricmp(animation->Value(),"ANIMATION");
+	#endif
+
+	if(!animation || _cmpANIMATION!=0)
 	{
 		CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, strFilename);
 		return false;
 	}
 
-	if(animation->Attribute("MAGIC") !=NULL && _stricmp(animation->Attribute("MAGIC"),Cal::ANIMATION_XMLFILE_MAGIC)!=0)
+	#if defined(FT_STRICMP)
+		_cmpMAGIC = FT_STRICMP(animation->Attribute("MAGIC"),Cal::ANIMATION_XMLFILE_MAGIC);
+	#else
+		_cmpMAGIC = stricmp(animation->Attribute("MAGIC"),Cal::ANIMATION_XMLFILE_MAGIC);
+	#endif
+	
+	if(animation->Attribute("MAGIC") !=NULL && _cmpMAGIC!=0)
 	{
 		CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, strFilename);
 		return false;
@@ -1529,7 +1576,15 @@ CalCoreAnimationPtr CalLoader::loadXmlCoreAnimation(const std::string& strFilena
 	int trackId;
 	for(trackId = 0; trackId < trackCount; ++trackId)
 	{
-		if(!track || _stricmp(track->Value(),"TRACK")!=0)
+		int _cmpTRACK;
+  	
+		#if defined(FT_STRICMP)
+		_cmpTRACK = FT_STRICMP(track->Value(),"TRACK");
+		#else
+		_cmpTRACK = stricmp(track->Value(),"TRACK");
+		#endif
+		
+		if(!track || _cmpTRACK!=0)
 		{
 			CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, strFilename);
 			return 0;
@@ -1571,8 +1626,16 @@ CalCoreAnimationPtr CalLoader::loadXmlCoreAnimation(const std::string& strFilena
 		int keyframeId;
 		for(keyframeId = 0; keyframeId < keyframeCount; ++keyframeId)
 		{
+			int _cmpKEYFRAME, _cmpTRANSLATION, _cmpROTATION;
+  	
+			#if defined(FT_STRICMP)
+				_cmpKEYFRAME = FT_STRICMP(keyframe->Value(),"KEYFRAME");
+			#else
+				_cmpKEYFRAME = stricmp(keyframe->Value(),"KEYFRAME");
+			#endif
+
 			// load the core keyframe
-			if(!keyframe|| _stricmp(keyframe->Value(),"KEYFRAME")!=0)
+			if(!keyframe|| _cmpKEYFRAME!=0)
 			{
 				CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, strFilename);
 				return 0;
@@ -1581,7 +1644,14 @@ CalCoreAnimationPtr CalLoader::loadXmlCoreAnimation(const std::string& strFilena
 			float time= (float) atof(keyframe->Attribute("TIME"));
 
 			TiXmlElement* translation = keyframe->FirstChildElement();
-			if(!translation || _stricmp(translation->Value(),"TRANSLATION")!=0)
+			
+			#if defined(FT_STRICMP)
+				_cmpTRANSLATION = FT_STRICMP(translation->Value(),"TRANSLATION");
+			#else
+				_cmpTRANSLATION = stricmp(translation->Value(),"TRANSLATION");
+			#endif
+			
+			if(!translation || _cmpTRANSLATION!=0)
 			{
 				CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, strFilename);
 				return 0;
@@ -1607,7 +1677,13 @@ CalCoreAnimationPtr CalLoader::loadXmlCoreAnimation(const std::string& strFilena
 			str >> tx >> ty >> tz;  
 
 			TiXmlElement* rotation = translation->NextSiblingElement();
-			if(!rotation || _stricmp(rotation->Value(),"ROTATION")!=0)
+
+			#if defined(FT_STRICMP)
+				_cmpROTATION = FT_STRICMP(rotation->Value(),"ROTATION");
+			#else
+				_cmpROTATION = stricmp(rotation->Value(),"ROTATION");
+			#endif
+			if(!rotation || _cmpROTATION!=0)
 			{
 				CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, strFilename);
 				return 0;
@@ -1785,9 +1861,21 @@ CalCoreMaterialPtr CalLoader::loadXmlCoreMaterial(TiXmlDocument& doc)
         return false;
   }
 
-  if(_stricmp(material->Value(),"HEADER")==0)
+	int _cmpHEADER, _cmpMAGIC, _cmpMATERIAL, _cmpAMBIENT, _cmpDIFFUSE, _cmpSPECULAR, _cmpSHININESS, _cmpMAP;
+  	
+	#if defined(FT_STRICMP)
+		_cmpHEADER = FT_STRICMP(material->Value(),"HEADER");
+		_cmpMAGIC = FT_STRICMP(material->Attribute("MAGIC"),Cal::MATERIAL_XMLFILE_MAGIC);
+		_cmpMATERIAL = FT_STRICMP(material->Value(),"MATERIAL");		
+	#else
+		_cmpHEADER = stricmp(material->Value(),"HEADER");
+		_cmpMAGIC = stricmp(material->Attribute("MAGIC"),Cal::MATERIAL_XMLFILE_MAGIC);
+		_cmpMATERIAL = stricmp(material->Value(),"MATERIAL");
+	#endif
+
+  if(_cmpHEADER==0)
   {
-    if(_stricmp(material->Attribute("MAGIC"),Cal::MATERIAL_XMLFILE_MAGIC)!=0)
+    if(_cmpMAGIC!=0)
   {
     CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
           return false;
@@ -1802,13 +1890,18 @@ CalCoreMaterialPtr CalLoader::loadXmlCoreMaterial(TiXmlDocument& doc)
     material = material->NextSiblingElement();
   }
 
-  if(!material|| _stricmp(material->Value(),"MATERIAL")!=0)
+  if(!material|| _cmpMATERIAL!=0)
   {
 	  CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
       return false;
   }
+	#if defined(FT_STRICMP)
+		_cmpMAGIC = FT_STRICMP(material->Attribute("MAGIC"),Cal::MATERIAL_XMLFILE_MAGIC);
+	#else
+		_cmpMAGIC = stricmp(material->Attribute("MAGIC"),Cal::MATERIAL_XMLFILE_MAGIC);
+	#endif
 
-  if(material->Attribute("MAGIC")!=NULL && _stricmp(material->Attribute("MAGIC"),Cal::MATERIAL_XMLFILE_MAGIC)!=0)
+  if(material->Attribute("MAGIC")!=NULL && _cmpMAGIC!=0)
   {
     CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
         return false;
@@ -1828,7 +1921,14 @@ CalCoreMaterialPtr CalLoader::loadXmlCoreMaterial(TiXmlDocument& doc)
   }
 
   TiXmlElement* ambient = material->FirstChildElement();
-  if(!ambient || _stricmp(ambient->Value(),"AMBIENT")!=0)
+ 	
+  #if defined(FT_STRICMP)
+	_cmpAMBIENT = FT_STRICMP(ambient->Value(),"AMBIENT");
+  #else
+	_cmpAMBIENT = stricmp(ambient->Value(),"AMBIENT");
+  #endif
+
+  if(!ambient || _cmpAMBIENT!=0)
   {
 		CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
         return false;
@@ -1855,7 +1955,14 @@ CalCoreMaterialPtr CalLoader::loadXmlCoreMaterial(TiXmlDocument& doc)
   ambientColor.alpha = (unsigned char)a; 
 
   TiXmlElement* diffuse = ambient->NextSiblingElement();
-  if(!diffuse || _stricmp(diffuse->Value(),"DIFFUSE")!=0)
+ 	
+  #if defined(FT_STRICMP)
+	_cmpDIFFUSE = FT_STRICMP(diffuse->Value(),"DIFFUSE");
+  #else
+	_cmpDIFFUSE = stricmp(diffuse->Value(),"DIFFUSE");
+  #endif
+
+  if(!diffuse || _cmpDIFFUSE!=0)
   {
 		CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
         return false;
@@ -1884,7 +1991,15 @@ CalCoreMaterialPtr CalLoader::loadXmlCoreMaterial(TiXmlDocument& doc)
   
 
   TiXmlElement* specular = diffuse->NextSiblingElement();
-  if(!specular|| _stricmp(specular->Value(),"SPECULAR")!=0)
+
+ 	
+  #if defined(FT_STRICMP)
+	_cmpSPECULAR = FT_STRICMP(specular->Value(),"SPECULAR");
+  #else
+	_cmpSPECULAR = stricmp(specular->Value(),"SPECULAR");
+  #endif
+
+  if(!specular|| _cmpSPECULAR!=0)
   {
 		CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
         return false;
@@ -1913,7 +2028,14 @@ CalCoreMaterialPtr CalLoader::loadXmlCoreMaterial(TiXmlDocument& doc)
 
 
   TiXmlElement* shininess = specular->NextSiblingElement();
-  if(!shininess|| _stricmp(shininess->Value(),"SHININESS")!=0)
+ 	
+  #if defined(FT_STRICMP)
+	_cmpSHININESS = FT_STRICMP(shininess->Value(),"SHININESS");
+  #else
+	_cmpSHININESS = stricmp(shininess->Value(),"SHININESS");
+  #endif
+
+  if(!shininess|| _cmpSHININESS!=0)
   {
 		CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
         return false;
@@ -1946,7 +2068,14 @@ CalCoreMaterialPtr CalLoader::loadXmlCoreMaterial(TiXmlDocument& doc)
 
   for( map = shininess->NextSiblingElement();map;map = map->NextSiblingElement() )
   {
-	  if(!map|| _stricmp(map->Value(),"MAP")!=0)
+ 	
+	  #if defined(FT_STRICMP)
+		_cmpMAP = FT_STRICMP(map->Value(),"MAP");
+	  #else
+		_cmpMAP = stricmp(map->Value(),"MAP");
+	  #endif
+
+	  if(!map|| _cmpMAP!=0)
 	  {
 		CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
         return false;
@@ -2015,10 +2144,21 @@ CalCoreMeshPtr CalLoader::loadXmlCoreMesh(TiXmlDocument& doc)
 		CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 		return false;
 	}
-
-	if( _stricmp(mesh->Value(),"HEADER")==0)
+	
+	int _cmpHEADER, _cmpMAGIC, _cmpMESH, _cmpSUBMESH, _cmpVERTEX, _cmpPOS, _cmpNORM, _cmpCOLLAPSEID,
+		_cmpCOLLAPSECOUNT, _cmpTEXCOORD, _cmpINFLUENCE, _cmpPHYSIQUE, _cmpSPRING, _cmpFACE;
+  	
+	#if defined(FT_STRICMP)
+		_cmpHEADER = FT_STRICMP(mesh->Value(),"HEADER");
+		_cmpMAGIC = FT_STRICMP(mesh->Attribute("MAGIC"),Cal::MESH_XMLFILE_MAGIC);
+	#else
+		_cmpHEADER = stricmp(mesh->Value(),"HEADER");
+		_cmpMAGIC = stricmp(mesh->Attribute("MAGIC"),Cal::MESH_XMLFILE_MAGIC);
+	#endif
+	
+	if(_cmpHEADER==0)
 	{
-		if(_stricmp(mesh->Attribute("MAGIC"),Cal::MESH_XMLFILE_MAGIC)!=0)
+		if(_cmpMAGIC!=0)
 		{
 			CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 			return false;
@@ -2032,13 +2172,22 @@ CalCoreMeshPtr CalLoader::loadXmlCoreMesh(TiXmlDocument& doc)
 
 		mesh = mesh->NextSiblingElement();
 	}
-	if(!mesh || _stricmp(mesh->Value(),"MESH")!=0)
+
+	#if defined(FT_STRICMP)
+		_cmpMESH = FT_STRICMP(mesh->Value(),"MESH");
+		_cmpMAGIC = FT_STRICMP(mesh->Attribute("MAGIC"),Cal::MESH_XMLFILE_MAGIC);
+	#else
+		_cmpMESH = stricmp(mesh->Value(),"MESH");
+		_cmpMAGIC = stricmp(mesh->Attribute("MAGIC"),Cal::MESH_XMLFILE_MAGIC);
+	#endif
+
+	if(!mesh || _cmpMESH!=0)
 	{
 		CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 		return false;
 	}
 
-	if(mesh->Attribute("MAGIC")!=NULL && _stricmp(mesh->Attribute("MAGIC"),Cal::MESH_XMLFILE_MAGIC)!=0)
+	if(mesh->Attribute("MAGIC")!=NULL && _cmpMAGIC!=0)
 	{
 		CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 		return false;
@@ -2067,7 +2216,13 @@ CalCoreMeshPtr CalLoader::loadXmlCoreMesh(TiXmlDocument& doc)
 	int submeshId;
 	for(submeshId = 0; submeshId < submeshCount; ++submeshId)
 	{
-		if(!submesh || _stricmp(submesh->Value(),"SUBMESH")!=0)
+		#if defined(FT_STRICMP)
+			_cmpSUBMESH = FT_STRICMP(submesh->Value(),"SUBMESH");
+		#else
+			_cmpSUBMESH = stricmp(submesh->Value(),"SUBMESH");
+		#endif
+		
+		if(!submesh || _cmpSUBMESH!=0)
 		{
 			CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 			return false;
@@ -2114,7 +2269,13 @@ CalCoreMeshPtr CalLoader::loadXmlCoreMesh(TiXmlDocument& doc)
 		int vertexId;
 		for(vertexId = 0; vertexId < vertexCount; ++vertexId)
 		{
-			if(!vertex || _stricmp(vertex->Value(),"VERTEX")!=0)
+			#if defined(FT_STRICMP)
+				_cmpVERTEX = FT_STRICMP(vertex->Value(),"VERTEX");
+			#else
+				_cmpVERTEX = stricmp(vertex->Value(),"VERTEX");
+			#endif
+
+			if(!vertex || _cmpVERTEX!=0)
 			{
 				CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 				return false;
@@ -2123,7 +2284,14 @@ CalCoreMeshPtr CalLoader::loadXmlCoreMesh(TiXmlDocument& doc)
 			CalCoreSubmesh::Vertex Vertex;
 
 			TiXmlElement *pos= vertex->FirstChildElement();
-			if(!pos || _stricmp(pos->Value(),"POS")!=0)
+
+			#if defined(FT_STRICMP)
+				_cmpPOS = FT_STRICMP(pos->Value(),"POS");
+			#else
+				_cmpPOS = stricmp(pos->Value(),"POS");
+			#endif
+			
+			if(!pos || _cmpPOS!=0)
 			{
 				CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 				return false;
@@ -2146,7 +2314,14 @@ CalCoreMeshPtr CalLoader::loadXmlCoreMesh(TiXmlDocument& doc)
 			str >> Vertex.position.x >> Vertex.position.y >> Vertex.position.z;  
 
 			TiXmlElement *norm= pos->NextSiblingElement();
-			if(!norm|| _stricmp(norm->Value(),"NORM")!=0)
+
+			#if defined(FT_STRICMP)
+				_cmpNORM = FT_STRICMP(norm->Value(),"NORM");
+			#else
+				_cmpNORM = stricmp(norm->Value(),"NORM");
+			#endif
+
+			if(!norm || _cmpNORM!=0)
 			{
 				CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 				return false;
@@ -2169,7 +2344,14 @@ CalCoreMeshPtr CalLoader::loadXmlCoreMesh(TiXmlDocument& doc)
 			str >> Vertex.normal.x >> Vertex.normal.y >> Vertex.normal.z;
 
 			TiXmlElement *collapse= norm->NextSiblingElement();
-			if(collapse && _stricmp(collapse->Value(),"COLLAPSEID")==0)
+
+			#if defined(FT_STRICMP)
+				_cmpCOLLAPSEID = FT_STRICMP(collapse->Value(),"COLLAPSEID");
+			#else
+				_cmpCOLLAPSEID = stricmp(collapse->Value(),"COLLAPSEID");
+			#endif
+
+			if(collapse && _cmpCOLLAPSEID==0)
 			{
 				node = collapse->FirstChild();
 				if(!node)
@@ -2186,7 +2368,15 @@ CalCoreMeshPtr CalLoader::loadXmlCoreMesh(TiXmlDocument& doc)
 				Vertex.collapseId = atoi(collapseid->Value());
 
 				TiXmlElement *collapseCount= collapse->NextSiblingElement();
-				if(!collapseCount|| _stricmp(collapseCount->Value(),"COLLAPSECOUNT")!=0)
+
+				#if defined(FT_STRICMP)
+					_cmpCOLLAPSECOUNT = FT_STRICMP(collapseCount->Value(),"COLLAPSECOUNT");
+				#else
+					_cmpCOLLAPSECOUNT = stricmp(collapseCount->Value(),"COLLAPSECOUNT");
+				#endif
+
+
+				if(!collapseCount|| _cmpCOLLAPSECOUNT!=0)
 				{
 					CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 					return false;
@@ -2222,7 +2412,13 @@ CalCoreMeshPtr CalLoader::loadXmlCoreMesh(TiXmlDocument& doc)
 			{
 				CalCoreSubmesh::TextureCoordinate textureCoordinate;
 				// load data of the influence
-				if(!texcoord || _stricmp(texcoord->Value(),"TEXCOORD")!=0)
+				#if defined(FT_STRICMP)
+					_cmpTEXCOORD = FT_STRICMP(texcoord->Value(),"TEXCOORD");
+				#else
+					_cmpTEXCOORD = stricmp(texcoord->Value(),"TEXCOORD");
+				#endif
+
+				if(!texcoord || _cmpTEXCOORD!=0)
 				{
 					CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 					return false;
@@ -2273,7 +2469,14 @@ CalCoreMeshPtr CalLoader::loadXmlCoreMesh(TiXmlDocument& doc)
 			int influenceId;
 			for(influenceId = 0; influenceId < influenceCount; ++influenceId)
 			{
-				if(!influence || _stricmp(influence->Value(),"INFLUENCE")!=0)
+
+				#if defined(FT_STRICMP)
+					_cmpINFLUENCE = FT_STRICMP(influence->Value(),"INFLUENCE");
+				#else
+					_cmpINFLUENCE = stricmp(influence->Value(),"INFLUENCE");
+				#endif
+
+				if(!influence || _cmpINFLUENCE!=0)
 				{
 					CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 					return false;
@@ -2311,7 +2514,13 @@ CalCoreMeshPtr CalLoader::loadXmlCoreMesh(TiXmlDocument& doc)
 			{
 				CalCoreSubmesh::PhysicalProperty physicalProperty;
 
-				if(!physique || _stricmp(physique->Value(),"PHYSIQUE")!=0)
+				#if defined(FT_STRICMP)
+					_cmpPHYSIQUE = FT_STRICMP(physique->Value(),"PHYSIQUE");
+				#else
+					_cmpPHYSIQUE = stricmp(physique->Value(),"PHYSIQUE");
+				#endif
+
+				if(!physique || _cmpPHYSIQUE!=0)
 				{
 					CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 					return false;
@@ -2347,7 +2556,14 @@ CalCoreMeshPtr CalLoader::loadXmlCoreMesh(TiXmlDocument& doc)
 		for(springId = 0; springId < springCount; ++springId)
 		{
 			CalCoreSubmesh::Spring Spring;
-			if(!spring || _stricmp(spring->Value(),"SPRING")!=0)
+
+			#if defined(FT_STRICMP)
+				_cmpSPRING = FT_STRICMP(spring->Value(),"SPRING");
+			#else
+				_cmpSPRING = stricmp(spring->Value(),"SPRING");
+			#endif
+
+			if(!spring || _cmpSPRING!=0)
 			{
 				CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 				return false;
@@ -2371,7 +2587,13 @@ CalCoreMeshPtr CalLoader::loadXmlCoreMesh(TiXmlDocument& doc)
 		{
 			CalCoreSubmesh::Face Face;
 
-			if(!face || _stricmp(face->Value(),"FACE")!=0)
+			#if defined(FT_STRICMP)
+				_cmpFACE = FT_STRICMP(face->Value(),"FACE");
+			#else
+				_cmpFACE = stricmp(face->Value(),"FACE");
+			#endif
+
+			if(!face || _cmpFACE!=0)
 			{
 				CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 				return false;
@@ -2437,9 +2659,20 @@ CalCoreSkeletonPtr CalLoader::loadXmlCoreSkeleton(cal3d::TiXmlDocument& doc)
 		return 0;
 	}
 
-	if(_stricmp(skeleton->Value(),"HEADER")==0)
+	int _cmpHEADER, _cmpMAGIC, _cmpSKELETON, _cmpBONE, _cmpTRANSLATION, _cmpROTATION, _cmpLOCALTRANSLATION, _cmpLOCALROTATION,
+		_cmpPARENTID, _cmpCHILDID;
+  	
+	#if defined(FT_STRICMP)
+		_cmpHEADER = FT_STRICMP(skeleton->Value(),"HEADER");
+		_cmpMAGIC = FT_STRICMP(skeleton->Attribute("MAGIC"),Cal::SKELETON_XMLFILE_MAGIC);
+	#else
+		_cmpHEADER = stricmp(skeleton->Value(),"HEADER");
+		_cmpMAGIC = stricmp(skeleton->Attribute("MAGIC"),Cal::SKELETON_XMLFILE_MAGIC);
+	#endif
+
+	if(_cmpHEADER==0)
 	{
-		if(_stricmp(skeleton->Attribute("MAGIC"),Cal::SKELETON_XMLFILE_MAGIC)!=0)
+		if(_cmpMAGIC!=0)
 		{
 			CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 			return false;
@@ -2454,13 +2687,21 @@ CalCoreSkeletonPtr CalLoader::loadXmlCoreSkeleton(cal3d::TiXmlDocument& doc)
 		skeleton = skeleton->NextSiblingElement();
 	}
 
-	if(!skeleton || _stricmp(skeleton->Value(),"SKELETON")!=0)
+	#if defined(FT_STRICMP)
+		_cmpSKELETON = FT_STRICMP(skeleton->Value(),"SKELETON");
+		_cmpMAGIC = FT_STRICMP(skeleton->Attribute("MAGIC"),Cal::SKELETON_XMLFILE_MAGIC);
+	#else
+		_cmpSKELETON = stricmp(skeleton->Value(),"SKELETON");
+		_cmpMAGIC = stricmp(skeleton->Attribute("MAGIC"),Cal::SKELETON_XMLFILE_MAGIC);
+	#endif
+
+	if(!skeleton || _cmpSKELETON!=0)
 	{
 		CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 		return false;
 	}
 
-	if(skeleton->Attribute("MAGIC")!=NULL && _stricmp(skeleton->Attribute("MAGIC"),Cal::SKELETON_XMLFILE_MAGIC)!=0)
+	if(skeleton->Attribute("MAGIC")!=NULL && _cmpMAGIC!=0)
 	{
 		CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 		return false;
@@ -2484,7 +2725,13 @@ CalCoreSkeletonPtr CalLoader::loadXmlCoreSkeleton(cal3d::TiXmlDocument& doc)
 	TiXmlElement* bone;
 	for( bone = skeleton->FirstChildElement();bone;bone = bone->NextSiblingElement() )
 	{
-		if(_stricmp(bone->Value(),"BONE")!=0)
+		#if defined(FT_STRICMP)
+			_cmpBONE = FT_STRICMP(bone->Value(),"BONE");
+		#else
+			_cmpBONE = stricmp(bone->Value(),"BONE");
+		#endif
+
+		if(_cmpBONE!=0)
 		{
 			CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 			return false;
@@ -2496,7 +2743,14 @@ CalCoreSkeletonPtr CalLoader::loadXmlCoreSkeleton(cal3d::TiXmlDocument& doc)
 		// get the translation of the bone
 
 		TiXmlElement* translation = bone->FirstChildElement();
-		if(!translation || _stricmp( translation->Value(),"TRANSLATION")!=0)
+
+		#if defined(FT_STRICMP)
+			_cmpTRANSLATION = FT_STRICMP(translation->Value(),"TRANSLATION");
+		#else
+			_cmpTRANSLATION = stricmp(translation->Value(),"TRANSLATION");
+		#endif
+
+		if(!translation || _cmpTRANSLATION!=0)
 		{
 			CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 			return false;
@@ -2523,7 +2777,14 @@ CalCoreSkeletonPtr CalLoader::loadXmlCoreSkeleton(cal3d::TiXmlDocument& doc)
 		// get the rotation of the bone
 
 		TiXmlElement* rotation = translation->NextSiblingElement();
-		if(!rotation || _stricmp(rotation->Value(),"ROTATION")!=0)
+
+		#if defined(FT_STRICMP)
+			_cmpROTATION = FT_STRICMP(rotation->Value(),"ROTATION");
+		#else
+			_cmpROTATION = stricmp(rotation->Value(),"ROTATION");
+		#endif
+
+		if(!rotation || _cmpROTATION!=0)
 		{
 			CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 			return false;
@@ -2551,7 +2812,14 @@ CalCoreSkeletonPtr CalLoader::loadXmlCoreSkeleton(cal3d::TiXmlDocument& doc)
 
 
 		TiXmlElement* translationBoneSpace = rotation->NextSiblingElement();
-		if(!rotation || _stricmp(translationBoneSpace->Value(),"LOCALTRANSLATION")!=0)
+
+		#if defined(FT_STRICMP)
+			_cmpLOCALTRANSLATION = FT_STRICMP(translationBoneSpace->Value(),"LOCALTRANSLATION");
+		#else
+			_cmpLOCALTRANSLATION = stricmp(translationBoneSpace->Value(),"LOCALTRANSLATION");
+		#endif
+
+		if(!rotation || _cmpLOCALTRANSLATION!=0)
 		{
 			CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 			return false;
@@ -2578,7 +2846,14 @@ CalCoreSkeletonPtr CalLoader::loadXmlCoreSkeleton(cal3d::TiXmlDocument& doc)
 		// get the bone space rotation of the bone
 
 		TiXmlElement* rotationBoneSpace = translationBoneSpace->NextSiblingElement();
-		if(!rotationBoneSpace || _stricmp(rotationBoneSpace->Value(),"LOCALROTATION")!=0)
+
+		#if defined(FT_STRICMP)
+			_cmpLOCALROTATION = FT_STRICMP(rotationBoneSpace->Value(),"LOCALROTATION");
+		#else
+			_cmpLOCALROTATION = stricmp(rotationBoneSpace->Value(),"LOCALROTATION");
+		#endif
+
+		if(!rotationBoneSpace || _cmpLOCALROTATION!=0)
 		{
 			CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 			return false;
@@ -2605,7 +2880,14 @@ CalCoreSkeletonPtr CalLoader::loadXmlCoreSkeleton(cal3d::TiXmlDocument& doc)
 		// get the parent bone id
 
 		TiXmlElement* parent = rotationBoneSpace->NextSiblingElement();
-		if(!parent || _stricmp(parent->Value(),"PARENTID")!=0)
+
+		#if defined(FT_STRICMP)
+			_cmpPARENTID = FT_STRICMP(parent->Value(),"PARENTID");
+		#else
+			_cmpPARENTID = stricmp(parent->Value(),"PARENTID");
+		#endif
+
+		if(!parent || _cmpPARENTID!=0)
 		{
 			CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 			return false;
@@ -2666,7 +2948,13 @@ CalCoreSkeletonPtr CalLoader::loadXmlCoreSkeleton(cal3d::TiXmlDocument& doc)
 		TiXmlElement* child;
 		for( child = parent->NextSiblingElement();child;child = child->NextSiblingElement() )
 		{
-			if(_stricmp(child->Value(),"CHILDID")!=0)
+			#if defined(FT_STRICMP)
+				_cmpCHILDID = FT_STRICMP(child->Value(),"CHILDID");
+			#else
+				_cmpCHILDID = stricmp(child->Value(),"CHILDID");
+			#endif
+
+			if(_cmpCHILDID!=0)
 			{
 				CalError::setLastError(CalError::INVALID_FILE_FORMAT, __FILE__, __LINE__, doc.Value());
 				return false;

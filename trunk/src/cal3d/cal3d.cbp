@@ -168,6 +168,8 @@
 		<Unit filename="src/streamsource.h" />
 		<Unit filename="src/submesh.cpp" />
 		<Unit filename="src/submesh.h" />
+		<Unit filename="src/tinystr.cpp" />
+		<Unit filename="src/tinystr.h" />
 		<Unit filename="src/tinyxml.cpp" />
 		<Unit filename="src/tinyxml.h" />
 		<Unit filename="src/tinyxmlerror.cpp" />

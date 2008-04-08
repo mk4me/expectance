@@ -7,51 +7,51 @@ using namespace ft;
  * Splits the given String into tokens.
  *
  * \param const std::string & str - String to be split
- * \param const std::string & delimiters - tokens separators array 
+ * \param const std::string & delimiters - tokens separators array
  * \return std::vector<string> - an array of tokens.
  **/
 vector<string> StringHelper::Split(const string& str,const string& delimiters)
 {
   vector<string> tokens;
-  
-  string::size_type lastPos = 0, pos = 0;  
-  int count = 0;
-  
-  if(str.length()<1)  return tokens;
-  
-  // skip delimiters at beginning.  
-  lastPos = str.find_first_not_of(delimiters, 0);
-      
-  if((str.substr(0, lastPos-pos).length()) > 0)
-  {  	
-  	count = str.substr(0, lastPos-pos).length();  	
 
-  	for(int i=0; i < count; i++)  	
+  string::size_type lastPos = 0, pos = 0;
+  int count = 0;
+
+  if(str.length()<1)  return tokens;
+
+  // skip delimiters at beginning.
+  lastPos = str.find_first_not_of(delimiters, 0);
+
+  if((str.substr(0, lastPos-pos).length()) > 0)
+  {
+  	count = str.substr(0, lastPos-pos).length();
+
+  	for(int i=0; i < count; i++)
   	 	tokens.push_back("");
-  	
+
   	if(string::npos == lastPos)
   		tokens.push_back("");
   }
 
   // find first "non-delimiter".
   pos = str.find_first_of(delimiters, lastPos);
-  
+
   while (string::npos != pos || string::npos != lastPos)
-  {  	      	    
+  {
      	// found a token, add it to the vector.
      	tokens.push_back( str.substr(lastPos, pos - lastPos));
-				
+
     	// skip delimiters.  Note the "not_of"
-     	lastPos = str.find_first_not_of(delimiters, pos);   	   	    
-		
-		if((string::npos != pos) && (str.substr(pos, lastPos-pos).length() > 1))  		
+     	lastPos = str.find_first_not_of(delimiters, pos);
+
+		if((string::npos != pos) && (str.substr(pos, lastPos-pos).length() > 1))
   		{
   			count = str.substr(pos, lastPos-pos).length();
 
   			for(int i=0; i < count; i++)
   	 			tokens.push_back("");
 		}
-		
+
   		pos = str.find_first_of(delimiters, lastPos);
   }
 
@@ -113,7 +113,7 @@ string StringHelper::RemoveChar(const string& str, const char character)
  *                           method failes nad returns false
  * \return bool - true if parsing successfull, false otherwise
  **/
-bool StringHelper::ReadFloatArrayFromString(const string& str, float* floatArray, int arraySize)
+bool StringHelper::ReadFloatArrayFromString(const string& str, float* floatArray, unsigned int arraySize)
 {
     vector<string> _tokens;
     string _arrayStr(str);
