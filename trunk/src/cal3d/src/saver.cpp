@@ -53,7 +53,7 @@ using namespace cal3d;
 
 bool CalSaver::saveCoreAnimation(const std::string& strFilename, CalCoreAnimation *pCoreAnimation, CalSaverAnimationOptions *pOptions)
 {
-  if(strFilename.size()>= 3 && stricmp(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::ANIMATION_XMLFILE_MAGIC)==0)
+  if(strFilename.size()>= 3 && _stricmp(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::ANIMATION_XMLFILE_MAGIC)==0)
 	 return saveXmlCoreAnimation(strFilename, pCoreAnimation);	
 
   // open the file
@@ -335,7 +335,7 @@ bool CalSaver::saveCompressedCoreKeyframe(std::ofstream& file, const std::string
 
 bool CalSaver::saveCoreMaterial(const std::string& strFilename, CalCoreMaterial *pCoreMaterial)
 {
-  if(strFilename.size()>= 3 && stricmp(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::MATERIAL_XMLFILE_MAGIC)==0)
+  if(strFilename.size()>= 3 && _stricmp(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::MATERIAL_XMLFILE_MAGIC)==0)
     return saveXmlCoreMaterial(strFilename, pCoreMaterial);	
 
   // open the file
@@ -433,7 +433,7 @@ bool CalSaver::saveCoreMaterial(const std::string& strFilename, CalCoreMaterial 
 
 bool CalSaver::saveCoreMesh(const std::string& strFilename, CalCoreMesh *pCoreMesh)
 {
-  if(strFilename.size()>= 3 && stricmp(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::MESH_XMLFILE_MAGIC)==0)
+  if(strFilename.size()>= 3 && _stricmp(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::MESH_XMLFILE_MAGIC)==0)
     return saveXmlCoreMesh(strFilename, pCoreMesh);
 
   // open the file
@@ -505,7 +505,7 @@ bool CalSaver::saveCoreMesh(const std::string& strFilename, CalCoreMesh *pCoreMe
 
 bool CalSaver::saveCoreSkeleton(const std::string& strFilename, CalCoreSkeleton *pCoreSkeleton)
 {
-  if(strFilename.size()>= 3 && stricmp(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::SKELETON_XMLFILE_MAGIC)==0)
+  if(strFilename.size()>= 3 && _stricmp(strFilename.substr(strFilename.size()-3,3).c_str(),Cal::SKELETON_XMLFILE_MAGIC)==0)
     return saveXmlCoreSkeleton(strFilename, pCoreSkeleton);	
 
   // open the file
@@ -858,7 +858,7 @@ bool CalSaver::saveXmlCoreSkeleton(const std::string& strFilename, CalCoreSkelet
 {
   std::stringstream str;
 
-  TiXmlDocument doc(strFilename);  
+  TiXmlDocument doc(strFilename.c_str());  
 
 
   TiXmlElement skeleton("SKELETON");
@@ -876,7 +876,7 @@ bool CalSaver::saveXmlCoreSkeleton(const std::string& strFilename, CalCoreSkelet
 
 	  TiXmlElement bone("BONE");	  
 	  bone.SetAttribute("ID",boneId);
-	  bone.SetAttribute("NAME",pCoreBone->getName());
+	  bone.SetAttribute("NAME",pCoreBone->getName().c_str());
 	  bone.SetAttribute("NUMCHILDS",pCoreBone->getListChildId().size());
 
 	  TiXmlElement translation("TRANSLATION");
@@ -888,7 +888,7 @@ bool CalSaver::saveXmlCoreSkeleton(const std::string& strFilename, CalCoreSkelet
     	  << translationVector.y << " "
 	      << translationVector.z;
   
-      TiXmlText translationdata(str.str());  
+      TiXmlText translationdata(str.str().c_str());  
 
       translation.InsertEndChild(translationdata);
       bone.InsertEndChild(translation);
@@ -904,7 +904,7 @@ bool CalSaver::saveXmlCoreSkeleton(const std::string& strFilename, CalCoreSkelet
 		  << rotationQuad.z << " "
 	      << rotationQuad.w;
   
-      TiXmlText rotationdata(str.str());
+      TiXmlText rotationdata(str.str().c_str());
       rotation.InsertEndChild(rotationdata);
       bone.InsertEndChild(rotation);
 
@@ -917,7 +917,7 @@ bool CalSaver::saveXmlCoreSkeleton(const std::string& strFilename, CalCoreSkelet
     	  << localtranslationVector.y << " "
 	      << localtranslationVector.z;
   
-      TiXmlText localtranslationdata(str.str()); 
+      TiXmlText localtranslationdata(str.str().c_str()); 
 
       localtranslation.InsertEndChild(localtranslationdata);
       bone.InsertEndChild(localtranslation);
@@ -932,7 +932,7 @@ bool CalSaver::saveXmlCoreSkeleton(const std::string& strFilename, CalCoreSkelet
 		  << localrotationQuad.z << " "
 	      << localrotationQuad.w;
   
-      TiXmlText localrotationdata(str.str());
+      TiXmlText localrotationdata(str.str().c_str());
       localrotation.InsertEndChild(localrotationdata);
       bone.InsertEndChild(localrotation);
 
@@ -940,7 +940,7 @@ bool CalSaver::saveXmlCoreSkeleton(const std::string& strFilename, CalCoreSkelet
 	  TiXmlElement parent("PARENTID");
 	  str.str("");
       str << pCoreBone->getParentId();
-	  TiXmlText parentid(str.str());
+	  TiXmlText parentid(str.str().c_str());
 	  parent.InsertEndChild(parentid);
       bone.InsertEndChild(parent);
 
@@ -957,7 +957,7 @@ bool CalSaver::saveXmlCoreSkeleton(const std::string& strFilename, CalCoreSkelet
 		  str.str("");
 		  //int id=*iteratorChildId;
           str << *iteratorChildId;
-	      TiXmlText childid(str.str());
+	      TiXmlText childid(str.str().c_str());
 		  child.InsertEndChild(childid);
           bone.InsertEndChild(child);
 	  }
@@ -993,7 +993,7 @@ bool CalSaver::saveXmlCoreAnimation(const std::string& strFilename, CalCoreAnima
 {
 	std::stringstream str;
 
-	TiXmlDocument doc(strFilename);
+	TiXmlDocument doc(strFilename.c_str());
 
 	TiXmlElement animation("ANIMATION");
 	//animation.SetAttribute("MAGIC",Cal::ANIMATION_XMLFILE_MAGIC);
@@ -1001,7 +1001,7 @@ bool CalSaver::saveXmlCoreAnimation(const std::string& strFilename, CalCoreAnima
 
 	str.str("");
 	str << pCoreAnimation->getDuration();	
-	animation.SetAttribute("DURATION",str.str());
+	animation.SetAttribute("DURATION",str.str().c_str());
 	animation.SetAttribute("NUMTRACKS", pCoreAnimation->getTrackCount());
 
 	// get core track list
@@ -1027,7 +1027,7 @@ bool CalSaver::saveXmlCoreAnimation(const std::string& strFilename, CalCoreAnima
 
 			str.str("");
 			str << pCoreKeyframe->getTime();	        
-			keyframe.SetAttribute("TIME",str.str());
+			keyframe.SetAttribute("TIME",str.str().c_str());
 
 			TiXmlElement translation("TRANSLATION");
 			const CalVector& translationVector = pCoreKeyframe->getTranslation();
@@ -1037,7 +1037,7 @@ bool CalSaver::saveXmlCoreAnimation(const std::string& strFilename, CalCoreAnima
 				<< translationVector.y << " "
 				<< translationVector.z;
 
-			TiXmlText translationdata(str.str());  
+			TiXmlText translationdata(str.str().c_str());  
 
 			translation.InsertEndChild(translationdata);
 			keyframe.InsertEndChild(translation);
@@ -1051,7 +1051,7 @@ bool CalSaver::saveXmlCoreAnimation(const std::string& strFilename, CalCoreAnima
 				<< rotationQuad.z << " "
 				<< rotationQuad.w;
 
-			TiXmlText rotationdata(str.str());
+			TiXmlText rotationdata(str.str().c_str());
 			rotation.InsertEndChild(rotationdata);
 			keyframe.InsertEndChild(rotation);
 
@@ -1091,7 +1091,7 @@ bool CalSaver::saveXmlCoreMesh(const std::string& strFilename, CalCoreMesh *pCor
 
 	std::stringstream str;
 
-    TiXmlDocument doc(strFilename);    
+    TiXmlDocument doc(strFilename.c_str());    
 	
 
 	TiXmlElement mesh("MESH");
@@ -1147,7 +1147,7 @@ bool CalSaver::saveXmlCoreMesh(const std::string& strFilename, CalCoreMesh *pCor
 				<< Vertex.position.y << " "
 				<< Vertex.position.z;
 
-			TiXmlText positiondata(str.str());  
+			TiXmlText positiondata(str.str().c_str());  
 
 			position.InsertEndChild(positiondata);
 			vertex.InsertEndChild(position);
@@ -1159,7 +1159,7 @@ bool CalSaver::saveXmlCoreMesh(const std::string& strFilename, CalCoreMesh *pCor
 				<< Vertex.normal.y << " "
 				<< Vertex.normal.z;
 
-			TiXmlText normaldata(str.str());  
+			TiXmlText normaldata(str.str().c_str());  
 
 			normal.InsertEndChild(normaldata);
 			vertex.InsertEndChild(normal);
@@ -1169,14 +1169,14 @@ bool CalSaver::saveXmlCoreMesh(const std::string& strFilename, CalCoreMesh *pCor
 				TiXmlElement collapse("COLLAPSEID");
 				str.str("");
 				str << Vertex.collapseId;
-				TiXmlText collapseid(str.str());
+				TiXmlText collapseid(str.str().c_str());
 				collapse.InsertEndChild(collapseid);
 				vertex.InsertEndChild(collapse);
 
 				TiXmlElement collapsecount("COLLAPSECOUNT");
 				str.str("");
 				str << Vertex.faceCollapseCount;
-				TiXmlText collapsecountdata(str.str());
+				TiXmlText collapsecountdata(str.str().c_str());
 				collapsecount.InsertEndChild(collapsecountdata);
 				vertex.InsertEndChild(collapsecount);
 			}
@@ -1193,7 +1193,7 @@ bool CalSaver::saveXmlCoreMesh(const std::string& strFilename, CalCoreMesh *pCor
 				str << textureCoordinate.u << " "
 					<< textureCoordinate.v;
 
-				TiXmlText texdata(str.str());
+				TiXmlText texdata(str.str().c_str());
 
 				tex.InsertEndChild(texdata);
 
@@ -1213,7 +1213,7 @@ bool CalSaver::saveXmlCoreMesh(const std::string& strFilename, CalCoreMesh *pCor
 				str.str("");
 				str << Influence.weight;
 
-				TiXmlText influencedata(str.str());
+				TiXmlText influencedata(str.str().c_str());
 
 				influence.InsertEndChild(influencedata);
 				vertex.InsertEndChild(influence);
@@ -1229,7 +1229,7 @@ bool CalSaver::saveXmlCoreMesh(const std::string& strFilename, CalCoreMesh *pCor
 
 				str.str("");
 				str << physicalProperty.weight;
-				TiXmlText physiquedata(str.str());
+				TiXmlText physiquedata(str.str().c_str());
 				physique.InsertEndChild(physiquedata);
 				vertex.InsertEndChild(physique);
 			}
@@ -1248,16 +1248,16 @@ bool CalSaver::saveXmlCoreMesh(const std::string& strFilename, CalCoreMesh *pCor
 			str.str("");
 			str << Spring.vertexId[0]<< " "
 				<< Spring.vertexId[1];
-			spring.SetAttribute("VERTEXID",str.str());
+			spring.SetAttribute("VERTEXID",str.str().c_str());
 
 			
 			str.str("");
 			str << Spring.springCoefficient;
-			spring.SetAttribute("COEF",str.str());	
+			spring.SetAttribute("COEF",str.str().c_str());	
 			
 			str.str("");
 			str << Spring.idleLength;				
-			spring.SetAttribute("LENGTH",str.str());
+			spring.SetAttribute("LENGTH",str.str().c_str());
 			
 			submesh.InsertEndChild(spring);
 		}
@@ -1274,7 +1274,7 @@ bool CalSaver::saveXmlCoreMesh(const std::string& strFilename, CalCoreMesh *pCor
 			str << Face.vertexId[0]<< " "
 				<< Face.vertexId[1]<< " "
 				<< Face.vertexId[2];
-			face.SetAttribute("VERTEXID",str.str());
+			face.SetAttribute("VERTEXID",str.str().c_str());
 			submesh.InsertEndChild(face);
 		}
 
@@ -1314,7 +1314,7 @@ bool CalSaver::saveXmlCoreMaterial(const std::string& strFilename, CalCoreMateri
 {
   std::stringstream str;
 
-  TiXmlDocument doc(strFilename);
+  TiXmlDocument doc(strFilename.c_str());
 
   TiXmlElement material("MATERIAL");
   //material.SetAttribute("MAGIC",Cal::MATERIAL_XMLFILE_MAGIC);
@@ -1334,7 +1334,7 @@ bool CalSaver::saveXmlCoreMaterial(const std::string& strFilename, CalCoreMateri
 	  << (int)ambientColor.blue << " "
 	  << (int)ambientColor.alpha;
   
-  TiXmlText ambientdata(str.str());
+  TiXmlText ambientdata(str.str().c_str());
   
 
   ambient.InsertEndChild(ambientdata);
@@ -1351,7 +1351,7 @@ bool CalSaver::saveXmlCoreMaterial(const std::string& strFilename, CalCoreMateri
 	  << (int)diffuseColor.blue << " "
 	  << (int)diffuseColor.alpha;
   
-  TiXmlText diffusedata(str.str());
+  TiXmlText diffusedata(str.str().c_str());
 
   
   diffuse.InsertEndChild(diffusedata);
@@ -1368,7 +1368,7 @@ bool CalSaver::saveXmlCoreMaterial(const std::string& strFilename, CalCoreMateri
 	  << (int)specularColor.blue << " "
 	  << (int)specularColor.alpha;
   
-  TiXmlText speculardata(str.str());
+  TiXmlText speculardata(str.str().c_str());
 
   specular.InsertEndChild(speculardata);
   material.InsertEndChild(specular);
@@ -1378,7 +1378,7 @@ bool CalSaver::saveXmlCoreMaterial(const std::string& strFilename, CalCoreMateri
   str.str("");
   str << pCoreMaterial->getShininess();    
 
-  TiXmlText shininessdata(str.str());
+  TiXmlText shininessdata(str.str().c_str());
 
   shininess.InsertEndChild(shininessdata);
   material.InsertEndChild(shininess);  
@@ -1389,7 +1389,7 @@ bool CalSaver::saveXmlCoreMaterial(const std::string& strFilename, CalCoreMateri
   for(mapId = 0; mapId < (int)vectorMap.size(); ++mapId)
   {
 	  TiXmlElement map("MAP");
-	  TiXmlText mapdata(vectorMap[mapId].strFilename);
+	  TiXmlText mapdata(vectorMap[mapId].strFilename.c_str());
 	  map.InsertEndChild(mapdata);
       material.InsertEndChild(map);
   }

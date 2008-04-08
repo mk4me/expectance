@@ -70,26 +70,26 @@ a) Release version:
 
 - select DLL Release configuration in Visual C++
 - build all projects
-- copy from /lib/win32/release  to 'deploy' directory following files: boost_python.dll, cal3d.dll, engine.dll, generator.dll
+- copy from /lib/win32/release  to '_out/win32' directory following files: boost_python.dll, cal3d.dll, engine.dll, generator.dll
 	pygen.pyd
 
-- copy to 'deploy' the directory wiht data
+- copy to '_out/win32' the directory wiht data
 - start 'python' interpreter
 - run in python following commands:
 	import pygen
-	pygem.runApp()
+	pygen.runApp()
 
-- Generator should start in separate hread and python interpreter should be ready for next commands
+- Generator should start in separate thread and python interpreter should be ready for next commands
 
 
 a) Debug version:
 
 - select DLL Debug configuration in Visual C++
 - build all projects
-- copy from /lib/win32/debug  to 'deploy' directory following files: boost_python_debug.dll, 
+- copy from /lib/win32/debug  to '_out/win32' directory following files: boost_python_debug.dll, 
 	cal3d_d.dll, engine_d.dll, generator_d.dll, pygen_d.pyd
 
-- copy to 'deploy' the directory wiht data
+- copy to '_out/win32' the directory wiht data
 - start 'python_d' interpreter
 - run in python following commands:
 	import pygen
@@ -103,17 +103,17 @@ a) Debug version:
 To build Generator as library for python you must perform following steps:
 - switch ON the option BUILD_FOR_PYTHON in main  CMakeList.txt file (main directory)
 	OPTION(BUILD_FOR_PYTHON "Build library for use in python" ON)
-- goto /tools directory and execute build_all.sh command (ensure that you have rights execute this file)
+- goto /tools directory and execute build.sh command (ensure that you have rights execute this file)
 - libypygen.so shuld be built in /src/pygen directory
 
 To use library for python:
-- place libpygen.so in any ´deploy´ directory together with /data directory
+- place libpygen.so in any '_out/linux' directory together with /data directory
 - run python interpreter
 - run in python following commands:
 	import pygen
 	pygem.runApp()
 
-- NOTE that both  DEBUG and RELEASE version of libpygen.so shoud work correctly in the same ´python´ interpreter in linux system
+- NOTE that both  DEBUG and RELEASE version of libpygen.so shoud work correctly in the same 'python� interpreter in linux system
 
 
 

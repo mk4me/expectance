@@ -28,7 +28,6 @@ del /F lib\win32\release\*.exp
 del /F lib\win32\release\*.ilk 
 del /F lib\win32\release\*.exe
 
-del /F lib\win32\debug\Cal3D*.* 
 del /F lib\win32\debug\engine*.*
 del /F lib\win32\debug\generator*.*
 del /F lib\win32\debug\pygen*.* 

@@ -139,7 +139,7 @@ void	CalCoreSubMorphTarget::getBlendVertex( int vertexId, BlendVertex& outVertex
 	outVertex = m_vectorBlendVertex[ vertexId ];
 }
 
-#pragma mark -
+//by mka #pragma mark
 
  /*****************************************************************************/
 /** Reserves memory for the blend vertices.

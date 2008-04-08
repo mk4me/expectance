@@ -321,7 +321,7 @@ int CalCoreBone_GetChildId( struct CalCoreBone *self, int childIndex )
 {
 	int	childBoneID = -1;
 	std::list<int>&		childBoneIDs( self->getListChildId() );
-	if (childIndex < childBoneIDs.size())
+	if (childIndex < (int)childBoneIDs.size())
 	{
 		std::list<int>::iterator i = childBoneIDs.begin();
 		while (childIndex > 0)
@@ -472,10 +472,10 @@ static CalColorValue	ColorToValue( const CalCoreMaterial::Color& inColor )
 static CalCoreMaterial::Color ValueToColor( CalColorValue inValue )
 {
 	CalCoreMaterial::Color	theColor = {
-		inValue >> 24,
-		(inValue & 0x00FF0000) >> 16,
-		(inValue & 0x0000FF00) >> 8,
-		(inValue & 0x000000FF)
+		(unsigned char)(inValue >> 24),
+		(unsigned char)((inValue & 0x00FF0000) >> 16),
+		(unsigned char)((inValue & 0x0000FF00) >> 8),
+		(unsigned char)(inValue & 0x000000FF)
 	};
 	return theColor;
 }
@@ -1151,7 +1151,7 @@ CalCoreBone *CalCoreSkeleton_GetRootCoreBone(CalCoreSkeleton *self, int rootBone
 {
 	CalCoreBone*	theBone = NULL;
 	std::vector<int>&	rootIDs( self->getVectorRootCoreBoneId() );
-	if ( (rootBoneIndex >= 0) && (rootBoneIndex < rootIDs.size()) )
+	if ( (rootBoneIndex >= 0) && (rootBoneIndex < (int)rootIDs.size()) )
 	{
 		int	boneID = rootIDs[ rootBoneIndex ];
 		theBone = CalCoreSkeleton_GetCoreBone( self, boneID );
@@ -1257,7 +1257,7 @@ CalCoreSubmesh *CalCoreSubmesh_New()
 void CalCoreSubmesh_GetVertex( struct CalCoreSubmesh* self, int vertID, float* outPosition, float* outNormal )
 {
 	std::vector<CalCoreSubmesh::Vertex>&	vertices( self->getVectorVertex() );
-	if ( (vertID >= 0) && (vertID < vertices.size()) )
+	if ( (vertID >= 0) && (vertID < (int)vertices.size()) )
 	{
 		CalCoreSubmesh::Vertex&		theVertex( vertices[ vertID ] );
 		
@@ -1327,8 +1327,9 @@ CalBoolean CalCoreSubmesh_IsTangentsEnabled(CalCoreSubmesh *self, int mapId)
 }
 
 CalBoolean CalCoreSubmesh_EnableTangents(struct CalCoreSubmesh *self, int mapId, enum CalBoolean enabled)
-{
-  return self->enableTangents(mapId, enabled) ? True : False;
+{	
+	bool _enabled = (enabled==1)? true : false ;
+	return self->enableTangents(mapId, _enabled) ? True : False;
 }
 
 int CalCoreSubmesh_AddSubMorphTarget( CalCoreSubmesh *self, CalCoreSubMorphTargetDiffMap* inTarget )
@@ -1738,7 +1739,7 @@ struct CalMesh *CalModel_GetMeshByMeshID(struct CalModel *self, int meshId)
 {
 	CalMesh*	theMesh = 0;
 	
-	if ( (meshId >= 0) && (meshId < self->getVectorMesh().size()) )
+	if ( (meshId >= 0) && (meshId < (int)self->getVectorMesh().size()) )
 	{
 		theMesh = self->getVectorMesh()[ meshId ];
 	}
@@ -2017,7 +2018,7 @@ void CalSaver_Delete(CalSaver *self)
 
 CalSaver *CalSaver_New()
 {
-  return new(std::nothrow) CalSaver();
+  return new(std::nothrow) CalSaver;  // has been CalSaver() by mka
 }
 
 CalBoolean CalSaver_SaveCoreAnimation(CalSaver *self, const char *strFilename, CalCoreAnimation *pCoreAnimation)

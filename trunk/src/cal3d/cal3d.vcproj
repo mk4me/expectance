@@ -76,7 +76,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
-				LinkIncremental="1"
+				LinkIncremental="0"
 				SuppressStartupBanner="true"
 				ManifestFile="$(IntDir)/$(TargetFileName).intermediate.manifest"
 				GenerateDebugInformation="true"
@@ -173,7 +173,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
-				LinkIncremental="1"
+				LinkIncremental="0"
 				SuppressStartupBanner="true"
 				ProgramDatabaseFile="$(IntDir)/cal3d.pdb"
 				SubSystem="2"
@@ -267,7 +267,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
-				LinkIncremental="1"
+				LinkIncremental="0"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)/cal3d.pdb"
@@ -363,7 +363,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
-				LinkIncremental="1"
+				LinkIncremental="0"
 				SuppressStartupBanner="true"
 				ProgramDatabaseFile="$(IntDir)/cal3d.pdb"
 				SubSystem="2"
@@ -457,7 +457,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
-				LinkIncremental="1"
+				LinkIncremental="0"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)/cal3d.pdb"
@@ -553,7 +553,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
-				LinkIncremental="1"
+				LinkIncremental="0"
 				SuppressStartupBanner="true"
 				ProgramDatabaseFile="$(IntDir)/cal3d.pdb"
 				SubSystem="2"
@@ -911,6 +911,14 @@
 		</File>
 		<File
 			RelativePath=".\src\submesh.h"
+			>
+		</File>
+		<File
+			RelativePath=".\src\tinystr.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\src\tinystr.h"
 			>
 		</File>
 		<File
