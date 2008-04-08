@@ -510,7 +510,7 @@
 				AdditionalIncludeDirectories="..\;..\engine\src;..\generator\src\framework"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;ENGINE_TO_DLL"
 				StringPooling="true"
-				RuntimeLibrary="3"
+				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile=""
 				AssemblerListingLocation="$(IntDir)/"

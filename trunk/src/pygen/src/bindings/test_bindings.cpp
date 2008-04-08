@@ -11,10 +11,16 @@ using namespace ft;
 BOOST_PYTHON_MODULE(libpygen){
 
     def("runApp", runApp);
-    def("printSomeText", printSomeText);
 
-    class_< GeneratorApp >( "GeneratorApp" )    
-        .def( init< >() )    
-        .def( "printSomeText", &GeneratorApp::printSomeText );
+    def("setPropStr", setPropStr);
+    def("setPropInt", setPropInt);
+    def("setPropFloat", setPropFloat);
+    def("getPropStr", getPropStr);
+    def("getPropInt", getPropInt);
+    def("getPropFloat", getPropFloat);
+    def("dumpProps", dumpProps);
+
+    def("test", test);
 }
+
 
