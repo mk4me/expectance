@@ -8,11 +8,7 @@
 using namespace boost::python;
 using namespace ft;
 
-#ifdef _WIN32
-BOOST_PYTHON_MODULE(pygen){
-#else
 BOOST_PYTHON_MODULE(libpygen){
-#endif
 
     def("runApp", runApp);
     def("printSomeText", printSomeText);

@@ -578,6 +578,22 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\core\property.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\core\prophandler.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\core\propmanager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\core\propmanager.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\core\simulation.cpp"
 				>
 			</File>

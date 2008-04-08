@@ -442,7 +442,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d_d.lib glew32d.lib generator_d.lib boost_python_debug.lib  python25_d.lib"
-				OutputFile="$(OutDir)/$(ProjectName)_d.pyd"
+				OutputFile="$(OutDir)/lib$(ProjectName)_d.pyd"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="$(OutDir)"
@@ -535,7 +535,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d.lib glew32.lib generator.lib boost_python.lib  python25.lib"
-				OutputFile="$(OutDir)/$(ProjectName).pyd"
+				OutputFile="$(OutDir)/lib$(ProjectName).pyd"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="$(OutDir)"

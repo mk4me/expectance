@@ -6,6 +6,7 @@
 #include "application.h"
 #include "globalmsgsender.h"
 #include "inputmanager.h"
+#include "propmanager.h"
 #include "../core/updatemanager.h"
 #include "../scene/cal3dobjectfactory.h"
 #include "../scene/transformmanager.h"
@@ -58,6 +59,8 @@ bool Application::InitModules()
         _dbg << "Application::InitModules()." << endl;
 
     Debug::InitDebug();
+    PropManager::getInstance();  //enforced creation of singleton
+    
     InputManager::getInstance();  //enforced creation of singleton
     UpdateManager::getInstance()->Init();  //enforced creation of singleton
     GlobalMsgSender::getInstance();  //enforced creation of singleton

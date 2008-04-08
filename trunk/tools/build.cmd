@@ -117,7 +117,7 @@ xcopy /e /v /y ..\lib\win32\debug ..\_out\win32\tst\debug\pygen_dll\
 xcopy /e /v /y ..\data ..\_out\win32\tst\debug\pygen_dll\data\
 
 
-echo debug build of PYGEN.DLL finished at: %time% >> build_report.%date%.log
+echo debug build of LIBPYGEN.DLL finished at: %time% >> build_report.%date%.log
 if "%2"=="all" goto release
 goto finish
 

@@ -21,7 +21,7 @@ del /F doc\generator.out
 del /F doc\generator.toc
 del /F doc\generator.chm
 
-del /F lib\win32\release\pygen*.*
+del /F lib\win32\release\libpygen*.*
 del /F lib\win32\release\engine*.*
 del /F lib\win32\release\generator*.*
 del /F lib\win32\release\*.exp
@@ -30,7 +30,7 @@ del /F lib\win32\release\*.exe
 
 del /F lib\win32\debug\engine*.*
 del /F lib\win32\debug\generator*.*
-del /F lib\win32\debug\pygen*.* 
+del /F lib\win32\debug\libpygen*.* 
 del /F lib\win32\debug\*.ilk 
 del /F lib\win32\debug\*.exe
 del /F lib\win32\debug\*.exp 
