@@ -12,7 +12,24 @@ void RunGlutApp(int argc, char *argv[])
 {
     ft::Application* app = new ft::GeneratorApp();
 
-    InitGlutApplication(argc, argv, app);
+	if (argv == NULL) 
+	{ 
+    int _argc = 2; 
+    char *_argv[2]; 
+        //std::string myPath = "Empty"; 
+        //std::string model = "cally.cfg"; 
+        //argv[0] = myPath.cc_str(); 
+        //argv[1] = model.c_str(); 
+ 
+        _argv[0] = (char*)malloc(20); 
+        _argv[1] = (char*)malloc(20); 
+        strcpy(_argv[0],"initAppArg1"); 
+        strcpy(_argv[1],"initAppArg2"); 
+    
+        InitGlutApplication(_argc, _argv, app); 
+    } 
+    else 
+	    InitGlutApplication(argc, argv, app);
 
     delete app;
 }
