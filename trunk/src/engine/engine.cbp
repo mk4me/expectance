@@ -122,6 +122,10 @@
 		<Unit filename="src/core/msgsender.cpp" />
 		<Unit filename="src/core/msgsender.h" />
 		<Unit filename="src/core/platform.h" />
+		<Unit filename="src/core/property.h" />
+		<Unit filename="src/core/prophandler.h" />
+		<Unit filename="src/core/propmanager.cpp" />
+		<Unit filename="src/core/propmanager.h" />
 		<Unit filename="src/core/simulation.cpp" />
 		<Unit filename="src/core/simulation.h" />
 		<Unit filename="src/core/updatemanager.cpp" />

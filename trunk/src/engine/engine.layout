@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Full Release" />
+	<File name="src/core/propmanager.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="5348" topLine="199" />
+	</File>
 	<File name="src/scene/cal3dobject.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="21924" topLine="709" />
 	</File>
@@ -17,7 +20,7 @@
 		<Cursor position="5250" topLine="167" />
 	</File>
 	<File name="src/ui/menumanager.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="3591" topLine="101" />
+		<Cursor position="3551" topLine="103" />
 	</File>
 	<File name="src/utility/stringhelper.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="3054" topLine="102" />

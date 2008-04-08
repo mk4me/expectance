@@ -10,6 +10,7 @@ set(SOURCES
   src/core/inputmanager.cpp
   src/core/message.cpp
   src/core/msgsender.cpp
+  src/core/propmanager.cpp
   src/core/simulation.cpp
   src/core/updatemanager.cpp
   src/core/updateobject.cpp

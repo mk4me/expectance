@@ -21,7 +21,7 @@ namespace ft
     public:
         static PropManager* getInstance();
         static void DestroyInstance();
-    
+
         void setPropertyStr(const std::string& key, std::string val);
         void setPropertyInt(const std::string& key, int val);
         void setPropertyFloat(const std::string& key, float val);
@@ -40,7 +40,7 @@ namespace ft
 
         protected:
             static PropManager* m_instance;
-        
+
             STL_WrappedMap<std::string,Property*> m_entries;
 
             void ClearEntries();

@@ -45,7 +45,7 @@ void PropManager::DestroyInstance()
 void PropManager::ClearEntries()
 {
    	std::map<std::string,Property*>::iterator it=m_entries.map.begin();
-	for( ; it != m_entries.map.end(); ++it ) 
+	for( ; it != m_entries.map.end(); ++it )
     {
         delete it->second;
     }
@@ -62,7 +62,7 @@ Property* PropManager::GetProperty(const std::string& key)
 {
     Property* prop;
   	std::map<std::string,Property*>::iterator it = m_entries.map.find(key);
-    if ( it!=m_entries.map.end()) 
+    if ( it!=m_entries.map.end())
         prop = it->second;
     else
         prop = NULL;
@@ -205,7 +205,7 @@ int PropManager::getPropertyInt(const std::string& key)
  **/
 float PropManager::getPropertyFloat(const std::string& key)
 {
-    int result = -1;
+    float result = -1;
 
     Property* prop = GetProperty(key);
     if (prop != NULL && prop->handler != NULL)
@@ -230,7 +230,7 @@ bool PropManager::RemoveProperty(const std::string& key)
     bool result = true;
 
  	std::map<std::string,Property*>::iterator it = m_entries.map.find(key);
-	if ( it!=m_entries.map.end()) { 
+	if ( it!=m_entries.map.end()) {
         m_entries.map.erase(it);
         delete it->second;
 		result = true;
@@ -242,7 +242,7 @@ bool PropManager::RemoveProperty(const std::string& key)
  * \brief Adds hadler for given key
  * \param const std::string& key - key for given property
  * \param PropHandler* handler - handler to set
- * \return bool - true if handler added successfuly 
+ * \return bool - true if handler added successfuly
  **/
 bool PropManager::AddHandler(const std::string& key, PropHandler* handler)
 {
@@ -292,7 +292,7 @@ void PropManager::DumpProperties()
     _dbg << "- properties: " << std::endl;
 
    	std::map<std::string,Property*>::iterator it=m_entries.map.begin();
-	for( ; it != m_entries.map.end(); ++it ) 
+	for( ; it != m_entries.map.end(); ++it )
     {
         string value_str = (it->second->handler == NULL) ? it->second->str_val : " managed by handler ";
         _dbg << " - - key " << it->first << " = " << it->second->str_val << std::endl;

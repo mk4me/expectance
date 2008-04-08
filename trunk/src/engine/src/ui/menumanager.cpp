@@ -114,7 +114,7 @@ int MenuManager::checkScope(int x, int y)
 	{
 		xDiv = x/item; //take length
 		item = static_cast<int>(xDiv);
-		if ((item >= 0)&&(item<= m_mainMenu->getSubMenu().size()-1))
+		if (item<= m_mainMenu->getSubMenu().size()-1)
 			return item;
 		else
 			return 0;

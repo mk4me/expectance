@@ -33,5 +33,8 @@ rm -f Generator.resharper.user
 rm -f Cal3d.resharper
 rm -f Cal3d.resharper.user
 rm -f tools/build_all.log
-rm -f generator
+rm -f src/cal3d/*.a
+rm -f src/engine/*.a
+rm -f src/generator/*.a
+rm -f src/pygen/*.so
 rm -rf _out

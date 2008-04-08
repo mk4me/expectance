@@ -41,6 +41,7 @@ set(SOURCES
   src/streamsource.cpp
   src/submesh.cpp
   src/tinyxml.cpp
+  src/tinystr.cpp
   src/tinyxmlerror.cpp
   src/tinyxmlparser.cpp
   src/vector.cpp

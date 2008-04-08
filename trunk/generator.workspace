@@ -2,10 +2,14 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="Generator workspace">
 		<Project filename="src/cal3d/cal3d.cbp" />
-		<Project filename="src/engine/engine.cbp" />
-		<Project filename="src/generator/generator.cbp" active="1">
+		<Project filename="src/engine/engine.cbp" active="1">
+			<Depends filename="src/cal3d/cal3d.cbp" />
+		</Project>
+		<Project filename="src/generator/generator.cbp">
 			<Depends filename="src/engine/engine.cbp" />
 		</Project>
-		<Project filename="src/pygen/pygen.cbp" />
+		<Project filename="src/pygen/pygen.cbp">
+			<Depends filename="src/generator/generator.cbp" />
+		</Project>
 	</Workspace>
 </CodeBlocks_workspace_file>
