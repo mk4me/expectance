@@ -36,7 +36,7 @@ class MainPanel(wx.Panel):
 
 def Open():
 	app = wx.PySimpleApp()
-	frame = wx.Frame(None, -1, " Arena GUI", size = (200,300))
+	frame = wx.Frame(None, -1, " Arena GUI", size = (250,300))
 	MainPanel(frame,-1)
 	frame.Show(True)
 	app.MainLoop()	
