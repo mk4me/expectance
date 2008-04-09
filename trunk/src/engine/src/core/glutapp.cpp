@@ -16,54 +16,70 @@
 #include "../scene/visualizationmanager.h"
 #include "../scene/oglcontext.h"
 
+#include "lockmanager.h"
+
 using namespace ft;
 
 /// \brief GLUT callback function
 void DisplayFunc()
 {
+    LockManager::getUpdateLock()->enter();
 	VisualizationManager::getInstance()->OnRender(); 
+    LockManager::getUpdateLock()->leave();
 }
 
 /// \brief GLUT callback function
 void ExitFunc()
 {
    // shut down OGL Content
+   LockManager::getUpdateLock()->enter();
    VisualizationManager::getInstance()->CleanUp();
    Debug::Destroy();
+   LockManager::getUpdateLock()->leave();
 }
 
 /// \brief GLUT callback function
 void IdleFunc()
 {
+  LockManager::getUpdateLock()->enter();
   // redirect to the viewer instance
   //theViewer.OnIdle(); //sman or contr man
   
   //update UpdateManager
   UpdateManager::getInstance()->OnUpdate();
   glutPostRedisplay();
+
+  LockManager::getUpdateLock()->leave();
 }
 
 /// \brief GLUT callback function
 void KeyboardFunc(unsigned char key, int x, int y)
 {
+    LockManager::getUpdateLock()->enter();
     InputManager::getInstance()->OnKey(key, x,  OGLContext::getInstance()->getHeight() - y - 1);
+    LockManager::getUpdateLock()->leave();
 }
 
 /// \brief GLUT callback function
 void SpecialFunc(int key, int x, int y)
 {
+    LockManager::getUpdateLock()->enter();
 	InputManager::getInstance()->OnSpecial(key, x, OGLContext::getInstance()->getHeight() - y - 1);
+    LockManager::getUpdateLock()->leave();
 }
 
 /// \brief GLUT callback function
 void MotionFunc(int x, int y)
 {
+    LockManager::getUpdateLock()->enter();
 	InputManager::getInstance()->OnMouseMove(x, OGLContext::getInstance()->getHeight() - y - 1);
+    LockManager::getUpdateLock()->leave();
 }
 
 /// \brief GLUT callback function
 void MouseFunc(int button, int state, int x, int y)
 {
+  LockManager::getUpdateLock()->enter();
   if(state == GLUT_DOWN)
   {
     InputManager::getInstance()->OnMouseButtonDown(button, x, OGLContext::getInstance()->getHeight() - y - 1);
@@ -72,13 +88,16 @@ void MouseFunc(int button, int state, int x, int y)
   {
     InputManager::getInstance()->OnMouseButtonUp(button, x, OGLContext::getInstance()->getHeight() - y - 1);
   }
+  LockManager::getUpdateLock()->leave();
 }
 
 
 /// \brief GLUT callback function
 void ReshapeFunc(int width, int height)
 {
+    LockManager::getUpdateLock()->enter();
 	OGLContext::getInstance()->setWindowSize(width, height);
+    LockManager::getUpdateLock()->leave();
 }
 
 /**
@@ -90,6 +109,8 @@ void ReshapeFunc(int width, int height)
  **/
 int InitGlutApplication(int argc, char *argv[], Application *app)
 {
+    LockManager::getUpdateLock()->enter();
+
 	app->InitConfig();
 	// initialize the GLUT system
 	glutInit(&argc, argv);
@@ -116,9 +137,11 @@ int InitGlutApplication(int argc, char *argv[], Application *app)
 
     if (app->Init() < 0)
     {
+        LockManager::getUpdateLock()->leave();
         return -1;
     }
-
+    
+    LockManager::getUpdateLock()->leave();
 
 	// run the GLUT message loop
 	glutMainLoop();

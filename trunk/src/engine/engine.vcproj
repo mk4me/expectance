@@ -554,6 +554,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\core\lock.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\core\lockmanager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\core\lockmanager.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\core\message.cpp"
 				>
 			</File>

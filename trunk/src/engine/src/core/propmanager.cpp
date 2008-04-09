@@ -3,6 +3,7 @@
  * author: abak
  */
 #include "propmanager.h"
+#include "lockmanager.h"
 
 using namespace ft;
 
@@ -44,6 +45,8 @@ void PropManager::DestroyInstance()
  **/
 void PropManager::ClearEntries()
 {
+    LockManager::getUpdateLock()->enter();
+
    	std::map<std::string,Property*>::iterator it=m_entries.map.begin();
 	for( ; it != m_entries.map.end(); ++it )
     {
@@ -51,6 +54,8 @@ void PropManager::ClearEntries()
     }
 
     m_entries.map.clear();
+
+    LockManager::getUpdateLock()->leave();
 }
 
 /**
@@ -77,6 +82,8 @@ Property* PropManager::GetProperty(const std::string& key)
  **/
 void PropManager::setPropertyStr(const std::string& key, std::string val)
 {
+    LockManager::getUpdateLock()->enter();
+
     Property* prop = GetProperty(key);
     if (prop == NULL)
     {
@@ -95,6 +102,7 @@ void PropManager::setPropertyStr(const std::string& key, std::string val)
             prop->str_val = val;
         }
     }
+    LockManager::getUpdateLock()->leave();
 }
 
 /**
@@ -104,6 +112,8 @@ void PropManager::setPropertyStr(const std::string& key, std::string val)
  **/
 void PropManager::setPropertyInt(const std::string& key, int val)
 {
+    LockManager::getUpdateLock()->enter();
+
     Property* prop = GetProperty(key);
     if (prop == NULL)
     {
@@ -123,6 +133,7 @@ void PropManager::setPropertyInt(const std::string& key, int val)
 
         }
     }
+    LockManager::getUpdateLock()->leave();
 }
 
 /**
@@ -132,6 +143,7 @@ void PropManager::setPropertyInt(const std::string& key, int val)
  **/
 void PropManager::setPropertyFloat(const std::string& key, float val)
 {
+    LockManager::getUpdateLock()->enter();
     Property* prop = GetProperty(key);
     if (prop == NULL)
     {
@@ -150,6 +162,7 @@ void PropManager::setPropertyFloat(const std::string& key, float val)
                 _dbg << Debug::ERR_STR <<"PropManager::setPropertyFloat:  no handler found for float, key: " << key << endl;
         }
     }
+    LockManager::getUpdateLock()->leave();
 }
 
 /**
@@ -159,6 +172,8 @@ void PropManager::setPropertyFloat(const std::string& key, float val)
  **/
 std::string PropManager::getPropertyStr(const std::string& key)
 {
+    LockManager::getUpdateLock()->enter();
+
     std::string result = UNDEFINED_PROPERTY;
 
     Property* prop = GetProperty(key);
@@ -173,6 +188,8 @@ std::string PropManager::getPropertyStr(const std::string& key)
             result = prop->str_val;
         }
     }
+    LockManager::getUpdateLock()->leave();
+
     return result;
 }
 
@@ -183,6 +200,8 @@ std::string PropManager::getPropertyStr(const std::string& key)
  **/
 int PropManager::getPropertyInt(const std::string& key)
 {
+    LockManager::getUpdateLock()->enter();
+
     int result = -1;
 
     Property* prop = GetProperty(key);
@@ -195,6 +214,9 @@ int PropManager::getPropertyInt(const std::string& key)
         if (Debug::ERR)
             _dbg << Debug::ERR_STR <<"PropManager::getPropertyInt:  no handler found for int, key: " << key << endl;
     }
+
+    LockManager::getUpdateLock()->leave();
+
     return result;
 }
 
@@ -205,6 +227,7 @@ int PropManager::getPropertyInt(const std::string& key)
  **/
 float PropManager::getPropertyFloat(const std::string& key)
 {
+    LockManager::getUpdateLock()->enter();
     float result = -1;
 
     Property* prop = GetProperty(key);
@@ -217,6 +240,7 @@ float PropManager::getPropertyFloat(const std::string& key)
         if (Debug::ERR)
             _dbg << Debug::ERR_STR <<"PropManager::getPropertyFloat:  no handler found for float, key: " << key << endl;
     }
+    LockManager::getUpdateLock()->leave();
     return result;
 }
 
@@ -227,6 +251,7 @@ float PropManager::getPropertyFloat(const std::string& key)
  **/
 bool PropManager::RemoveProperty(const std::string& key)
 {
+    LockManager::getUpdateLock()->enter();
     bool result = true;
 
  	std::map<std::string,Property*>::iterator it = m_entries.map.find(key);
@@ -235,6 +260,8 @@ bool PropManager::RemoveProperty(const std::string& key)
         delete it->second;
 		result = true;
 	}
+    LockManager::getUpdateLock()->leave();
+
 	return result;
 }
 
@@ -246,6 +273,7 @@ bool PropManager::RemoveProperty(const std::string& key)
  **/
 bool PropManager::AddHandler(const std::string& key, PropHandler* handler)
 {
+    LockManager::getUpdateLock()->enter();
     bool result = false;
     Property* prop = GetProperty(key);
     if (prop == NULL || prop->handler == NULL)
@@ -263,6 +291,8 @@ bool PropManager::AddHandler(const std::string& key, PropHandler* handler)
         if (Debug::ERR)
             _dbg << Debug::ERR_STR <<"PropManager::AddHandler: handler key: " << key << " already exists " << endl;
     }
+    LockManager::getUpdateLock()->leave();
+
     return result;
 }
 
@@ -273,6 +303,8 @@ bool PropManager::AddHandler(const std::string& key, PropHandler* handler)
  **/
 bool PropManager::RemoveHandler(const std::string& key)
 {
+    LockManager::getUpdateLock()->enter();
+
     bool result = false;
     Property* prop = GetProperty(key);
     if (prop != NULL && prop->handler != NULL)
@@ -280,6 +312,7 @@ bool PropManager::RemoveHandler(const std::string& key)
         prop->handler = NULL;
         result = true;
     }
+    LockManager::getUpdateLock()->leave();
 
     return result;
 }
@@ -289,6 +322,7 @@ bool PropManager::RemoveHandler(const std::string& key)
  **/
 void PropManager::DumpProperties()
 {
+    LockManager::getUpdateLock()->enter();
     _dbg << "PropManager::DumpProperties() " << std::endl;
     _dbg << "- properties: " << std::endl;
 
@@ -298,4 +332,5 @@ void PropManager::DumpProperties()
         string value_str = (it->second->handler == NULL) ? it->second->str_val : " managed by handler ";
         _dbg << " - - key " << it->first << " = " << it->second->str_val << std::endl;
     }
+    LockManager::getUpdateLock()->leave();
 }

@@ -7,6 +7,7 @@
 #include <boost/thread/thread.hpp>
 
 #include "core/propmanager.h"
+#include "core/lockmanager.h"
 
 using namespace ft;
 
@@ -15,10 +16,26 @@ void runLoop()
     RunGlutApp(0,NULL);
 }
 
+boost::mutex update_mutex;
+boost::mutex::scoped_lock* lock;
+
+void enterLock()
+{
+    //cout << " Pygen enter lock .." << endl;
+    lock = new boost::mutex::scoped_lock(update_mutex);
+}
+
+void leaveLock()
+{
+    //cout << " Pygen leave lock .." << endl;
+    delete lock;
+}
 
 ///////////////// Interface for PYTHON //////////////////
 void runApp()
 {
+    LockManager::setUpdateLock(new Lock(enterLock,leaveLock));
+
     std::cout << " New thread will be started for Generator ..." << std::endl;
     boost::thread thrd(&runLoop);
     
@@ -40,7 +57,9 @@ void setPropInt(const std::string& key, int val)
 
 void setPropFloat(const std::string& key, float val)
 {
+    cout << " setPropFloat -> " << endl;
     PropManager::getInstance()->setPropertyFloat(key, val);
+    cout << " <- setPropFloat " << endl;
 }
 
 std::string getPropStr(const std::string& key)
