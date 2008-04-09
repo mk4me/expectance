@@ -51,6 +51,7 @@
 					<Add before="mkdir -p -v ../../_out/linux/data" />
 					<Add before='find ../../_out/linux/ -maxdepth 1 -type f -name &quot;*&quot; -delete' />
 					<Add before='rsync -rv ../../data ../../_out/linux/ --exclude=\&quot;.svn\&quot;' />
+					<Add before='rsync -rv ../../python/* ../../_out/linux/ --exclude=\&quot;.svn\&quot;' />
 					<Add after="rsync -v ../../lib/linux/debug/libpygen.so ../../_out/linux/" />
 				</ExtraCommands>
 			</Target>
@@ -98,6 +99,7 @@
 					<Add before="mkdir -p -v ../../_out/linux/data" />
 					<Add before='find ../../_out/linux/ -maxdepth 1 -type f -name &quot;*&quot; -delete' />
 					<Add before='rsync -rv ../../data ../../_out/linux/ --exclude=\&quot;.svn\&quot;' />
+					<Add before='rsync -rv ../../python/* ../../_out/linux/ --exclude=\&quot;.svn\&quot;' />
 					<Add after="rsync -v ../../lib/linux/release/libpygen.so ../../_out/linux/" />
 				</ExtraCommands>
 			</Target>
@@ -108,6 +110,7 @@
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
