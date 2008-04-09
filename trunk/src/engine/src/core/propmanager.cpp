@@ -255,6 +255,7 @@ bool PropManager::AddHandler(const std::string& key, PropHandler* handler)
             prop = new Property();
         }
         prop->handler = handler;
+        m_entries.map.insert( std::make_pair( std::string(key), prop ) );
         result = true;
     }
     else

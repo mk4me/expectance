@@ -45,6 +45,8 @@ void UpdateManager::Init()
   setTimeScale(1);
   ft::Simulation::setTimePrecision(ft_Microseconds); //set precision of program timer
   m_lastTick = ft::Simulation::getTick();
+  
+  PropManager::getInstance()->AddHandler("update.speed",this);
 }
 
 /**
@@ -183,4 +185,14 @@ void UpdateManager::UpdateObjects(const double elapsedSeconds)
     {
         it->second->OnUpdate(elapsedSeconds);
     }
+}
+
+void UpdateManager::setPropertyFloat(const std::string& key, float val)
+{
+    setTimeScale(val);
+}
+
+float UpdateManager::getPropertyFloat(const std::string& key)
+{
+    return getTimeScale();
 }

@@ -7,6 +7,7 @@
 #define _GEN_UPDATE_MANAGER_H
 
 #include "updateobject.h" 
+#include "propmanager.h"
 
 
 namespace ft
@@ -14,7 +15,7 @@ namespace ft
 	/**
 	 * Class UpdateManager: manages messages flow and updating objects 
 	 **/
-    class ENGINE_API UpdateManager
+    class ENGINE_API UpdateManager : public PropHandler
     {
     public:
         UpdateManager(void) { /*empty*/}
@@ -37,6 +38,10 @@ namespace ft
         void increraseFramesCounter() {   m_fpsFrames++;  }
 
 		void Dump();
+
+        virtual void setPropertyFloat(const std::string& key, float val);
+        virtual float getPropertyFloat(const std::string& key);
+
 
     private:
         

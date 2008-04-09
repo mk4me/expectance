@@ -10,8 +10,6 @@
 
 namespace ft
 {
-    static const std::string UNDEFINED_PROPERTY = "<UNDEFINED_PROPERTY>";
-
     /**
      * Class Property: represents single property
      **/
