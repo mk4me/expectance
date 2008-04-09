@@ -60,6 +60,8 @@ bool Application::InitModules()
 
     Debug::InitDebug();
     PropManager::getInstance();  //enforced creation of singleton
+    PropManager::getInstance()->setPropertyStr("TestProp","test_value");
+    PropManager::getInstance()->DumpProperties();
     
     InputManager::getInstance();  //enforced creation of singleton
     UpdateManager::getInstance()->Init();  //enforced creation of singleton
