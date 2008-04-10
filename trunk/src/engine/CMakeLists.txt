@@ -14,6 +14,7 @@ set(SOURCES
   src/core/simulation.cpp
   src/core/updatemanager.cpp
   src/core/updateobject.cpp
+  src/core/lockmanager.cpp
   src/scene/glew.c
   src/scene/oglcontext.cpp
   src/scene/renderobject.cpp

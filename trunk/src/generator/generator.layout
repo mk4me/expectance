@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Full Release" />
+	<ActiveTarget name="DLL Release" />
 	<File name="src/framework/action/actionavatar.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="6562" topLine="220" />
 	</File>

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Full Release" />
+	<File name="src/core/lockmanager.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="204" topLine="0" />
+	</File>
 	<File name="src/core/propmanager.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="5348" topLine="199" />
 	</File>
