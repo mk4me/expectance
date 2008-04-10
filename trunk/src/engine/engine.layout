@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Full Release" />
+	<File name="src/core/config.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="113" topLine="9" />
+	</File>
 	<File name="src/core/lockmanager.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="204" topLine="0" />
 	</File>
@@ -8,7 +11,13 @@
 		<Cursor position="5348" topLine="199" />
 	</File>
 	<File name="src/scene/cal3dobject.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="21924" topLine="709" />
+		<Cursor position="3180" topLine="98" />
+	</File>
+	<File name="src/scene/cal3dobject.h" open="0" top="0" tabpos="0">
+		<Cursor position="1812" topLine="42" />
+	</File>
+	<File name="src/scene/cal3dtype.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="0" topLine="27" />
 	</File>
 	<File name="src/scene/camera.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="1391" topLine="54" />
@@ -18,6 +27,9 @@
 	</File>
 	<File name="src/scene/cameramanager.h" open="0" top="0" tabpos="0">
 		<Cursor position="3569" topLine="82" />
+	</File>
+	<File name="src/scene/oglcontext.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="25451" topLine="848" />
 	</File>
 	<File name="src/scene/texturemanager.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="5250" topLine="167" />

@@ -18,7 +18,7 @@ int Cal3DObject::m_counter = 0;
  * \param const std::string modelName - name defined in ft::BaseObject which is the base class for mesh object
  **/
 Cal3DObject::Cal3DObject(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName):
-m_renderMethod(0), 
+m_renderMethod(0),
 m_shadow(true),
 DynamicObjectID(m_counter++)
 {
@@ -32,7 +32,7 @@ DynamicObjectID(m_counter++)
 	}
 	else
 		m_hardwareRendering = false;
-    
+
 	RENDER_CONTROL_PARAMETERS = ((Config::getInstance()->IsKey("RENDER_CONTROL_PARAMETERS")) && (Config::getInstance()->GetIntVal("RENDER_CONTROL_PARAMETERS")==1));
 	std::ostringstream _oss;
 	_oss << "id " << DynamicObjectID  << std::endl;
@@ -49,18 +49,18 @@ Cal3DObject::~Cal3DObject()
 	delete m_calHardwareModel;
 	delete m_calModel;
 	delete m_calCoreModel;
-	
+
 	if (m_hardwareRendering)
 	{
 		glDeleteProgramsARB(1, &m_vertexProgramId);
-		glDeleteBuffersARB(6, m_bufferObject);	
+		glDeleteBuffersARB(6, m_bufferObject);
 	}
 }
 
 /// \brief Releases all resources and objects related to this Cal3DObject
 void Cal3DObject::Destroy(void)
 {
-    
+
 }
 
 /**
@@ -78,7 +78,7 @@ void Cal3DObject::OnUpdate(const double elapsedSeconds)
     CalVector pos = getPosition();
     bone->setTranslation(pos);
 
-    //TODO: set orientation 
+    //TODO: set orientation
     bone->calculateState();
 }
 
@@ -106,10 +106,10 @@ bool Cal3DObject::InitHardwareAcceleration()
 
 	  return false;
 	}
-	//if ((m_fragmentProgramId = OGLContext::getInstance()->loadFragmentProgram(FT_SHADERPATH + Config::getInstance()->GetStrVal("mesh_fragment_program"))) == 0)
-	//{
-	//  _dbg << "Error loading fragment program." << std::endl;
-	//}
+//	if ((m_fragmentProgramId = loadFragmentProgram(FT_SHADERPATH + Config::getInstance()->GetStrVal("mesh_fragment_program"))) == 0)
+//	{
+//	  _dbg << "Error loading fragment program." << std::endl;
+//	}
 
 	return true;
 }
@@ -164,10 +164,10 @@ void Cal3DObject::OnMessage(Message* msg)
     if (Debug::UPDATE>0)
         _dbg << toString() << " received message: " << Message::_GET_MSG_NAME(msg->getType()) << std::endl;
 
-    if (msg->getType() == MSG_PROPERTY_LOD) 
+    if (msg->getType() == MSG_PROPERTY_LOD)
     {
         SetLodLevel(msg->getParam()->getFloatValue());
-    } 
+    }
     else if (msg->getType() == MSG_PROPERTY_RENDER_METHOD)
     {
         ChangeRenderMethod();
@@ -188,10 +188,10 @@ bool Cal3DObject::Render()
 	glShadeModel(GL_SMOOTH);
 	//
 	glPushMatrix();
-		if (RENDER_CONTROL_PARAMETERS) 
+		if (RENDER_CONTROL_PARAMETERS)
 			RenderControlParameters();
 		//glRotatef(-90,1.0f,0.0f,0.0f); //unnecessary while XYZ order in cal files
-		
+
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
 
@@ -219,7 +219,7 @@ bool Cal3DObject::RenderShadow()
 			GlShadowProjection();
 			glColor4f(0.1f,0.1f,0.1f,0.5f);
 			//glRotatef(-90,1.0f,0.0f,0.0f); //unnecessary while XYZ order in cal files
-			RenderMeshObject(m_renderMethod, m_shadow); 	
+			RenderMeshObject(m_renderMethod, m_shadow);
 		glPopMatrix();
 		m_calModel->setLodLevel(1.0f);
 	}
@@ -228,7 +228,7 @@ bool Cal3DObject::RenderShadow()
 
 
 /**
- * \brief Changes between three rendering methods: Mesh Skeleton and BoundingBox consecutivevely  
+ * \brief Changes between three rendering methods: Mesh Skeleton and BoundingBox consecutivevely
  *
  **/
 void Cal3DObject::ChangeRenderMethod()
@@ -266,21 +266,21 @@ void Cal3DObject::setShadow(const bool shadow)
 }
 
 /**
- * \brief Renders Cal3DObject taking into consideration specific parameters 
+ * \brief Renders Cal3DObject taking into consideration specific parameters
  *
  * \param const int renderMethod: 0 - Mesh, 1 - Skeleton, 2 - BoundingBox
  * \param const bool shadow: true - render with shadow, otherwise without shadow
  **/
 void Cal3DObject::RenderMeshObject(const int renderMethod, const bool shadow)
 {
-	if (renderMethod == 0) 
+	if (renderMethod == 0)
 	{
 		if ((m_hardwareRendering)&&(!shadow))
 			HardwareRenderModelMesh(shadow);
 		else
 			SoftwareRenderModelMesh(shadow);
 	}
-	else if (renderMethod == 1) 
+	else if (renderMethod == 1)
 	{
 		RenderModelSkeleton(shadow);
 	}
@@ -389,7 +389,7 @@ void Cal3DObject::SoftwareRenderModelMesh(const bool shadow)
 						}
 					}
 
-					// draw the submesh 
+					// draw the submesh
 					if(sizeof(CalIndex)==2)
 						glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_SHORT, &meshFaces[0][0]);
 					else
@@ -435,9 +435,9 @@ void Cal3DObject::HardwareRenderModelMesh(const bool shadow)
     glEnableVertexAttribArrayARB(2);
 	glEnableVertexAttribArrayARB(3);
     glEnableVertexAttribArrayARB(8);
-	
+
 	glEnable(GL_TEXTURE_2D);
-	
+
 	glEnable(GL_VERTEX_PROGRAM_ARB);
     //if (m_fragmentProgramId) glEnable(GL_FRAGMENT_PROGRAM_ARB);
 
@@ -459,15 +459,15 @@ void Cal3DObject::HardwareRenderModelMesh(const bool shadow)
 	glVertexAttribPointerARB(8, 2 , GL_FLOAT, false, 0, NULL);
 
 	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, m_bufferObject[5]);
-	
-		
+
+
 	int hardwareMeshId;
-	
+
 	for(hardwareMeshId=0;hardwareMeshId<m_calHardwareModel->getHardwareMeshCount() ; hardwareMeshId++)
 	{
 		m_calHardwareModel->selectHardwareMesh(hardwareMeshId);
 
-		unsigned char meshColor[4];	
+		unsigned char meshColor[4];
 		float materialColor[4];
 
 
@@ -476,22 +476,22 @@ void Cal3DObject::HardwareRenderModelMesh(const bool shadow)
 		m_calHardwareModel->getAmbientColor(&meshColor[0]);
 		materialColor[0] = meshColor[0] / 255.0f;  materialColor[1] = meshColor[1] / 255.0f; materialColor[2] = meshColor[2] / 255.0f; materialColor[3] = meshColor[3] / 255.0f;
 		glMaterialfv(GL_FRONT, GL_AMBIENT, materialColor);
-		
+
 		// set the material diffuse color
 		m_calHardwareModel->getDiffuseColor(&meshColor[0]);
 		materialColor[0] = meshColor[0] / 255.0f;  materialColor[1] = meshColor[1] / 255.0f; materialColor[2] = meshColor[2] / 255.0f; materialColor[3] = meshColor[3] / 255.0f;
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, materialColor);
-		
+
 		// set the material specular color
 		m_calHardwareModel->getSpecularColor(&meshColor[0]);
 		materialColor[0] = meshColor[0] / 255.0f;  materialColor[1] = meshColor[1] / 255.0f; materialColor[2] = meshColor[2] / 255.0f; materialColor[3] = meshColor[3] / 255.0f;
 		glMaterialfv(GL_FRONT, GL_SPECULAR, materialColor);
-		
+
 		// set the material shininess factor
 		float shininess;
 		shininess = 50.0f; //m_calHardwareModel->getShininess();
 		glMaterialfv(GL_FRONT, GL_SHININESS, &shininess);
-		
+
 
 		int boneId;
 		for(boneId = 0; boneId < m_calHardwareModel->getBoneCount(); boneId++)
@@ -507,11 +507,11 @@ void Cal3DObject::HardwareRenderModelMesh(const bool shadow)
 			transformation[4]=rotationMatrix.dydx;transformation[5]=rotationMatrix.dydy;transformation[6]=rotationMatrix.dydz;transformation[7]=translationBoneSpace.y;
 			transformation[8]=rotationMatrix.dzdx;transformation[9]=rotationMatrix.dzdy;transformation[10]=rotationMatrix.dzdz;transformation[11]=translationBoneSpace.z;
 
-			
+
 			glProgramLocalParameter4fvARB(GL_VERTEX_PROGRAM_ARB,boneId*3,&transformation[0]);
 			glProgramLocalParameter4fvARB(GL_VERTEX_PROGRAM_ARB,boneId*3+1,&transformation[4]);
-			glProgramLocalParameter4fvARB(GL_VERTEX_PROGRAM_ARB,boneId*3+2,&transformation[8]);			
-			
+			glProgramLocalParameter4fvARB(GL_VERTEX_PROGRAM_ARB,boneId*3+2,&transformation[8]);
+
             // set the texture id we stored in the map user data
             glBindTexture(GL_TEXTURE_2D, (GLuint)m_calHardwareModel->getMapUserData(0));
 		}
@@ -520,11 +520,11 @@ void Cal3DObject::HardwareRenderModelMesh(const bool shadow)
 			glDrawElements(GL_TRIANGLES, m_calHardwareModel->getFaceCount() * 3, GL_UNSIGNED_SHORT, (((CalIndex *)NULL)+ m_calHardwareModel->getStartIndex()));
 		else
 			glDrawElements(GL_TRIANGLES, m_calHardwareModel->getFaceCount() * 3, GL_UNSIGNED_INT, (((CalIndex *)NULL)+ m_calHardwareModel->getStartIndex()));
-		
+
 
 	}
 
-    // clear vertex array state    
+    // clear vertex array state
 
 	glDisableVertexAttribArrayARB(0);
 	glDisableVertexAttribArrayARB(1);
@@ -558,7 +558,7 @@ void Cal3DObject::RenderModelSkeleton(const bool shadow)
 	glLineWidth(1.0f);
 	if (!shadow)
 		glColor3f(1.0f, 1.0f, 0.0f);
-	else 
+	else
 		glColor3f(0.0f, 0.0f, 0.0f);
 
 	glBegin(GL_LINES);
@@ -607,7 +607,7 @@ void Cal3DObject::RenderModelBoundingBox(const bool shadow)
 		glColor3f(1.0f, 1.0f, 0.0f);
 	else
 		glColor3f(0.0f, 0.0f, 0.0f);
-	glBegin(GL_LINES);      
+	glBegin(GL_LINES);
 
 	for(size_t boneId=0;boneId<vectorCoreBone.size();++boneId)
 	{
@@ -651,11 +651,11 @@ void Cal3DObject::RenderModelBoundingBox(const bool shadow)
 		glVertex3f(p[6].x,p[6].y,p[6].z);
 
 		glVertex3f(p[3].x,p[3].y,p[3].z);
-		glVertex3f(p[7].x,p[7].y,p[7].z);  
+		glVertex3f(p[7].x,p[7].y,p[7].z);
 	}
 
 	glEnd();
-	glDisable(GL_COLOR_MATERIAL);	
+	glDisable(GL_COLOR_MATERIAL);
 
 }
 
@@ -668,7 +668,7 @@ void Cal3DObject::RenderControlParameters()
 {
 	glEnable(GL_COLOR_MATERIAL);
 
-	const char* _annote = getAnnotation().c_str(); 
+	const char* _annote = getAnnotation().c_str();
 
 	//OGLdrawCircleXZ(50,getPosition(), CalVector(1,1,1),20,false);
 
@@ -678,7 +678,7 @@ void Cal3DObject::RenderControlParameters()
 
 	OGLdraw2DTextAt3D(*_annote ,getPosition()+CalVector(1,100,1),CalVector(1,1,0) );
 
-	glDisable(GL_COLOR_MATERIAL);	
+	glDisable(GL_COLOR_MATERIAL);
 }
 
 /**
@@ -719,7 +719,7 @@ bool Cal3DObject::loadBufferObject()
 	 || pTexCoordBuffer==NULL || pIndexBuffer == NULL)
   {
 	  return false;
-  }	  
+  }
 
 
   m_calHardwareModel = new CalHardwareModel(m_calCoreModel);
@@ -766,7 +766,7 @@ bool Cal3DObject::loadBufferObject()
 
   glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_bufferObject[2]);
   glBufferDataARB(GL_ARRAY_BUFFER_ARB, m_calHardwareModel->getTotalVertexCount()*3*sizeof(float),(const void*)pNormalBuffer, GL_STATIC_DRAW_ARB);
-  
+
   glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_bufferObject[3]);
   glBufferDataARB(GL_ARRAY_BUFFER_ARB, m_calHardwareModel->getTotalVertexCount()*4*sizeof(float),(const void*)pMatrixIndexBuffer, GL_STATIC_DRAW_ARB);
 

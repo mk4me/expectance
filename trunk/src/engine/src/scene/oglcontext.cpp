@@ -8,6 +8,7 @@
 #include "../utility/mathconversions.h"
 #include "../utility/mathutil.h"
 
+
 using namespace ft;
 
 OGLContext* OGLContext::m_instance = NULL;
@@ -82,7 +83,7 @@ bool OGLContext::Init()
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 
-	// Enable light 
+	// Enable light
 
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
@@ -120,7 +121,7 @@ bool OGLContext::Init()
 		  return false;
 		}
 	}
-	
+
 	DATA_VIEWPORT = ((Config::getInstance()->IsKey("data_viewport")) && (Config::getInstance()->GetIntVal("data_viewport")==1));
 
     bool m_dvpGrid = ((Config::getInstance()->IsKey("data_viewport_draw_grid")) && (Config::getInstance()->GetIntVal("data_viewport_draw_grid")==1));
@@ -139,10 +140,10 @@ bool OGLContext::Init()
 void OGLContext::InitNormalFloorDL(int size)
 {
 	int i,j,k;
-	float lightDots[] = {0.9f,0.9f,0.36f}; 
-	float lightAxes[] = {0.298f,0.298f,0.36f}; 
-	float darkAxes[] =  {0.25f,0.25f,0.298f}; 
-	float mainAxes[] =  {0.349f,0.349f,0.419f}; 
+	float lightDots[] = {0.9f,0.9f,0.36f};
+	float lightAxes[] = {0.298f,0.298f,0.36f};
+	float darkAxes[] =  {0.25f,0.25f,0.298f};
+	float mainAxes[] =  {0.349f,0.349f,0.419f};
 	int tileSize	= 128;
 	int ts;
 	j = size/2;
@@ -159,7 +160,7 @@ void OGLContext::InitNormalFloorDL(int size)
 		glVertex3f(ts, 0, -ts);
 		glVertex3f(-ts, 0,  -ts);
 	glEnd();
-	
+
 	for (i = -j; i <= j; i++) // and some lines
 	{
 		k = tileSize*i;
@@ -187,7 +188,7 @@ void OGLContext::InitNormalFloorDL(int size)
 			glVertex3f(ts, 0,  k);
 			glVertex3f(-ts, 0,  k);
 		glEnd();
-		
+
 	}
 
 	//and axes
@@ -204,7 +205,7 @@ void OGLContext::InitNormalFloorDL(int size)
 		glVertex3f(0, 0, 0);
 		glVertex3f(0, 0, 30);
 	glEnd();
-	
+
 	glPopMatrix();
 	glEndList();
 }
@@ -223,7 +224,7 @@ bool  OGLContext::InitTexturedFloorDL(int size)
 	float fShine[] = { 5.0 };
 	j = size/2;
 
-	// CREATE THE DISPLAY LIST 
+	// CREATE THE DISPLAY LIST
 	glNewList(OGL_DL_TEXTURED_FLOOR,GL_COMPILE);
 		glMaterialfv( GL_FRONT, GL_AMBIENT, fAmbient );
 		glMaterialfv( GL_FRONT, GL_DIFFUSE, fDiffuse );
@@ -231,11 +232,11 @@ bool  OGLContext::InitTexturedFloorDL(int size)
 		glMaterialfv( GL_FRONT, GL_SHININESS, fShine);
 
 		glPushMatrix();
-			glEnable(GL_TEXTURE_2D);			   
+			glEnable(GL_TEXTURE_2D);
 
 			if ((floorTexture = ft::TextureManager::getInstance()->LoadTexture(FT_TEXTUREPATH + Config::getInstance()->GetStrVal("floor_texture")))==0)
 				return false;
-		
+
 			for(x = -j; x <= j; x++)   // for every row
 			{
 				kx= tileSize*x;
@@ -267,8 +268,8 @@ bool OGLContext::InitLogoDL()
 	_height = 32;
 
 	glNewList(OGL_DL_LOGO,GL_COMPILE);
-		
-		glEnable(GL_TEXTURE_2D);	
+
+		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
@@ -312,7 +313,7 @@ void OGLContext::setSceneViewport(const bool zoom)
 			_fovy = cos(_tempAng += 0.05F)*15; // decrease _fovy value in the scope [15...-15]
 		}
 		else
-			_fovy = -15;					   // after that keep constant value					
+			_fovy = -15;					   // after that keep constant value
 	}
 	else  //zom is off
 	{
@@ -402,7 +403,7 @@ void OGLContext::DrawDataViewPortPrimitives()
 void OGLContext::RenderLogo()
 {
 	// use GLOrtho2DCorrection before calling this
-	if (m_logoFT) 
+	if (m_logoFT)
 	{
 		glPushMatrix();
 			glTranslatef(m_width/2-100,-m_height/2+10,0);
@@ -445,12 +446,12 @@ namespace ft {
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		size = (GLdouble)((w >= h) ? w : h) / 2.0;
-		if (w <= h) 
+		if (w <= h)
 		{
 			aspect = (GLdouble)h/(GLdouble)w;
 			glOrtho(-size, size, -size*aspect, size*aspect,	-100000.0, 100000.0);
 		}
-		else 
+		else
 		{
 			aspect = (GLdouble)w/(GLdouble)h;
 			glOrtho(-size*aspect, size*aspect, -size, size,	-100000.0, 100000.0);
@@ -470,10 +471,10 @@ namespace ft {
 	// matrix.
 	// l is the position of the light source
 	// e is a point on within the plane on which the shadow is to be
-	//   projected.  
+	//   projected.
 	// n is the normal vector of the plane.
 	// Everything that is drawn after this call is "squashed" down
-	// to the plane. Hint: Gray or black color and no lighting 
+	// to the plane. Hint: Gray or black color and no lighting
 	// looks good for shadows *g*
 	void GlShadowProjection(float * l, float * e, float * n)
 	{
@@ -481,34 +482,34 @@ namespace ft {
 	  float mat[16];
 
 	  // These are c and d (corresponding to the tutorial)
-	  
+
 	  d = n[0]*l[0] + n[1]*l[1] + n[2]*l[2];
 	  c = e[0]*n[0] + e[1]*n[1] + e[2]*n[2] - d;
 
 	  // Create the matrix. OpenGL uses column by column
 	  // ordering
 
-	  mat[0]  = l[0]*n[0]+c; 
-	  mat[4]  = n[1]*l[0]; 
-	  mat[8]  = n[2]*l[0]; 
+	  mat[0]  = l[0]*n[0]+c;
+	  mat[4]  = n[1]*l[0];
+	  mat[8]  = n[2]*l[0];
 	  mat[12] = -l[0]*c-l[0]*d;
-	  
-	  mat[1]  = n[0]*l[1];        
+
+	  mat[1]  = n[0]*l[1];
 	  mat[5]  = l[1]*n[1]+c;
-	  mat[9]  = n[2]*l[1]; 
+	  mat[9]  = n[2]*l[1];
 	  mat[13] = -l[1]*c-l[1]*d;
-	  
-	  mat[2]  = n[0]*l[2];        
-	  mat[6]  = n[1]*l[2]; 
-	  mat[10] = l[2]*n[2]+c; 
+
+	  mat[2]  = n[0]*l[2];
+	  mat[6]  = n[1]*l[2];
+	  mat[10] = l[2]*n[2]+c;
 	  mat[14] = -l[2]*c-l[2]*d;
-	  
-	  mat[3]  = n[0];        
-	  mat[7]  = n[1]; 
-	  mat[11] = n[2]; 
+
+	  mat[3]  = n[0];
+	  mat[7]  = n[1];
+	  mat[11] = n[2];
 	  mat[15] = -d;
 
-	  // Finally multiply the matrices together 
+	  // Finally multiply the matrices together
 	  glMultMatrixf(mat);
 	}
 
@@ -545,10 +546,10 @@ namespace ft {
 		if (filled) glPopAttrib();
 	}
 
-	void OGLdrawArcXZ(const CalVector &start, const CalVector& center, const CalVector& color, const float alpha,  
+	void OGLdrawArcXZ(const CalVector &start, const CalVector& center, const CalVector& color, const float alpha,
 					  const float arcLength, const int segments, const bool filled)
 	{
-		
+
 
 
 		// determine the angular step per segment
@@ -557,7 +558,7 @@ namespace ft {
 		const float circumference = twoPi * radius;
 		const float arcAngle = twoPi* arcLength / circumference;
 		const float step = arcAngle / segments;
-		
+
 		CalVector _ox = CalVector(1,0,0);
 		CalVector _start = start;
 		_start.normalize();
@@ -572,7 +573,7 @@ namespace ft {
 			glDisable (GL_CULL_FACE);
 		}
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_BLEND);		
+		glEnable(GL_BLEND);
 		// begin drawing a triangle fan (for disk) or line loop (for circle)
 		glBegin (filled ? GL_TRIANGLE_FAN : GL_LINE_LOOP);
 		const int vertexCount = filled ? segments+1 : segments;
@@ -585,12 +586,12 @@ namespace ft {
 		}
 		glVertex3f(center.x,1,center.z);
 		glEnd();
-		glDisable(GL_BLEND);		
+		glDisable(GL_BLEND);
 		if (filled) glPopAttrib();
-		
+
 	}
 
-	void OGLdrawArcXZ(const CalVector &start, const CalVector &end, const CalVector& center, 
+	void OGLdrawArcXZ(const CalVector &start, const CalVector &end, const CalVector& center,
 					  const CalVector& color, const float alpha, const int segments, const bool filled)
 	{
 
@@ -624,7 +625,7 @@ namespace ft {
 			glDisable (GL_CULL_FACE);
 		}
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_BLEND);		
+		glEnable(GL_BLEND);
 		// begin drawing a triangle fan (for disk) or line loop (for circle)
 		glBegin (filled ? GL_TRIANGLE_FAN : GL_LINE_LOOP);
 		const int vertexCount = filled ? segments+1 : segments;
@@ -642,7 +643,7 @@ namespace ft {
 //			glVertex3f(_x,1,_z);
 
 		glEnd();
-		glDisable(GL_BLEND);		
+		glDisable(GL_BLEND);
 		if (filled) glPopAttrib();
 	}
 
@@ -758,104 +759,195 @@ namespace ft {
 	// shader functions ------------------------------------------------------------------ //
 	GLuint loadVertexProgram(const std::string fn)
 	{
-	   FILE *fp;
-	   GLubyte *buf;
-	   int length;
-	   bool ret = true;
-	   GLuint vp;
+        GLuint vp;
+        string str;
 
-	   if (!(fp = fopen(fn.c_str(),"rb")))
-	   {
-		  return false;
-	   }
-	   
-	   if (Debug::RENDER>0)
+        ifstream in(fn.c_str(), ifstream::in);
+
+        if(!in.good())
+        {
+            cerr << "Error opening " << fn << endl;
+            return false;
+        }
+
+        const int bufsize = 100;
+        char buf[bufsize];
+
+        do
+        {
+            in.read(buf, bufsize);
+            str.append(buf, in.gcount());
+        }
+        while(!in.eof());
+
+        in.close();
+
+        if (Debug::RENDER>0)
 			_dbg << "Loading vertex program: " << fn << std::endl;
-	   
-	   fseek(fp, 0, SEEK_END);
-	   length = ftell(fp);
-	   fseek(fp, 0, SEEK_SET);
 
-	   buf = new GLubyte[length+1];
+        glGenProgramsARB( 1,&vp);
+        GLenum err = glGetError();
+        // mka commented because it gives error on ATI cards (why?)
+        //if (err != GL_NO_ERROR)
+        // {
+        //     cerr << "glProgramStringARB precheck failed:"
+        //          << gluErrorString(err) << endl;
+        //     return false;
+        // }
 
-	   fread( buf, 1, length, fp);
-	   buf[length] = '\0'; // make it a regular C string so str* functions work
+        glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
+                                (GLsizei)str.size(), str.c_str());
+        err = glGetError();
 
-	   glGenProgramsARB( 1, &vp);
-	   glBindProgramARB( GL_VERTEX_PROGRAM_ARB, vp);
+        if(err == GL_INVALID_OPERATION)
+        {
+            // print compiler error
+            GLint pos;
+            glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &pos);
 
-	   glProgramStringARB( GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB, length, buf);
+            cerr << "Error " << glGetString(GL_PROGRAM_ERROR_STRING_ARB)
+                 << " at " << pos << " compiling vertex program!" << endl;
 
-	   if (glGetError() != 0)
-	   {
-		  int lineno;
-		  printf("%s\n", glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-		  glGetIntegerv( GL_PROGRAM_ERROR_POSITION_ARB, &lineno);
-		  printf(" @%d\n", lineno);
-		  ret = false;
-	   }
-	   else
-	   {
-		  if (Debug::RENDER>0)
-			printf(" Vertex Program - Load succeeded\n");
+            int start = 0, end, line = 0;
 
-		  glBindProgramARB( GL_VERTEX_PROGRAM_ARB, 0 );
-	   }
+            for(end = 0; end < static_cast<int>(str.size()); ++end)
+            {
+                if(str[end] == '\n')
+                {
+                    ++line;
+                    if (pos < end)
+                    break;
 
-	   fclose(fp);
+                    start = end + 1;
+                }
+            }
 
-	   delete []buf;
-	   return ret ? vp :0;
+            std::string mesg;
+            std::string loc;
+
+            for(int i = start; i < end; ++i)
+            {
+                if (i == pos)
+                    loc += '^';
+                else if (i < pos)
+                    loc += '-';
+                else
+                    loc += ' ';
+                mesg += str[i];
+            }
+
+            cerr << mesg << endl << loc << endl;
+            return false;
+        }
+        else if (err != GL_NO_ERROR) {
+            cerr << "glProgramStringARB postcheck failed:"
+                 << gluErrorString(err) << endl;
+            return false;
+        }
+
+        glBindProgramARB( GL_VERTEX_PROGRAM_ARB, vp);
+
+		if (Debug::RENDER>0)
+            _dbg << " Vertex Program - Load succeeded\n"<< std::endl;
+
+	   return vp;
 	}
 
 
 	GLuint loadFragmentProgram(const std::string fn)
 	{
-	   FILE *fp;
-	   GLubyte *buf;
-	   int length;
-	   bool ret = true;
-	   GLuint rp;
+        GLuint fp;
+        string str;
 
-	   if (!(fp = fopen(fn.c_str(),"rb")))
-	   {
-		  return false;
-	   }
+        ifstream in(fn.c_str(), ifstream::in);
 
-	   printf("\nLoading fragment program: '%s'\n", fn.c_str());
+        if(!in.good())
+        {
+            cerr << "Error opening " << fn << endl;
+            return false;
+        }
 
-	   fseek(fp, 0, SEEK_END);
-	   length = ftell(fp);
-	   fseek(fp, 0, SEEK_SET);
+        const int bufsize = 100;
+        char buf[bufsize];
 
-	   buf = new GLubyte[length+1];
+        do
+        {
+            in.read(buf, bufsize);
+            str.append(buf, in.gcount());
+        }
+        while(!in.eof());
 
-	   fread( buf, 1, length, fp);
-	   buf[length] = '\0'; // make it a regular C string so str* functions work
+        in.close();
 
-	   glGenProgramsARB( 1, &rp);
-	   glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, rp);
+        if (Debug::RENDER>0)
+			_dbg << "Loading fragment program: " << fn << std::endl;
 
-	   glProgramStringARB( GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB, length, buf);
+        glGenProgramsARB( 1,&fp);
+        GLenum err = glGetError();
+        // mka commented because it gives error on ATI cards (why?)
+        //if (err != GL_NO_ERROR)
+        // {
+        //     cerr << "glProgramStringARB precheck failed:"
+        //          << gluErrorString(err) << endl;
+        //     return false;
+        // }
 
-	   if (glGetError() != 0)
-	   {
-		  int position;
-		  printf("%s\n", glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-		  glGetIntegerv( GL_PROGRAM_ERROR_POSITION_ARB, &position);
-		  printf(" @%d\n", position);
-		  ret = false;
-	   }
-	   else
-	   {
-		  printf(" Fragment Program - Load succeeded\n");
-		  glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, 0 );
-	   }
+        glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
+                                (GLsizei)str.size(), str.c_str());
+        err = glGetError();
 
-	   fclose(fp);
+        if(err == GL_INVALID_OPERATION)
+        {
+            // print compiler error
+            GLint pos;
+            glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &pos);
 
-	   delete []buf;
-	   return ret ? rp : 0;
+            cerr << "Error " << glGetString(GL_PROGRAM_ERROR_STRING_ARB)
+                 << " at " << pos << " compiling fragment program!" << endl;
+
+            int start = 0, end, line = 0;
+
+            for(end = 0; end < static_cast<int>(str.size()); ++end)
+            {
+                if(str[end] == '\n')
+                {
+                    ++line;
+                    if (pos < end)
+                    break;
+
+                    start = end + 1;
+                }
+            }
+
+            std::string mesg;
+            std::string loc;
+
+            for(int i = start; i < end; ++i)
+            {
+                if (i == pos)
+                    loc += '^';
+                else if (i < pos)
+                    loc += '-';
+                else
+                    loc += ' ';
+                mesg += str[i];
+            }
+
+            cerr << mesg << endl << loc << endl;
+            return false;
+        }
+        else if (err != GL_NO_ERROR) {
+            cerr << "glProgramStringARB postcheck failed:"
+                 << gluErrorString(err) << endl;
+            return false;
+        }
+
+        glBindProgramARB( GL_VERTEX_PROGRAM_ARB, fp);
+
+		if (Debug::RENDER>0)
+            _dbg << " Fragment Program - Load succeeded" << std::endl;
+
+	   return fp;
 	}
 
 };

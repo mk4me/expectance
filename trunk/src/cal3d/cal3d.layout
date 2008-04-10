@@ -13,6 +13,9 @@
 	<File name="src/loader.h" open="0" top="0" tabpos="0">
 		<Cursor position="786" topLine="6" />
 	</File>
+	<File name="src/physique.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="6468" topLine="163" />
+	</File>
 	<File name="src/saver.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="18396" topLine="516" />
 	</File>
