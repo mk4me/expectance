@@ -20,14 +20,16 @@ boost::mutex update_mutex;
 boost::mutex::scoped_lock* lock;
 
 void enterLock()
-{
-    //cout << " Pygen enter lock .." << endl;
-    lock = new boost::mutex::scoped_lock(update_mutex);
+{   
+    //creation of scoped_lock object causes blocking on mutex (or passing if mutex is free)
+    boost::mutex::scoped_lock* newLock = new boost::mutex::scoped_lock(update_mutex);
+    //mutex is relased of free so we cean occupy global variable
+    lock = newLock;
 }
 
 void leaveLock()
 {
-    //cout << " Pygen leave lock .." << endl;
+    //deletion of lock object causes mutex realease
     delete lock;
 }
 

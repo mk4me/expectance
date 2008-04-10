@@ -5,7 +5,7 @@
 #ifndef _FT_CORE_LOCK_H
 #define _FT_CORE_LOCK_H
 
-#define FT_SYNC_DISABLED
+//#define FT_SYNC_DISABLED
 
 #include "../core/platform.h"
 
