@@ -59,9 +59,7 @@ void setPropInt(const std::string& key, int val)
 
 void setPropFloat(const std::string& key, float val)
 {
-    cout << " setPropFloat -> " << endl;
     PropManager::getInstance()->setPropertyFloat(key, val);
-    cout << " <- setPropFloat " << endl;
 }
 
 std::string getPropStr(const std::string& key)
