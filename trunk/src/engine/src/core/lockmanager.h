@@ -15,6 +15,7 @@ namespace ft
     class ENGINE_API LockManager
     {
     public:
+        static Lock EMPTY_LOCK;
         static void setUpdateLock(Lock *updateLock) { m_updateLock = updateLock; }
         static Lock* getUpdateLock() { return m_updateLock; }
 

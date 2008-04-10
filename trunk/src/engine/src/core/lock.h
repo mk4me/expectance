@@ -1,4 +1,4 @@
-/*
+	/*
  * Copyright (c) 2007 - 2008, FutureToday. All rights reserved.
  * author: abak
  */
@@ -7,7 +7,9 @@
 
 //#define FT_SYNC_DISABLED
 
-#include "../core/platform.h"
+#include "global.h"
+#include "platform.h"
+
 
 namespace ft
 {
@@ -17,22 +19,24 @@ namespace ft
     class ENGINE_API Lock
     {
     public:
-        Lock(void (*enterImplFunc)(), void (*leaveImplFunc)() ) { 
-                m_enterImplFunc = enterImplFunc; 
+        Lock(void (*enterImplFunc)(), void (*leaveImplFunc)()) {
+                m_enterImplFunc = enterImplFunc;
                 m_leaveImplFunc = leaveImplFunc;
             }
 
         ~Lock() {}
 
-        void enter() { 
+        void enter() {
             #ifndef FT_SYNC_DISABLED
-                m_enterImplFunc(); 
+            if (m_enterImplFunc != NULL)
+                m_enterImplFunc();
             #endif
         }
-        
-        void leave() { 
+
+        void leave() {
             #ifndef FT_SYNC_DISABLED
-                m_leaveImplFunc(); 
+            if (m_leaveImplFunc != NULL)
+                m_leaveImplFunc();
             #endif
         }
 

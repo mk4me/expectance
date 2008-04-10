@@ -7,4 +7,5 @@
 
 using namespace ft;
 
-Lock* LockManager::m_updateLock = NULL;
+Lock LockManager::EMPTY_LOCK(NULL,NULL);
+Lock* LockManager::m_updateLock = &(LockManager::EMPTY_LOCK);
