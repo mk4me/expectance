@@ -37,6 +37,10 @@ DynamicObjectID(m_counter++)
 	std::ostringstream _oss;
 	_oss << "id " << DynamicObjectID  << std::endl;
 	setAnnotation(_oss.str());
+	
+	quadric = gluNewQuadric();
+	if(!quadric)
+		cerr << "Axis::Axis: quadric is zero." << endl;
 
 }
 
@@ -55,6 +59,9 @@ Cal3DObject::~Cal3DObject()
 		glDeleteProgramsARB(1, &m_vertexProgramId);
 		glDeleteBuffersARB(6, m_bufferObject);
 	}
+	if(quadric)
+		gluDeleteQuadric(quadric);
+
 }
 
 /// \brief Releases all resources and objects related to this Cal3DObject
@@ -549,6 +556,9 @@ void Cal3DObject::HardwareRenderModelMesh(const bool shadow)
 void Cal3DObject::RenderModelSkeleton(const bool shadow)
 {
 	glEnable(GL_COLOR_MATERIAL);
+	
+	gluQuadricDrawStyle(quadric, (GLenum) GLU_FILL);
+    gluQuadricNormals(quadric, (GLenum) GLU_SMOOTH);
 
 	// draw the bone lines
 	float lines[1024][2][3];
@@ -561,13 +571,52 @@ void Cal3DObject::RenderModelSkeleton(const bool shadow)
 	else
 		glColor3f(0.0f, 0.0f, 0.0f);
 
-	glBegin(GL_LINES);
 	for(int currLine = _starting_index; currLine < nrLines; currLine++)
 	{
-		glVertex3f(lines[currLine][0][0], lines[currLine][0][1], lines[currLine][0][2]);
-		glVertex3f(lines[currLine][1][0], lines[currLine][1][1], lines[currLine][1][2]);
+		glBegin(GL_LINES);
+			glVertex3f(lines[currLine][0][0], lines[currLine][0][1], lines[currLine][0][2]);
+			glVertex3f(lines[currLine][1][0], lines[currLine][1][1], lines[currLine][1][2]);
+		glEnd();
+        CalVector v, v1;
+		v.x = lines[currLine][1][0]- lines[currLine][0][0];
+        v.y = lines[currLine][1][1]- lines[currLine][0][1];
+        v.z = lines[currLine][1][2]- lines[currLine][0][2];
+		v1=v;
+		float height = v.normalize();
+		float angle = 0.0f;
+		double _lenXY = sqrt(v.x*v.x+v.y*v.y); 
+		if( _lenXY > 1)
+			angle = 90.0f;
+		else
+			angle = (float)asin(_lenXY)/3.14159f*180.0f;
+		if(v.z < 0.0f)
+			angle = 180.0f-angle;
+
+        // the rotation vector
+        CalVector rot(v.y,-v.x,0.0f);
+
+		GLdouble radius = 5;
+		// the arrow (cone)
+		glPushMatrix();
+		glTranslatef(lines[currLine][0][0]+v1.x/2, lines[currLine][0][1]+v1.y/2, lines[currLine][0][2]+v1.z/2);
+			glPushMatrix();
+			  glRotatef(-angle,rot.x,rot.y,rot.z);
+			  //gluCylinder(quadric,radius,0,v.length()*height,10,1);
+			  glScalef(v.length()/3, v.length()/4, 1);
+			  gluSphere(quadric, v.length()/2*height, 20, 20);
+			glPopMatrix();
+		glPopMatrix();
+		
+		//glPushMatrix();
+		//glTranslatef(lines[currLine][0][0], lines[currLine][0][1], lines[currLine][0][2]);
+		////glScalef(len/_sx, len/_sy, 1);
+		//gluSphere(quadric, len/5, 20, 20);
+		//glPopMatrix();
+		//float
+		//glScalef(lines[currLine][0][0], lines[currLine][0][1], lines[currLine][0][2]);
+        //glTranslatef(lines[currLine][0][0], lines[currLine][0][1], lines[currLine][0][2]);
+
 	}
-	glEnd();
 	glLineWidth(1.0f);
 
 	// draw the bone points
@@ -584,6 +633,13 @@ void Cal3DObject::RenderModelSkeleton(const bool shadow)
 	{
 		glVertex3f(points[currPoint][0], points[currPoint][1], points[currPoint][2]);
 	}
+	//for(int currPoint = _starting_index; currPoint < nrPoints; currPoint++)
+	//{
+	//	glPushMatrix();
+	//	glTranslatef(points[currPoint][0], points[currPoint][1], points[currPoint][2]);
+	//	gluSphere(quadric, 10, 20, 20);
+	//	glPopMatrix();
+	//}
 	glEnd();
 	glPointSize(1.0f);
 

@@ -73,6 +73,7 @@ namespace ft
 		void RenderModelBoundingBox(const bool shadow);
 		void RenderControlParameters();
 		bool RENDER_CONTROL_PARAMETERS;
+		GLUquadricObj *quadric; //tmp
     };
 }
 
