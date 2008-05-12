@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="windows-1250"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="9,00"
 	Name="engine"
 	ProjectGUID="{564697FF-3F8B-4C3B-ADC4-9082BB636050}"
 	RootNamespace="engine"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -377,6 +378,8 @@
 				AdditionalDependencies="opengl32.lib glut32.lib glu32.lib cal3d_d.lib"
 				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				AdditionalLibraryDirectories="$(OutDir)/"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -395,9 +398,6 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -464,6 +464,8 @@
 				AdditionalDependencies="opengl32.lib glut32.lib glu32.lib cal3d.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				AdditionalLibraryDirectories="$(OutDir)/"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -482,9 +484,6 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"

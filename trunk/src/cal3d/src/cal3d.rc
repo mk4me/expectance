@@ -41,7 +41,7 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "080704b0"
+        BLOCK "000004b0"
         BEGIN
             VALUE "CompanyName", " "
             VALUE "FileDescription", "Cal3D - 3d character animation library"
@@ -56,7 +56,7 @@ BEGIN
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x807, 1200
+        VALUE "Translation", 0x0, 1200
     END
 END
 
