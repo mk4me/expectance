@@ -105,7 +105,6 @@ int InitGlutApplication(int argc, char *argv[], Application *app)
 	{
 		glutFullScreen();
 	}
-	//TODOMKA glutSetCursor(GLUT_CURSOR_NONE);
 
 	// register all GLUT callback functions
 	glutIdleFunc(IdleFunc);

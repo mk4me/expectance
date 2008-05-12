@@ -99,7 +99,6 @@ void GeneratorApp::InitStaticObjects()
       CalVector vStartPos(200,0,200);
       table->setPosition(vStartPos);
     }
-
 }
 /**
  * \brief Initializes avatars on scene

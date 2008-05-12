@@ -90,6 +90,7 @@ namespace ft
 
     	mutable int HardwareAcceleration;
 		bool DATA_VIEWPORT;
+		GLint VertexProgramId;
 
 	private:
 		
@@ -129,10 +130,10 @@ namespace ft
 	void OGLWriteBitmap(int font, int x, int y, const char *text);
 	//! write stroked text on the 2D area given by parameters: location (x,y), and text to be displayed
 	void OGLWriteStroke(int x, int y, const char *text);
-	//! load vertex program from file
-	GLuint loadVertexProgram(const std::string fn);
-	//! load fragment program from file
-	GLuint loadFragmentProgram(const std::string fn);
+	//! load ARB vertex program from file
+	GLuint loadARBVertexProgram(const std::string fn);
+	//! load ARB fragment program from file
+	GLuint loadARBFragmentProgram(const std::string fn);
 }
 
 #endif //_GEN_OGL_CONTEXT_H

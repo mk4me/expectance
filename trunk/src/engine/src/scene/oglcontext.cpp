@@ -105,6 +105,7 @@ bool OGLContext::Init()
 	else
 		HardwareAcceleration = 0; // no config settings
 
+	
 	if (HardwareAcceleration == 1)
 	{
 		glewInit();
@@ -120,6 +121,16 @@ bool OGLContext::Init()
 		  std::cerr << "Error ARB_vertex_buffer_object OpenGL extension not found." << std::endl;
 		  return false;
 		}
+		
+		//// load and compile once this Vertex Program for use
+		//if ((VertexProgramId = loadARBVertexProgram(FT_SHADERPATH + Config::getInstance()->GetStrVal("mesh_vertex_program"))) == 0)
+		//{
+		//if (Debug::ERR)
+		//	 _dbg << Debug::ERR_STR << "Error loading vertex program." << std::endl;
+		//	return false;
+		//}
+
+
 	}
 
 	DATA_VIEWPORT = ((Config::getInstance()->IsKey("data_viewport")) && (Config::getInstance()->GetIntVal("data_viewport")==1));
@@ -757,7 +768,7 @@ namespace ft {
 
 
 	// shader functions ------------------------------------------------------------------ //
-	GLuint loadVertexProgram(const std::string fn)
+	GLuint loadARBVertexProgram(const std::string fn)
 	{
         GLuint vp;
         string str;
@@ -787,13 +798,15 @@ namespace ft {
 
         glGenProgramsARB( 1,&vp);
         GLenum err = glGetError();
-        // mka commented because it gives error on ATI cards (why?)
-        //if (err != GL_NO_ERROR)
-        // {
-        //     cerr << "glProgramStringARB precheck failed:"
-        //          << gluErrorString(err) << endl;
-        //     return false;
-        // }
+        // mka commented because it gives an error on ATI cards (why?)
+        if (err != GL_NO_ERROR)
+         {
+             cerr << "glProgramStringARB precheck failed:"
+                  << gluErrorString(err) << endl;
+             return false;
+         }
+
+        glBindProgramARB( GL_VERTEX_PROGRAM_ARB, vp);
 
         glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
                                 (GLsizei)str.size(), str.c_str());
@@ -845,16 +858,17 @@ namespace ft {
             return false;
         }
 
-        glBindProgramARB( GL_VERTEX_PROGRAM_ARB, vp);
+ //       glBindProgramARB( GL_VERTEX_PROGRAM_ARB, vp);
 
 		if (Debug::RENDER>0)
             _dbg << " Vertex Program - Load succeeded\n"<< std::endl;
 
+        glBindProgramARB( GL_VERTEX_PROGRAM_ARB, 0);
 	   return vp;
 	}
 
 
-	GLuint loadFragmentProgram(const std::string fn)
+	GLuint loadARBFragmentProgram(const std::string fn)
 	{
         GLuint fp;
         string str;
@@ -884,7 +898,7 @@ namespace ft {
 
         glGenProgramsARB( 1,&fp);
         GLenum err = glGetError();
-        // mka commented because it gives error on ATI cards (why?)
+        // mka commented because it gives an error on ATI cards (why?)
         //if (err != GL_NO_ERROR)
         // {
         //     cerr << "glProgramStringARB precheck failed:"

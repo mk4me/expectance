@@ -106,14 +106,15 @@ bool Cal3DObject::InitHardwareAcceleration()
 	  return false;
 	}
 
-	if ((m_vertexProgramId = loadVertexProgram(FT_SHADERPATH + Config::getInstance()->GetStrVal("mesh_vertex_program"))) == 0)
+	//m_vertexProgramId = OGLContext::getInstance()->VertexProgramId;
+	if ((m_vertexProgramId = loadARBVertexProgram(FT_SHADERPATH + Config::getInstance()->GetStrVal("mesh_vertex_program"))) == 0)
 	{
       if (Debug::ERR)
           _dbg << Debug::ERR_STR << "Error loading vertex program." << std::endl;
 
 	  return false;
 	}
-//	if ((m_fragmentProgramId = loadFragmentProgram(FT_SHADERPATH + Config::getInstance()->GetStrVal("mesh_fragment_program"))) == 0)
+//	if ((m_fragmentProgramId = loadARBFragmentProgram(FT_SHADERPATH + Config::getInstance()->GetStrVal("mesh_fragment_program"))) == 0)
 //	{
 //	  _dbg << "Error loading fragment program." << std::endl;
 //	}
@@ -199,9 +200,11 @@ bool Cal3DObject::Render()
 			RenderControlParameters();
 		//glRotatef(-90,1.0f,0.0f,0.0f); //unnecessary while XYZ order in cal files
 
+		if (OGLContext::getInstance()->HardwareAcceleration != 1)
+		{
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
-
+		}
 		RenderMeshObject(m_renderMethod, false);
 	glPopMatrix();
 
