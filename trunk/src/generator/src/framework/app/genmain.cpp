@@ -23,8 +23,10 @@ void RunGlutApp(int argc, char *argv[])
  
         _argv[0] = (char*)malloc(20); 
         _argv[1] = (char*)malloc(20); 
-        strcpy(_argv[0],"initAppArg1"); 
-        strcpy(_argv[1],"initAppArg2"); 
+        //strcpy(_argv[0],"initAppArg1"); 
+        //strcpy(_argv[1],"initAppArg2"); 
+		memcpy(_argv[0],"initAppArg2",strlen("initAppArg1")+1);
+		memcpy(_argv[1],"initAppArg2",strlen("initAppArg2")+1);
     
         InitGlutApplication(_argc, _argv, app); 
     } 

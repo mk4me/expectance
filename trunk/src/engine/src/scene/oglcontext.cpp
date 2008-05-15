@@ -113,12 +113,14 @@ bool OGLContext::Init()
 		if (!GLEW_ARB_vertex_program)
 		{
 		  std::cerr << "Error ARB_vertex_program OpenGL extension not found." << std::endl;
+		  HardwareAcceleration = 0;
 		  return false;
 		}
 
 		if (!GLEW_ARB_vertex_buffer_object)
 		{
 		  std::cerr << "Error ARB_vertex_buffer_object OpenGL extension not found." << std::endl;
+		  HardwareAcceleration = 0;
 		  return false;
 		}
 		
