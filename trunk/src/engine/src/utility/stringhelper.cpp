@@ -158,3 +158,24 @@ string StringHelper::itos(int i)
 	s << i;
 	return s.str();
 }
+
+/**
+ * Returns base file name of path 
+ *
+ * \param const std::string & path - entire path
+ * \return bool - true if parsing successfull, false otherwise
+ **/
+string StringHelper::GetFileNameForPath(const string& path)
+{
+	vector<string> _tokens = StringHelper::Split(path,"/");
+	std::string baseName;
+	if (_tokens.size()>0)
+	{
+		baseName = _tokens[_tokens.size()-1];
+	}
+	else
+	{
+		baseName = path;
+	}
+	return baseName;
+}

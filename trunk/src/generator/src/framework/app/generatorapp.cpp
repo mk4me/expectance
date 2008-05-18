@@ -128,7 +128,14 @@ void GeneratorApp::InitAvatars()
     {
 		_nameHelper.empty();
 		_nameHelper = "Avatar" + StringHelper::itos(i);
-        av = dynamic_cast<AIAvatar*>(CreateAvatarOnScene("cally", _nameHelper));
+
+		string modelName;
+		if (i%2==0)
+			modelName = "freebie";
+		else
+			modelName = "cally";
+
+        av = dynamic_cast<AIAvatar*>(CreateAvatarOnScene(modelName, _nameHelper));
         if (av != NULL)  
         {
             av->Init();

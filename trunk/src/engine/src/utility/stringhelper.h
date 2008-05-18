@@ -33,6 +33,7 @@ namespace ft
         static bool ReadFloatArrayFromString(const string& str, float* floatArray, unsigned int arraySize);
 		template <typename T> T FromStringEx( const std::string& s, bool& bSuccess);
 		static string itos(int i);
+		static string GetFileNameForPath(const string& path);
 	};
 }
 

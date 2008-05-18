@@ -16,16 +16,16 @@
 namespace ft
 {
     //NAMES of MOTIONS
-    static const std::string MOTION_WALK_START = FT_MODELPATH + "cally/cally_walkstart.caf";  
-    static const std::string MOTION_WALK_LOOP = FT_MODELPATH + "cally/cally_walkloop.caf";  
-    static const std::string MOTION_WALK_STOP = FT_MODELPATH + "cally/cally_walkstop.caf";  
-    static const std::string MOTION_WALK_IDLE = FT_MODELPATH + "cally/cally_walkidle.caf";  
-    static const std::string MOTION_WALK_TURN_LEFT = FT_MODELPATH + "cally/cally_walturn_left.caf";
-    static const std::string MOTION_WALK_TURN_RIGHT = FT_MODELPATH + "cally/cally_walturn_right.caf";
-    static const std::string MOTION_RUN_START = FT_MODELPATH + "cally/cally_runstart.caf";  
-    static const std::string MOTION_RUN_LOOP  = FT_MODELPATH + "cally/cally_runloop.caf";  
-    static const std::string MOTION_RUN_STOP  = FT_MODELPATH + "cally/cally_runstop.caf";  
-    static const std::string MOTION_DANCE     = FT_MODELPATH + "cally/cally_ballerina.caf";  
+    static const std::string MOTION_WALK_START = "walkstart.caf";  
+    static const std::string MOTION_WALK_LOOP = "walkloop.caf";  
+    static const std::string MOTION_WALK_STOP = "walkstop.caf";  
+    static const std::string MOTION_WALK_IDLE = "idle.caf";  
+    static const std::string MOTION_WALK_TURN_LEFT = "walturn_left.caf";
+    static const std::string MOTION_WALK_TURN_RIGHT = "walturn_right.caf";
+    static const std::string MOTION_RUN_START = "runstart.caf";  
+    static const std::string MOTION_RUN_LOOP  = "runloop.caf";  
+    static const std::string MOTION_RUN_STOP  = "runstop.caf";  
+    static const std::string MOTION_DANCE     = "ballerina.caf";  
 
     /**
 	 * Class Motion: is main object represnting motion (animation) of avatar. 

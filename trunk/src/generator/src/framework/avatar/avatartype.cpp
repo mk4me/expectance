@@ -7,6 +7,7 @@
 #include "../app/gendebug.h"
 #include "cal3d/src/coretrack.h"
 #include "scene/transformmanager.h"
+#include "utility/stringhelper.h"
 
 using namespace ft;
 
@@ -115,8 +116,9 @@ void AvatarType::InitMotions()
     for (int i=0; i<animCount; i++)
     {
         CalCoreAnimation* anim = getCoreAnimation(i);
-        std::string animName = anim->getFilename();
+        std::string animFileName = anim->getFilename();
 
+		std::string animName = StringHelper::GetFileNameForPath(animFileName);
         Motion* mot = new Motion(animName, i);
 //	_fd->AddLimits(animName, mot->footLimits);
 

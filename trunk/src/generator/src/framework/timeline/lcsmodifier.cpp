@@ -6,6 +6,7 @@
 #include "cal3d/src/coretrack.h"
 #include "utility/vishelper.h"
 #include "utility/mathutil.h"
+#include "utility/stringhelper.h"
 #include <math.h>
 #include "../app/gendebug.h"
 #include "../avatar/avatartype.h"
@@ -725,7 +726,7 @@ Transform* LCSModifier::GetTransformForAnim(CalAnimation* anim, Avatar* avatar)
 {
     Transform* transform = NULL;
     AvatarType* type = (AvatarType*)avatar->GetCalCoreModel();
-    Motion* mot = type->GetMotion( anim->getCoreAnimation()->getFilename());
+    Motion* mot = type->GetMotion( StringHelper::GetFileNameForPath(anim->getCoreAnimation()->getFilename()));
 
     if (mot != NULL && mot->getTransform() != NULL)
     {
