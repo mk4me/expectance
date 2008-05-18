@@ -230,9 +230,9 @@ bool Cal3DObjectFactory::ParseModelConfiguration(const std::string& modelName, C
     {
       // set rendering scale factor
       //m_scale = atof(strData.c_str());  //TODO  abak: it should be used somewhere
-		////const char * val = strData.c_str();
-		////   float scale = static_cast<float>(atof (val));
-		////coreModel->scale(scale);
+		const char * val = strData.c_str();
+		float scale = static_cast<float>(atof (val));
+		coreModel->scale(scale);
     }
     else if(strKey == "skeleton")
     {
