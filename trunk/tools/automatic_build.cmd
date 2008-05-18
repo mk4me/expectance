@@ -38,7 +38,7 @@ else goto finish
 
 :debug
 rem "%VS80COMNTOOLS%..\IDE\%compiler%" %CD%\Generator.sln /build "FT Full Debug Max 6|Win32"  /out build_all.log  
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_all.log %CD%\Generator.sln "FT Full Debug Max 6|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_all.log %CD%\Generator.sln "FT Full Debug Max 6|Win32"  
 
 mkdir ..\deploy\tests\rev_%1\debug
 mkdir ..\deploy\tests\rev_%1\debug\data\
@@ -53,7 +53,7 @@ GOTO finish
 
 :release
 rem "%VS80COMNTOOLS%..\IDE\%compiler%" %CD%\Generator.sln /build "FT Full Release Max 6|Win32"  /out build_all.log  
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe /r /time /logfile:build_all.log %CD%\Generator.sln "FT Full Release Max 6|Win32"    
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe /r /time /logfile:build_all.log %CD%\Generator.sln "FT Full Release Max 6|Win32"    
 
 mkdir ..\deploy\tests\rev_%1\release
 mkdir ..\deploy\tests\rev_%1\release\data\

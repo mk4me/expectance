@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="windows-1250"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
@@ -210,6 +210,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine="xcopy ..\..\data ..\..\_out\win32\debug\data /D /E /C /I /Q /Y&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -287,6 +288,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="xcopy ..\..\lib\win32\debug ..\..\_out\win32\debug /D /E /C /I /Q /Y&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -301,6 +303,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine="xcopy ..\..\data ..\..\_out\win32\release\data /D /E /C /I /Q /Y&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -378,6 +381,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="xcopy ..\..\lib\win32\release ..\..\_out\win32\release /D /E /C /I /Q /Y&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -392,6 +396,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine="xcopy ..\..\data ..\..\_out\win32\debug\data /D /E /C /I /Q /Y"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -484,6 +489,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine="xcopy ..\..\data ..\..\_out\win32\release\data /D /E /C /I /Q /Y&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -563,6 +569,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine=""
 			/>
 		</Configuration>
 	</Configurations>

@@ -438,7 +438,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d_d.lib glew32d.lib generator_d.lib boost_python_debug.lib  python25_d.lib"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d_d.lib glew32d.lib generator_d.lib boost_python-vc90-mt-gd-1_35.lib python26_d.lib"
 				OutputFile="$(OutDir)/lib$(ProjectName)_d.pyd"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
@@ -470,6 +470,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="xcopy ..\..\lib\win32\debug ..\..\_out\win32\debug /D /E /C /I /Q /Y&#x0D;&#x0A;xcopy ..\..\python ..\..\_out\win32\debug /D /E /C /I /Q /Y&#x0D;&#x0A;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -530,7 +531,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d.lib glew32.lib generator.lib boost_python.lib  python25.lib"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d.lib glew32.lib generator.lib boost_python-vc90-1_35.lib python26.lib"
 				OutputFile="$(OutDir)/lib$(ProjectName).pyd"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -561,6 +562,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="xcopy ..\..\lib\win32\release ..\..\_out\win32\release /D /E /C /I /Q /Y&#x0D;&#x0A;xcopy ..\..\python ..\..\_out\win32\release /D /E /C /I /Q /Y&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>

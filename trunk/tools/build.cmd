@@ -35,7 +35,7 @@ goto end
 
 :d_cal3d
 
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_debug.log %CD%\..\src\cal3d\cal3d.vcproj "Full Debug|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_debug.log %CD%\..\src\cal3d\cal3d.vcproj "Full Debug|Win32"  
 
 mkdir ..\_out\win32\tst\debug\cal3d
 xcopy /e /v /y ..\lib\win32\debug\cal3d*.* ..\_out\win32\tst\debug\cal3d
@@ -48,9 +48,9 @@ goto finish
 :d_engine_lib
 
 if "%1"== "all" goto d_engine_lib1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_debug.log %CD%\..\src\cal3d\cal3d.vcproj "Full Debug|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_debug.log %CD%\..\src\cal3d\cal3d.vcproj "Full Debug|Win32"  
 :d_engine_lib1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_engine_lib_debug.log %CD%\..\src\engine\engine.vcproj "Full Debug|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_engine_lib_debug.log %CD%\..\src\engine\engine.vcproj "Full Debug|Win32"  
 
 mkdir ..\_out\win32\tst\debug\engine_lib
 xcopy /e /v /y ..\lib\win32\debug\engine*.* ..\_out\win32\tst\debug\engine_lib
@@ -62,9 +62,9 @@ goto finish
 :d_engine_dll
 
 if "%1"== "all" goto d_engine_dll1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_debug.log %CD%\..\src\cal3d\cal3d.vcproj "DLL Debug|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_debug.log %CD%\..\src\cal3d\cal3d.vcproj "DLL Debug|Win32"  
 :d_engine_dll1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_engine_dll_debug.log %CD%\..\src\engine\engine.vcproj "DLL Debug|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_engine_dll_debug.log %CD%\..\src\engine\engine.vcproj "DLL Debug|Win32"  
 
 mkdir ..\_out\win32\tst\debug\engine_dll
 xcopy /e /v /y ..\lib\win32\debug\engine*.* ..\_out\win32\tst\debug\engine_dll
@@ -77,9 +77,9 @@ goto finish
 :d_generator
 
 if "%1"== "all" goto d_generator1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_debug.log %CD%\..\src\cal3d\cal3d.vcproj "Full Debug|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_debug.log %CD%\..\src\cal3d\cal3d.vcproj "Full Debug|Win32"  
 :d_generator1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_generator_dll_debug.log %CD%\..\Generator.sln "Full Debug|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_generator_dll_debug.log %CD%\..\Generator.sln "Full Debug|Win32"  
 
 mkdir ..\_out\win32\tst\debug\generator_exe
 mkdir ..\_out\win32\tst\debug\generator_exe\data
@@ -93,9 +93,9 @@ goto finish
 :d_generator_dll
 
 if "%1"== "all" goto d_generator_dll1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_debug.log %CD%\..\src\cal3d\cal3d.vcproj "DLL Debug|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_debug.log %CD%\..\src\cal3d\cal3d.vcproj "DLL Debug|Win32"  
 :d_generator_dll1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_generator_dll_debug.log %CD%\..\Generator.sln "DLL Debug|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_generator_dll_debug.log %CD%\..\Generator.sln "DLL Debug|Win32"  
 
 mkdir ..\_out\win32\tst\debug\generator_dll
 xcopy /e /v /y ..\lib\win32\debug ..\_out\win32\tst\debug\generator_dll
@@ -107,9 +107,9 @@ goto finish
 :d_pygen_dll
 
 rem if "%1"== "all" goto d_pygen_dll1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_generator_dll_debug.log %CD%\..\Generator.sln "DLL Debug|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_generator_dll_debug.log %CD%\..\Generator.sln "DLL Debug|Win32"  
 :d_pygen_dll1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_pygen_dll_debug.log %CD%\..\src\pygen\pygen.vcproj "DLL Debug|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_pygen_dll_debug.log %CD%\..\src\pygen\pygen.vcproj "DLL Debug|Win32"  
 
 mkdir ..\_out\win32\tst\debug\pygen_dll
 mkdir ..\_out\win32\tst\debug\pygen_dll\data
@@ -141,7 +141,7 @@ goto end
 
 :r_cal3d
 
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_release.log %CD%\..\src\cal3d\cal3d.vcproj "Full Release|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_release.log %CD%\..\src\cal3d\cal3d.vcproj "Full Release|Win32"  
 
 mkdir ..\_out\win32\tst\release\cal3d
 xcopy /e /v /y ..\lib\win32\release\cal3d*.* ..\_out\win32\tst\release\cal3d
@@ -154,9 +154,9 @@ goto finish
 :r_engine_lib
 
 if "%1"== "all" goto r_engine_lib1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_release.log %CD%\..\src\cal3d\cal3d.vcproj "Full Release|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_release.log %CD%\..\src\cal3d\cal3d.vcproj "Full Release|Win32"  
 :r_engine_lib1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_engine_lib_release.log %CD%\..\src\engine\engine.vcproj "Full Release|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_engine_lib_release.log %CD%\..\src\engine\engine.vcproj "Full Release|Win32"  
 
 mkdir ..\_out\win32\tst\release\engine_lib
 xcopy /e /v /y ..\lib\win32\release\engine*.* ..\_out\win32\tst\release\engine_lib
@@ -168,9 +168,9 @@ goto finish
 :r_engine_dll
 
 if "%1"== "all" goto r_engine_dll1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_release.log %CD%\..\src\cal3d\cal3d.vcproj "DLL Release|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_release.log %CD%\..\src\cal3d\cal3d.vcproj "DLL Release|Win32"  
 :r_engine_dll1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_engine_dll_release.log %CD%\..\src\engine\engine.vcproj "DLL Release|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_engine_dll_release.log %CD%\..\src\engine\engine.vcproj "DLL Release|Win32"  
 
 mkdir ..\_out\win32\tst\release\engine_dll
 xcopy /e /v /y ..\lib\win32\release\engine*.* ..\_out\win32\tst\release\engine_dll
@@ -183,9 +183,9 @@ goto finish
 :r_generator
 
 if "%1"== "all" goto r_generator1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_release.log %CD%\..\src\cal3d\cal3d.vcproj "Full Release|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_release.log %CD%\..\src\cal3d\cal3d.vcproj "Full Release|Win32"  
 :r_generator1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_generator_exe_release.log %CD%\..\Generator.sln "Full Release|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_generator_exe_release.log %CD%\..\Generator.sln "Full Release|Win32"  
 
 mkdir ..\_out\win32\tst\release\generator_exe
 mkdir ..\_out\win32\tst\release\generator_exe\data
@@ -199,9 +199,9 @@ goto finish
 :r_generator_dll
 
 if "%1"== "all" goto r_generator_dll1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_release.log %CD%\..\src\cal3d\cal3d.vcproj "DLL Release|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_cal3d_release.log %CD%\..\src\cal3d\cal3d.vcproj "DLL Release|Win32"  
 :r_generator_dll1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_generator_dll_release.log %CD%\..\Generator.sln "DLL Release|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_generator_dll_release.log %CD%\..\Generator.sln "DLL Release|Win32"  
 
 mkdir ..\_out\win32\tst\release\generator_dll
 xcopy /e /v /y ..\lib\win32\release ..\_out\win32\tst\release\generator_dll
@@ -214,9 +214,9 @@ goto finish
 :r_pygen_dll
 
  
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_generator_dll_release.log %CD%\..\Generator.sln "DLL Release|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_generator_dll_release.log %CD%\..\Generator.sln "DLL Release|Win32"  
 rem :r_pygen_dll1
-"%VS80COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_pygen_dll_release.log %CD%\..\src\pygen\pygen.vcproj "DLL Release|Win32"  
+"%VS90COMNTOOLS%..\..\VC\vcpackages\vcbuild.exe" /r /time /logfile:build_pygen_dll_release.log %CD%\..\src\pygen\pygen.vcproj "DLL Release|Win32"  
 
 mkdir ..\_out\win32\tst\release\pygen_dll
 mkdir ..\_out\win32\tst\release\pygen_dll\data
@@ -235,5 +235,6 @@ goto finish
 echo whole build finished at: %time% >> build_report.%date%.log
 mkdir ..\_out\win32\tst\logs
 move /y build*.log ..\_out\win32\tst\logs\
+
 
 :end
