@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="windows-1250"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
@@ -1006,6 +1006,18 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\app\platform.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="storage"
+				>
+				<File
+					RelativePath=".\src\framework\storage\Recording.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\storage\Recording.h"
 					>
 				</File>
 			</Filter>
