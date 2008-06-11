@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="generator" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Full Debug">
+				<Option platforms="Unix;" />
+				<Option output="../../lib/linux/debug/generator_d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../_out/linux" />
+				<Option object_output="./linux/FullDebug" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-W" />
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add directory="../../src" />
+					<Add directory="utils/textures" />
+					<Add directory="../engine/src" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../../src" />
+					<Add directory="utils/textures" />
+					<Add directory="../engine/src" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="libglut" />
+					<Add library="../../lib/linux/debug/libengine_d.a" />
+					<Add library="../../lib/linux/debug/libcal3d_d.a" />
+					<Add directory="../../lib/linux/Debug/" />
+				</Linker>
+				<ExtraCommands>
+					<Add before="mkdir -p -v ../../_out/linux/data" />
+					<Add before='find ../../_out/linux/ -maxdepth 1 -type f -name &quot;*&quot; -delete' />
+					<Add before='rsync -rv ../../data ../../_out/linux/ --exclude=\&quot;.svn\&quot;' />
+					<Add after="rsync -v ../../lib/linux/debug/generator_d ../../_out/linux/" />
+				</ExtraCommands>
+			</Target>
+			<Target title="Full Release">
+				<Option platforms="Unix;" />
+				<Option output="../../lib/linux/release/generator" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../_out/linux" />
+				<Option object_output="./linux/FullRelease" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-W" />
+					<Add option="-DNDEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add directory="../" />
+					<Add directory="../engine/src" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../" />
+					<Add directory="../engine/src" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="libglut" />
+					<Add library="../../lib/linux/release/libengine.a" />
+					<Add library="../../lib/linux/release/libcal3d.a" />
+					<Add directory="../../lib/linux/Release" />
+				</Linker>
+				<ExtraCommands>
+					<Add before="mkdir -p -v ../../_out/linux/data" />
+					<Add before='find ../../_out/linux/ -maxdepth 1 -type f -name &quot;*&quot; -delete' />
+					<Add before='rsync -rv ../../data ../../_out/linux/ --exclude=\&quot;.svn\&quot;' />
+					<Add after="rsync -v ../../lib/linux/release/generator ../../_out/linux/" />
+				</ExtraCommands>
+			</Target>
+			<Target title="DLL Debug">
+				<Option platforms="Unix;" />
+				<Option output="../../lib/linux/debug/libgenerator_d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="./linux/DLLDebug" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-W" />
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add option="-DENGINE_TO_DLL" />
+					<Add option="-DGENERATOR_TO_DLL" />
+					<Add option="-DGENERATOR_EXPORTS" />
+					<Add directory="../../src" />
+					<Add directory="utils/textures" />
+					<Add directory="../engine/src" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../../src" />
+					<Add directory="utils/textures" />
+					<Add directory="../engine/src" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="libglut" />
+					<Add library="../../lib/linux/debug/libengine_d.a" />
+					<Add library="../../lib/linux/debug/libcal3d_d.a" />
+					<Add directory="../../lib/linux/Debug/" />
+				</Linker>
+			</Target>
+			<Target title="DLL Release">
+				<Option platforms="Unix;" />
+				<Option output="../../lib/linux/release/libgenerator" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="./linux/DLLRelease" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-W" />
+					<Add option="-DNDEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add option="-DENGINE_TO_DLL" />
+					<Add option="-DGENERATOR_TO_DLL" />
+					<Add option="-DGENERATOR_EXPORTS" />
+					<Add directory="../" />
+					<Add directory="../engine/src" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../" />
+					<Add directory="../engine/src" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="libglut" />
+					<Add library="../../lib/linux/release/libengine.a" />
+					<Add library="../../lib/linux/release/libcal3d.a" />
+					<Add directory="../../lib/linux/Release/" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="src/framework/action/action.cpp" />
+		<Unit filename="src/framework/action/action.h" />
+		<Unit filename="src/framework/action/actionavatar.cpp" />
+		<Unit filename="src/framework/action/actionavatar.h" />
+		<Unit filename="src/framework/action/idleaction.cpp" />
+		<Unit filename="src/framework/action/idleaction.h" />
+		<Unit filename="src/framework/action/runaction.cpp" />
+		<Unit filename="src/framework/action/runaction.h" />
+		<Unit filename="src/framework/action/walkaction.cpp" />
+		<Unit filename="src/framework/action/walkaction.h" />
+		<Unit filename="src/framework/ai/aiavatar.cpp" />
+		<Unit filename="src/framework/ai/aiavatar.h" />
+		<Unit filename="src/framework/ai/aicontroller.cpp" />
+		<Unit filename="src/framework/ai/aicontroller.h" />
+		<Unit filename="src/framework/ai/aimanager.cpp" />
+		<Unit filename="src/framework/ai/aimanager.h" />
+		<Unit filename="src/framework/ai/constraint.cpp" />
+		<Unit filename="src/framework/ai/constraint.h" />
+		<Unit filename="src/framework/ai/constraints/limitedareaconstraint.cpp" />
+		<Unit filename="src/framework/ai/constraints/limitedareaconstraint.h" />
+		<Unit filename="src/framework/ai/goal.cpp" />
+		<Unit filename="src/framework/ai/goal.h" />
+		<Unit filename="src/framework/ai/goalmanager.cpp" />
+		<Unit filename="src/framework/ai/goalmanager.h" />
+		<Unit filename="src/framework/ai/goals/changedirgoal.cpp" />
+		<Unit filename="src/framework/ai/goals/changedirgoal.h" />
+		<Unit filename="src/framework/ai/goals/limitedareagoal.cpp" />
+		<Unit filename="src/framework/ai/goals/limitedareagoal.h" />
+		<Unit filename="src/framework/ai/goals/randommovegoal.cpp" />
+		<Unit filename="src/framework/ai/goals/randommovegoal.h" />
+		<Unit filename="src/framework/ai/rule.cpp" />
+		<Unit filename="src/framework/ai/rule.h" />
+		<Unit filename="src/framework/app/gendebug.cpp" />
+		<Unit filename="src/framework/app/gendebug.h" />
+		<Unit filename="src/framework/app/generatorapp.cpp" />
+		<Unit filename="src/framework/app/generatorapp.h" />
+		<Unit filename="src/framework/app/genmain.cpp" />
+		<Unit filename="src/framework/app/genmain.h" />
+		<Unit filename="src/framework/app/genvisualizationmanager.cpp" />
+		<Unit filename="src/framework/app/genvisualizationmanager.h" />
+		<Unit filename="src/framework/app/platform.h" />
+		<Unit filename="src/framework/avatar/avatar.cpp" />
+		<Unit filename="src/framework/avatar/avatar.h" />
+		<Unit filename="src/framework/avatar/avatarfactory.cpp" />
+		<Unit filename="src/framework/avatar/avatarfactory.h" />
+		<Unit filename="src/framework/avatar/avatartype.cpp" />
+		<Unit filename="src/framework/avatar/avatartype.h" />
+		<Unit filename="src/framework/control/controlmanager.cpp" />
+		<Unit filename="src/framework/control/controlmanager.h" />
+		<Unit filename="src/framework/motion/motion.cpp" />
+		<Unit filename="src/framework/motion/motion.h" />
+		<Unit filename="src/framework/motion/movableavatar.cpp" />
+		<Unit filename="src/framework/motion/movableavatar.h" />
+		<Unit filename="src/framework/motion/timelinevisualizer.cpp" />
+		<Unit filename="src/framework/motion/timelinevisualizer.h" />
+		<Unit filename="src/framework/physics/cdmanager.cpp" />
+		<Unit filename="src/framework/physics/cdmanager.h" />
+		<Unit filename="src/framework/physics/magnetcontroller.cpp" />
+		<Unit filename="src/framework/physics/magnetcontroller.h" />
+		<Unit filename="src/framework/physics/physicsavatar.cpp" />
+		<Unit filename="src/framework/physics/physicsavatar.h" />
+		<Unit filename="src/framework/physics/speedcontroller.cpp" />
+		<Unit filename="src/framework/physics/speedcontroller.h" />
+		<Unit filename="src/framework/timeline/footdetector.cpp" />
+		<Unit filename="src/framework/timeline/footdetector.h" />
+		<Unit filename="src/framework/timeline/lcsmodifier.cpp" />
+		<Unit filename="src/framework/timeline/lcsmodifier.h" />
+		<Unit filename="src/framework/timeline/timeline.cpp" />
+		<Unit filename="src/framework/timeline/timeline.h" />
+		<Unit filename="src/framework/timeline/timelineblender.cpp" />
+		<Unit filename="src/framework/timeline/timelineblender.h" />
+		<Unit filename="src/framework/timeline/timelinecontext.cpp" />
+		<Unit filename="src/framework/timeline/timelinecontext.h" />
+		<Unit filename="src/framework/timeline/timelineexecutor.cpp" />
+		<Unit filename="src/framework/timeline/timelineexecutor.h" />
+		<Unit filename="src/framework/timeline/timelinemodifier.cpp" />
+		<Unit filename="src/framework/timeline/timelinemodifier.h" />
+		<Unit filename="src/framework/timeline/timelinemotion.cpp" />
+		<Unit filename="src/framework/timeline/timelinemotion.h" />
+		<Unit filename="src/framework/timeline/timelineobject.cpp" />
+		<Unit filename="src/framework/timeline/timelineobject.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
