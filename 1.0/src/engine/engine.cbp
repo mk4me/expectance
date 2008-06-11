@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="engine" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Full Debug">
+				<Option platforms="Unix;" />
+				<Option output="../../lib/linux/debug/libengine_d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="./linux/FullDebug" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-W" />
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add directory="../../src" />
+					<Add directory="utils/textures" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../../src" />
+					<Add directory="utils/textures" />
+				</ResourceCompiler>
+			</Target>
+			<Target title="Full Release">
+				<Option platforms="Unix;" />
+				<Option output="../../lib/linux/release/libengine" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="./linux/FullRelease" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-W" />
+					<Add option="-DNDEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add directory="../" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../" />
+				</ResourceCompiler>
+			</Target>
+			<Target title="DLL Debug">
+				<Option platforms="Unix;" />
+				<Option output="../../lib/linux/debug/libengine_d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="./linux/DLLDebug" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-W" />
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add option="-DENGINE_EXPORTS" />
+					<Add option="-DENGINE_TO_DLL" />
+					<Add directory="../../src" />
+					<Add directory="utils/textures" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../../src" />
+					<Add directory="utils/textures" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="libglut" />
+					<Add directory="../../lib/linux/Debug/" />
+				</Linker>
+			</Target>
+			<Target title="DLL Release">
+				<Option platforms="Unix;" />
+				<Option output="../../lib/linux/release/libengine" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="./linux/DLLRelease" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-W" />
+					<Add option="-DNDEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add option="-DENGINE_TO_DLL" />
+					<Add option="-DENGINE_EXPORTS" />
+					<Add directory="../" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="../" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="libglut" />
+					<Add library="cal3d" />
+					<Add directory="../../lib/linux/Release/" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="src/core/application.cpp" />
+		<Unit filename="src/core/application.h" />
+		<Unit filename="src/core/baseobject.cpp" />
+		<Unit filename="src/core/baseobject.h" />
+		<Unit filename="src/core/config.cpp" />
+		<Unit filename="src/core/config.h" />
+		<Unit filename="src/core/global.h" />
+		<Unit filename="src/core/globalmsgsender.cpp" />
+		<Unit filename="src/core/globalmsgsender.h" />
+		<Unit filename="src/core/glutapp.cpp" />
+		<Unit filename="src/core/glutapp.h" />
+		<Unit filename="src/core/inputlistener.h" />
+		<Unit filename="src/core/inputmanager.cpp" />
+		<Unit filename="src/core/inputmanager.h" />
+		<Unit filename="src/core/lock.h" />
+		<Unit filename="src/core/lockmanager.cpp" />
+		<Unit filename="src/core/lockmanager.h" />
+		<Unit filename="src/core/message.cpp" />
+		<Unit filename="src/core/message.h" />
+		<Unit filename="src/core/msglistener.h" />
+		<Unit filename="src/core/msgsender.cpp" />
+		<Unit filename="src/core/msgsender.h" />
+		<Unit filename="src/core/platform.h" />
+		<Unit filename="src/core/property.h" />
+		<Unit filename="src/core/prophandler.h" />
+		<Unit filename="src/core/propmanager.cpp" />
+		<Unit filename="src/core/propmanager.h" />
+		<Unit filename="src/core/simulation.cpp" />
+		<Unit filename="src/core/simulation.h" />
+		<Unit filename="src/core/updatemanager.cpp" />
+		<Unit filename="src/core/updatemanager.h" />
+		<Unit filename="src/core/updateobject.cpp" />
+		<Unit filename="src/core/updateobject.h" />
+		<Unit filename="src/scene/GL/glew.h" />
+		<Unit filename="src/scene/GL/glxew.h" />
+		<Unit filename="src/scene/GL/wglew.h" />
+		<Unit filename="src/scene/cal3dobject.cpp" />
+		<Unit filename="src/scene/cal3dobject.h" />
+		<Unit filename="src/scene/cal3dobjectfactory.cpp" />
+		<Unit filename="src/scene/cal3dobjectfactory.h" />
+		<Unit filename="src/scene/cal3dtype.cpp" />
+		<Unit filename="src/scene/cal3dtype.h" />
+		<Unit filename="src/scene/camera.cpp" />
+		<Unit filename="src/scene/camera.h" />
+		<Unit filename="src/scene/cameraconfiguration.cpp" />
+		<Unit filename="src/scene/cameraconfiguration.h" />
+		<Unit filename="src/scene/cameramanager.cpp" />
+		<Unit filename="src/scene/cameramanager.h" />
+		<Unit filename="src/scene/circle.cpp" />
+		<Unit filename="src/scene/circle.h" />
+		<Unit filename="src/scene/circulararc.cpp" />
+		<Unit filename="src/scene/circulararc.h" />
+		<Unit filename="src/scene/datacollector.cpp" />
+		<Unit filename="src/scene/datacollector.h" />
+		<Unit filename="src/scene/glew.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/scene/line.cpp" />
+		<Unit filename="src/scene/line.h" />
+		<Unit filename="src/scene/oglcontext.cpp" />
+		<Unit filename="src/scene/oglcontext.h" />
+		<Unit filename="src/scene/renderobject.cpp" />
+		<Unit filename="src/scene/renderobject.h" />
+		<Unit filename="src/scene/scenemanager.cpp" />
+		<Unit filename="src/scene/scenemanager.h" />
+		<Unit filename="src/scene/sceneobject.cpp" />
+		<Unit filename="src/scene/sceneobject.h" />
+		<Unit filename="src/scene/spline.cpp" />
+		<Unit filename="src/scene/spline.h" />
+		<Unit filename="src/scene/texturemanager.cpp" />
+		<Unit filename="src/scene/texturemanager.h" />
+		<Unit filename="src/scene/traceline.cpp" />
+		<Unit filename="src/scene/traceline.h" />
+		<Unit filename="src/scene/transform.cpp" />
+		<Unit filename="src/scene/transform.h" />
+		<Unit filename="src/scene/transformmanager.cpp" />
+		<Unit filename="src/scene/transformmanager.h" />
+		<Unit filename="src/scene/visualizationmanager.cpp" />
+		<Unit filename="src/scene/visualizationmanager.h" />
+		<Unit filename="src/ui/menuitem.cpp" />
+		<Unit filename="src/ui/menuitem.h" />
+		<Unit filename="src/ui/menumanager.cpp" />
+		<Unit filename="src/ui/menumanager.h" />
+		<Unit filename="src/utility/debug.cpp" />
+		<Unit filename="src/utility/debug.h" />
+		<Unit filename="src/utility/mathconversions.h" />
+		<Unit filename="src/utility/mathutil.cpp" />
+		<Unit filename="src/utility/mathutil.h" />
+		<Unit filename="src/utility/mtxlib.cpp" />
+		<Unit filename="src/utility/mtxlib.h" />
+		<Unit filename="src/utility/quat.cpp" />
+		<Unit filename="src/utility/quat.h" />
+		<Unit filename="src/utility/randomgen.cpp" />
+		<Unit filename="src/utility/randomgen.h" />
+		<Unit filename="src/utility/stlhelper.h" />
+		<Unit filename="src/utility/stringhelper.cpp" />
+		<Unit filename="src/utility/stringhelper.h" />
+		<Unit filename="src/utility/vec.cpp" />
+		<Unit filename="src/utility/vec.h" />
+		<Unit filename="src/utility/vishelper.cpp" />
+		<Unit filename="src/utility/vishelper.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

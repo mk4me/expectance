@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Full Release" />
+	<File name="src/corematerial.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="929" topLine="11" />
+	</File>
+	<File name="src/coresubmorphtarget.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="9031" topLine="260" />
+	</File>
+	<File name="src/loader.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="7912" topLine="204" />
+	</File>
+	<File name="src/loader.h" open="0" top="0" tabpos="0">
+		<Cursor position="786" topLine="6" />
+	</File>
+	<File name="src/physique.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="6468" topLine="163" />
+	</File>
+	<File name="src/saver.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="18396" topLine="516" />
+	</File>
+	<File name="src/tinyxml.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="36937" topLine="1865" />
+	</File>
+	<File name="src/tinyxml.h" open="0" top="0" tabpos="0">
+		<Cursor position="3121" topLine="78" />
+	</File>
+	<File name="src/tinyxmlerror.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1829" topLine="31" />
+	</File>
+	<File name="src/tinyxmlparser.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="37261" topLine="1615" />
+	</File>
+</CodeBlocks_layout_file>
