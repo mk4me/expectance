@@ -6,7 +6,7 @@
 #ifndef _GEN_AI_RANDOMMOVEGOAL_H
 #define _GEN_AI_RANDOMMOVEGOAL_H
 
-#include "../goal.h"
+#include "evolution/goal.h"
 
 namespace ft
 {
@@ -14,7 +14,7 @@ namespace ft
 	 * Class RandomMoveController: class responsible control of RandomMoveGoal execution
      * 
      **/
-    class RandomMoveController : public AIController
+    class RandomMoveController : public GoalController
     {
     public:
         RandomMoveController(float desiredGoalTime);
@@ -39,7 +39,7 @@ namespace ft
         virtual ~RandomMoveGoal(void);
 
         virtual int getActionToPerform();
-        virtual AIController* CreateController(ActionAvatar *av);
+        virtual GoalController* CreateController(Avatar *av);
     };
 }
 

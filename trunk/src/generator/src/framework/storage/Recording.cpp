@@ -46,11 +46,11 @@ void Recording::Clear()
 {
 }
 
-void Recording::AddAvatar(Avatar* av)
+void Recording::AddAvatar(CalAvatar* av)
 {
 }
 
-void Recording::RemoveAvatar(Avatar* av)
+void Recording::RemoveAvatar(CalAvatar* av)
 {
 }
 

@@ -5,6 +5,8 @@
 #include "timelinevisualizer.h"
 #include "utility/vishelper.h"
 #include "scene/scenemanager.h"
+#include "../evolution_impl/cal3danimexecution.h"
+
 using namespace ft;
 
 bool TimeLineVisualizer::CURVE_ANIM_WEIGHT = false;
@@ -49,7 +51,7 @@ TimeLineVisualizer::~TimeLineVisualizer(void)
  **/
 void TimeLineVisualizer::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
-    TimeLineModifier::Apply(elapsedSeconds, timeLineContext);
+    Controller::Apply(elapsedSeconds, timeLineContext);
 
     if (CURVE_ANIM_WEIGHT)
     {
@@ -58,13 +60,16 @@ void TimeLineVisualizer::Apply(float elapsedSeconds, TimeLineContext * timeLineC
 
         if (timeLineContext->prevAnim != NULL)
         {
-            prevAnimValue = timeLineContext->prevAnim->getWeight();
+			CalAnimation* prevAnim = ((Cal3dAnimExecution*)timeLineContext->prevAnim)->getAnimation();
+            prevAnimValue = prevAnim->getWeight();
         }
 
         if (timeLineContext->currAnim != NULL)
         {
-            currAnimValue = timeLineContext->currAnim->getWeight();
+			CalAnimation* currAnim = ((Cal3dAnimExecution*)timeLineContext->currAnim)->getAnimation();
+            currAnimValue = currAnim->getWeight();
         }
+
         curve_prev_anim_weight->AddValue(prevAnimValue);
         curve_curr_anim_weight->AddValue(currAnimValue);
     }
@@ -109,7 +114,7 @@ void TimeLineVisualizer::Reset(TimeLineContext * timeLineContext)
  **/
 std::string TimeLineVisualizer::toString()
 {
-    std::string result = TimeLineModifier::toString() + "[TimeLineVisualizer]";
+    std::string result = Controller::toString() + "[TimeLineVisualizer]";
     return result;
 }
 

@@ -3,10 +3,9 @@
  * author: mka
  */
 #include "magnetcontroller.h"
-#include "../motion/movableavatar.h"
 #include "cdmanager.h"
 #include "utility/mathutil.h"
-
+#include "../avatar/calavatar.h"
 #include "scene/scenemanager.h"
 #include "utility/vishelper.h"
 
@@ -86,8 +85,9 @@ void MagnetController::Apply(float elapsedSeconds, TimeLineContext * timeLineCon
 	float sign = 0;
 	_currLenForce = _currArcF2D = sign = 0;
 
-	TimeLineModifier::Apply(elapsedSeconds, timeLineContext);
-    MovableAvatar* av = (MovableAvatar*)timeLineContext->getAvatar();
+	Controller::Apply(elapsedSeconds, timeLineContext);
+	
+	CalAvatar* av = (CalAvatar*)timeLineContext->getAvatar();
 
 	CalVector _cummForce  = CollisionDetectionManager::getInstance()->getObjectCummulativeForce(av->DynamicObjectID, m_threshold);
 	CalQuaternion _dirAngleQ = av->getGlobalRotationOffset();
@@ -110,7 +110,7 @@ void MagnetController::Apply(float elapsedSeconds, TimeLineContext * timeLineCon
 		_dirAngleQ.blend(_cmFA, _currArcF2DQ);
 
 		// apply changes to global direciton
-		timeLineContext->getAvatar()->setGlobalRotationOffset(_dirAngleQ);
+		av->setGlobalRotationOffset(_dirAngleQ);
 	}
 
 
@@ -168,6 +168,6 @@ void MagnetController::Reset(TimeLineContext * timeLineContext)
  **/
 std::string MagnetController::toString()
 {
-    std::string result = TimeLineModifier::toString() + "[MagnetController]";
+    std::string result = Controller::toString() + "[MagnetController]";
     return result;
 }

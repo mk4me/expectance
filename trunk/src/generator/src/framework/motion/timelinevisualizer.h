@@ -6,14 +6,17 @@
 #ifndef _GEN_TIMELINE_VISUALIZER_H
 #define _GEN_TIMELINE_VISUALIZER_H
 
-#include "../timeline/timelinemodifier.h"
+#include "evolution/controller.h"
+#include "evolution/timelinecontext.h"
+#include "scene/datacollector.h"
+#include "scene/traceline.h"
 
 namespace ft
 {
 	/**
 	 * Class TimeLineVisualizer: specific modifier responsible for visualization of timeline execution
 	 **/
-    class TimeLineVisualizer : public TimeLineModifier
+    class TimeLineVisualizer : public Controller
     {
     public:
         static bool CURVE_ANIM_WEIGHT; 

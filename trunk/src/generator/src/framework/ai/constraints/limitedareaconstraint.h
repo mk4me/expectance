@@ -6,8 +6,7 @@
 #ifndef _GEN_AI_LIMITEDAREACONSTRAINT_H
 #define _GEN_AI_LIMITEDAREACONSTRAINT_H
 
-#include "../../action/actionavatar.h"
-#include "../constraint.h"
+#include "evolution/constraint.h"
 
 namespace ft
 {
@@ -21,7 +20,7 @@ namespace ft
         LimitedAreaConstraint();
         virtual ~LimitedAreaConstraint(void);
         
-        virtual bool Check(ActionAvatar *av);
+        virtual bool Check(Avatar *av);
     };
 }
 

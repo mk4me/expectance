@@ -6,7 +6,8 @@
 #ifndef _GEN_PHYSICS_MAGNETCONTROLLER_H
 #define _GEN_PHYSICS_MAGNETCONTROLLER_H
 
-#include "../timeline/timelinemodifier.h"
+#include "evolution/controller.h"
+#include "scene/datacollector.h"
 #include "scene/line.h"
 #include "scene/circle.h"
 #include "scene/circulararc.h"
@@ -19,7 +20,7 @@ namespace ft
      **/
 
 
-    class MagnetController : public TimeLineModifier
+    class MagnetController : public Controller
     {
     public:
         MagnetController();

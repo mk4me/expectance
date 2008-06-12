@@ -229,7 +229,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\src; utils\textures;..\engine\src"
+				AdditionalIncludeDirectories="..\..\src; utils\textures;..\engine\src;..\..\ext\inc\evolution"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -256,7 +256,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib evolution_d.lib"
 				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
@@ -323,7 +323,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\;..\engine\src"
+				AdditionalIncludeDirectories="..\;..\engine\src;..\..\ext\inc\evolution"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -350,7 +350,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib evolution.lib"
 				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -415,7 +415,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\src;utils\textures;..\engine\src"
+				AdditionalIncludeDirectories="..\..\src;utils\textures;..\engine\src;..\..\ext\inc\evolution"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;ENGINE_TO_DLL;GENERATOR_TO_DLL;GENERATOR_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -443,7 +443,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d_d.lib glew32d.lib engine_d.lib"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d_d.lib glew32d.lib engine_d.lib evolution_d.lib"
 				OutputFile="$(OutDir)/$(ProjectName)_d.dll"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
@@ -509,7 +509,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\;..\engine\src"
+				AdditionalIncludeDirectories="..\;..\engine\src;..\..\ext\inc\evolution"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;ENGINE_TO_DLL; GENERATOR_TO_DLL; GENERATOR_EXPORTS"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -536,7 +536,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d.lib glew32.lib engine.lib"
+				AdditionalDependencies="glut32.lib glu32.lib opengl32.lib odbc32.lib odbccp32.lib cal3d.lib glew32.lib engine.lib evolution.lib"
 				OutputFile="$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
@@ -583,14 +583,6 @@
 				Name="avatar"
 				>
 				<File
-					RelativePath=".\src\framework\avatar\avatar.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\avatar\avatar.h"
-					>
-				</File>
-				<File
 					RelativePath=".\src\framework\avatar\avatarfactory.cpp"
 					>
 				</File>
@@ -599,73 +591,25 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\avatar\avatartype.cpp"
+					RelativePath=".\src\framework\avatar\calavatar.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\avatar\avatartype.h"
+					RelativePath=".\src\framework\avatar\calavatar.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\avatar\calavatartype.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\avatar\calavatartype.h"
 					>
 				</File>
 			</Filter>
 			<Filter
 				Name="ai"
 				>
-				<File
-					RelativePath=".\src\framework\ai\aiavatar.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\ai\aiavatar.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\ai\aicontroller.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\ai\aicontroller.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\ai\aimanager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\ai\aimanager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\ai\constraint.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\ai\constraint.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\ai\goal.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\ai\goal.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\ai\goalmanager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\ai\goalmanager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\ai\rule.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\ai\rule.h"
-					>
-				</File>
 				<Filter
 					Name="goals"
 					>
@@ -711,19 +655,15 @@
 				Name="motion"
 				>
 				<File
-					RelativePath=".\src\framework\motion\motion.cpp"
+					RelativePath=".\src\framework\motion\animation.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\motion\motion.h"
+					RelativePath=".\src\framework\motion\animation.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\motion\movableavatar.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\motion\movableavatar.h"
+					RelativePath=".\src\framework\motion\motiondata.h"
 					>
 				</File>
 				<File
@@ -738,62 +678,6 @@
 			<Filter
 				Name="timeline"
 				>
-				<File
-					RelativePath=".\src\framework\timeline\timeline.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\timeline\timeline.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\timeline\timelineblender.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\timeline\timelineblender.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\timeline\timelinecontext.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\timeline\timelinecontext.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\timeline\timelineexecutor.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\timeline\timelineexecutor.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\timeline\timelinemodifier.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\timeline\timelinemodifier.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\timeline\timelinemotion.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\timeline\timelinemotion.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\timeline\timelineobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\timeline\timelineobject.h"
-					>
-				</File>
 				<Filter
 					Name="modifier"
 					>
@@ -886,46 +770,18 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="action"
+				Name="evolution_impl"
 				>
 				<File
-					RelativePath=".\src\framework\action\action.cpp"
+					RelativePath=".\src\framework\evolution_impl\cal3danimexecution.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\action\action.h"
+					RelativePath=".\src\framework\evolution_impl\cal3dimpl.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\framework\action\actionavatar.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\action\actionavatar.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\action\idleaction.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\action\idleaction.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\action\runaction.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\action\runaction.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\action\walkaction.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\action\walkaction.h"
+					RelativePath=".\src\framework\evolution_impl\cal3dimpl.h"
 					>
 				</File>
 			</Filter>
@@ -938,14 +794,6 @@
 				</File>
 				<File
 					RelativePath=".\src\framework\physics\magnetcontroller.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\physics\physicsavatar.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\framework\physics\physicsavatar.h"
 					>
 				</File>
 				<File

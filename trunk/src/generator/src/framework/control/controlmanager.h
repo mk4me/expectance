@@ -6,7 +6,8 @@
 #ifndef _GEN_CONTROL_MANAGER_H
 #define _GEN_CONTROL_MANAGER_H
 
-#include "../ai/aiavatar.h"
+#include "../avatar/calavatar.h"
+#include "evolution/avatar.h"
 #include "scene/cameramanager.h"
 #include "core/inputlistener.h"
 
@@ -30,9 +31,11 @@ namespace ft
         void Init();
 
         void setActiveAvatar(int ind);
-        AIAvatar* getActiveAvatar();
+        Avatar* getActiveAvatar();
 
-        bool AddAvatar(AIAvatar* av);
+        CalAvatar* getActiveAvatarImpl();
+
+        bool AddAvatar(Avatar* av);
 
         //TODO: uncommnet it when RemoveAvatar is implemented
         //bool  RemoveAvatar(AIAvatar* av);
@@ -44,7 +47,7 @@ namespace ft
     private:
         static ControlManager* m_instance;
 
-        std::vector<AIAvatar*> m_vAvatars;
+        std::vector<Avatar*> m_vAvatars;
 
         int m_activeAvatarInd;
 

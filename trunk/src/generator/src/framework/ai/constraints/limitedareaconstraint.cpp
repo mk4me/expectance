@@ -3,6 +3,7 @@
  * author: abak
  */
 #include "limitedareaconstraint.h"
+#include "../../avatar/calavatar.h"
 
 using namespace ft;
 using namespace std;
@@ -24,10 +25,11 @@ LimitedAreaConstraint::~LimitedAreaConstraint()
  *
  * \return bool - true if the constraint is satisfied, false otherwise (in this case the proper action should be taken)
  **/
-bool LimitedAreaConstraint::Check(ActionAvatar *av)
+bool LimitedAreaConstraint::Check(Avatar *av)
 {
+	CalAvatar* avImpl = (CalAvatar*)av->getImplementation();
     bool result = true;
-    float dist = av->getPosition().length();
+    float dist = avImpl ->getPosition().length();
     if (dist > 1200)
         result = false;
     else

@@ -95,7 +95,7 @@ void ControlManager::UpdateActiveAvatarMarker()
     if (TRACE && tracer_active_avatar != NULL)
     {
         tracer_active_avatar->ClearTrace();
-        AIAvatar* av = getActiveAvatar();
+        CalAvatar* av = getActiveAvatarImpl();
         if (av != NULL)
         {
             CalSkeleton *skel = av->GetCalModel()->getSkeleton();
@@ -115,10 +115,10 @@ void ControlManager::UpdateActiveAvatarMarker()
  * \param ft::AIAvatar* av - avatar to add
  * \return bool - true if modifier added successfuly
  **/
-bool ControlManager::AddAvatar(AIAvatar* av)
+bool ControlManager::AddAvatar(Avatar* av)
 {
     if (GenDebug::CONTROL>0)
-        _dbg << " AddAvatar " << av->toString() << " to ControlManager " << std::endl;
+        _dbg << " AddAvatar " << ((CalAvatar*)av->getImplementation())->toString() << " to ControlManager " << std::endl;
 
     m_vAvatars.push_back(av);
 	return true;
@@ -128,7 +128,7 @@ bool ControlManager::AddAvatar(AIAvatar* av)
 /// \param int ind - index of avatar on the list of control avatars
 void ControlManager::setActiveAvatar(int ind)
 { 
-    AIAvatar* currAvatar = getActiveAvatar();
+    Avatar* currAvatar = getActiveAvatar();
     if (currAvatar != NULL)
     {
         currAvatar->SetThink(true);
@@ -150,16 +150,26 @@ void ControlManager::setActiveAvatar(int ind)
 /// \brief Gets the active avatar set in ControlManager
 /// \return AIAvatar* - active avatar or NULL if active avatar is not set (or if current active avatar index in ControlManager 
 ///                           is out of scope of control avatar list)
-AIAvatar* ControlManager::getActiveAvatar()
+Avatar* ControlManager::getActiveAvatar()
 {
-    AIAvatar*  activeAv = NULL;
+    Avatar*  activeAv = NULL;
 
     int size = (int)m_vAvatars.size();
     if (m_activeAvatarInd >=0 && m_activeAvatarInd < size)
     {
         activeAv = m_vAvatars[m_activeAvatarInd];
     }
-    return activeAv;
+	return activeAv;
+}
+
+CalAvatar* ControlManager::getActiveAvatarImpl()
+{
+	Avatar* activeAv = getActiveAvatar();
+	CalAvatar* result = NULL;
+	if (activeAv != NULL)
+		result = (CalAvatar*)activeAv->getImplementation();
+    return result;
+
 }
 
 
@@ -177,16 +187,17 @@ AIAvatar* ControlManager::getActiveAvatar()
  **/
 void ControlManager::OnSpecial(int key, int x, int y)
 {
-  MovableAvatar* av = NULL;
+  CalAvatar* av = NULL;
 
   int controlMessage = -1;
+  int msgEvent = -1;
   switch(key) 
   {
     case GLUT_KEY_UP:
-        controlMessage = MSG_CONTROL_START;
+		msgEvent = 0;
         break;
     case GLUT_KEY_DOWN:
-        controlMessage = MSG_CONTROL_STOP;
+        msgEvent = 1;
         break;
     case GLUT_KEY_RIGHT:
         controlMessage = MSG_CONTROL_TURN_RIGHT;
@@ -205,7 +216,7 @@ void ControlManager::OnSpecial(int key, int x, int y)
             setActiveAvatar(0);
         }
 
-		CameraManager::getInstance()->setCurrentSceneObjectID(getActiveAvatar()->getID());
+		CameraManager::getInstance()->setCurrentSceneObjectID(getActiveAvatarImpl()->getID());
         UpdateActiveAvatarMarker();
         break;
     case GLUT_KEY_F2:
@@ -213,7 +224,7 @@ void ControlManager::OnSpecial(int key, int x, int y)
         UpdateActiveAvatarMarker();
         break;
     case GLUT_KEY_F3:
-        av = getActiveAvatar();
+        av = getActiveAvatarImpl();
         if (av!=NULL)
         {
             float newSpeedFactor = av->getDestSpeedFactor() * 1.1f;
@@ -222,7 +233,7 @@ void ControlManager::OnSpecial(int key, int x, int y)
         }
         break;
     case GLUT_KEY_F4:
-        av = getActiveAvatar();
+        av = getActiveAvatarImpl();
         if (av!=NULL)
         {
             float newSpeedFactor = av->getDestSpeedFactor() * 0.9f;
@@ -235,11 +246,30 @@ void ControlManager::OnSpecial(int key, int x, int y)
         break;	
   }
 
+  if (msgEvent != -1)
+  {
+	  if (m_activeAvatarInd >= 0 && getActiveAvatar() != NULL)
+	  {
+		getActiveAvatar()->ControlEvent(msgEvent);
+	  }
+	  else
+	  {
+			if (m_vAvatars.size() > 0)
+			{
+				for (int m=0; m<(int)m_vAvatars.size(); m++)
+				{
+					m_vAvatars[m]->ControlEvent(msgEvent);
+				}
+			}
+	  }
+  }
+
+
   if (controlMessage != -1)
   {
       if (m_activeAvatarInd >= 0 && getActiveAvatar() != NULL)
       {
-        GlobalMsgSender::getInstance()->SendMsg(new Message(controlMessage, new MessageParam(getActiveAvatar()->getName())), true);
+        GlobalMsgSender::getInstance()->SendMsg(new Message(controlMessage, new MessageParam(getActiveAvatarImpl()->getName())), true);
       }
       else
       {
@@ -247,5 +277,3 @@ void ControlManager::OnSpecial(int key, int x, int y)
       }
   }
 }
-
-

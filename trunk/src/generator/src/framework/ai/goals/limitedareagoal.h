@@ -7,6 +7,7 @@
 #define _GEN_AI_LIMITEDAREAGOAL_H
 
 #include "changedirgoal.h"
+#include "../../avatar/calavatar.h"
 #include <cal3d/src/cal3d.h>
 
 namespace ft
@@ -18,7 +19,7 @@ namespace ft
     class LimitedAreaController : public ChangeDirController
     {
     public:
-        LimitedAreaController(ActionAvatar *av);
+        LimitedAreaController(Avatar *av);
         virtual ~LimitedAreaController(void);
 
         void Apply(float elapsedSeconds, TimeLineContext * timeLineContext);
@@ -37,7 +38,7 @@ namespace ft
     public:
         LimitedAreaGoal();
         virtual ~LimitedAreaGoal(void);
-        virtual AIController* CreateController(ActionAvatar *av);
+        virtual GoalController* CreateController(Avatar *av);
     };
 }
 

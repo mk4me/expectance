@@ -6,7 +6,11 @@
 #ifndef _GEN_LCS_MODIFIER_H
 #define _GEN_LCS_MODIFIER_H
 
-#include "timelinemodifier.h"
+#include "evolution/controller.h"
+#include "evolution/timelinecontext.h"
+#include "../avatar/calavatar.h"
+#include "scene/datacollector.h"
+
 
 
 namespace ft
@@ -14,7 +18,7 @@ namespace ft
 	/**
 	 * Class LCSModifier: specific TimeLineModifier responsible for global translation of avatar on the scene
 	 **/
-    class LCSModifier : public TimeLineModifier
+	class LCSModifier : public Controller
     {
     public:
         bool TRACE_TRANSLATION; 
@@ -49,8 +53,8 @@ namespace ft
 
     private:
         void ApplyAnimDirectionToGlobalRotation(TimeLineContext * timeLineContext);
-        Transform* GetTransformForAnim(CalAnimation* anim, Avatar* avatar);
-        Transform* GetTransformForType(Avatar* avatar);
+        Transform* GetTransformForAnim(CalAnimation* anim, CalAvatar* avatar);
+        Transform* GetTransformForType(CalAvatar* avatar);
         
         CalVector m_vLastPos;
         CalVector m_vLastPrevPos;  //used only for OVERLAP state

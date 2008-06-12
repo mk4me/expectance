@@ -7,7 +7,7 @@
 #define _GEN_STORAGE_RECORDING_H
 
 #include <string>
-#include "../avatar/avatar.h"
+#include "../avatar/calavatar.h"
 
 namespace ft
 {
@@ -39,8 +39,8 @@ namespace ft
 	                    
 		void Clear();
 
-		void AddAvatar(Avatar* av);
-		void RemoveAvatar(Avatar* av);
+		void AddAvatar(CalAvatar* av);
+		void RemoveAvatar(CalAvatar* av);
 		void RemoveAllAvatars();
 
 		float getDuration() { return m_duration; }

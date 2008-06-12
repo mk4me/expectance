@@ -3,7 +3,7 @@
  * author: abak, mka
  */
 
-#include "../avatar/avatar.h"
+#include "../avatar/calavatar.h"
 #include "genvisualizationmanager.h"
 
 using namespace ft;
@@ -24,6 +24,6 @@ VisualizationManager* GenVisualizationManager::createInstanceFirstTime()
 
 bool GenVisualizationManager::IsObjectTraceableByCamera(SceneObject* pObj)
 {
-    return (dynamic_cast<Avatar*>(pObj)!=NULL);
+    return (dynamic_cast<CalAvatar*>(pObj)!=NULL);
 }
 

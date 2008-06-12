@@ -4,9 +4,9 @@
  */
 
 #include "avatarfactory.h"
-#include "../ai/aiavatar.h"
 #include "../app/gendebug.h"
-#include "avatartype.h"
+#include "calavatartype.h"
+#include "calavatar.h"
 
 using namespace ft;
 
@@ -36,12 +36,12 @@ AvatarFactory* AvatarFactory::getAvatarFactoryInstance()
  **/
 Cal3DObject* AvatarFactory::CreateMeshObjectInstance(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName)
 {
-    return new AIAvatar(calModel, calCoreModel, modelName);
+    return new CalAvatar(calModel, calCoreModel, modelName);
 }
 
 Cal3dType* AvatarFactory::CreateCoreModel(const std::string &typeName)
 {
-    return new AvatarType(typeName);
+    return new CalAvatarType(typeName);
 }
 
 Cal3dType* AvatarFactory::LoadCalCoreModel(const std::string modelName)
@@ -50,7 +50,7 @@ Cal3dType* AvatarFactory::LoadCalCoreModel(const std::string modelName)
 
     if (coreModel != NULL)
     {
-        ((AvatarType*)coreModel)->InitMotions();
+        ((CalAvatarType*)coreModel)->InitMotions();
     }
     return coreModel;
 }

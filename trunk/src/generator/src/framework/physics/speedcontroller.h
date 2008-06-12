@@ -6,7 +6,9 @@
 #ifndef _GEN_PHYSICS_SPEEDCONTROLLER_H
 #define _GEN_PHYSICS_SPEEDCONTROLLER_H
 
-#include "../timeline/timelinemodifier.h"
+#include "evolution/controller.h"
+#include "evolution/timelinecontext.h"
+#include "scene/datacollector.h"
 
 namespace ft
 {
@@ -14,7 +16,7 @@ namespace ft
 	 * Class SpeedController: class responsible for controling speed of avatar. It works as modifier of timeline.
      * 
      **/
-    class SpeedController : public TimeLineModifier
+    class SpeedController : public Controller
     {
     public:
         bool DRAW_SPEED_CURVE;
@@ -28,7 +30,7 @@ namespace ft
 
         virtual void Reset(TimeLineContext * timeLineContext); // resets current object and its children    
 
-        virtual std::string toString(); //OVERRIDEN
+        std::string toString(); //OVERRIDEN
 
         DataCollector *curve_curr_speed;
         DataCollector *curve_min_speed;

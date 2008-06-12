@@ -31,7 +31,7 @@ RandomMoveController::~RandomMoveController(void)
  **/
 void RandomMoveController::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
-    AIController::Apply(elapsedSeconds, timeLineContext);
+    GoalController::Apply(elapsedSeconds, timeLineContext);
 
     if (!isGoalReached())
     {
@@ -51,7 +51,7 @@ void RandomMoveController::Apply(float elapsedSeconds, TimeLineContext * timeLin
 /// \brief Resets parameters of this modifier
 void RandomMoveController::Reset(TimeLineContext * timeLineContext)
 {
-    AIController::Reset(timeLineContext);
+    GoalController::Reset(timeLineContext);
     m_sumTime = 0.0f;
     setGoalReached(false);
 }
@@ -76,7 +76,7 @@ int RandomMoveGoal::getActionToPerform()
     return action_id;
 }
 
-AIController* RandomMoveGoal::CreateController(ActionAvatar *av)
+GoalController* RandomMoveGoal::CreateController(Avatar *av)
 {
     return new RandomMoveController(3);
 }

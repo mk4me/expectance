@@ -5,14 +5,22 @@
 #include "generatorapp.h"
 #include "../control/controlmanager.h"
 #include "core/globalmsgsender.h"
-#include "../ai/aimanager.h"
 #include "../avatar/avatarfactory.h"
 #include "genvisualizationmanager.h"
 #include "gendebug.h"
 #include "scene/transformmanager.h"
-
+#include "core/updatemanager.h"
 #include "scene/scenemanager.h"
 #include "../physics/cdmanager.h"
+#include "../physics/speedcontroller.h"
+#include "../physics/magnetcontroller.h"
+
+#include "evolution/factory.h"
+#include "evolution/avatar.h"
+#include "../timeline/lcsmodifier.h"
+#include "../ai/goals/randommovegoal.h"
+#include "../ai/goals/limitedareagoal.h"
+#include "../ai/constraints/limitedareaconstraint.h"
 
 using namespace ft;
 
@@ -24,9 +32,13 @@ void GeneratorApp::printSomeText()  //to test python iface
 // \brief OVERRIDEN from ft::Application
 int GeneratorApp::Init()
 {
-    int result = Application::Init();
- 
+	m_evolutionImpl.Init();
+	m_world = ft::Factory::getInstance()->CreateWorld();
+    
+	int result = Application::Init();
+
     StartAISimulation();
+
     return result;
 }
 
@@ -43,12 +55,14 @@ bool GeneratorApp::InitModules()
 
     AvatarFactory::getAvatarFactoryInstance();   //enforced creation of singleton
     ControlManager::getInstance()->Init(); //enforced creation of singleton
-    AIManager::getInstance()->Init();  //enforced creation of singleton
+    //AIManager::getInstance()->Init();  //enforced creation of singleton
 	CollisionDetectionManager::getInstance();
 
     UpdateManager::getInstance()->AddUpdateObject(ControlManager::getInstance());
-    UpdateManager::getInstance()->AddUpdateObject(AIManager::getInstance());
+//    UpdateManager::getInstance()->AddUpdateObject(AIManager::getInstance());
 	UpdateManager::getInstance()->AddUpdateObject(CollisionDetectionManager::getInstance());
+	
+	UpdateManager::getInstance()->AddUpdateObject(this);
     return true;
 }
 
@@ -119,7 +133,7 @@ void GeneratorApp::InitAvatars()
         avatar_number = 1;
     }
 
-    AIAvatar* av;
+    Avatar* av;
     CalVector vStartPos(0,0,0);
     float x_off = -150, z_off = 0;
 
@@ -135,27 +149,52 @@ void GeneratorApp::InitAvatars()
 		else
 			modelName = "cally";
 
-        av = dynamic_cast<AIAvatar*>(CreateAvatarOnScene(modelName, _nameHelper));
+        av = dynamic_cast<Avatar*>(CreateAvatarOnScene(modelName, _nameHelper));
         if (av != NULL)  
         {
-            av->Init();
+            //av->Init();
             //av->Dump();
 
             vStartPos.x += x_off;
             vStartPos.z += z_off;
 
             //av->setStartPosition(vStartPos);
-            av->setPosition(vStartPos);
-            av->setGlobalRotationOffset(TransformManager::Y_90);
+			CalAvatar* avImpl = (CalAvatar*)av->getImplementation();
+			avImpl->setPosition(vStartPos);
+            avImpl->setGlobalRotationOffset(TransformManager::Y_90);
             ControlManager::getInstance()->AddAvatar(av);
+			
+			LCSModifier* lcs = new LCSModifier();
+			av->AddController(lcs);
+
+			SpeedController* speedCtl = new SpeedController();
+			av->AddController(speedCtl);
+
+			av->AddController(avImpl->getFootDetector());
+
+			//av->AddController(new MagnetController()); //TODO: uncomment it if works well
+
+
+			Goal* goal = new RandomMoveGoal();
+			m_world->AddGoal(goal);
+
+			goal = new ChangeDirGoal();
+			m_world->AddGoal(goal);
+
+			Rule* rule = new Rule(new LimitedAreaConstraint(), new LimitedAreaGoal());
+			m_world->AddRule(rule);
+
             if (i==0)
             {
                 ControlManager::getInstance()->setActiveAvatar(0);
             }
+			av->StartSimulation();
         }
     }
 
     GlobalMsgSender::getInstance()->SendMsg(new Message(MSG_START_SIMULATION), true);
+
+
 }
 
 /**
@@ -163,7 +202,7 @@ void GeneratorApp::InitAvatars()
  */
 void GeneratorApp::SetCameraToActiveAvatar()
 {
-    Avatar* av = ControlManager::getInstance()->getActiveAvatar();
+    CalAvatar* av = ControlManager::getInstance()->getActiveAvatarImpl();
     if (av != NULL)
     {
         CameraManager::getInstance()->setCurrentSceneObjectID(av->getID());
@@ -181,19 +220,31 @@ void GeneratorApp::SetCameraToActiveAvatar()
  **/
 Avatar* GeneratorApp::CreateAvatarOnScene(const std::string& calCoreModel,const  std::string& name)
 {
-  Avatar* avatar = (Avatar*)ft::AvatarFactory::getAvatarFactoryInstance()->CreateMeshObject(calCoreModel, name);
+  //Avatar* avatar = (Avatar*)ft::AvatarFactory::getAvatarFactoryInstance()->CreateMeshObject(calCoreModel, name);
+
+  Avatar* avatar = Factory::getInstance()->createAvatar(name,calCoreModel);
   if (avatar != NULL)
   {
-	  SceneManager::getInstance()->AddObject(avatar); 
-      UpdateManager::getInstance()->AddUpdateObject(avatar);
-      GlobalMsgSender::getInstance()->AddMsgListener(avatar);
-      AIManager::getInstance()->AddAvatar((AIAvatar*)avatar);
+	  CalAvatar* av = static_cast<CalAvatar*>(avatar->getImplementation());
+	  SceneManager::getInstance()->AddObject(av); 
+      //UpdateManager::getInstance()->AddUpdateObject(avatar);
+      //GlobalMsgSender::getInstance()->AddMsgListener(avatar);
+	  GlobalMsgSender::getInstance()->AddMsgListener(av);
+      //AIManager::getInstance()->AddAvatar((AIAvatar*)av);
+
+	  m_world->AddAvatar(avatar);
   }
+  
 
   return avatar;
 }
 
 void GeneratorApp::StartAISimulation()
 {
-    AIManager::getInstance()->StartThinking();  //TODO: (abak 2007-11-18) uncomment it if AI is working correctly
+    m_world->StartThinking();
+}
+
+void GeneratorApp::OnUpdate(const double elapsedTime)
+{
+	m_world->Update(elapsedTime);
 }

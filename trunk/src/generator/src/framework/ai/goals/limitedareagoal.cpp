@@ -11,15 +11,16 @@ using namespace ft;
 using namespace std;
 
 /// \brief constructor
-LimitedAreaController::LimitedAreaController(ActionAvatar *av)
+LimitedAreaController::LimitedAreaController(Avatar *av)
 :ChangeDirController(150,180)
 {
-    CalVector distVect = av->getPosition();
+	CalAvatar* avImpl = (CalAvatar*)av->getImplementation();
+    CalVector distVect = avImpl->getPosition();
     //reverse vector on the XY plane
     distVect.x = -distVect.x; distVect.z = -distVect.z;
     distVect.normalize();
 
-    CalVector avDir = av->getDirection();
+    CalVector avDir = avImpl->getDirection();
     avDir.normalize();
     
 
@@ -65,7 +66,7 @@ void LimitedAreaController::Apply(float elapsedSeconds, TimeLineContext * timeLi
 /// \brief Resets parameters of this modifier
 void LimitedAreaController::Reset(TimeLineContext * timeLineContext)
 {
-    AIController::Reset(timeLineContext);
+    GoalController::Reset(timeLineContext);
 }
 
 /// \brief Constructor
@@ -80,7 +81,7 @@ LimitedAreaGoal::~LimitedAreaGoal()
     //empty
 }
 
-AIController* LimitedAreaGoal::CreateController(ActionAvatar *av)
+GoalController* LimitedAreaGoal::CreateController(Avatar *av)
 {
     return new LimitedAreaController(av);
 }

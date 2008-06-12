@@ -3,9 +3,12 @@
  * author: abak
  */
 #include "speedcontroller.h"
-#include "../motion/movableavatar.h"
+#include "../avatar/calavatar.h"
+#include "../avatar/calavatartype.h"
 #include "utility/vishelper.h"
 #include "scene/scenemanager.h"
+#include "../motion/animation.h"
+
 using namespace ft;
 
 /// \brief constructor
@@ -60,9 +63,9 @@ SpeedController::~SpeedController(void)
  **/
 void SpeedController::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
-    TimeLineModifier::Apply(elapsedSeconds, timeLineContext);
+    Controller::Apply(elapsedSeconds, timeLineContext);
 
-    MovableAvatar* av = (MovableAvatar*)timeLineContext->getAvatar();
+    CalAvatar* av = (CalAvatar*)timeLineContext->getAvatar();
 
     float currSpeedFactor = av->getCurrSpeedFactor();
     float destSpeedFactor = av->getDestSpeedFactor();
@@ -73,19 +76,23 @@ void SpeedController::Apply(float elapsedSeconds, TimeLineContext * timeLineCont
     //define currents limits
     if (timeLineContext->currMotion != NULL)
     {
-        if (timeLineContext->exec_state == EXEC_STATE_OVERLAP && timeLineContext->prevMotion != NULL)
+		
+		Animation* currMotion = ((CalAvatarType*)av->GetCalCoreModel())->GetMotion( timeLineContext->currMotion->getAnimName() );
+
+        if (timeLineContext->exec_state == TimeLineContext::EXEC_STATE_OVERLAP && timeLineContext->prevMotion != NULL)
         {
+			Animation* prevMotion = ((CalAvatarType*)av->GetCalCoreModel())->GetMotion( timeLineContext->prevMotion->getAnimName() );
             //INTERPOLATION
             float timeFactor =  timeLineContext->currAnimTime/timeLineContext->prevOverlap;
-            minSpeedFactor = (1 - timeFactor)*timeLineContext->prevMotion->getMinSpeedfactor() 
-                                + timeFactor*timeLineContext->currMotion->getMinSpeedfactor();
-            maxSpeedFactor = (1 - timeFactor)*timeLineContext->prevMotion->getMaxSpeedfactor() 
-                                + timeFactor*timeLineContext->currMotion->getMaxSpeedfactor();
+            minSpeedFactor = (1 - timeFactor)*prevMotion->getMinSpeedfactor() 
+                                + timeFactor*currMotion->getMinSpeedfactor();
+            maxSpeedFactor = (1 - timeFactor)*prevMotion->getMaxSpeedfactor() 
+                                + timeFactor*currMotion->getMaxSpeedfactor();
         }
         else
         {
-            minSpeedFactor = timeLineContext->currMotion->getMinSpeedfactor();
-            maxSpeedFactor = timeLineContext->currMotion->getMaxSpeedfactor();
+            minSpeedFactor = currMotion->getMinSpeedfactor();
+            maxSpeedFactor = currMotion->getMaxSpeedfactor();
         }
 
     }
@@ -151,6 +158,8 @@ void SpeedController::Reset(TimeLineContext * timeLineContext)
  **/
 std::string SpeedController::toString()
 {
-    std::string result = TimeLineModifier::toString() + "[SpeedController]";
-    return result;
+	//TODO:  ERROR when uncommentd: in  dbgheap.c : _CrtIsValidHeapPointer function
+//    std::string result = Controller::toString() + "[SpeedController]";
+//    return result;
+	return "SpeedController";
 }

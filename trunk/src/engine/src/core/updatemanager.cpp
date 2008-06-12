@@ -146,7 +146,6 @@ bool UpdateManager::RemoveUpdateObject(UpdateObject* pObj)
 
 			return true;
 		}
-	    m_objects.insert( std::make_pair( std::string(_id), pObj) );
 	}
 
     if (Debug::ERR)

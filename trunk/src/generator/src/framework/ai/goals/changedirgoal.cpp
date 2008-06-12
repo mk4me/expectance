@@ -4,8 +4,12 @@
  */
 #include "changedirgoal.h"
 #include "utility/randomgen.h"
+#include "utility/mathconversions.h"
+#include "../../avatar/calavatar.h"
+#include "evolution/action.h"
 
 using namespace ft;
+using namespace ft::gil;
 using namespace std;
 
 /// \brief constructor
@@ -36,7 +40,7 @@ ChangeDirController::~ChangeDirController(void)
  **/
 void ChangeDirController::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
-    AIController::Apply(elapsedSeconds, timeLineContext);
+    GoalController::Apply(elapsedSeconds, timeLineContext);
 
     if (m_fAngle > 0)
     {
@@ -49,7 +53,9 @@ void ChangeDirController::Apply(float elapsedSeconds, TimeLineContext * timeLine
         }
 
         Quat addRot = Quat(degToRad(dirToAdd), Vec(0,1,0));
-        timeLineContext->getAvatar()->changeGlobalRotationOffset( QuatToCalQuat(addRot) );
+		GIL_Avatar* av = timeLineContext->getAvatar();
+
+        ((CalAvatar*)av)->changeGlobalRotationOffset( QuatToCalQuat(addRot) );
 
     }
     else
@@ -62,7 +68,7 @@ void ChangeDirController::Apply(float elapsedSeconds, TimeLineContext * timeLine
 /// \brief Resets parameters of this modifier
 void ChangeDirController::Reset(TimeLineContext * timeLineContext)
 {
-    AIController::Reset(timeLineContext);
+    GoalController::Reset(timeLineContext);
 }
 
 /// \brief Constructor
@@ -76,12 +82,12 @@ ChangeDirGoal::~ChangeDirGoal()
     //empty
 }
 
-bool ChangeDirGoal::ExecuteAction(ActionAvatar *av)
+bool ChangeDirGoal::ExecuteAction(Avatar *av)
 {
     bool result = false;
     int actionId = -1;
 
-    if (av->getCurrAction() != NULL && (av->getCurrAction()->getId() == ACTION_WALK_ID || av->getCurrAction()->getId() == ACTION_RUN_ID))
+    if (av->getCurrActionId() == Action::ACTION_WALK_ID || av->getCurrActionId() == Action::ACTION_RUN_ID)
     {
         //do nothing - leve walk or run
         result = true;
@@ -98,10 +104,10 @@ bool ChangeDirGoal::ExecuteAction(ActionAvatar *av)
 
 int ChangeDirGoal::getActionToPerform()
 {
-    return ACTION_WALK_ID;
+    return Action::ACTION_WALK_ID;
 }
 
-AIController* ChangeDirGoal::CreateController(ActionAvatar *av)
+GoalController* ChangeDirGoal::CreateController(Avatar *av)
 {
     return new ChangeDirController(45, 180);
 }

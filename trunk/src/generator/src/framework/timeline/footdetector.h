@@ -6,12 +6,14 @@
 #ifndef _GEN_FOOT_DETECTOR_H
 #define _GEN_FOOT_DETECTOR_H
 
-#include "timelinemodifier.h"
+#include "evolution/controller.h"
+#include "evolution/timelinecontext.h"
+#include "scene/traceline.h"
 
 
 namespace ft
 {
-	class FootDetector : public TimeLineModifier
+	class FootDetector : public Controller
 	{
 	public:
 		bool FOOTPLANT_TRACE;

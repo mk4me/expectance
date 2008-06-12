@@ -9,8 +9,9 @@
 #include "utility/stringhelper.h"
 #include <math.h>
 #include "../app/gendebug.h"
-#include "../avatar/avatartype.h"
+#include "../avatar/calavatartype.h"
 #include "scene/transformmanager.h"
+#include "gil/gil_animexecution.h"
 
 #include "scene/scenemanager.h" 
 using namespace ft;
@@ -259,17 +260,19 @@ LCSModifier::~LCSModifier(void)
  **/
 void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
-    TimeLineModifier::Apply(elapsedSeconds, timeLineContext);
+	//TODO: uncomment it
+//    TimeLineModifier::Apply(elapsedSeconds, timeLineContext);
 
     UpdateRotation(elapsedSeconds, timeLineContext);
     UpdateTranslation(elapsedSeconds, timeLineContext);
 
-    CalBone *bone = timeLineContext->getAvatar()->GetCalModel()->getSkeleton()->getBone(0);
+	CalAvatar* avImpl = (CalAvatar*)timeLineContext->getAvatar();
+    CalBone *bone = avImpl->GetCalModel()->getSkeleton()->getBone(0);
     bone->calculateState();
 	
     if (TRACE_AXIS)
     {
-        CalVector vCurrAvatarPosition = timeLineContext->getAvatar()->getPosition();
+        CalVector vCurrAvatarPosition = avImpl->getPosition();
         VisualizationHelper::TraceRotation(tracer_X, CalVector(1,0,0), vCurrAvatarPosition, CalQuaternion(), 100, VisualizationHelper::COLOR_RED);
         VisualizationHelper::TraceRotation(tracer_Y, CalVector(0,1,0), vCurrAvatarPosition, CalQuaternion(), 100, VisualizationHelper::COLOR_GREEN);
         VisualizationHelper::TraceRotation(tracer_Z, CalVector(0,0,1), vCurrAvatarPosition, CalQuaternion(), 100, VisualizationHelper::COLOR_BLUE);
@@ -280,14 +283,16 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 
 void LCSModifier::UpdateRotation(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
+	CalAvatar* avImpl = (CalAvatar*)timeLineContext->getAvatar();
+
     Transform* currTransform = NULL;
     if (timeLineContext->currAnim != NULL)
     {   
-        currTransform = GetTransformForAnim(timeLineContext->currAnim, timeLineContext->getAvatar());
+        currTransform = GetTransformForAnim(((Cal3dAnimExecution*)timeLineContext->currAnim)->getAnimation(), avImpl);
     }
     else
     {
-        currTransform = GetTransformForType(timeLineContext->getAvatar());
+        currTransform = GetTransformForType(avImpl);
     }
 
     if (ANIM_DIR_CALC)
@@ -295,15 +300,16 @@ void LCSModifier::UpdateRotation(float elapsedSeconds, TimeLineContext * timeLin
         ApplyAnimDirectionToGlobalRotation(timeLineContext);
     }
 
-    CalQuaternion qGlobalRotOffset = timeLineContext->getAvatar()->getGlobalRotationOffset();
+    CalQuaternion qGlobalRotOffset = avImpl->getGlobalRotationOffset();
 
     CalQuaternion rootRotation; // = bone->getRotation();
     CalVector tmpPos;
-    CalBone *bone = timeLineContext->getAvatar()->GetCalModel()->getSkeleton()->getBone(0);
+    CalBone *bone = avImpl->GetCalModel()->getSkeleton()->getBone(0);
 
     if (timeLineContext->currAnim != NULL)
     {
-        timeLineContext->currAnim->getCoreAnimation()->getCoreTrack(0)->getState(timeLineContext->currAnimTime, tmpPos, rootRotation);
+		CalAnimation* anim = ((Cal3dAnimExecution*)timeLineContext->currAnim)->getAnimation();
+        anim->getCoreAnimation()->getCoreTrack(0)->getState(timeLineContext->currAnimTime, tmpPos, rootRotation);
     }
     else
     {
@@ -315,15 +321,17 @@ void LCSModifier::UpdateRotation(float elapsedSeconds, TimeLineContext * timeLin
         rootRotation *= currTransform->getForwardDiff();
     }
 
-    if (INTERPOLATION && timeLineContext->exec_state == EXEC_STATE_OVERLAP)
+    if (INTERPOLATION && timeLineContext->exec_state == TimeLineContext::EXEC_STATE_OVERLAP)
     {
         if (timeLineContext->prevAnim != NULL)
         {
-            Transform* prevTransform = GetTransformForAnim(timeLineContext->prevAnim, timeLineContext->getAvatar());
+			CalAnimation* prevAnim = ((Cal3dAnimExecution*)timeLineContext->prevAnim)->getAnimation();
+            Transform* prevTransform = GetTransformForAnim(prevAnim, avImpl);
             if (prevTransform!=NULL)
             {
                 CalQuaternion prevRot;
-                timeLineContext->prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(timeLineContext->prevAnimTime, tmpPos, prevRot);
+				CalAnimation* prevAnim = ((Cal3dAnimExecution*)timeLineContext->prevAnim)->getAnimation();
+                prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(timeLineContext->prevAnimTime, tmpPos, prevRot);
                 prevRot *= prevTransform->getForwardDiff();
                 float factor =  timeLineContext->currAnimTime/timeLineContext->prevOverlap; 
                 rootRotation.blend( (1.0f-factor) ,prevRot);
@@ -340,14 +348,14 @@ void LCSModifier::UpdateRotation(float elapsedSeconds, TimeLineContext * timeLin
     
     bone->setRotation(rotToSet); //ABAK
 
-    timeLineContext->getAvatar()->setGlobalRotationOffset(qGlobalRotOffset);
-    timeLineContext->getAvatar()->setOrientation(rotToSet);
+    avImpl->setGlobalRotationOffset(qGlobalRotOffset);
+    avImpl->setOrientation(rotToSet);
 
 
     CalVector vOriginForward(1,0,0);      // original forward vector without affection of animation
     CalVector vDir = vOriginForward;
     vDir *= rotToSet;
-    timeLineContext->getAvatar()->setDirection(vDir);
+    avImpl->setDirection(vDir);
 
     //TRACER-s -------------------------------------------------------
     if (DRAW_ROTATION_CURVES)
@@ -361,10 +369,10 @@ void LCSModifier::UpdateRotation(float elapsedSeconds, TimeLineContext * timeLin
         curve_final_rotation->AddValue(finalRot);
     }
 
-    CalVector vCurrAvatarPosition = timeLineContext->getAvatar()->getPosition();
+    CalVector vCurrAvatarPosition = avImpl->getPosition();
     if (TRACE_TRANSFORM)
     {
-        CalQuaternion globalRot = timeLineContext->getAvatar()->getGlobalRotationOffset();
+        CalQuaternion globalRot = avImpl->getGlobalRotationOffset();
         CalVector originalForward;
         if (currTransform!=NULL)
         {
@@ -391,7 +399,7 @@ void LCSModifier::UpdateRotation(float elapsedSeconds, TimeLineContext * timeLin
 
     if (TRACE_FINAL_DIR)
     {
-        VisualizationHelper::TraceVector(tracer_final_dir, timeLineContext->getAvatar()->getDirection(), vCurrAvatarPosition, 100, VisualizationHelper::COLOR_PURPLE);
+        VisualizationHelper::TraceVector(tracer_final_dir, avImpl->getDirection(), vCurrAvatarPosition, 100, VisualizationHelper::COLOR_PURPLE);
     }
 }
 
@@ -399,18 +407,21 @@ void LCSModifier::UpdateRotation(float elapsedSeconds, TimeLineContext * timeLin
 
 void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
+	CalAvatar* avImpl = (CalAvatar*)timeLineContext->getAvatar();
+
     Transform* currTransform = NULL;
     Transform* prevTransform = NULL;
     if (timeLineContext->currAnim != NULL)
     {   
-        currTransform = GetTransformForAnim(timeLineContext->currAnim, timeLineContext->getAvatar());
+		CalAnimation* currAnim = ((Cal3dAnimExecution*)timeLineContext->currAnim)->getAnimation();
+        currTransform = GetTransformForAnim(currAnim, avImpl);
     }
     else
     {
-        currTransform = GetTransformForType(timeLineContext->getAvatar());
+        currTransform = GetTransformForType(avImpl);
     }
 
-    CalBone *bone = timeLineContext->getAvatar()->GetCalModel()->getSkeleton()->getBone(0);
+    CalBone *bone = avImpl->GetCalModel()->getSkeleton()->getBone(0);
     
     CalVector currPos;
     CalQuaternion tmpRot;    
@@ -421,19 +432,21 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
     
     if (timeLineContext->currAnim != NULL)
     {
-        CalCoreAnimation* coreAnim = timeLineContext->currAnim->getCoreAnimation();
+		CalAnimation* currAnim = ((Cal3dAnimExecution*)timeLineContext->currAnim)->getAnimation();
+        CalCoreAnimation* coreAnim = currAnim->getCoreAnimation();
         coreAnim->getCoreTrack(0)->getState(timeLineContext->currAnimTime, currPos, tmpRot);
         if (currTransform != NULL)
         {
             currPos += currTransform->getPosOffset();
         }
  
-        if (INTERPOLATION && timeLineContext->exec_state == EXEC_STATE_OVERLAP)
+        if (INTERPOLATION && timeLineContext->exec_state == TimeLineContext::EXEC_STATE_OVERLAP)
         {
             if (timeLineContext->prevAnim != NULL)
             {
-                timeLineContext->prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(timeLineContext->prevAnimTime, vPrevPos , tmpRot);
-                prevTransform = GetTransformForAnim(timeLineContext->prevAnim, timeLineContext->getAvatar());
+				CalAnimation* prevAnim = ((Cal3dAnimExecution*)timeLineContext->prevAnim)->getAnimation();
+                prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(timeLineContext->prevAnimTime, vPrevPos , tmpRot);
+                prevTransform = GetTransformForAnim(prevAnim, avImpl);
                 if (prevTransform != NULL)
                 {
                     vPrevPos += prevTransform->getPosOffset();
@@ -469,13 +482,14 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
         }
 
         // Rest calculation for anim_changed is calculated only for OVERLAP state
-        if (timeLineContext->anim_changed && timeLineContext->exec_state == EXEC_STATE_OVERLAP)
+        if (timeLineContext->anim_changed && timeLineContext->exec_state == TimeLineContext::EXEC_STATE_OVERLAP)
         {
             if (REST_TRANS_CALC )
             {
-                timeLineContext->prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(timeLineContext->prevAnimTime, vOverlapRest, tmpRot);
+				CalAnimation* prevAnim = ((Cal3dAnimExecution*)timeLineContext->prevAnim)->getAnimation();
+                prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(timeLineContext->prevAnimTime, vOverlapRest, tmpRot);
                 CalVector vPrevious;
-                timeLineContext->prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(m_fLastAnimTime, vPrevious, tmpRot);
+                prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(m_fLastAnimTime, vPrevious, tmpRot);
                 vOverlapRest -= vPrevious;
             }
         }
@@ -506,7 +520,7 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
         diff += vCycleRest;
     }
 
-    CalQuaternion qGlobalRotation = timeLineContext->getAvatar()->getGlobalRotationOffset();
+    CalQuaternion qGlobalRotation = avImpl->getGlobalRotationOffset();
 
     if (currTransform)
     {
@@ -517,7 +531,7 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
 
     float y_to_set = currPos.y;
 
-    if (INTERPOLATION && timeLineContext->exec_state == EXEC_STATE_OVERLAP)
+    if (INTERPOLATION && timeLineContext->exec_state == TimeLineContext::EXEC_STATE_OVERLAP)
             //&& timeLineContext->prevAnimTime <= timeLineContext->prevAnimDuration)
     {
         //position
@@ -527,7 +541,7 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
         vOverlapRest.y = 0;
         prevDiff += vOverlapRest;
 
-        CalQuaternion qGlobalRotation = timeLineContext->getAvatar()->getGlobalRotationOffset();
+        CalQuaternion qGlobalRotation = avImpl->getGlobalRotationOffset();
         if (prevTransform != NULL)
         {
             qGlobalRotation *= prevTransform->getForwardDiff();
@@ -541,14 +555,14 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
     }
 
 
-    CalVector vCurrAvatarPosition = timeLineContext->getAvatar()->getPosition();
+    CalVector vCurrAvatarPosition = avImpl->getPosition();
     vCurrAvatarPosition += diff;
     vCurrAvatarPosition.y = y_to_set;   
 
     m_vLastPos = currPos;
 
     bone->setTranslation(vCurrAvatarPosition);  //abak: y must be similiar to y in skeleton (why?)
-	timeLineContext->getAvatar()->setPosition(vCurrAvatarPosition);
+	avImpl->setPosition(vCurrAvatarPosition);
 
     
     //TRACER-s -------------------------------------------------------
@@ -586,13 +600,15 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
  */
  void LCSModifier::ApplyAnimDirectionToGlobalRotation(TimeLineContext * timeLineContext)
  {
-     CalQuaternion qGlobalRotOffset = timeLineContext->getAvatar()->getGlobalRotationOffset();
+	 CalAvatar* avImpl = (CalAvatar*)timeLineContext->getAvatar();
+
+     CalQuaternion qGlobalRotOffset = avImpl->getGlobalRotationOffset();
 
      bool anim_dir_for_cycles = (ANIM_DIR_CALC_FOR_CYCLES && timeLineContext->anim_new_cycle);
 
      if (timeLineContext->anim_changed || timeLineContext->anim_stopped || anim_dir_for_cycles)
      {
-         if (timeLineContext->exec_state != EXEC_STATE_OVERLAP)
+         if (timeLineContext->exec_state != TimeLineContext::EXEC_STATE_OVERLAP)
          {
             if (timeLineContext->prevMotion != NULL)
             {
@@ -600,10 +616,16 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
                 Transform* transform = NULL;
 
                 if (timeLineContext->anim_changed || timeLineContext->anim_stopped)
-                    transform = timeLineContext->prevMotion->getTransform();
+				{
+                    GIL_AnimData* data= timeLineContext->prevMotion->getAnimData();
+					transform = ((MotionData*)data)->getTransform();
+				}
 
                 if (timeLineContext->anim_new_cycle)
-                    transform = timeLineContext->currMotion->getTransform();
+				{
+                    GIL_AnimData* data= timeLineContext->currMotion->getAnimData();
+					transform = ((MotionData*)data)->getTransform();
+				}
 
                 if (transform != NULL)
                 {
@@ -616,7 +638,8 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
          else
          {
              Transform* transform = NULL;
-             transform = timeLineContext->prevMotion->getTransform();
+             GIL_AnimData* data= timeLineContext->prevMotion->getAnimData();
+			 transform = ((MotionData*)data)->getTransform();
              
              if (transform != NULL)
              {
@@ -637,10 +660,12 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
          }
      }
 
-     if (timeLineContext->exec_state == EXEC_STATE_OVERLAP || timeLineContext->exec_state == EXEC_STATE_FADE_OUT)
+     if (timeLineContext->exec_state == TimeLineContext::EXEC_STATE_OVERLAP || timeLineContext->exec_state == TimeLineContext::EXEC_STATE_FADE_OUT)
      {
         //add interpolated part
-         Transform* transform = timeLineContext->prevMotion->getTransform();
+         GIL_AnimData* data= timeLineContext->prevMotion->getAnimData();
+		 Transform* transform = ((MotionData*)data)->getTransform();
+
          if (transform != NULL)
          {
              float factor = (timeLineContext->prevAnimDuration - timeLineContext->prevAnimTime)/timeLineContext->prevOverlap;
@@ -649,13 +674,14 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
              qGlobalRotOffset = rot;
          }
      }
-     timeLineContext->getAvatar()->setGlobalRotationOffset(qGlobalRotOffset);
+     avImpl->setGlobalRotationOffset(qGlobalRotOffset);
  }
 
 /// \brief Resets parameters of this modifier
 void LCSModifier::Reset(TimeLineContext * timeLineContext)
 {
-    TimeLineObject::Reset(timeLineContext);
+	//TODO: uncomment it
+//    TimeLineObject::Reset(timeLineContext);
 
     if(DRAW_CURVES_TRANSLATION_DETAILED)
     {
@@ -722,15 +748,15 @@ void LCSModifier::Reset(TimeLineContext * timeLineContext)
      m_vLastAnimDir = CalVector(0,0,0);
 }
 
-Transform* LCSModifier::GetTransformForAnim(CalAnimation* anim, Avatar* avatar)
+Transform* LCSModifier::GetTransformForAnim(CalAnimation* anim, CalAvatar* avatar)
 {
-    Transform* transform = NULL;
-    AvatarType* type = (AvatarType*)avatar->GetCalCoreModel();
-    Motion* mot = type->GetMotion( StringHelper::GetFileNameForPath(anim->getCoreAnimation()->getFilename()));
+    Transform* resultTransform = NULL;
+    CalAvatarType* type = (CalAvatarType*)avatar->GetCalCoreModel();
+    Animation* mot = type->GetMotion( StringHelper::GetFileNameForPath(anim->getCoreAnimation()->getFilename()));
 
-    if (mot != NULL && mot->getTransform() != NULL)
+    if (mot != NULL && mot->getAnimData() != NULL && ((MotionData*)mot->getAnimData())->getTransform() != NULL)
     {
-        transform = mot->getTransform();
+		resultTransform  = ((MotionData*)mot->getAnimData())->getTransform();
     }
     else
     {
@@ -738,12 +764,12 @@ Transform* LCSModifier::GetTransformForAnim(CalAnimation* anim, Avatar* avatar)
             _dbg << GenDebug::ERR_STR << "LCSModifier::GetTransformForAnim: empty motion or transform for curr anim " << anim->getCoreAnimation()->getFilename() << endl;
     }
 
-    return transform;
+    return resultTransform;
 }
 
-Transform* LCSModifier::GetTransformForType(Avatar* avatar)
+Transform* LCSModifier::GetTransformForType(CalAvatar* avatar)
 {
-    AvatarType* type = (AvatarType*)avatar->GetCalCoreModel();
+    CalAvatarType* type = (CalAvatarType*)avatar->GetCalCoreModel();
     return type->getTransform();
 }
 
@@ -754,7 +780,7 @@ Transform* LCSModifier::GetTransformForType(Avatar* avatar)
  **/
 std::string LCSModifier::toString()
 {
-    std::string result = TimeLineModifier::toString() + "[LCSModifier]";
+    std::string result = Controller::toString() + "[LCSModifier]";
     return result;
 }
 

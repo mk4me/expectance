@@ -410,7 +410,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\src;utils\textures;..\engine\src;..\generator\src\framework"
+				AdditionalIncludeDirectories="..\..\src;utils\textures;..\engine\src;..\generator\src\framework;..\..\ext\inc\evolution"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;ENGINE_TO_DLL;GENERATOR_TO_DLL;BOOST_DEBUG_PYTHON"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -504,7 +504,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\;..\engine\src;..\generator\src\framework"
+				AdditionalIncludeDirectories="..\;..\engine\src;..\generator\src\framework;..\..\ext\inc\evolution"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;ENGINE_TO_DLL;GENERATOR_TO_DLL"
 				StringPooling="true"
 				RuntimeLibrary="2"

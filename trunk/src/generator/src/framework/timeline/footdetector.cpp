@@ -6,6 +6,9 @@
 #include "cal3d/src/coretrack.h"
 #include "../app/gendebug.h"
 #include "scene/scenemanager.h"
+#include "core/message.h"
+#include "../avatar/calavatar.h"
+
 using namespace ft;
 
 FootDetector::FootDetector(void)
@@ -51,13 +54,15 @@ FootDetector::~FootDetector()
  **/
 void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
-    TimeLineModifier::Apply(elapsedSeconds, timeLineContext);
+    Controller::Apply(elapsedSeconds, timeLineContext);
+
+	CalAvatar* avImpl = (CalAvatar*)timeLineContext->getAvatar();
 	
 	// Here apply this detector
 	CalVector _RHPos, _LHPos;
 	CalVector _RTPos, _LTPos;
 
-	CalSkeleton *_skel = timeLineContext->getAvatar()->GetCalModel()->getSkeleton();
+	CalSkeleton *_skel = avImpl->GetCalModel()->getSkeleton();
 	CalBone *_boneLFoot = _skel->getBone(38);
 	CalBone *_boneLToe = _skel->getBone(39);
 	CalBone *_boneRFoot = _skel->getBone(43);
@@ -75,7 +80,9 @@ void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
 	
 	if (timeLineContext->anim_changed) //change limits as motion has changed
 	{
-		std::string _animName = timeLineContext->currAnim->getCoreAnimation()->getFilename();
+		Cal3dAnimExecution* anim_exec = (Cal3dAnimExecution*)timeLineContext->currAnim;
+		std::string _animName = anim_exec->getAnimation()->getCoreAnimation()->getFilename();
+
 		const float *_fl = getLimits(_animName);
 		if (_fl!=NULL)
 		{
@@ -92,7 +99,7 @@ void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
 		if (!m_leftFootPlant)
 		{
 			m_leftFootPlant = true;
-			timeLineContext->getAvatar()->getLocalMsgSender()->SendMsg(new Message(MSG_DETECTOR_LEFT_FOOT_ON_THE_FLOOR, 
+			avImpl->getLocalMsgSender()->SendMsg(new Message(MSG_DETECTOR_LEFT_FOOT_ON_THE_FLOOR, 
 																	   new MessageParam(true)), true);
 
             if (GenDebug::FOOTSTEP>0)
@@ -111,7 +118,7 @@ void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
 		if (m_leftFootPlant) //left foot siwng phase
 		{
 			m_leftFootPlant = false;
-			timeLineContext->getAvatar()->getLocalMsgSender()->SendMsg(new Message(MSG_DETECTOR_LEFT_FOOT_ON_THE_FLOOR, 
+			avImpl->getLocalMsgSender()->SendMsg(new Message(MSG_DETECTOR_LEFT_FOOT_ON_THE_FLOOR, 
 																	   new MessageParam(false)), true);
             if (GenDebug::FOOTSTEP>0)
             {
@@ -125,7 +132,7 @@ void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
 		if (!m_rightFootPlant)
 		{
 			m_rightFootPlant = true;
-			timeLineContext->getAvatar()->getLocalMsgSender()->SendMsg(new Message(MSG_DETECTOR_RIGHT_FOOT_ON_THE_FLOOR,
+			avImpl->getLocalMsgSender()->SendMsg(new Message(MSG_DETECTOR_RIGHT_FOOT_ON_THE_FLOOR,
 																	   new MessageParam(true)), true);
 			// std::cout<< "====>>> Right foot on the ground <<<=====" << endl;
 		}
@@ -140,7 +147,7 @@ void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
 		if (m_rightFootPlant)  // right foot swing phase
 		{
 			m_rightFootPlant = false;
-			timeLineContext->getAvatar()->getLocalMsgSender()->SendMsg(new Message(MSG_DETECTOR_RIGHT_FOOT_ON_THE_FLOOR,
+			avImpl->getLocalMsgSender()->SendMsg(new Message(MSG_DETECTOR_RIGHT_FOOT_ON_THE_FLOOR,
 																	   new MessageParam(false)), true);
 
 		}
@@ -190,7 +197,7 @@ const float* FootDetector::getLimits(const std::string &motionName)
  **/
 std::string FootDetector::toString()
 {
-    std::string result = TimeLineModifier::toString() + "[FootDetector]";
+    std::string result = Controller::toString() + "[FootDetector]";
     return result;
 }
 

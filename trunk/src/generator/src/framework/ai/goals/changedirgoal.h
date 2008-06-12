@@ -6,17 +6,16 @@
 #ifndef _GEN_AI_CHANGEDIRGOAL_H
 #define _GEN_AI_CHANGEDIRGOAL_H
 
-#include "../goal.h"
-#include "../aicontroller.h"
+#include "evolution/goal.h"
 #include <cal3d/src/cal3d.h>
 
 namespace ft
 {
 	/**
-	 * Class ChangeDirController: class responsible control of ChangeDirGoalexecution
+	 * Class ChangeDirController: class responsible control of ChangeDirGoal execution
      * 
      **/
-    class ChangeDirController : public AIController
+    class ChangeDirController : public GoalController
     {
     public:
         ChangeDirController(float minAngle, float maxAngle);
@@ -44,9 +43,9 @@ namespace ft
         ChangeDirGoal();
         virtual ~ChangeDirGoal(void);
 
-        virtual bool ExecuteAction(ActionAvatar *av);
+        virtual bool ExecuteAction(Avatar *av);
         int getActionToPerform();
-        virtual AIController* CreateController(ActionAvatar *av);
+        virtual GoalController* CreateController(Avatar *av);
     };
 }
 
