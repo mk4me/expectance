@@ -821,6 +821,18 @@
 				Name="app"
 				>
 				<File
+					RelativePath=".\src\framework\app\defaultgamehandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\app\defaultgamehandler.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\app\gamehandler.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\app\gendebug.cpp"
 					>
 				</File>

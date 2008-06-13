@@ -42,8 +42,7 @@ int Application::Init()
 		return -1;
 	}
 
-    InitObjects();
-
+	InitScene();
     InputManager::getInstance()->AddListener(this);
 
     return 0;
@@ -81,6 +80,16 @@ bool Application::InitModules()
 
 	return true;
 }
+
+/**
+ * \brief Initializes objects on scene
+ *
+ **/
+void Application::InitScene()
+{
+    //add objects to scene here
+}
+
 
 bool Application::CreateVisualizationManager()
 {
@@ -152,13 +161,4 @@ void Application::OnKey(unsigned char key, int x, int y)
   }
 }
 
-
-/**
- * \brief Initializes objects on scene
- *
- **/
-void Application::InitObjects()
-{
-    //add objects to scene here
-}
 

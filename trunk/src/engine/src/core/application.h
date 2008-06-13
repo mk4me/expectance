@@ -17,12 +17,10 @@ namespace ft
     {
     public:
         virtual int Init();
-
         void InitConfig();
-
-        virtual bool CreateVisualizationManager();
         virtual bool InitModules();
-        virtual void InitObjects();
+        virtual void InitScene();
+        virtual bool CreateVisualizationManager();
 
         void OnKey(unsigned char key, int x, int y);
     };
