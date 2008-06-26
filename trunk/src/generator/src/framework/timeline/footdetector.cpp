@@ -197,7 +197,7 @@ const float* FootDetector::getLimits(const std::string &motionName)
  **/
 std::string FootDetector::toString()
 {
-    std::string result = Controller::toString() + "[FootDetector]";
+    std::string result = /*Controller::toString() +*/ "[FootDetector]";
     return result;
 }
 

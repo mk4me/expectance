@@ -10,6 +10,7 @@
 #include "../physics/cdmanager.h"
 #include "../control/controlmanager.h"
 #include "core/updatemanager.h"
+//#include "../../footbak/game.h"
 
 using namespace ft;
 
@@ -59,6 +60,7 @@ void GeneratorApp::InitScene()
 
 	// add here proper gamehandler
 	setGameHandler(new DefaultGameHandler());
+	//setGameHandler(new Game());
 	getGameHandler()->InitScene();
 }
 

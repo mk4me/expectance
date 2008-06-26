@@ -52,7 +52,7 @@ ControlManager* ControlManager::getInstance()
 
 /**
  \brief Releases all resources related to ControlManager
- *
+ *	
  **/
 void ControlManager::DestroyInstance()
 {
@@ -250,7 +250,7 @@ void ControlManager::OnSpecial(int key, int x, int y)
   {
 	  if (m_activeAvatarInd >= 0 && getActiveAvatar() != NULL)
 	  {
-		getActiveAvatar()->ControlEvent(msgEvent);
+		SendControlEvent(getActiveAvatar(), msgEvent);
 	  }
 	  else
 	  {
@@ -258,7 +258,7 @@ void ControlManager::OnSpecial(int key, int x, int y)
 			{
 				for (int m=0; m<(int)m_vAvatars.size(); m++)
 				{
-					m_vAvatars[m]->ControlEvent(msgEvent);
+					SendControlEvent(m_vAvatars[m], msgEvent);
 				}
 			}
 	  }
@@ -276,4 +276,39 @@ void ControlManager::OnSpecial(int key, int x, int y)
         GlobalMsgSender::getInstance()->SendMsg(new Message(controlMessage, NULL), true);
       }
   }
+}
+
+void ControlManager::SendControlEvent(Avatar* av, int event_id)
+{
+
+    if (event_id == 0)
+    {
+		if (av->getCurrTopMotion() != NULL)
+		{
+			
+			if (av->getCurrTopMotion()->getName().compare("walk") == 0)
+				av->ExecuteAction("run");
+			else if (av->getCurrTopMotion()->getName().compare("idle") == 0)
+				av->ExecuteAction("walk");
+		}
+		else
+		{
+			av->ExecuteAction("idle");
+		}
+    }
+    else if (event_id == 1)
+    {
+		if (av->getCurrTopMotion() != NULL)
+		{
+			if (av->getCurrTopMotion()->getName().compare("walk") == 0)
+				av->ExecuteAction("idle");
+			else if (av->getCurrTopMotion()->getName().compare("run") == 0)
+				av->ExecuteAction("walk");
+		}
+		else
+		{
+			av->ExecuteAction("idle");
+		}
+
+    }
 }

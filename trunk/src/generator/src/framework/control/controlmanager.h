@@ -45,6 +45,8 @@ namespace ft
         void OnSpecial(int key, int x, int y);
 
     private:
+		void SendControlEvent(Avatar* av, int event_id);
+
         static ControlManager* m_instance;
 
         std::vector<Avatar*> m_vAvatars;

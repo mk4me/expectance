@@ -780,7 +780,7 @@ Transform* LCSModifier::GetTransformForType(CalAvatar* avatar)
  **/
 std::string LCSModifier::toString()
 {
-    std::string result = Controller::toString() + "[LCSModifier]";
+    std::string result = /*Controller::toString() + */ "[LCSModifier]";
     return result;
 }
 

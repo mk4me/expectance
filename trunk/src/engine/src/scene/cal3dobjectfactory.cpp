@@ -65,24 +65,9 @@ Cal3DObject* Cal3DObjectFactory::CreateMeshObject(const std::string modelName, s
 
     Cal3DObject *newObject = NULL;
     CalModel* newModel= NULL;
-    Cal3dType* coreModel = NULL;
 
-	std::map<std::string,CalCoreModel*>::iterator it = m_coreModels.find(modelName);
+	Cal3dType* coreModel = static_cast<Cal3dType*>(getCoreModel(modelName));
 
-    if ( it!=m_coreModels.end()) {
-
-        coreModel = static_cast<Cal3dType *>(it->second);
-	}
-    else
-    {
-        m_source_3dsmax = false; //can be set to true inside LoadCalCoreModel method
-        coreModel = LoadCalCoreModel(modelName);
-        if (coreModel != NULL)
-        {
-            m_coreModels.insert( std::make_pair( std::string(modelName), coreModel ) );
-            coreModel->InitTransform(m_source_3dsmax);
-        }
-    }
 
     if (coreModel != NULL)
     {
@@ -111,6 +96,36 @@ Cal3DObject* Cal3DObjectFactory::CreateMeshObject(const std::string modelName, s
 Cal3dType* Cal3DObjectFactory::CreateCoreModel(const std::string &typeName)
 {
     return new Cal3dType(typeName);
+}
+
+/**
+ * \brief Returns CalCoreModel for specifiv type name
+ *
+ * \param const std::string &typeName - name of core model
+ * \return CalCoreModel* - CalCoreModel object
+ **/
+CalCoreModel* Cal3DObjectFactory::getCoreModel(const std::string &typeName)
+{
+	CalCoreModel* coreModel = NULL;
+
+	std::map<std::string,CalCoreModel*>::iterator it = m_coreModels.find(typeName);
+
+    if ( it!=m_coreModels.end()) {
+
+        coreModel = it->second;
+	}
+    else
+    {
+        m_source_3dsmax = false; //can be set to true inside LoadCalCoreModel method
+        coreModel = LoadCalCoreModel(typeName);
+        if (coreModel != NULL)
+        {
+            m_coreModels.insert( std::make_pair( std::string(typeName), coreModel ) );
+            (static_cast<Cal3dType*>(coreModel))->InitTransform(m_source_3dsmax);
+        }
+    }
+
+	return coreModel;
 }
 
 /**

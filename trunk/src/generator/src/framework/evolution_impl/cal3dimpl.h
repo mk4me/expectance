@@ -17,8 +17,6 @@ namespace ft
 	public:
 		void Init();
 		gil::GIL_Avatar* CreateAvatar(const std::string& id, const std::string& type);
-		
-
     };
 
 }

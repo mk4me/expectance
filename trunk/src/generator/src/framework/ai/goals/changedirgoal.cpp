@@ -82,24 +82,14 @@ ChangeDirGoal::~ChangeDirGoal()
     //empty
 }
 
-bool ChangeDirGoal::ExecuteAction(Avatar *av)
+void ChangeDirGoal::OnEnter(Avatar* av)
 {
-    bool result = false;
-    int actionId = -1;
+	av->ExecuteAction("walk");
+}
 
-    if (av->getCurrActionId() == Action::ACTION_WALK_ID || av->getCurrActionId() == Action::ACTION_RUN_ID)
-    {
-        //do nothing - leve walk or run
-        result = true;
-		//av->setAnnotation(av->getCurrAction()->toString()); as an example mka
-    }
-    else
-    {
-        //execute default action for this goal
-        result = Goal::ExecuteAction(av);
-    }
-
-    return result;
+void ChangeDirGoal::OnExit(Avatar* av)
+{
+	av->ExecuteAction("idle");
 }
 
 int ChangeDirGoal::getActionToPerform()

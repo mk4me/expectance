@@ -69,6 +69,25 @@ RandomMoveGoal::~RandomMoveGoal()
     //empty
 }
 
+void RandomMoveGoal::OnEnter(Avatar* av)
+{
+	
+
+	int action_id = RandomGenerator::RanIntValue(2);
+	if (action_id ==0)
+	{
+		av->ExecuteAction("walk");
+    }
+	else
+	{
+		av->ExecuteAction("run");
+	}
+}
+
+void RandomMoveGoal::OnExit(Avatar* av)
+{
+}
+
 int RandomMoveGoal::getActionToPerform()
 {
     int action_id = RandomGenerator::RanIntValue(2);

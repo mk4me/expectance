@@ -38,6 +38,8 @@ namespace ft
         RandomMoveGoal();
         virtual ~RandomMoveGoal(void);
 
+		virtual void OnEnter(Avatar* av);
+		virtual void OnExit(Avatar* av);
         virtual int getActionToPerform();
         virtual GoalController* CreateController(Avatar *av);
     };

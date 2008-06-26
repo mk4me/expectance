@@ -9,18 +9,18 @@ using namespace ft;
 using namespace std;
 
 // \brief Forward vector for objects on application scene
-CalVector TransformManager::SCENE_FORWARD = CalVector(1,0,0);
+const CalVector TransformManager::SCENE_FORWARD = CalVector(1,0,0);
 
 // \brief Up vector for objects on application scene
-CalVector TransformManager::SCENE_UP = CalVector(0,1,0);
+const CalVector TransformManager::SCENE_UP = CalVector(0,1,0);
 
 // \brief Right vector for objects on application scene
-CalVector TransformManager::SCENE_RIGHT = CalVector(-1,0,0);
+const CalVector TransformManager::SCENE_RIGHT = CalVector(0,0,-1);
 
 // \brief Left vector for objects on application scene
-CalVector TransformManager::SCENE_LEFT = CalVector(1,0,0);
+const CalVector TransformManager::SCENE_LEFT = CalVector(0,0,1);
 // \ Rototion by 90 degree
-CalQuaternion TransformManager::Y_90 = QuatToCalQuat( Quat( DegToRad(90) , Vec(0,1,0)));
+const CalQuaternion TransformManager::Y_90 = QuatToCalQuat( Quat( DegToRad(90) , Vec(0,1,0)));
 
 
 TransformManager* TransformManager::m_instance = NULL;

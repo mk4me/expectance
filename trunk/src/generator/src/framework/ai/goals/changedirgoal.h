@@ -43,7 +43,8 @@ namespace ft
         ChangeDirGoal();
         virtual ~ChangeDirGoal(void);
 
-        virtual bool ExecuteAction(Avatar *av);
+		virtual void OnEnter(Avatar* av);
+		virtual void OnExit(Avatar* av);
         int getActionToPerform();
         virtual GoalController* CreateController(Avatar *av);
     };

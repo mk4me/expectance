@@ -6,6 +6,7 @@
 #include "gil/gil_manager.h"
 #include "../avatar/avatarfactory.h"
 #include "../avatar/calavatar.h"
+#include "../avatar/calavatar.h"
 
 using namespace ft;
 
@@ -19,3 +20,4 @@ gil::GIL_Avatar* Cal3dImpl::CreateAvatar(const std::string& id, const std::strin
   CalAvatar* avatar = (CalAvatar*)ft::AvatarFactory::getAvatarFactoryInstance()->CreateMeshObject(type, id);
   return avatar;
 }
+

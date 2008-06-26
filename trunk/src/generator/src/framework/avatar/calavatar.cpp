@@ -48,6 +48,10 @@ void CalAvatar::Destroy(void)
     Cal3DObject::Destroy();
 }
 
+const std::string& CalAvatar::getType()
+{
+	return getCalCoreModel()->getName();
+}
 
 GIL_Animation* CalAvatar::getAnimation(const std::string& animName)
 {

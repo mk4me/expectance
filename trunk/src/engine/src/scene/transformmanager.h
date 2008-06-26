@@ -22,12 +22,12 @@ namespace ft
     public:
         bool TRACK_TRANSFORM; 
 
-        static CalVector SCENE_FORWARD;
-        static CalVector SCENE_UP;
-        static CalVector SCENE_RIGHT;
-        static CalVector SCENE_LEFT;
+        const static CalVector SCENE_FORWARD;
+        const static CalVector SCENE_UP;
+        const static CalVector SCENE_RIGHT;
+        const static CalVector SCENE_LEFT;
 
-        static CalQuaternion Y_90;
+        const static CalQuaternion Y_90;
 
 		TransformManager();
 	    virtual ~TransformManager(void);

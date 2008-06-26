@@ -23,11 +23,13 @@ using namespace ft;
 void DefaultGameHandler::InitScene()
 {
 	m_evolutionImpl.Init();
+	m_animProvider.Init();
 	m_world = ft::Factory::getInstance()->CreateWorld();
     
     InitAvatars();
     SetCameraToActiveAvatar();
     InitStaticObjects();
+	InitWorld();
 
     StartAISimulation();
 }
@@ -91,7 +93,7 @@ void DefaultGameHandler::InitAvatars()
 		string modelName;
 		if (i%2==0)
 			modelName = "freebie";
-		else
+	    else
 			modelName = "cally";
 
         av = dynamic_cast<Avatar*>(CreateAvatarOnScene(modelName, _nameHelper));
@@ -119,15 +121,6 @@ void DefaultGameHandler::InitAvatars()
 
 			//av->AddController(new MagnetController()); //TODO: uncomment it if works well
 
-
-			Goal* goal = new RandomMoveGoal();
-			m_world->AddGoal(goal);
-
-			goal = new ChangeDirGoal();
-			m_world->AddGoal(goal);
-
-			Rule* rule = new Rule(new LimitedAreaConstraint(), new LimitedAreaGoal());
-			m_world->AddRule(rule);
 
             if (i==0)
             {
@@ -186,3 +179,100 @@ void DefaultGameHandler::OnUpdate(const double elapsedTime)
 {
 	m_world->Update(elapsedTime);
 }
+
+void DefaultGameHandler::InitWorld()
+{
+	Goal* goal = new RandomMoveGoal();
+	m_world->AddGoal(goal);
+
+	goal = new ChangeDirGoal();
+	m_world->AddGoal(goal);
+
+	Rule* rule = new Rule(new LimitedAreaConstraint(), new LimitedAreaGoal());
+	m_world->AddRule(rule);
+
+
+	InitActionsForType("freebie");
+	InitActionsForType("cally");
+	InitGraphForType("freebie");
+	InitGraphForType("cally");
+
+	ControlManager::getInstance()->getActiveAvatar()->ExecuteAction("idle");
+}
+
+void DefaultGameHandler::InitActionsForType(const std::string& avatarType)
+{
+	//---------------- IDLE
+	Action* action = new Action(avatarType, "idle");
+
+	Motion* idle = new Motion("idle");
+    Motion* timeLineMotion = new Motion("",avatarType, "idle.caf");
+	timeLineMotion->setAnimLoop(true);
+	timeLineMotion->setInterupting(true);
+    idle->AddSubObject(timeLineMotion);
+    idle->setBlender(new Blender(0.1f));
+
+	action->setMotion(idle);
+	m_world->AddAction(avatarType, action);
+
+
+	//---------------- WALK
+	action = new Action(avatarType, "walk");
+	
+    Motion* walk = new Motion("walk");
+    timeLineMotion = new Motion("", avatarType, "walkloop.caf");
+	timeLineMotion->setInterupting(true);
+    timeLineMotion->setAnimLoop(true);
+    timeLineMotion->setBlender(new Blender(0.2f));
+    walk->AddSubObject(timeLineMotion);
+
+	action->setMotion(walk);
+	m_world->AddAction(avatarType, action);
+
+	//---------------- RUN
+	action = new Action(avatarType, "run");
+    Motion* run = new Motion();
+	run->setName("run");
+
+    timeLineMotion = new Motion("", avatarType, "runloop.caf");
+    timeLineMotion->setAnimLoop(true);
+    timeLineMotion->setBlender(new Blender(0.2f));
+    run->AddSubObject(timeLineMotion);
+
+	action->setMotion(run);
+	m_world->AddAction(avatarType, action);
+}
+
+void DefaultGameHandler::InitGraphForType(const std::string& avatarType)
+{
+	Transition* transition = new Transition("idle","walk");
+    Motion* timeLineMotion = new Motion("", avatarType, "walkstart.caf");
+    timeLineMotion->setInterupting(true);
+    timeLineMotion->setBlender(new Blender(0.25f));
+	transition->setMotion(timeLineMotion);
+	m_world->AddTransition(avatarType, transition);
+
+
+	transition = new Transition("walk","idle");
+    timeLineMotion = new Motion("", avatarType, "walkstop.caf");
+	timeLineMotion->setInterupting(true);
+    timeLineMotion->setBlender(new Blender(0.2f));
+    transition->setMotion(timeLineMotion);
+	m_world->AddTransition(avatarType, transition);
+
+	transition = new Transition("walk","run");
+    timeLineMotion = new Motion("", avatarType, "runstart.caf");
+	timeLineMotion->setInterupting(true);
+    timeLineMotion->setBlender(new Blender(0.2f));
+    transition->setMotion(timeLineMotion);
+	m_world->AddTransition(avatarType, transition);
+
+	transition = new Transition("run", "walk");
+    timeLineMotion = new Motion("", avatarType, "runstop.caf");
+	timeLineMotion->setInterupting(true);
+    timeLineMotion->setBlender(new Blender(0.2f));
+    transition->setMotion(timeLineMotion);
+	m_world->AddTransition(avatarType, transition);
+}
+
+

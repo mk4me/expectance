@@ -777,6 +777,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\framework\evolution_impl\cal3danimprovider.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\framework\evolution_impl\cal3danimprovider.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\framework\evolution_impl\cal3dimpl.cpp"
 					>
 				</File>

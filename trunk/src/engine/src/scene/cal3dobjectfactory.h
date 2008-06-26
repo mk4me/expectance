@@ -29,6 +29,8 @@ namespace ft
         static void DestroyInstance();
 
         Cal3DObject* CreateMeshObject(const std::string modelName, const std::string objectName);
+		
+		CalCoreModel* getCoreModel(const std::string &typeName);
 
     protected:
         virtual Cal3DObject* CreateMeshObjectInstance(CalModel* calModel, Cal3dType* calCoreModel, const std::string modelName);
