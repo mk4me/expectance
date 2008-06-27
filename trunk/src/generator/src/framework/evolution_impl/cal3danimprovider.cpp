@@ -12,7 +12,7 @@ using namespace ft;
 
 void Cal3dAnimProvider::Init()
 {
-	GIL_Manager::getInstance()->RegisterHandler(GIL_AnimProvider::iface_name,  this);
+	GIL_Manager::getInstance()->RegisterHandler(GIL_DataProvider::iface_name,  this);
 }
 
 

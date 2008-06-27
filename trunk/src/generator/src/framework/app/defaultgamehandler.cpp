@@ -17,6 +17,7 @@
 #include "../ai/goals/randommovegoal.h"
 #include "../ai/goals/limitedareagoal.h"
 #include "../ai/constraints/limitedareaconstraint.h"
+#include "evolution/dataprovider.h"
 
 using namespace ft;
 
@@ -192,11 +193,14 @@ void DefaultGameHandler::InitWorld()
 	m_world->AddRule(rule);
 
 
+	m_world->LoadDataForType("data/motions.xml", "cally");
+	m_world->LoadDataForType("data/motions.xml", "freebie");
+
 	InitActionsForType("freebie");
 	InitActionsForType("cally");
 	InitGraphForType("freebie");
 	InitGraphForType("cally");
-
+	
 	ControlManager::getInstance()->getActiveAvatar()->ExecuteAction("idle");
 }
 
@@ -205,40 +209,20 @@ void DefaultGameHandler::InitActionsForType(const std::string& avatarType)
 	//---------------- IDLE
 	Action* action = new Action(avatarType, "idle");
 
-	Motion* idle = new Motion("idle");
-    Motion* timeLineMotion = new Motion("",avatarType, "idle.caf");
-	timeLineMotion->setAnimLoop(true);
-	timeLineMotion->setInterupting(true);
-    idle->AddSubObject(timeLineMotion);
-    idle->setBlender(new Blender(0.1f));
-
+	Motion* idle = DataProvider::getInstance()->getMotion(avatarType, "idle");
 	action->setMotion(idle);
 	m_world->AddAction(avatarType, action);
 
 
 	//---------------- WALK
 	action = new Action(avatarType, "walk");
-	
-    Motion* walk = new Motion("walk");
-    timeLineMotion = new Motion("", avatarType, "walkloop.caf");
-	timeLineMotion->setInterupting(true);
-    timeLineMotion->setAnimLoop(true);
-    timeLineMotion->setBlender(new Blender(0.2f));
-    walk->AddSubObject(timeLineMotion);
-
+	Motion* walk = DataProvider::getInstance()->getMotion(avatarType, "walk");
 	action->setMotion(walk);
 	m_world->AddAction(avatarType, action);
 
 	//---------------- RUN
 	action = new Action(avatarType, "run");
-    Motion* run = new Motion();
-	run->setName("run");
-
-    timeLineMotion = new Motion("", avatarType, "runloop.caf");
-    timeLineMotion->setAnimLoop(true);
-    timeLineMotion->setBlender(new Blender(0.2f));
-    run->AddSubObject(timeLineMotion);
-
+    Motion* run = DataProvider::getInstance()->getMotion(avatarType, "run");
 	action->setMotion(run);
 	m_world->AddAction(avatarType, action);
 }
@@ -246,32 +230,24 @@ void DefaultGameHandler::InitActionsForType(const std::string& avatarType)
 void DefaultGameHandler::InitGraphForType(const std::string& avatarType)
 {
 	Transition* transition = new Transition("idle","walk");
-    Motion* timeLineMotion = new Motion("", avatarType, "walkstart.caf");
-    timeLineMotion->setInterupting(true);
-    timeLineMotion->setBlender(new Blender(0.25f));
-	transition->setMotion(timeLineMotion);
+	Motion* walkstart = DataProvider::getInstance()->getMotion(avatarType, "walkstart");
+	transition->setMotion(walkstart);
 	m_world->AddTransition(avatarType, transition);
 
 
 	transition = new Transition("walk","idle");
-    timeLineMotion = new Motion("", avatarType, "walkstop.caf");
-	timeLineMotion->setInterupting(true);
-    timeLineMotion->setBlender(new Blender(0.2f));
-    transition->setMotion(timeLineMotion);
+	Motion* walkstop = DataProvider::getInstance()->getMotion(avatarType, "walkstop");    
+	transition->setMotion(walkstop);
 	m_world->AddTransition(avatarType, transition);
 
 	transition = new Transition("walk","run");
-    timeLineMotion = new Motion("", avatarType, "runstart.caf");
-	timeLineMotion->setInterupting(true);
-    timeLineMotion->setBlender(new Blender(0.2f));
-    transition->setMotion(timeLineMotion);
+	Motion* runstart = DataProvider::getInstance()->getMotion(avatarType, "runstart");    
+    transition->setMotion(runstart);
 	m_world->AddTransition(avatarType, transition);
 
 	transition = new Transition("run", "walk");
-    timeLineMotion = new Motion("", avatarType, "runstop.caf");
-	timeLineMotion->setInterupting(true);
-    timeLineMotion->setBlender(new Blender(0.2f));
-    transition->setMotion(timeLineMotion);
+	Motion* runstop = DataProvider::getInstance()->getMotion(avatarType, "runstop");    
+    transition->setMotion(runstop);
 	m_world->AddTransition(avatarType, transition);
 }
 

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+
+<ComplexMotion name="idle">
+
+	<Motion name="" animLoop="true" loopNumber="-1" interrupting="true">
+		<Animation name="idle.caf" />
+	</Motion>
+
+	<Blender overlap="0.1" />
+
+</ComplexMotion>
+
+
+<ComplexMotion name="walk">
+
+	<Motion name="" animLoop="true" loopNumber="-1" interrupting="true">
+		<Animation name="walkloop.caf" />
+	</Motion>
+
+</ComplexMotion>
+
+
+<ComplexMotion name="run">
+
+	<Motion name="" animLoop="true" loopNumber="-1" interrupting="true">
+		<Animation name="runloop.caf" />
+	</Motion>
+
+</ComplexMotion>
+
+<Motion name="walkstart" animLoop="false" loopNumber="-1" interrupting="true">
+	<Animation name="walkstart.caf" />
+	<Blender overlap="0.25" />
+</Motion>
+
+<Motion name="walkstop" animLoop="false" loopNumber="-1" interrupting="true">
+	<Animation name="walkstop.caf" />
+	<Blender overlap="0.2" />
+</Motion>
+
+<Motion name="runstart" animLoop="false" loopNumber="-1" interrupting="true">
+	<Animation name="runstart.caf" />
+	<Blender overlap="0.2" />
+</Motion>
+
+<Motion name="runstop" animLoop="false" loopNumber="-1" interrupting="true">
+	<Animation name="runstop.caf" />
+	<Blender overlap="0.2" />
+</Motion>
