@@ -48,7 +48,7 @@ void CalAvatar::Destroy(void)
     Cal3DObject::Destroy();
 }
 
-const std::string& CalAvatar::getType()
+const std::string CalAvatar::getType()
 {
 	return getCalCoreModel()->getName();
 }

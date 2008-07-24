@@ -26,7 +26,7 @@ namespace ft
 	    virtual ~CalAvatar(void);
         virtual void Destroy(void);
 
-		virtual const std::string& getType(); 
+		virtual const std::string getType(); 
 		gil::GIL_Animation* getAnimation(const std::string& animName);
 
         MsgSender* getLocalMsgSender() { return m_localMsgSender; }
