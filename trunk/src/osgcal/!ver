@@ -1,0 +1,9 @@
+osgCal
+
+svn:  https://osgcal.svn.sourceforge.net/svnroot/osgcal/trunk/osgCal
+revistion 201
+
+
+CHANGES:
+
+- abak, 2008-07-30: removed use of 'snprintf' function in MeshLoader.cpp

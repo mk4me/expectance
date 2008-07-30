@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "expectance", "src\expectance\expectance.vcproj", "{39E62386-7293-42DC-8549-216FC8A7E079}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cal3D", "src\cal3d\cal3d.vcproj", "{86AD39B7-DDE7-4F46-B5BF-2154B047C112}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core_osgCal", "src\osgcal\osgCal.vcproj", "{C9BAC2B6-8E3B-4D19-9043-2FE914232296}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		DLL Debug|Win32 = DLL Debug|Win32
+		DLL Release|Win32 = DLL Release|Win32
+		Full Debug|Win32 = Full Debug|Win32
+		Full Release|Win32 = Full Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{39E62386-7293-42DC-8549-216FC8A7E079}.DLL Debug|Win32.ActiveCfg = DLL Debug|Win32
+		{39E62386-7293-42DC-8549-216FC8A7E079}.DLL Debug|Win32.Build.0 = DLL Debug|Win32
+		{39E62386-7293-42DC-8549-216FC8A7E079}.DLL Release|Win32.ActiveCfg = DLL Release|Win32
+		{39E62386-7293-42DC-8549-216FC8A7E079}.DLL Release|Win32.Build.0 = DLL Release|Win32
+		{39E62386-7293-42DC-8549-216FC8A7E079}.Full Debug|Win32.ActiveCfg = Full Debug|Win32
+		{39E62386-7293-42DC-8549-216FC8A7E079}.Full Debug|Win32.Build.0 = Full Debug|Win32
+		{39E62386-7293-42DC-8549-216FC8A7E079}.Full Release|Win32.ActiveCfg = Full Release|Win32
+		{39E62386-7293-42DC-8549-216FC8A7E079}.Full Release|Win32.Build.0 = Full Release|Win32
+		{86AD39B7-DDE7-4F46-B5BF-2154B047C112}.DLL Debug|Win32.ActiveCfg = DLL Debug|Win32
+		{86AD39B7-DDE7-4F46-B5BF-2154B047C112}.DLL Release|Win32.ActiveCfg = DLL Release|Win32
+		{86AD39B7-DDE7-4F46-B5BF-2154B047C112}.Full Debug|Win32.ActiveCfg = Full Debug|Win32
+		{86AD39B7-DDE7-4F46-B5BF-2154B047C112}.Full Release|Win32.ActiveCfg = Full Release|Win32
+		{C9BAC2B6-8E3B-4D19-9043-2FE914232296}.DLL Debug|Win32.ActiveCfg = DLL Debug|Win32
+		{C9BAC2B6-8E3B-4D19-9043-2FE914232296}.DLL Release|Win32.ActiveCfg = DLL Release|Win32
+		{C9BAC2B6-8E3B-4D19-9043-2FE914232296}.Full Debug|Win32.ActiveCfg = DLL Release|Win32
+		{C9BAC2B6-8E3B-4D19-9043-2FE914232296}.Full Release|Win32.ActiveCfg = DLL Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
