@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="windows-1250"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
@@ -238,7 +238,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".."
+				AdditionalIncludeDirectories="."
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;CAL3D_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -333,7 +333,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".."
+				AdditionalIncludeDirectories="."
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;CAL3D_EXPORTS"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -426,7 +426,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".."
+				AdditionalIncludeDirectories="."
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;CAL3D_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -521,7 +521,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".."
+				AdditionalIncludeDirectories="."
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;CAL3D_EXPORTS"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -585,363 +585,363 @@
 	</References>
 	<Files>
 		<File
-			RelativePath=".\src\animation.cpp"
+			RelativePath=".\cal3d\animation.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\animation.h"
+			RelativePath=".\cal3d\animation.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\animation_action.cpp"
+			RelativePath=".\cal3d\animation_action.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\animation_action.h"
+			RelativePath=".\cal3d\animation_action.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\animation_cycle.cpp"
+			RelativePath=".\cal3d\animation_cycle.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\animation_cycle.h"
+			RelativePath=".\cal3d\animation_cycle.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\animcallback.h"
+			RelativePath=".\cal3d\animcallback.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\bone.cpp"
+			RelativePath=".\cal3d\bone.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\bone.h"
+			RelativePath=".\cal3d\bone.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\buffersource.cpp"
+			RelativePath=".\cal3d\buffersource.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\buffersource.h"
+			RelativePath=".\cal3d\buffersource.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\cal3d.h"
+			RelativePath=".\cal3d\cal3d.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\cal3d.rc"
+			RelativePath=".\cal3d\cal3d.rc"
 			>
 		</File>
 		<File
-			RelativePath=".\src\cal3d_wrapper.cpp"
+			RelativePath=".\cal3d\cal3d_wrapper.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\cal3d_wrapper.h"
+			RelativePath=".\cal3d\cal3d_wrapper.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\coreanimation.cpp"
+			RelativePath=".\cal3d\coreanimation.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\coreanimation.h"
+			RelativePath=".\cal3d\coreanimation.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\corebone.cpp"
+			RelativePath=".\cal3d\corebone.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\corebone.h"
+			RelativePath=".\cal3d\corebone.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\corekeyframe.cpp"
+			RelativePath=".\cal3d\corekeyframe.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\corekeyframe.h"
+			RelativePath=".\cal3d\corekeyframe.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\corematerial.cpp"
+			RelativePath=".\cal3d\corematerial.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\corematerial.h"
+			RelativePath=".\cal3d\corematerial.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\coremesh.cpp"
+			RelativePath=".\cal3d\coremesh.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\coremesh.h"
+			RelativePath=".\cal3d\coremesh.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\coremodel.cpp"
+			RelativePath=".\cal3d\coremodel.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\coremodel.h"
+			RelativePath=".\cal3d\coremodel.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\coremorphanimation.cpp"
+			RelativePath=".\cal3d\coremorphanimation.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\coremorphanimation.h"
+			RelativePath=".\cal3d\coremorphanimation.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\coreskeleton.cpp"
+			RelativePath=".\cal3d\coreskeleton.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\coreskeleton.h"
+			RelativePath=".\cal3d\coreskeleton.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\coresubmesh.cpp"
+			RelativePath=".\cal3d\coresubmesh.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\coresubmesh.h"
+			RelativePath=".\cal3d\coresubmesh.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\coresubmorphtarget.cpp"
+			RelativePath=".\cal3d\coresubmorphtarget.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\coresubmorphtarget.h"
+			RelativePath=".\cal3d\coresubmorphtarget.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\coretrack.cpp"
+			RelativePath=".\cal3d\coretrack.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\coretrack.h"
+			RelativePath=".\cal3d\coretrack.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\datasource.h"
+			RelativePath=".\cal3d\datasource.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\dualquaternion.cpp"
+			RelativePath=".\cal3d\dualquaternion.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\dualquaternion.h"
+			RelativePath=".\cal3d\dualquaternion.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\error.cpp"
+			RelativePath=".\cal3d\error.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\error.h"
+			RelativePath=".\cal3d\error.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\global.cpp"
+			RelativePath=".\cal3d\global.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\global.h"
+			RelativePath=".\cal3d\global.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\hardwaremodel.cpp"
+			RelativePath=".\cal3d\hardwaremodel.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\hardwaremodel.h"
+			RelativePath=".\cal3d\hardwaremodel.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\loader.cpp"
+			RelativePath=".\cal3d\loader.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\loader.h"
+			RelativePath=".\cal3d\loader.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\matrix.cpp"
+			RelativePath=".\cal3d\matrix.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\matrix.h"
+			RelativePath=".\cal3d\matrix.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\mesh.cpp"
+			RelativePath=".\cal3d\mesh.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\mesh.h"
+			RelativePath=".\cal3d\mesh.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\mixer.cpp"
+			RelativePath=".\cal3d\mixer.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\mixer.h"
+			RelativePath=".\cal3d\mixer.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\model.cpp"
+			RelativePath=".\cal3d\model.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\model.h"
+			RelativePath=".\cal3d\model.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\morphtargetmixer.cpp"
+			RelativePath=".\cal3d\morphtargetmixer.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\morphtargetmixer.h"
+			RelativePath=".\cal3d\morphtargetmixer.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\physique.cpp"
+			RelativePath=".\cal3d\physique.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\physique.h"
+			RelativePath=".\cal3d\physique.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\physiquedualquaternion.cpp"
+			RelativePath=".\cal3d\physiquedualquaternion.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\physiquedualquaternion.h"
+			RelativePath=".\cal3d\physiquedualquaternion.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\platform.cpp"
+			RelativePath=".\cal3d\platform.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\platform.h"
+			RelativePath=".\cal3d\platform.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\quaternion.cpp"
+			RelativePath=".\cal3d\quaternion.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\quaternion.h"
+			RelativePath=".\cal3d\quaternion.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\refcounted.h"
+			RelativePath=".\cal3d\refcounted.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\refptr.h"
+			RelativePath=".\cal3d\refptr.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\renderer.cpp"
+			RelativePath=".\cal3d\renderer.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\renderer.h"
+			RelativePath=".\cal3d\renderer.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\resource.h"
+			RelativePath=".\cal3d\resource.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\saver.cpp"
+			RelativePath=".\cal3d\saver.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\saver.h"
+			RelativePath=".\cal3d\saver.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\skeleton.cpp"
+			RelativePath=".\cal3d\skeleton.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\skeleton.h"
+			RelativePath=".\cal3d\skeleton.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\springsystem.cpp"
+			RelativePath=".\cal3d\springsystem.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\springsystem.h"
+			RelativePath=".\cal3d\springsystem.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\streamsource.cpp"
+			RelativePath=".\cal3d\streamsource.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\streamsource.h"
+			RelativePath=".\cal3d\streamsource.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\submesh.cpp"
+			RelativePath=".\cal3d\submesh.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\submesh.h"
+			RelativePath=".\cal3d\submesh.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\tinystr.cpp"
+			RelativePath=".\cal3d\tinystr.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\tinystr.h"
+			RelativePath=".\cal3d\tinystr.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\tinyxml.cpp"
+			RelativePath=".\cal3d\tinyxml.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\tinyxml.h"
+			RelativePath=".\cal3d\tinyxml.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\tinyxmlerror.cpp"
+			RelativePath=".\cal3d\tinyxmlerror.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\tinyxmlparser.cpp"
+			RelativePath=".\cal3d\tinyxmlparser.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\transform.h"
+			RelativePath=".\cal3d\transform.h"
 			>
 		</File>
 		<File
-			RelativePath=".\src\vector.cpp"
+			RelativePath=".\cal3d\vector.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\src\vector.h"
+			RelativePath=".\cal3d\vector.h"
 			>
 		</File>
 	</Files>

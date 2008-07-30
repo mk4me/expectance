@@ -3,7 +3,7 @@
  * author: abak, mka
  */
 #include "lcsmodifier.h"
-#include "cal3d/src/coretrack.h"
+#include "cal3d/coretrack.h"
 #include "utility/vishelper.h"
 #include "utility/mathutil.h"
 #include "utility/stringhelper.h"

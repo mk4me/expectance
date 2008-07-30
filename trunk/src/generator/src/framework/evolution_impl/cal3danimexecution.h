@@ -6,7 +6,7 @@
 #define _FT_CAL3D_ANIMEXECUTION_H
 
 #include "gil/gil_animexecution.h"
-#include "cal3d/src/cal3d.h"
+#include "cal3d/cal3d.h"
 
 namespace ft
 {

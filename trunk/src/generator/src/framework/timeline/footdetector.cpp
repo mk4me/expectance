@@ -3,7 +3,7 @@
  * author: mka
  */
 #include "footdetector.h"
-#include "cal3d/src/coretrack.h"
+#include "cal3d/coretrack.h"
 #include "../app/gendebug.h"
 #include "scene/scenemanager.h"
 #include "core/message.h"

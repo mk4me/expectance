@@ -5,7 +5,7 @@
 
 #include "calavatartype.h"
 #include "../app/gendebug.h"
-#include "cal3d/src/coretrack.h"
+#include "cal3d/coretrack.h"
 #include "scene/transformmanager.h"
 #include "utility/stringhelper.h"
 

@@ -6,7 +6,7 @@
 #ifndef _FT_RESTPOSGOAL_H
 #define _FT_RESTPOSGOAL_H
 
-#include <cal3d/src/cal3d.h>
+#include <cal3d/cal3d.h>
 #include "evolution/goal.h"
 
 namespace ft

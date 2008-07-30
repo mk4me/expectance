@@ -7,8 +7,8 @@
 #include "transformmanager.h"
 #include "../utility/vishelper.h"
 #include "../utility/mathutil.h"
-#include "cal3d/src/coretrack.h"
-#include "cal3d/src/corekeyframe.h"
+#include "cal3d/coretrack.h"
+#include "cal3d/corekeyframe.h"
 #include "scenemanager.h"
 
 using namespace ft;

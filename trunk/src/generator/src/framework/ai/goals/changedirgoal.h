@@ -7,7 +7,7 @@
 #define _GEN_AI_CHANGEDIRGOAL_H
 
 #include "evolution/goal.h"
-#include <cal3d/src/cal3d.h>
+#include <cal3d/cal3d.h>
 
 namespace ft
 {
