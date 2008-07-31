@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, FutureToday. All rights reserved.
+ * Copyright (c) 2007 - 2008, FutureToday. All rights reserved.
  * author: abak
  */
 
@@ -34,19 +34,16 @@
 #include <osgCal/CoreModel>
 #include <osgCal/Model>
 
-osg::Node*
-makeModel( osgCal::CoreModel* cm,
-           osgCal::BasicMeshAdder* ma,
-           int animNum = -1 )
+osg::Node* makeModel( osgCal::CoreModel* cm, osgCal::BasicMeshAdder* ma, int animNum = -1 )
 {
     osgCal::Model* model = new osgCal::Model();
 
     model->load( cm, ma );
 
-    if ( animNum != -1 )
-    {
-        model->blendCycle( animNum, 1.0f, 0 );
-    }
+//    if ( animNum != -1 )
+//    {
+//        model->blendCycle( animNum, 1.0f, 0 );
+//    }
 
     return model;
 }
@@ -62,14 +59,8 @@ T normalize( const T& v )
 /**
  * Add window in multi-window setup.
  */
-void
-addWindow( osgViewer::Viewer& viewer,
-           int x,
-           int y,
-           int width,
-           int height,
-           float xTranslate,
-           float yTranslate )
+void  addWindow( osgViewer::Viewer& viewer, int x, int y, int width, int height,
+           float xTranslate,  float yTranslate )
 {
     osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
     traits->x = x;

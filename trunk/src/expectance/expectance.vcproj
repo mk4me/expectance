@@ -72,7 +72,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  OpenThreadsd.lib osgd.lib osgDBd.lib osgUtild.lib osgGAd.lib osgViewerd.lib osgTextd.lib osgCald.lib cal3d_d.lib"
+				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  OpenThreadsd.lib osgd.lib osgDBd.lib osgUtild.lib osgGAd.lib osgViewerd.lib osgTextd.lib osgCald.lib cal3d_d.lib evolution_d.lib"
 				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
@@ -165,7 +165,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  osgCal.lib OpenThreads.lib osg.lib osgDB.lib osgUtil.lib osgGA.lib osgViewer.lib osgText.lib cal3d.lib glu32.lib opengl32.lib "
+				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  osgCal.lib OpenThreads.lib osg.lib osgDB.lib osgUtil.lib osgGA.lib osgViewer.lib osgText.lib cal3d.lib glu32.lib opengl32.lib evolution.lib"
 				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -404,6 +404,78 @@
 			</File>
 			<File
 				RelativePath=".\src\app\platform.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="ai"
+			>
+		</Filter>
+		<Filter
+			Name="avatar"
+			>
+			<File
+				RelativePath=".\src\avatar\osgavatar.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\avatar\osgavatar.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\avatar\osgavatarfactory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\avatar\osgavatarfactory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\avatar\osgavatartype.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\avatar\osgavatartype.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="utility"
+			>
+			<File
+				RelativePath=".\src\utility\stringhelper.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\utility\stringhelper.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="motion"
+			>
+			<File
+				RelativePath=".\src\motion\animation.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\motion\animation.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\motion\motiondata.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="timeline"
+			>
+		</Filter>
+		<Filter
+			Name="evolution_impl"
+			>
+			<File
+				RelativePath=".\src\evolution_impl\cal3danimexecution.h"
 				>
 			</File>
 		</Filter>
