@@ -478,6 +478,22 @@
 				RelativePath=".\src\evolution_impl\cal3danimexecution.h"
 				>
 			</File>
+			<File
+				RelativePath=".\src\evolution_impl\cal3danimprovider.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\evolution_impl\cal3danimprovider.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\evolution_impl\cal3dimpl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\evolution_impl\cal3dimpl.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

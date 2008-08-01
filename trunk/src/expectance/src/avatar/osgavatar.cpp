@@ -109,7 +109,7 @@ void CalAvatar::InitFootDetector()
 
 void OsgAvatar::Update(const double elapsedSeconds)
 {
-	getOsgModel()->getCalModel()->update(elapsedSeconds);
+	//getOsgModel()->getCalModel()->update(elapsedSeconds);
 }
 
 GIL_AnimExecution* OsgAvatar::PlayAnimation(int animID, float fade_in, float fade_out)

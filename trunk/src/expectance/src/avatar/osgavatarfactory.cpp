@@ -52,7 +52,7 @@ OsgAvatar* OsgAvatarFactory::CreateAvatar(const std::string avatarTypeName, cons
 
     OsgAvatar* newObject = NULL;
 											
-	OsgAvatarType* avatarType = getAvatarType(objectName);
+	OsgAvatarType* avatarType = getAvatarType(avatarTypeName);
 
 	if (avatarType == NULL)
 	{
@@ -125,7 +125,7 @@ OsgAvatarType* OsgAvatarFactory::CreateAvatarType(const std::string &typeName)
 
 	try 
 	{
-		coreModel->load( "/data/models/freebie/freebie.cfg", p.get() );
+		coreModel->load( typeName, p.get() );
 	}
 	catch ( std::runtime_error& e )
     {
@@ -136,6 +136,9 @@ OsgAvatarType* OsgAvatarFactory::CreateAvatarType(const std::string &typeName)
 		return NULL;
     }
     
+	CalCoreModel* calCoreModel = coreModel->getCalCoreModel();
+	calCoreModel->setName(typeName.c_str());  //replace "Dummy" with proper type name
+
 	avatarType = new OsgAvatarType(typeName, coreModel);
 
     return avatarType;

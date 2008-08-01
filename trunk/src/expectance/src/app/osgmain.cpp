@@ -34,19 +34,19 @@
 #include <osgCal/CoreModel>
 #include <osgCal/Model>
 
-osg::Node* makeModel( osgCal::CoreModel* cm, osgCal::BasicMeshAdder* ma, int animNum = -1 )
-{
-    osgCal::Model* model = new osgCal::Model();
+#include "evolution/avatar.h"
+#include "evolution/factory.h"
+#include "../evolution_impl/cal3dimpl.h"
+#include "../evolution_impl/cal3danimprovider.h"
+#include "evolution/world.h"
+#include "evolution/dataprovider.h"
+#include "../avatar/osgavatar.h"
+#include "evolution/evodbg.h"
 
-    model->load( cm, ma );
 
-//    if ( animNum != -1 )
-//    {
-//        model->blendCycle( animNum, 1.0f, 0 );
-//    }
+using namespace ft;
 
-    return model;
-}
+const std::string  AVATAR_TYPE = "../../data/models/freebie/freebie.cfg";
 
 template < typename T >
 T normalize( const T& v )
@@ -85,79 +85,6 @@ void  addWindow( osgViewer::Viewer& viewer, int x, int y, int width, int height,
                     osg::Matrixd());
 }
 
-class AnimationToggleHandler : public osgGA::GUIEventHandler 
-{
-    public: 
-
-        AnimationToggleHandler( osgCal::Model* m,
-                                const std::vector< std::string >& an )
-            : model( m )
-            , animationNames( an )
-            , currentAnimation( -1 )
-        {
-        }
-        
-        bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa)
-        {
-            osgViewer::Viewer* viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
-            if (!viewer) return false;
-    
-            switch(ea.getEventType())
-            {
-                case(osgGA::GUIEventAdapter::KEYDOWN):
-                {
-                    if ( ea.getModKeyMask() & osgGA::GUIEventAdapter::MODKEY_CTRL )
-                    {
-                        if ( ea.getKey() >= '1' &&
-                             ea.getKey() <  '1' + (int)animationNames.size() )
-                        {                           
-                            model->executeAction( ea.getKey() - '1' );
-                        }
-                    }
-                    else if ( ea.getKey() >= '1' &&
-                              ea.getKey() < '1' + (int)animationNames.size() )
-                    {
-                        if ( currentAnimation != -1 )
-                        {
-                            model->clearCycle( currentAnimation, 1.0 ); // clear in 1sec
-                        }
-                        
-                        currentAnimation = ea.getKey() - '1';
-
-                        model->blendCycle( currentAnimation, 1.0f, 1.0 );                        
-                    }
-                    else if ( ea.getKey() == '0' )
-                    {
-                        model->clearCycle( currentAnimation, 0.0 ); // clear now
-                        // TODO: actually it's better to blend to idle animation
-                        currentAnimation = -1;
-                    }
-                }
-                default: break;
-            }
-        
-            return false;
-        }
-    
-        /** Get the keyboard and mouse usage of this manipulator.*/
-        virtual void getUsage(osg::ApplicationUsage& usage) const
-        {
-            usage.addKeyboardMouseBinding( "0", "Stop animation" );
-            
-            for ( size_t i = 0; i < animationNames.size(); i++ )
-            {
-                char k[] = { i + '1', '\0' };
-                usage.addKeyboardMouseBinding( k, animationNames[i] );
-            }
-        }
-
-    private:
-
-        osgCal::Model*              model;
-        std::vector< std::string >  animationNames;
-        int                         currentAnimation;
-
-};
 
 class ToggleHandler : public osgGA::GUIEventHandler 
 {
@@ -165,10 +92,11 @@ class ToggleHandler : public osgGA::GUIEventHandler
 
         ToggleHandler( bool& toggleVar,
                        char  key,
-                       const std::string& help )
+                       const std::string& help, Avatar* activeAvatar )
             : toggleVar( &toggleVar )
             , key( key )
             , help( help )
+			, m_activeAvatar( activeAvatar )
         {
         }
         
@@ -184,7 +112,56 @@ class ToggleHandler : public osgGA::GUIEventHandler
                     if ( ea.getKey() == key )
                     {
                         *toggleVar = !(*toggleVar);
-                    }
+
+					} else if ( ea.getKey() == ea.KEY_Up ) {
+
+						if (m_activeAvatar != NULL)
+						{
+							if (m_activeAvatar->getCurrTopMotion() != NULL)
+							{
+								if (m_activeAvatar->getCurrTopMotion()->getName().compare("walk") == 0)
+									m_activeAvatar->ExecuteAction("run");
+								else if (m_activeAvatar->getCurrTopMotion()->getName().compare("idle") == 0)
+									m_activeAvatar->ExecuteAction("walk");
+							}
+							else
+							{
+								m_activeAvatar->ExecuteAction("idle");
+							}
+						}
+
+					} else if ( ea.getKey() == ea.KEY_Down ) {
+						if (m_activeAvatar != NULL)
+						{
+							if (m_activeAvatar->getCurrTopMotion() != NULL)
+							{
+								if (m_activeAvatar->getCurrTopMotion()->getName().compare("walk") == 0)
+									m_activeAvatar->ExecuteAction("idle");
+								else if (m_activeAvatar->getCurrTopMotion()->getName().compare("run") == 0)
+									m_activeAvatar->ExecuteAction("walk");
+							}
+							else
+							{
+								m_activeAvatar->ExecuteAction("idle");
+							}
+						}
+
+					} else if ( ea.getKey() == ea.KEY_Left ) {
+						if (m_activeAvatar != NULL)
+						{
+							OsgAvatar* avImpl = (OsgAvatar*)m_activeAvatar->getImplementation();
+							osg::Node* node = avImpl->getOsgModel();
+							// set rotation here
+						}
+
+					}  else if ( ea.getKey() == ea.KEY_Right ) {
+						if (m_activeAvatar != NULL)
+						{
+							OsgAvatar* avImpl = (OsgAvatar*)m_activeAvatar->getImplementation();
+							osg::Node* node = avImpl->getOsgModel();
+							// set rotation here
+						}
+					}
                 }
                 default: break;
             }
@@ -203,6 +180,7 @@ class ToggleHandler : public osgGA::GUIEventHandler
         bool*       toggleVar;
         char        key;
         std::string help;
+		Avatar* m_activeAvatar;
 };
 
 
@@ -230,6 +208,78 @@ class CompileStateSets : public osg::Operation
         
         osg::Node* node;
 };
+
+
+void InitActionsForType(World* world, const std::string& avatarType)
+{
+	//---------------- IDLE
+	Action* action = new Action(avatarType, "idle");
+
+	Motion* idle = DataProvider::getInstance()->getMotion(avatarType, "idle");
+	action->setMotion(idle);
+	world->AddAction(avatarType, action);
+
+
+	//---------------- WALK
+	action = new Action(avatarType, "walk");
+	Motion* walk = DataProvider::getInstance()->getMotion(avatarType, "walk");
+	action->setMotion(walk);
+	world->AddAction(avatarType, action);
+
+	//---------------- RUN
+	action = new Action(avatarType, "run");
+    Motion* run = DataProvider::getInstance()->getMotion(avatarType, "run");
+	action->setMotion(run);
+	world->AddAction(avatarType, action);
+}
+
+void InitGraphForType(World* world, const std::string& avatarType)
+{
+	Transition* transition = new Transition("idle","walk");
+	Motion* walkstart = DataProvider::getInstance()->getMotion(avatarType, "walkstart");
+	transition->setMotion(walkstart);
+	world->AddTransition(avatarType, transition);
+
+
+	transition = new Transition("walk","idle");
+	Motion* walkstop = DataProvider::getInstance()->getMotion(avatarType, "walkstop");    
+	transition->setMotion(walkstop);
+	world->AddTransition(avatarType, transition);
+
+	transition = new Transition("walk","run");
+	Motion* runstart = DataProvider::getInstance()->getMotion(avatarType, "runstart");    
+    transition->setMotion(runstart);
+	world->AddTransition(avatarType, transition);
+
+	transition = new Transition("run", "walk");
+	Motion* runstop = DataProvider::getInstance()->getMotion(avatarType, "runstop");    
+    transition->setMotion(runstop);
+	world->AddTransition(avatarType, transition);
+}
+
+void InitWorld(World* world)
+{
+//	Goal* goal = new RandomMoveGoal();
+//	m_world->AddGoal(goal);
+
+//	goal = new ChangeDirGoal();
+//	m_world->AddGoal(goal);
+
+//	Rule* rule = new Rule(new LimitedAreaConstraint(), new LimitedAreaGoal());
+//	m_world->AddRule(rule);
+
+
+	//world->LoadDataForType("data/motions.xml", "cally");
+	world->LoadDataForType("../../data/motions.xml", AVATAR_TYPE);
+
+	InitActionsForType(world, AVATAR_TYPE);
+	//InitActionsForType(world, "cally");
+	InitGraphForType(world, AVATAR_TYPE);
+	//InitGraphForType(world, "cally");
+	
+	//ControlManager::getInstance()->getActiveAvatar()->ExecuteAction("idle");
+}
+
 
 EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 {
@@ -297,99 +347,47 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
     }
 
 //    osg::Group* root = new osg::Group();
+
+	//------------ EVOLUTION init
+
+	Cal3dImpl m_evolutionImpl;
+	Cal3dAnimProvider m_animProvider;
+	World* m_world;
+
+	m_evolutionImpl.Init();
+	m_animProvider.Init();
+	m_world = ft::Factory::getInstance()->CreateWorld();
+	EvoDBG::setTimelineLevel(1);
+
+
+	
+
+
     osg::ref_ptr< osg::Group > root = new osg::Group();
-    std::vector< std::string > animationNames;
-    
-    // -- Load model --
-    { // scope for model ref_ptr
-        osg::ref_ptr< osgCal::CoreModel > coreModel( new osgCal::CoreModel() );
-        int         animNum = -1;
-        osg::ref_ptr< osgCal::BasicMeshAdder > meshAdder( new osgCal::DefaultMeshAdder );
-        osg::ref_ptr< osgCal::MeshParameters > p( new osgCal::MeshParameters );
-            
-        while ( arguments.read( "--df" ) )
-        {
-            p->useDepthFirstMesh = true;
-        }
 
-        while ( arguments.read( "--sw" ) )
-        {
-            p->software = true;
-        }
+  Avatar* avatar = Factory::getInstance()->createAvatar("av0",AVATAR_TYPE);
+  if (avatar != NULL)
+  {
+	  OsgAvatar* av = static_cast<OsgAvatar*>(avatar->getImplementation());
+	  root->addChild(av->getOsgModel());
 
-        while ( arguments.read( "--hw" ) )
-        {
-            p->software = false; // default
-        }
-            
-        try
-        {
-            std::string ext = osgDB::getLowerCaseFileExtension( fn );
-            std::string dir = osgDB::getFilePath( fn );
-            std::string name = osgDB::getStrippedName( fn );
+	  m_world->AddAvatar(avatar);
+	  avatar->StartSimulation();
+	  
+  }
+  InitWorld(m_world);
+  m_world->DumpActions();
+  m_world->DumpAvatars();
 
-            if ( dir == "" )
-            {
-                dir = ".";
-            }
+//        root->addChild( makeModel( coreModel.get(),
+//                                   meshAdder.get(),
+//                                   animNum ) );
 
-            if ( ext == "caf" )
-            {
-                coreModel->load( dir + "/cal3d.cfg", p.get() );
 
-                for ( size_t i = 0; i < coreModel->getAnimationNames().size(); i++ )
-                {
-                    if ( coreModel->getAnimationNames()[i] == name )
-                    {
-                        animNum = i;
-                        break;
-                    }
-                }
+	m_world->StartThinking();
 
-                if ( animNum == -1 ) 
-                {
-                    // animation is absent in cal3d.cfg, so load it manually
-                    CalCoreModel* cm = coreModel->getCalCoreModel();
-
-                    std::cout << coreModel->getScale() << std::endl;
-                    if ( coreModel->getScale() != 1 )
-                    {
-                        // to eliminate scaling of the model by non-scaled animation
-                        // we scale model back, load animation, and rescale one more time
-                        cm->scale( 1.0 / coreModel->getScale() );
-                    }
-
-                    animNum = cm->loadCoreAnimation( fn );
-
-                    if ( coreModel->getScale() != 1 )
-                    {
-                        cm->scale( coreModel->getScale() );
-                    }
-                }
-            }
-            else if ( ext == "cmf" )
-            {
-                coreModel->load( dir + "/cal3d.cfg", p.get() );
-                meshAdder = new osgCal::OneMeshAdder( osgDB::getStrippedName( fn ) );
-            }
-            else
-            {
-                coreModel->load( fn, p.get() );
-            }
-        }
-        catch ( std::runtime_error& e )
-        {
-            std::cout << "runtime error during load:" << std::endl
-                      << e.what() << std::endl;
-            return EXIT_FAILURE;
-        }
-
-        root->addChild( makeModel( coreModel.get(),
-                                   meshAdder.get(),
-                                   animNum ) );
-
-        animationNames = coreModel->getAnimationNames();
-    } // end of model's ref_ptr scope
+	if (avatar != NULL)
+		avatar->ExecuteAction("idle");
 
     // -- Setup viewer --
 //    while ( true )
@@ -421,11 +419,11 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
     viewer.addEventHandler(new osgViewer::HelpHandler( arguments.getApplicationUsage() ) );
 
     // add the animation toggle handler
-    viewer.addEventHandler( new AnimationToggleHandler( (osgCal::Model*)root->getChild(0), animationNames ) );
+    //viewer.addEventHandler( new AnimationToggleHandler( (osgCal::Model*)root->getChild(0), animationNames ) );
     
-    // add the pause handler
+    // add the pause handler and avatar controlling
     bool paused = false;
-    viewer.addEventHandler( new ToggleHandler( paused, 'p', "Pause animation" ) );
+    viewer.addEventHandler( new ToggleHandler( paused, 'p', "Pause animation", avatar ) );
 
     while (arguments.read("--SingleThreaded")) viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
     while (arguments.read("--CullDrawThreadPerContext")) viewer.setThreadingModel(osgViewer::Viewer::CullDrawThreadPerContext);
@@ -493,6 +491,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
     viewer.setRealizeOperation( new CompileStateSets( lightSource0 ) );
     viewer.realize();
 
+
     // -- Main loop --
     osg::Timer_t startTick = osg::Timer::instance()->tick();
 
@@ -520,7 +519,9 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
             startTick,
             pauseState == Unpaused ? tick : pauseStartTick );
 
+		m_world->Update(currentTime - totalPauseTime);
         viewer.frame( currentTime - totalPauseTime );
+
     }
 
 //    viewer.setSceneData( new osg::Group() ); // destroy scene data before viewer
