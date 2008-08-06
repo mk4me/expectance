@@ -14,6 +14,8 @@
 #include "cal3d/cal3d.h"
 #include "../evolution_impl/cal3danimexecution.h"
 //#include "../timeline/footdetector.h"
+#include "osg/PositionAttitudeTransform"
+#include "osg/Vec3d"
 
 namespace ft
 {
@@ -63,6 +65,10 @@ namespace ft
 
 		virtual osgCal::Model* getOsgModel() { return m_osgModel; }
 
+		osg::PositionAttitudeTransform* getOffsetTransform() { return m_offsetTransform; }
+		void setPosition(const osg::Vec3d &pos) { m_offsetTransform->setPosition(pos);  }
+		const osg::Vec3d& getPosition() { return m_offsetTransform->getPosition();  }
+
 		//void OnMessage(Message* msg);
 
 		//void setFootDetector(FootDetector* detector) { m_footDetector = detector; }
@@ -70,6 +76,7 @@ namespace ft
 
 
     private:
+		osg::PositionAttitudeTransform* m_offsetTransform;
 		osgCal::Model* m_osgModel;
         //MsgSender* m_localMsgSender;
 

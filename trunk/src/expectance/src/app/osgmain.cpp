@@ -360,21 +360,32 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	EvoDBG::setTimelineLevel(1);
 
 
-	
-
 
     osg::ref_ptr< osg::Group > root = new osg::Group();
 
-  Avatar* avatar = Factory::getInstance()->createAvatar("av0",AVATAR_TYPE);
+  Avatar* avatar = Factory::getInstance()->createAvatar("av1",AVATAR_TYPE);
   if (avatar != NULL)
   {
 	  OsgAvatar* av = static_cast<OsgAvatar*>(avatar->getImplementation());
-	  root->addChild(av->getOsgModel());
+	  root->addChild(  av->getOffsetTransform()  );
 
 	  m_world->AddAvatar(avatar);
 	  avatar->StartSimulation();
 	  
   }
+
+  Avatar* avatar2 = Factory::getInstance()->createAvatar("av2",AVATAR_TYPE);
+  if (avatar2 != NULL)
+  {
+	  OsgAvatar* av = static_cast<OsgAvatar*>(avatar2->getImplementation());
+	  root->addChild(  av->getOffsetTransform()  );
+
+	  m_world->AddAvatar(avatar2);
+	  avatar2->StartSimulation();
+	  av->setPosition(osg::Vec3d(300,0,0));
+	  
+  }
+
   InitWorld(m_world);
   m_world->DumpActions();
   m_world->DumpAvatars();
@@ -386,8 +397,8 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 
 	m_world->StartThinking();
 
-	if (avatar != NULL)
-		avatar->ExecuteAction("idle");
+//	if (avatar != NULL)
+//		avatar->ExecuteAction("idle");
 
     // -- Setup viewer --
 //    while ( true )

@@ -470,6 +470,14 @@
 		<Filter
 			Name="timeline"
 			>
+			<File
+				RelativePath=".\src\timeline\lcsmodifier.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\timeline\lcsmodifier.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="evolution_impl"

@@ -21,6 +21,8 @@ using namespace ft::gil;
 OsgAvatar::OsgAvatar(osgCal::Model *osgModel, const std::string name)
 {
 	m_osgModel = osgModel;
+	m_offsetTransform = new osg::PositionAttitudeTransform();
+	m_offsetTransform->addChild(osgModel);
 
 //    m_localMsgSender = new MsgSender();
 //	m_localMsgSender->AddMsgListener(this);
