@@ -99,7 +99,7 @@ void TimeLineVisualizer::Apply(float elapsedSeconds, TimeLineContext * timeLineC
 /// \brief Resets parameters of this modifier
 void TimeLineVisualizer::Reset(TimeLineContext * timeLineContext)
 {
-    TimeLineObject::Reset(timeLineContext);
+//    TimeLineObject::Reset(timeLineContext);
     if (CURVE_ANIM_WEIGHT)
     {
         curve_prev_anim_weight->Clear();
@@ -112,10 +112,10 @@ void TimeLineVisualizer::Reset(TimeLineContext * timeLineContext)
  *
  * \return std::string - string representation
  **/
-std::string TimeLineVisualizer::toString()
-{
-    std::string result = Controller::toString() + "[TimeLineVisualizer]";
-    return result;
-}
+//std::string TimeLineVisualizer::toString()
+//{
+//    std::string result = Controller::toString() + "[TimeLineVisualizer]";
+//    return "TimeLineVisualizer";
+//}
 
 

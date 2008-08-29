@@ -31,7 +31,7 @@ RestPosController::~RestPosController(void)
  **/
 void RestPosController::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
-	Player* avImpl = (Player*)timeLineContext->getAvatar();
+	Player* avImpl = (Player*)timeLineContext->getAvatarImpl();
 
 	CalVector vDist = avImpl->getRestPos() - avImpl->getPosition();
 
@@ -65,7 +65,7 @@ void RestPosController::Apply(float elapsedSeconds, TimeLineContext * timeLineCo
 				dirToAdd = -5;
 
 			Quat addRot = Quat(degToRad(dirToAdd), Vec(0,1,0));
-			GIL_Avatar* av = timeLineContext->getAvatar();
+			GIL_Avatar* av = timeLineContext->getAvatarImpl();
 
 			((CalAvatar*)av)->changeGlobalRotationOffset( QuatToCalQuat(addRot) );
 		}

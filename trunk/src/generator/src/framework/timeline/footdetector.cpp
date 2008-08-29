@@ -56,7 +56,7 @@ void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
 {
     Controller::Apply(elapsedSeconds, timeLineContext);
 
-	CalAvatar* avImpl = (CalAvatar*)timeLineContext->getAvatar();
+	CalAvatar* avImpl = (CalAvatar*)timeLineContext->getAvatarImpl();
 	
 	// Here apply this detector
 	CalVector _RHPos, _LHPos;

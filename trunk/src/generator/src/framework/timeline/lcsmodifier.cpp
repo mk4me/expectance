@@ -266,7 +266,7 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
     UpdateRotation(elapsedSeconds, timeLineContext);
     UpdateTranslation(elapsedSeconds, timeLineContext);
 
-	CalAvatar* avImpl = (CalAvatar*)timeLineContext->getAvatar();
+	CalAvatar* avImpl = (CalAvatar*)timeLineContext->getAvatarImpl();
     CalBone *bone = avImpl->GetCalModel()->getSkeleton()->getBone(0);
     bone->calculateState();
 	
@@ -283,7 +283,7 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 
 void LCSModifier::UpdateRotation(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
-	CalAvatar* avImpl = (CalAvatar*)timeLineContext->getAvatar();
+	CalAvatar* avImpl = static_cast<CalAvatar*>(timeLineContext->getAvatarImpl());
 
     Transform* currTransform = NULL;
     if (timeLineContext->currAnim != NULL)
@@ -407,7 +407,7 @@ void LCSModifier::UpdateRotation(float elapsedSeconds, TimeLineContext * timeLin
 
 void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
-	CalAvatar* avImpl = (CalAvatar*)timeLineContext->getAvatar();
+	CalAvatar* avImpl = (CalAvatar*)timeLineContext->getAvatarImpl();
 
     Transform* currTransform = NULL;
     Transform* prevTransform = NULL;
@@ -600,7 +600,7 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
  */
  void LCSModifier::ApplyAnimDirectionToGlobalRotation(TimeLineContext * timeLineContext)
  {
-	 CalAvatar* avImpl = (CalAvatar*)timeLineContext->getAvatar();
+	 CalAvatar* avImpl = (CalAvatar*)timeLineContext->getAvatarImpl();
 
      CalQuaternion qGlobalRotOffset = avImpl->getGlobalRotationOffset();
 
@@ -751,7 +751,7 @@ void LCSModifier::Reset(TimeLineContext * timeLineContext)
 Transform* LCSModifier::GetTransformForAnim(CalAnimation* anim, CalAvatar* avatar)
 {
     Transform* resultTransform = NULL;
-    CalAvatarType* type = (CalAvatarType*)avatar->GetCalCoreModel();
+     CalAvatarType* type = (CalAvatarType*)avatar->GetCalCoreModel();
     Animation* mot = type->GetMotion( StringHelper::GetFileNameForPath(anim->getCoreAnimation()->getFilename()));
 
     if (mot != NULL && mot->getAnimData() != NULL && ((MotionData*)mot->getAnimData())->getTransform() != NULL)

@@ -9,7 +9,7 @@
 #include "evolution/controller.h"
 #include "evolution/timelinecontext.h"
 #include "scene/datacollector.h"
-#include "scene/traceline.h"
+//#include "scene/traceline.h"
 
 namespace ft
 {
@@ -28,10 +28,10 @@ namespace ft
 
         virtual void Reset(TimeLineContext * timeLineContext); // resets current object and its children
 
-        virtual std::string toString(); //OVERRIDEN
+        
 
     private:
-		TraceLine *tracer_timeline_states;
+//		TraceLine *tracer_timeline_states;
 
         DataCollector *curve_prev_anim_weight;
         DataCollector *curve_curr_anim_weight;

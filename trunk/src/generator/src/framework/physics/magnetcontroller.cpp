@@ -87,7 +87,7 @@ void MagnetController::Apply(float elapsedSeconds, TimeLineContext * timeLineCon
 
 	Controller::Apply(elapsedSeconds, timeLineContext);
 	
-	CalAvatar* av = (CalAvatar*)timeLineContext->getAvatar();
+	CalAvatar* av = (CalAvatar*)timeLineContext->getAvatarImpl();
 
 	CalVector _cummForce  = CollisionDetectionManager::getInstance()->getObjectCummulativeForce(av->DynamicObjectID, m_threshold);
 	CalQuaternion _dirAngleQ = av->getGlobalRotationOffset();
@@ -157,7 +157,7 @@ void MagnetController::Apply(float elapsedSeconds, TimeLineContext * timeLineCon
 /// \brief Resets parameters of this modifier
 void MagnetController::Reset(TimeLineContext * timeLineContext)
 {
-    TimeLineObject::Reset(timeLineContext);
+//    TimeLineObject::Reset(timeLineContext);
 
 }
 

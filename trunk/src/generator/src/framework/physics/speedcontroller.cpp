@@ -141,7 +141,7 @@ void SpeedController::Apply(float elapsedSeconds, TimeLineContext * timeLineCont
 /// \brief Resets parameters of this modifier
 void SpeedController::Reset(TimeLineContext * timeLineContext)
 {
-    TimeLineObject::Reset(timeLineContext);
+//    TimeLineObject::Reset(timeLineContext);
 
     if(DRAW_SPEED_CURVE)
     {

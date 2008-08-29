@@ -53,7 +53,7 @@ void ChangeDirController::Apply(float elapsedSeconds, TimeLineContext * timeLine
         }
 
         Quat addRot = Quat(degToRad(dirToAdd), Vec(0,1,0));
-		GIL_Avatar* av = timeLineContext->getAvatar();
+		GIL_Avatar* av = timeLineContext->getAvatarImpl();
 
         ((CalAvatar*)av)->changeGlobalRotationOffset( QuatToCalQuat(addRot) );
 
