@@ -65,7 +65,7 @@ void SpeedController::Apply(float elapsedSeconds, TimeLineContext * timeLineCont
 {
     Controller::Apply(elapsedSeconds, timeLineContext);
 
-    CalAvatar* av = (CalAvatar*)timeLineContext->getAvatar();
+    CalAvatar* av = (CalAvatar*)timeLineContext->getAvatarImpl();
 
     float currSpeedFactor = av->getCurrSpeedFactor();
     float destSpeedFactor = av->getDestSpeedFactor();
