@@ -140,6 +140,7 @@ GIL_AnimExecution* CalAvatar::PlayCyclicAnimation(int animID, float fade_in)
 void CalAvatar::StopCyclicAnimation(int animID, float fade_out)
 {
 	GetCalModel()->getMixer()->clearCycle(animID, fade_out);
+	GetCalModel()->getMixer()->setAnimationTime(0.0f);  // ABAK (10-09-2008): to reset influence of this cyclic animation on global animation time
 }
 
 bool CalAvatar::isAnimValid(GIL_AnimExecution* animExec)
