@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="windows-1250"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
@@ -743,6 +743,14 @@
 						RelativePath=".\src\framework\timeline\lcsmodifier.h"
 						>
 					</File>
+					<File
+						RelativePath=".\src\framework\timeline\stopcontroller.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\framework\timeline\stopcontroller.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="detector"
@@ -893,81 +901,9 @@
 		<Filter
 			Name="footbak"
 			>
-			<File
-				RelativePath=".\src\footbak\game.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\footbak\game.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\footbak\player.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\footbak\player.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\footbak\playerfactory.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\footbak\playerfactory.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\footbak\restposconstraint.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\footbak\restposconstraint.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\footbak\restposgoal.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\footbak\restposgoal.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\footbak\team.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\footbak\team.h"
-				>
-			</File>
 			<Filter
 				Name="field"
 				>
-				<File
-					RelativePath=".\src\footbak\field\ball.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\footbak\field\ball.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\footbak\field\ballfactory.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\footbak\field\ballfactory.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\footbak\field\field.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\footbak\field\field.h"
-					>
-				</File>
 			</Filter>
 		</Filter>
 	</Files>

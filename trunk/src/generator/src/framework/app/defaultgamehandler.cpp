@@ -119,6 +119,7 @@ void DefaultGameHandler::InitAvatars()
 			av->AddController(speedCtl);
 
 			av->AddController(avImpl->getFootDetector());
+			av->AddController(avImpl->getStopController()); //mka 2008.08.29
 
 			//av->AddController(new MagnetController()); //TODO: uncomment it if works well
 

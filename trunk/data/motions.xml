@@ -15,6 +15,7 @@
 
 	<Motion name="" animLoop="true" loopNumber="-1" interrupting="true">
 		<Animation name="walkloop.caf" />
+	<Blender overlap="0.2" />
 	</Motion>
 
 </ComplexMotion>

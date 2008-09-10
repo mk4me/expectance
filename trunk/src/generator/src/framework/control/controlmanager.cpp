@@ -301,7 +301,12 @@ void ControlManager::SendControlEvent(Avatar* av, int event_id)
 		if (av->getCurrTopMotion() != NULL)
 		{
 			if (av->getCurrTopMotion()->getName().compare("walk") == 0)
-				av->ExecuteAction("idle");
+				///av->ExecuteAction("idle");
+			{
+				//mka 2008.08.30 send signal to get stop controller possibility to go on
+				CalAvatar* avImpl = (CalAvatar*)av->getImplementation();
+				avImpl->getStopController()->setStop(true);
+			}
 			else if (av->getCurrTopMotion()->getName().compare("run") == 0)
 				av->ExecuteAction("walk");
 		}
