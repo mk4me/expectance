@@ -25,14 +25,13 @@ namespace ft
 
 		osgCal::CoreModel* getCoreModel() { return m_osgCoreModel; }
 
-
         bool AddMotion(Animation* motion);
         bool  RemoveMotion(Animation* motion);
         Animation* GetMotion(std::string motionName);
         std::map<std::string,Animation*>& getMotionsMap() { return m_motions; }
         void InitMotions();
 
-        //virtual void InitTransform(bool source_3dsmax);
+        virtual void InitTransforms();
 
         //virtual void Dump();
     

@@ -8,6 +8,8 @@
 
 #include "evolution/controller.h"
 #include "evolution/timelinecontext.h"
+#include "../avatar/osgavatar.h"
+#include "../motion/transform.h"
 
 
 
@@ -29,6 +31,9 @@ namespace ft
         //virtual void Reset(TimeLineContext * timeLineContext); // resets current object and its children
 
         //virtual std::string toString(); //OVERRIDEN
+	private:
+        CalVector m_vLastPos;
+		Transform* GetTransformForAnim(CalAnimation* anim, OsgAvatar* avatar);
     };
 }
 

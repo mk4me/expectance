@@ -415,6 +415,10 @@
 			Name="avatar"
 			>
 			<File
+				RelativePath=".\src\avatar\avatarupdatecallback.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\avatar\osgavatar.cpp"
 				>
 			</File>
@@ -464,6 +468,14 @@
 			</File>
 			<File
 				RelativePath=".\src\motion\motiondata.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\motion\transform.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\motion\transform.h"
 				>
 			</File>
 		</Filter>

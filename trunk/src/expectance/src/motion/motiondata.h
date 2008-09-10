@@ -7,7 +7,7 @@
 
 #include "gil/gil_animdata.h"
 
-//#include "scene/transform.h"
+#include "transform.h"
 
 namespace ft
 {
@@ -17,12 +17,12 @@ namespace ft
 	class MotionData : public gil::GIL_AnimData
     {
 	public:
-		//MotionData(Transform* trans) { m_transform = trans; }
-		//void setTransform(Transform* trans) { m_transform = trans; }
-		//Transform* getTransform() { return m_transform; }
+		MotionData(Transform* trans) { m_transform = trans; }
+		void setTransform(Transform* trans) { m_transform = trans; }
+		Transform* getTransform() { return m_transform; }
 
 	private:
-		//Transform* m_transform;
+		Transform* m_transform;
 
     };
 }

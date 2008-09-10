@@ -72,7 +72,7 @@ OsgAvatar* OsgAvatarFactory::CreateAvatar(const std::string avatarTypeName, cons
 	    osgCal::Model* model = new osgCal::Model();
 		model->load( avatarType->getCoreModel(), meshAdder.get() );
 
-		newObject = new OsgAvatar(model, objectName);
+		newObject = new OsgAvatar(model, avatarType, objectName);
     }
     else
     {

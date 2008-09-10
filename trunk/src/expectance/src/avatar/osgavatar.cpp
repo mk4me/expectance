@@ -18,9 +18,10 @@ using namespace ft::gil;
  * \param CalCoreModel * calCoreModel - type defined in Cal3d that has been used to create CalModel for this avatar
  * \param const std::string modelName - name defined in ft::BaseObject which is the base class for Avatar
  **/
-OsgAvatar::OsgAvatar(osgCal::Model *osgModel, const std::string name)
+OsgAvatar::OsgAvatar(osgCal::Model *osgModel, OsgAvatarType* type, const std::string name)
 {
 	m_osgModel = osgModel;
+	m_avatarType = type;
 	m_offsetTransform = new osg::PositionAttitudeTransform();
 	m_offsetTransform->addChild(osgModel);
 

@@ -42,6 +42,8 @@
 #include "evolution/dataprovider.h"
 #include "../avatar/osgavatar.h"
 #include "evolution/evodbg.h"
+#include "../timeline/lcsmodifier.h"
+#include "../avatar/avatarupdatecallback.h"
 
 
 using namespace ft;
@@ -150,16 +152,18 @@ class ToggleHandler : public osgGA::GUIEventHandler
 						if (m_activeAvatar != NULL)
 						{
 							OsgAvatar* avImpl = (OsgAvatar*)m_activeAvatar->getImplementation();
-							osg::Node* node = avImpl->getOsgModel();
-							// set rotation here
+							osg::Quat currRot = avImpl->getGlobalRotation();
+							currRot *= osg::Quat(0.1f,osg::Vec3d(0,0,1));
+							avImpl->setGlobalRotation(currRot);
 						}
 
 					}  else if ( ea.getKey() == ea.KEY_Right ) {
 						if (m_activeAvatar != NULL)
 						{
 							OsgAvatar* avImpl = (OsgAvatar*)m_activeAvatar->getImplementation();
-							osg::Node* node = avImpl->getOsgModel();
-							// set rotation here
+							osg::Quat currRot = avImpl->getGlobalRotation();
+							currRot *= osg::Quat(-0.1f,osg::Vec3d(0,0,1));
+							avImpl->setGlobalRotation(currRot);
 						}
 					}
                 }
@@ -280,6 +284,19 @@ void InitWorld(World* world)
 	//ControlManager::getInstance()->getActiveAvatar()->ExecuteAction("idle");
 }
 
+void IntiUpdateCallbackForAvatar(Avatar* avatar)
+{
+	OsgAvatar* avImpl = static_cast<OsgAvatar*>(avatar->getImplementation());
+	osgCal::Model* model = avImpl->getOsgModel();
+
+	//replace update callback from OsgCal with proper one for evolution
+	model->setUpdateCallback(0);
+	// TODO: check how to destroy updatecallback
+	//osg::NodeCallback* oldUpdateCallback = model->getUpdateCallback();
+	//delete oldUpdateCallback.;
+	model->setUpdateCallback(new AvatarUpdateCallback(avatar));
+
+}
 
 EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 {
@@ -357,7 +374,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	m_evolutionImpl.Init();
 	m_animProvider.Init();
 	m_world = ft::Factory::getInstance()->CreateWorld();
-	EvoDBG::setTimelineLevel(1);
+	//EvoDBG::setTimelineLevel(1);
 
 
 
@@ -367,9 +384,11 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
   if (avatar != NULL)
   {
 	  OsgAvatar* av = static_cast<OsgAvatar*>(avatar->getImplementation());
-	  root->addChild(  av->getOffsetTransform()  );
+	  root->addChild(  av->getOffsetTransform());
 
+	  avatar->AddController(new LCSModifier());
 	  m_world->AddAvatar(avatar);
+	  IntiUpdateCallbackForAvatar(avatar);
 	  avatar->StartSimulation();
 	  
   }
@@ -380,7 +399,9 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	  OsgAvatar* av = static_cast<OsgAvatar*>(avatar2->getImplementation());
 	  root->addChild(  av->getOffsetTransform()  );
 
+	  avatar2->AddController(new LCSModifier());
 	  m_world->AddAvatar(avatar2);
+	  IntiUpdateCallbackForAvatar(avatar2);
 	  avatar2->StartSimulation();
 	  av->setPosition(osg::Vec3d(300,0,0));
 	  
@@ -413,6 +434,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
         addWindow( viewer,   0, 480, 640, 480,  1.0,  1.0 );
         addWindow( viewer, 640, 480, 640, 480, -1.0,  1.0 );
     }
+	viewer.setUpViewInWindow(0,0,640,480);
 
     // add the state manipulator
     viewer.addEventHandler( new osgGA::StateSetManipulator( viewer.getCamera()->getOrCreateStateSet() ) );
@@ -530,7 +552,9 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
             startTick,
             pauseState == Unpaused ? tick : pauseStartTick );
 
-		m_world->Update(currentTime - totalPauseTime);
+		//m_world->Update(currentTime - totalPauseTime);
+		//avatar->ManualUpdate(currentTime - totalPauseTime);
+		//avatar2->ManualUpdate(currentTime - totalPauseTime);
         viewer.frame( currentTime - totalPauseTime );
 
     }
@@ -541,6 +565,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 
     return 0;
 }
+
 
 
 /**

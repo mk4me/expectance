@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2007, FutureToday. All rights reserved.
- * author: abak, mka
+ * Copyright (c) 2008, FutureToday. All rights reserved.
+ * author: abak
  */
 
 #ifndef _OSGAVATAR_H
@@ -16,6 +16,8 @@
 //#include "../timeline/footdetector.h"
 #include "osg/PositionAttitudeTransform"
 #include "osg/Vec3d"
+#include "osg/Quat"
+#include "osgavatartype.h"
 
 namespace ft
 {
@@ -25,11 +27,12 @@ namespace ft
 	class OsgAvatar : public gil::GIL_Avatar
     {
     public:
-		OsgAvatar(osgCal::Model* osgModel, const std::string name);
+		OsgAvatar(osgCal::Model* osgModel, OsgAvatarType* type,  const std::string name);
 	    virtual ~OsgAvatar(void);
         virtual void Destroy(void);
 
 		virtual const std::string getType(); 
+		OsgAvatarType* getAvatarType() { return m_avatarType; }
 		gil::GIL_Animation* getAnimation(const std::string& animName);
 
         //MsgSender* getLocalMsgSender() { return m_localMsgSender; }
@@ -69,6 +72,10 @@ namespace ft
 		void setPosition(const osg::Vec3d &pos) { m_offsetTransform->setPosition(pos);  }
 		const osg::Vec3d& getPosition() { return m_offsetTransform->getPosition();  }
 
+		void setGlobalRotation(const osg::Quat &rotation) { m_offsetTransform->setAttitude(rotation);  }
+		const osg::Quat& getGlobalRotation() { return m_offsetTransform->getAttitude();  }
+
+
 		//void OnMessage(Message* msg);
 
 		//void setFootDetector(FootDetector* detector) { m_footDetector = detector; }
@@ -78,6 +85,7 @@ namespace ft
     private:
 		osg::PositionAttitudeTransform* m_offsetTransform;
 		osgCal::Model* m_osgModel;
+		OsgAvatarType* m_avatarType;
         //MsgSender* m_localMsgSender;
 
         float m_currSpeedFactor;

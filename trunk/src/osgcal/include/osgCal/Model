@@ -137,8 +137,12 @@ namespace osgCal {
             const CoreModel* getCoreModel() const;
             const ModelData* getModelData() const { return modelData.get(); }
             CalModel*        getCalModel();
-
-            /**
+            
+            // added by Abak: 2008-0829 ->
+            ModelData* getModelDataForEvolution() { return modelData.get(); }
+            //<- end of abak's changes
+			
+           /**
              * Update meshes.
              */
             void update( double deltaTime );
@@ -284,8 +288,11 @@ namespace osgCal {
              * when depth mesh is requested.
              */
             void removeDepthMesh( DepthMesh* depthMesh );
-
+            
+            // set public method by Abak 2008-08-29 to used by evolution ->
+		public:
             void updateMeshes();
+            // <- end of abak's changes
 
     };
 
@@ -296,7 +303,8 @@ namespace osgCal {
      * from Model to remove circular references between submeshes and
      * model.
      */
-    class ModelData : public osg::Referenced
+     // OSGCAL_EXPORT added by abak 2008-08-29 to use methods of this calss by evolution 
+    class OSGCAL_EXPORT ModelData : public osg::Referenced
     {
         public:
 

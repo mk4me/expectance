@@ -114,7 +114,6 @@
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
-
 		<Configuration
 			Name="DLL Release|Win32"
 			OutputDirectory="..\..\lib\win32\release"
@@ -310,7 +309,6 @@
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
-
 		<Configuration
 			Name="Full Release|Win32"
 			OutputDirectory="..\..\lib\win32\release"
@@ -407,7 +405,6 @@
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
-
 	</Configurations>
 	<References>
 	</References>

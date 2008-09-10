@@ -5,7 +5,7 @@
 
 #include "osgavatartype.h"
 //#include "../app/gendebug.h"
-//#include "scene/transformmanager.h"
+#include "../motion/transform.h"
 #include "../utility/stringhelper.h"
 
 using namespace ft;
@@ -19,6 +19,7 @@ OsgAvatarType::OsgAvatarType(const std::string &typeName, osgCal::CoreModel* cor
 {
 	m_osgCoreModel = coreModel;
 	InitMotions();
+	InitTransforms();
 }
 
 /**
@@ -138,23 +139,21 @@ void OsgAvatarType::InitMotions()
 	}
 }
 
-/*void CalAvatarType::InitTransform(bool source_3dsmax)
+void OsgAvatarType::InitTransforms()
 {
-    Cal3dType::InitTransform(source_3dsmax);
-
     //inits transform for motions
    	std::map<std::string,Animation*>::iterator it = m_motions.begin();
 
     for( ; it != m_motions.end(); ++it ) 
     {
         Animation* mot = it->second;
-        CalCoreAnimation* coreAnim = getCoreAnimation(mot->getAnimID());
-        Transform* transform = new Transform(TRANSFORM_FROM_3DSMAX);
-        transform->InitForAnim(coreAnim, source_3dsmax);
+		CalCoreAnimation* coreAnim = getCoreModel()->getCalCoreModel()->getCoreAnimation(mot->getAnimID());
+        Transform* transform = new Transform();
+        transform->InitForAnim(coreAnim);
         mot->setMotionData(new MotionData(transform));
     }
 }
-*/
+
 
 
 /**
