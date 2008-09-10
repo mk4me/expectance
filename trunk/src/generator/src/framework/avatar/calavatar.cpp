@@ -26,6 +26,7 @@ Cal3DObject(calModel, calCoreModel, modelName)
     InitSpeedFactor();
 	setFootDetector(new FootDetector());
 	InitFootDetector();
+	setStopController(new StopController()); // mka 2008.08.29
 
 	m_turnLeft = m_turnRight = true;
 	FOOT_DETECTOR = ((Config::getInstance()->IsKey("foot_detector")) 
