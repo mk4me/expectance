@@ -298,6 +298,82 @@ void IntiUpdateCallbackForAvatar(Avatar* avatar)
 
 }
 
+osg::Node* createFloor(const osg::Vec3& center,float radius)
+{
+
+   
+    int numTilesX = 6;
+    int numTilesY = 6;
+   
+    float width = 2*radius;
+    float height = 2*radius;
+   
+    osg::Vec3 v000(center - osg::Vec3(width*0.5f,height*0.5f,0.0f));
+    osg::Vec3 dx(osg::Vec3(width/((float)numTilesX),0.0,0.0f));
+    osg::Vec3 dy(osg::Vec3(0.0f,height/((float)numTilesY),0.0f));
+   
+    // fill in vertices for grid, note numTilesX+1 * numTilesY+1...
+    osg::Vec3Array* coords = new osg::Vec3Array;
+    int iy;
+    for(iy=0;iy<=numTilesY;++iy)
+    {
+        for(int ix=0;ix<=numTilesX;++ix)
+        {
+            coords->push_back(v000+dx*(float)ix+dy*(float)iy);
+        }
+    }
+   
+    //Just two colours - black and gray.
+    osg::Vec4Array* colors = new osg::Vec4Array;
+    colors->push_back(osg::Vec4(0.245f,0.245f,0.245f,1.0f)); // gray
+    colors->push_back(osg::Vec4(0.01f,0.01f,0.01f,1.0f)); // black
+    int numColors=colors->size();
+   
+   
+    int numIndicesPerRow=numTilesX+1;
+    osg::UByteArray* coordIndices = new osg::UByteArray; // assumes we are using less than 256 points...
+    osg::UByteArray* colorIndices = new osg::UByteArray;
+    for(iy=0;iy<numTilesY;++iy)
+    {
+        for(int ix=0;ix<numTilesX;++ix)
+        {
+            // four vertices per quad.
+            coordIndices->push_back(ix    +(iy+1)*numIndicesPerRow);
+            coordIndices->push_back(ix    +iy*numIndicesPerRow);
+            coordIndices->push_back((ix+1)+iy*numIndicesPerRow);
+            coordIndices->push_back((ix+1)+(iy+1)*numIndicesPerRow);
+           
+            // one color per quad
+            colorIndices->push_back((ix+iy)%numColors);
+        }
+    }
+   
+
+    // set up a single normal
+    osg::Vec3Array* normals = new osg::Vec3Array;
+    normals->push_back(osg::Vec3(0.0f,0.0f,1.0f));
+   
+
+    osg::Geometry* geom = new osg::Geometry;
+    geom->setVertexArray(coords);
+    geom->setVertexIndices(coordIndices);
+   
+    geom->setColorArray(colors);
+    geom->setColorIndices(colorIndices);
+    geom->setColorBinding(osg::Geometry::BIND_PER_PRIMITIVE);
+   
+    geom->setNormalArray(normals);
+    geom->setNormalBinding(osg::Geometry::BIND_OVERALL);
+   
+    geom->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUADS,0,coordIndices->size()));
+   
+    osg::Geode* geode = new osg::Geode;
+    geode->addDrawable(geom);
+   
+    return geode;
+}
+
+
 EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 {
     // use an ArgumentParser object to manage the program arguments.
@@ -365,6 +441,23 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 
 //    osg::Group* root = new osg::Group();
 
+
+	osg::ref_ptr< osg::Group > root = new osg::Group();
+	
+	// floor
+
+	osg::Vec3 center(0.0f,0.0f,0.0f);
+    float radius = 2000.0f;
+	float baseHeight = center.z()-radius*0.5;
+    osg::Node* baseModel = createFloor(center,radius);
+    osg::MatrixTransform* worldTransformNode = new osg::MatrixTransform;
+	worldTransformNode->setMatrix(osg::Matrix::rotate(osg::inDegrees(5.0f),1.0f,0.0f,0.0f));
+    worldTransformNode->addChild(baseModel);
+
+	root->addChild(worldTransformNode);
+
+
+
 	//------------ EVOLUTION init
 
 	Cal3dImpl m_evolutionImpl;
@@ -378,13 +471,13 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 
 
 
-    osg::ref_ptr< osg::Group > root = new osg::Group();
+
 
   Avatar* avatar = Factory::getInstance()->createAvatar("av1",AVATAR_TYPE);
   if (avatar != NULL)
   {
 	  OsgAvatar* av = static_cast<OsgAvatar*>(avatar->getImplementation());
-	  root->addChild(  av->getOffsetTransform());
+	  worldTransformNode->addChild(  av->getOffsetTransform());
 
 	  avatar->AddController(new LCSModifier());
 	  m_world->AddAvatar(avatar);
@@ -397,7 +490,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
   if (avatar2 != NULL)
   {
 	  OsgAvatar* av = static_cast<OsgAvatar*>(avatar2->getImplementation());
-	  root->addChild(  av->getOffsetTransform()  );
+	  worldTransformNode->addChild(  av->getOffsetTransform()  );
 
 	  avatar2->AddController(new LCSModifier());
 	  m_world->AddAvatar(avatar2);
@@ -434,7 +527,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
         addWindow( viewer,   0, 480, 640, 480,  1.0,  1.0 );
         addWindow( viewer, 640, 480, 640, 480, -1.0,  1.0 );
     }
-	viewer.setUpViewInWindow(0,0,640,480);
+	//viewer.setUpViewInWindow(0,0,640,480);
 
     // add the state manipulator
     viewer.addEventHandler( new osgGA::StateSetManipulator( viewer.getCamera()->getOrCreateStateSet() ) );
@@ -469,6 +562,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 
 //    root->getOrCreateStateSet()->setAttributeAndModes( new osg::CullFace, osg::StateAttribute::ON );
     // turn on back face culling
+
 
 // light is already smooth by default
 //    osg::ShadeModel* shadeModel = new osg::ShadeModel;
@@ -565,6 +659,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 
     return 0;
 }
+
 
 
 
