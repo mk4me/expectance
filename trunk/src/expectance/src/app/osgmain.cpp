@@ -18,6 +18,8 @@
 #include <osgGA/TrackballManipulator>
 #include <osgGA/KeySwitchMatrixManipulator>
 #include <osg/Texture2D>
+#include <osg/BlendFunc>
+#include <osg/AlphaFunc>
 #include <osgUtil/GLObjectsVisitor>
 
 #include <osgViewer/Viewer>
@@ -44,7 +46,7 @@
 #include "evolution/evodbg.h"
 #include "../timeline/lcsmodifier.h"
 #include "../avatar/avatarupdatecallback.h"
-
+#include "../control/controlmanager.h"
 
 using namespace ft;
 
@@ -98,7 +100,7 @@ class ToggleHandler : public osgGA::GUIEventHandler
             : toggleVar( &toggleVar )
             , key( key )
             , help( help )
-			, m_activeAvatar( activeAvatar )
+			, m_activeAvatar( ControlManager::getInstance()->getActiveAvatar() )
         {
         }
         
@@ -165,7 +167,16 @@ class ToggleHandler : public osgGA::GUIEventHandler
 							currRot *= osg::Quat(-0.1f,osg::Vec3d(0,0,1));
 							avImpl->setGlobalRotation(currRot);
 						}
+					} else if ( ea.getKey() == ea.KEY_F1 ) {
+						int _activeAvatarIndex = ControlManager::getInstance()->getActiveAvatarInd();
+						if ( _activeAvatarIndex >= 0)
+						{
+							_activeAvatarIndex = (_activeAvatarIndex+1) % ControlManager::getInstance()->getAvatarsCount();
+							ControlManager::getInstance()->setActiveAvatar(_activeAvatarIndex);
+							m_activeAvatar = ControlManager::getInstance()->getActiveAvatar();
+						}
 					}
+
                 }
                 default: break;
             }
@@ -281,7 +292,7 @@ void InitWorld(World* world)
 	InitGraphForType(world, AVATAR_TYPE);
 	//InitGraphForType(world, "cally");
 	
-	//ControlManager::getInstance()->getActiveAvatar()->ExecuteAction("idle");
+	ControlManager::getInstance()->getActiveAvatar()->ExecuteAction("idle");
 }
 
 void IntiUpdateCallbackForAvatar(Avatar* avatar)
@@ -302,8 +313,8 @@ osg::Node* createFloor(const osg::Vec3& center,float radius)
 {
 
    
-    int numTilesX = 6;
-    int numTilesY = 6;
+    int numTilesX = 10;
+    int numTilesY = 10;
    
     float width = 2*radius;
     float height = 2*radius;
@@ -323,16 +334,15 @@ osg::Node* createFloor(const osg::Vec3& center,float radius)
         }
     }
    
-    //Just two colours - black and gray.
+    //colors when textures doesn't work
     osg::Vec4Array* colors = new osg::Vec4Array;
-    colors->push_back(osg::Vec4(0.245f,0.245f,0.245f,1.0f)); // gray
-    colors->push_back(osg::Vec4(0.01f,0.01f,0.01f,1.0f)); // black
-    int numColors=colors->size();
-   
+    colors->push_back(osg::Vec4(1,1,1,1)); //(0.245f,0.245f,0.245f,1.0f)); // gray
+
    
     int numIndicesPerRow=numTilesX+1;
     osg::UByteArray* coordIndices = new osg::UByteArray; // assumes we are using less than 256 points...
-    osg::UByteArray* colorIndices = new osg::UByteArray;
+    osg::UByteArray* textureIndices = new osg::UByteArray;
+	osg::ref_ptr<osg::Vec2Array> texCoords (new osg::Vec2Array());
     for(iy=0;iy<numTilesY;++iy)
     {
         for(int ix=0;ix<numTilesX;++ix)
@@ -343,9 +353,15 @@ osg::Node* createFloor(const osg::Vec3& center,float radius)
             coordIndices->push_back((ix+1)+iy*numIndicesPerRow);
             coordIndices->push_back((ix+1)+(iy+1)*numIndicesPerRow);
            
-            // one color per quad
-            colorIndices->push_back((ix+iy)%numColors);
+            // one texture per quad
+            //textureIndices->push_back(ix+iy);
+			
+			texCoords->push_back (osg::Vec2 (0.0f, 0.0f));
+			texCoords->push_back (osg::Vec2 (0.0f, 1.0f));
+			texCoords->push_back (osg::Vec2 (1.0f, 1.0f));
+			texCoords->push_back (osg::Vec2 (1.0f, 0.0f));
         }
+
     }
    
 
@@ -357,10 +373,9 @@ osg::Node* createFloor(const osg::Vec3& center,float radius)
     osg::Geometry* geom = new osg::Geometry;
     geom->setVertexArray(coords);
     geom->setVertexIndices(coordIndices);
-   
+    geom->setTexCoordArray (0, texCoords.get());
     geom->setColorArray(colors);
-    geom->setColorIndices(colorIndices);
-    geom->setColorBinding(osg::Geometry::BIND_PER_PRIMITIVE);
+	geom->setColorBinding(osg::Geometry::BIND_PER_PRIMITIVE_SET);
    
     geom->setNormalArray(normals);
     geom->setNormalBinding(osg::Geometry::BIND_OVERALL);
@@ -369,7 +384,39 @@ osg::Node* createFloor(const osg::Vec3& center,float radius)
    
     osg::Geode* geode = new osg::Geode;
     geode->addDrawable(geom);
-   
+	
+	// load an image by reading a file: 
+    osg::ref_ptr<osg::Image> image = osgDB::readImageFile("../../data/textures/0861_floor.tga");
+    if (!image)
+    {
+	   std::cout << " couldn't find texture, quitting." << std::endl;
+       exit (EXIT_FAILURE);
+    }
+	else
+	{
+		//_floorTexture->setBorderWidth(0.8f);
+		// texture in stateset
+		osg::ref_ptr<osg::Texture2D> tex = new osg::Texture2D;
+		tex->setImage(image.get());
+		// After creating the OpenGL texture object, release the internal ref_ptr<Image> (to delete the Image).
+		tex->setUnRefImageDataAfterApply( true );
+		osg::StateSet* state = new osg::StateSet();
+		// Assign texture unit 0 of our new StateSet to the texture we just created and enable the texture.
+		state->setTextureAttributeAndModes(0,tex.get());
+		
+		// Additionally but not necessary Turn on blending
+		osg::BlendFunc* bf = new osg::BlendFunc(
+			osg::BlendFunc::SRC_ALPHA, osg::BlendFunc::ONE_MINUS_SRC_ALPHA );
+		state->setAttributeAndModes( bf );
+
+		// Turn on alpha testing
+		osg::AlphaFunc* af = new osg::AlphaFunc(
+			osg::AlphaFunc::GREATER, 0.05f );
+		state->setAttributeAndModes( af );
+
+		geode->setStateSet(state);
+	}
+
     return geode;
 }
 
@@ -448,13 +495,15 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 
 	osg::Vec3 center(0.0f,0.0f,0.0f);
     float radius = 2000.0f;
-	float baseHeight = center.z()-radius*0.5;
-    osg::Node* baseModel = createFloor(center,radius);
+    osg::Node* floorModel = createFloor(center,radius);
     osg::MatrixTransform* worldTransformNode = new osg::MatrixTransform;
 	worldTransformNode->setMatrix(osg::Matrix::rotate(osg::inDegrees(5.0f),1.0f,0.0f,0.0f));
-    worldTransformNode->addChild(baseModel);
+
+    worldTransformNode->addChild(floorModel);
 
 	root->addChild(worldTransformNode);
+
+
 
 
 
@@ -468,7 +517,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	m_animProvider.Init();
 	m_world = ft::Factory::getInstance()->CreateWorld();
 	//EvoDBG::setTimelineLevel(1);
-
+	ft::ControlManager::getInstance()->Init(); //enforced creation of singleton
 
 
 
@@ -479,6 +528,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	  OsgAvatar* av = static_cast<OsgAvatar*>(avatar->getImplementation());
 	  worldTransformNode->addChild(  av->getOffsetTransform());
 
+	  ControlManager::getInstance()->AddAvatar(avatar);
 	  avatar->AddController(new LCSModifier());
 	  m_world->AddAvatar(avatar);
 	  IntiUpdateCallbackForAvatar(avatar);
@@ -492,6 +542,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	  OsgAvatar* av = static_cast<OsgAvatar*>(avatar2->getImplementation());
 	  worldTransformNode->addChild(  av->getOffsetTransform()  );
 
+	  ControlManager::getInstance()->AddAvatar(avatar2);
 	  avatar2->AddController(new LCSModifier());
 	  m_world->AddAvatar(avatar2);
 	  IntiUpdateCallbackForAvatar(avatar2);
@@ -499,6 +550,8 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	  av->setPosition(osg::Vec3d(300,0,0));
 	  
   }
+
+  ControlManager::getInstance()->setActiveAvatar(ControlManager::getInstance()->getAvatarsCount()-1);
 
   InitWorld(m_world);
   m_world->DumpActions();
@@ -549,7 +602,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
     
     // add the pause handler and avatar controlling
     bool paused = false;
-    viewer.addEventHandler( new ToggleHandler( paused, 'p', "Pause animation", avatar ) );
+    viewer.addEventHandler( new ToggleHandler( paused, 'p', "Pause animation", ControlManager::getInstance()->getActiveAvatar() ) );
 
     while (arguments.read("--SingleThreaded")) viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
     while (arguments.read("--CullDrawThreadPerContext")) viewer.setThreadingModel(osgViewer::Viewer::CullDrawThreadPerContext);
@@ -616,6 +669,11 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 
     viewer.setCameraManipulator(new osgGA::TrackballManipulator());
     viewer.setRealizeOperation( new CompileStateSets( lightSource0 ) );
+	//OsgAvatar* av = static_cast<OsgAvatar*>(avatar->getImplementation());
+	//osg::Node *trObj = av->getOffsetTransform();
+	//viewer.getCameraManipulator()->setNode(trObj);
+	////viewer.getCamera()->setViewMatrixAsLookAt(osg::Vec3d(-1000,-1000,0),osg::Vec3d(0,0,0),osg::Vec3d(0,0,1));
+	
     viewer.realize();
 
 

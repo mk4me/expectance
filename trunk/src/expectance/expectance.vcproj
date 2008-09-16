@@ -515,6 +515,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="control"
+			>
+			<File
+				RelativePath=".\src\control\controlmanager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\control\controlmanager.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
