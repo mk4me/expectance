@@ -447,6 +447,14 @@
 			Name="utility"
 			>
 			<File
+				RelativePath=".\src\utility\mathutil.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\utility\mathutil.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\utility\stringhelper.cpp"
 				>
 			</File>
