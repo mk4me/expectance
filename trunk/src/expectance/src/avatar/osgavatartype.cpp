@@ -148,8 +148,8 @@ void OsgAvatarType::InitTransforms()
     {
         Animation* mot = it->second;
 		CalCoreAnimation* coreAnim = getCoreModel()->getCalCoreModel()->getCoreAnimation(mot->getAnimID());
-        Transform* transform = new Transform();
-        transform->InitForAnim(coreAnim);
+        Transform* transform = new Transform("");
+        transform->InitForAnim(coreAnim, true);
         mot->setMotionData(new MotionData(transform));
     }
 }

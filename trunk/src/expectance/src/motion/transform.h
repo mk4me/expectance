@@ -1,38 +1,35 @@
 /*
- * Copyright (c) 2007, FutureToday. All rights reserved.
+ * Copyright (c) 2007-2008, FutureToday. All rights reserved.
  * author: abak
  */
 
-#ifndef _FT_TRANSFORM_H
-#define _FT_TRANSFORM_H
+#ifndef _SCENE_TRANSFORM_H
+#define _SCENE_TRANSFORM_H
 
-#include <cal3d/coreanimation.h>
+//#include "../core/baseobject.h"
+//#include "traceline.h"
+#include "../utility/mathutil.h"
+#include "cal3d/coreanimation.h"
 
+//  2008-09-17 abak: copied from Generator project and modified for OSG !!!!!!!!!!!!
 
 namespace ft
 {
 	/* A Transform class 
 	 * Base class for objects responsible for transformation of motion data from original for to application scene
 	 */
-    class Transform {
+    class Transform
+    {
     public:
-		Transform() {} 
-		virtual ~Transform(void) {}
-		virtual void Dump() {}
-		void InitForAnim(CalCoreAnimation* coreAnim);
+        Transform(const std::string type); 
+	    virtual ~Transform(void);
+        //virtual void Dump();
+
+        bool isRoationFrom3dsmax() { return m_rotationFrom3dsmax; }  
+        void setRoationFrom3dsmax(bool set) { m_rotationFrom3dsmax = set; }
 
         const CalVector& getOrigPosition() { return m_vOrigPosition; }
         void setOrigPosition(const CalVector& origPos) { m_vOrigPosition = origPos; }
-
-        const CalVector& getEntireTranslation() { return m_vEntireTranlation; }
-        void setEntireTranslation(const CalVector& trans) { m_vEntireTranlation = trans; }
-
-
-
-		/*
-        bool isRoationFrom3dsmax() { return m_rotationFrom3dsmax; }
-        void setRoationFrom3dsmax(bool set) { m_rotationFrom3dsmax = set; }
-
         const CalVector& getPosOffset() { return m_vPosOffset; }
         void setPosOffset(const CalVector& posOffset) { m_vPosOffset = posOffset; }
         const CalVector& getOrigForward() { return m_vOrigForward; }
@@ -54,8 +51,8 @@ namespace ft
         
         float CalculateAnimForward(CalCoreAnimation* coreAnim, int iterCount, bool from_begin);
 
-        TraceLine* getTraceLine() {return m_forward_trace; }
-        void Trace(const CalVector& pos);
+        //TraceLine* getTraceLine() {return m_forward_trace; }
+        //void Trace(const CalVector& pos);
     private:
         void Init(const CalVector& origPos, float forwardAngle, float endForwardAngle, bool source_3dsmax);
         std::string m_type;
@@ -71,13 +68,9 @@ namespace ft
         CalQuaternion m_qAnimEndDiff;
 
         bool m_rotationFrom3dsmax;   //flag if there was rotation -90 deg. around X (caused by 3ds max source)
-
-        TraceLine* m_forward_trace;
-		*/
-	private:
-		CalVector m_vOrigPosition;  //original position
-		CalVector m_vEntireTranlation;  //translation that all animation performs
+									
+        //TraceLine* m_forward_trace;
     };
 }
 
-#endif //_FT_TRANSFORM_H
+#endif //_SCENE_TRANSFORM_H

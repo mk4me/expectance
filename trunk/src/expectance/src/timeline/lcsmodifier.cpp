@@ -15,6 +15,13 @@ using namespace ft;
 /// \brief constructor
 LCSModifier::LCSModifier()
 {
+     m_vLastPos = CalVector(0,0,0);
+     m_vLastPrevPos = CalVector(0,0,0);
+
+     m_fLastAnimTime = 0;
+
+     INTERPOLATION = true;
+     REST_TRANS_CALC = true;
 }
 
 /// \brief destructor
@@ -47,129 +54,182 @@ void LCSModifier::UpdateRotation(float elapsedSeconds, TimeLineContext * timeLin
 
 void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
-	//TODO:  implement rotation calculation	
 	OsgAvatar* avImpl = (OsgAvatar*)timeLineContext->getAvatarImpl();
 
-	CalBone *bone = avImpl->getOsgModel()->getCalModel()->getSkeleton()->getBone(0);
+    Transform* currTransform = NULL;
+    Transform* prevTransform = NULL;
+    if (timeLineContext->currAnim != NULL)
+    {   
+		CalAnimation* currAnim = ((Cal3dAnimExecution*)timeLineContext->currAnim)->getAnimation();
+        currTransform = GetTransformForAnim(currAnim, avImpl);
+    }
+    else
+    {
+        //currTransform = GetTransformForType(avImpl);  TODO : implement this
+    }
 
-	if (timeLineContext->currAnim != NULL)
-	{
-		//  use anim transform here
-	}
-
+    CalBone *bone = avImpl->getOsgModel()->getCalModel()->getSkeleton()->getBone(0);
     
-	CalVector currPos;
-	
-	if (timeLineContext->currAnim != NULL)
-	{
-		Cal3dAnimExecution* animExec = static_cast<Cal3dAnimExecution*>(timeLineContext->currAnim);
-		CalAnimation* anim = dynamic_cast<CalAnimation*>(  animExec->getAnimation() );
-		Transform* currTransform = GetTransformForAnim(anim, static_cast<OsgAvatar*>(timeLineContext->getAvatarImpl()));
+    CalVector currPos;
+    CalQuaternion tmpRot;    
+    CalVector vPrevPos;
 
+    CalVector vCycleRest;
+    CalVector vOverlapRest;
+    
+    if (timeLineContext->currAnim != NULL)
+    {
 		CalAnimation* currAnim = ((Cal3dAnimExecution*)timeLineContext->currAnim)->getAnimation();
-		CalVector trans(bone->getTranslation());
-		CalVector  origPos = currTransform->getOrigPosition();
-		trans.x -= origPos.x; //kierunek - w lewo
-		trans.y -= origPos.y; //kierunek -do tylu
-		//trans.x += 300; // w lewo
-		//trans.y += 300; // do tylu
-		//trans.z += 200;  // do gory
-		bone->setTranslation(trans);
-		bone->calculateState();
+        CalCoreAnimation* coreAnim = currAnim->getCoreAnimation();
+        coreAnim->getCoreTrack(0)->getState(timeLineContext->currAnimTime, currPos, tmpRot);
+        if (currTransform != NULL)
+        {
+			currPos += currTransform->getPosOffset();
+        }
+ 
+        if (INTERPOLATION && timeLineContext->exec_state == TimeLineContext::EXEC_STATE_OVERLAP)
+        {
+            if (timeLineContext->prevAnim != NULL)
+            {
+				CalAnimation* prevAnim = ((Cal3dAnimExecution*)timeLineContext->prevAnim)->getAnimation();
+                prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(timeLineContext->prevAnimTime, vPrevPos , tmpRot);
+                prevTransform = GetTransformForAnim(prevAnim, avImpl);
+                if (prevTransform != NULL)
+                {
+                    vPrevPos += prevTransform->getPosOffset();
+                }
+                if (timeLineContext->anim_changed)
+                {
+                    m_vLastPrevPos = vPrevPos;
+                }
+            }
+            else
+            {
+//                if (GenDebug::ERR)
+//                    _dbg << GenDebug::ERR_STR << "LCSModifier::UpdateTranslation(): no prev anim for OVERLAP !!! " << endl;
+            }
+        }
 
-		if (timeLineContext->anim_changed || timeLineContext->anim_new_cycle)
-		{
-			CalVector diff;
-			if (timeLineContext->anim_changed)
-			{
-				avImpl->setGlobalRotation( osg::Quat(2,osg::Vec3d(0,0,1)) ); //
-				std::cout << " anim changed " << endl;
-				if (timeLineContext->prevMotion != NULL)
-				{
-					GIL_AnimData* animData = timeLineContext->prevMotion->getAnimData();
-					Transform* prevTransform = static_cast<MotionData*>(animData)->getTransform();
-					diff = prevTransform->getEntireTranslation();
-					std::cout << " --- prev motion not null " << endl;
-				}
-				if (timeLineContext->prevAnim != NULL)
-				{
-/*					Cal3dAnimExecution* prevAnimExec = static_cast<Cal3dAnimExecution*>(timeLineContext->prevAnim);
-					CalAnimation* prevAnim = dynamic_cast<CalAnimation*>(  prevAnimExec->getAnimation() );
-					Transform* prevTransform = GetTransformForAnim(anim, static_cast<OsgAvatar*>(timeLineContext->getAvatarImpl()));
-					diff = prevTransform->getEntireTranslation();
-					std::cout << " --- prev not null " << endl;
-			*/
+        if (timeLineContext->anim_new_cycle)
+        {
+            if (REST_TRANS_CALC )
+            {
+                coreAnim->getCoreTrack(0)->getState(timeLineContext->currAnimDuration, vCycleRest, tmpRot);
+                CalVector vEnd;
+                coreAnim->getCoreTrack(0)->getState(m_fLastAnimTime, vEnd, tmpRot);
+                vCycleRest -= vEnd;
 
-				}
-				
-			}
-			else
-			{
-				diff = currTransform->getEntireTranslation();
-				std::cout << " new ceycle " << endl;
-			}
+                CalVector vCurr;
+                coreAnim->getCoreTrack(0)->getState(timeLineContext->currAnimTime, vCurr, tmpRot);
+                CalVector vZero;
+                coreAnim->getCoreTrack(0)->getState(0, vZero, tmpRot);
+                vCurr -= vZero;
+                vCycleRest += vCurr;
+            }
+        }
 
-	
-			osg::Vec3d pos = avImpl->getPosition();
-			osg::Vec3d newPos = osg::Vec3d(pos.x() + diff.x, pos.y() + diff.y, pos.z() + diff.z);
-			avImpl->setPosition(newPos);
-		}
-	}
+        // Rest calculation for anim_changed is calculated only for OVERLAP state
+        if (timeLineContext->anim_changed && timeLineContext->exec_state == TimeLineContext::EXEC_STATE_OVERLAP)
+        {
+            if (REST_TRANS_CALC )
+            {
+				CalAnimation* prevAnim = ((Cal3dAnimExecution*)timeLineContext->prevAnim)->getAnimation();
+                prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(timeLineContext->prevAnimTime, vOverlapRest, tmpRot);
+                CalVector vPrevious;
+                prevAnim->getCoreAnimation()->getCoreTrack(0)->getState(m_fLastAnimTime, vPrevious, tmpRot);
+                vOverlapRest -= vPrevious;
+            }
+        }
 
-	if (timeLineContext->currAnim != NULL)
-	{
-		CalAnimation* currAnim = ((Cal3dAnimExecution*)timeLineContext->currAnim)->getAnimation();
-		CalVector tmpPos;
-		CalQuaternion tmpRot;
-		CalCoreAnimation* coreAnim = currAnim->getCoreAnimation();
-		coreAnim->getCoreTrack(0)->getState(timeLineContext->currAnimTime, tmpPos, tmpRot);
-		static int counter = 0;
-
-		if (counter%10==0)
-		{
-			osg::Vec3d pos = avImpl->getPosition();
-//			std::cout << " anim (" << tmpPos.x << " , " << tmpPos.y << " , " << tmpPos.z << ")" 
-//				<< std::endl << "  _osg(" << pos.x() << " , " << pos.y() << " , " << pos.z() << ")" << std::endl;
-		}
-		counter++;
-	}
-
-	
-/*    if (timeLineContext->currAnim != NULL)
-	{
-		CalAnimation* currAnim = ((Cal3dAnimExecution*)timeLineContext->currAnim)->getAnimation();
-		CalCoreAnimation* coreAnim = currAnim->getCoreAnimation();
-		coreAnim->getCoreTrack(0)->getState(timeLineContext->currAnimTime, currPos, tmpRot);
-
+        m_fLastAnimTime = timeLineContext->currAnimTime;
+        
         if (timeLineContext->anim_changed || timeLineContext->anim_new_cycle)
         {
             m_vLastPos = currPos;
         }
-	}
+    }
     else
     {
         //if (LOCAL_DEBUG) _dbg << " Original pos " << endl;
         currPos = bone->getTranslation();
-//        if (currTransform != NULL)
-//        {
-//            currPos += currTransform->getPosOffset();
-//        }
+        if (currTransform != NULL)
+        {
+            currPos += currTransform->getPosOffset();
+        }
         m_vLastPos = currPos;
     }
 
     CalVector diff = currPos - m_vLastPos;
-    float y_to_set = currPos.y;
 
-	avImpl->
+    if (REST_TRANS_CALC)
+    {
+        vCycleRest.y = 0;
+        diff += vCycleRest;
+    }
 
-    CalVector vCurrAvatarPosition = avImpl->getPosition();
+
+
+	osg::Quat globalRot = avImpl->getGlobalRotation();
+
+	CalQuaternion qGlobalRotation =  QuatToCalQuat(avImpl->getGlobalRotation());//avImpl->getGlobalRotationOffset();
+    if (currTransform)
+    {
+        qGlobalRotation *= currTransform->getForwardDiff();
+    }
+
+	CalQuaternion rot (qGlobalRotation);
+	rot.invert(); // probably different coordinate system than on OSG 
+	diff *= rot;
+
+    float z_to_set = currPos.z;
+
+    if (INTERPOLATION && timeLineContext->exec_state == TimeLineContext::EXEC_STATE_OVERLAP)
+            //&& timeLineContext->prevAnimTime <= timeLineContext->prevAnimDuration)
+    {
+        //position
+        float factor =  timeLineContext->currAnimTime/timeLineContext->prevOverlap; 
+        CalVector prevDiff = vPrevPos - m_vLastPrevPos;
+
+        vOverlapRest.z = 0;
+        prevDiff += vOverlapRest;
+
+		
+        CalQuaternion qGlobalRotation = QuatToCalQuat(avImpl->getGlobalRotation());
+        if (prevTransform != NULL)
+        {
+            qGlobalRotation *= prevTransform->getForwardDiff();
+        }
+
+		CalQuaternion gloablRot (qGlobalRotation);
+		gloablRot.invert();   // probably different coordinate system than on OSG 
+        prevDiff *= gloablRot;
+
+        diff = (1.0f - factor) * prevDiff + factor * diff;
+        z_to_set = (1.0f - factor) * vPrevPos.z + factor * currPos.z;
+
+        m_vLastPrevPos = vPrevPos;
+    }
+
+
+	osg::Vec3d pos = avImpl->getPosition();
+
+    CalVector vCurrAvatarPosition(pos.x(), pos.y(), pos.z());
     vCurrAvatarPosition += diff;
-    vCurrAvatarPosition.y = y_to_set;   
+    vCurrAvatarPosition.z = z_to_set;   
 
     m_vLastPos = currPos;
-*/
 
-}
+    //bone->setTranslation(vCurrAvatarPosition);  //abak: y must be similiar to y in skeleton (why?)
+	//bone->calculateState();
+
+	osg::Vec3d newPos = osg::Vec3d(vCurrAvatarPosition.x, vCurrAvatarPosition.y, vCurrAvatarPosition.z);
+	avImpl->setPosition(newPos);
+	
+	// reset influence of animation on translation because all translation is set manually inside this method
+	bone->setTranslation(CalVector());
+	bone->calculateState();
+    
+ }
 
  Transform* LCSModifier::GetTransformForAnim(CalAnimation* anim, OsgAvatar* avatar)
 {
