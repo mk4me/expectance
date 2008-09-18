@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2007 - 2008, FutureToday. All rights reserved.
- * author: abak
+ * author: abak,mka
  */
 
 #include "osgmain.h"
@@ -32,6 +32,7 @@
 #include <osgGA/StateSetManipulator>
 #include <osgGA/AnimationPathManipulator>
 #include <osgGA/TerrainManipulator>
+#include <osgGA/NodeTrackerManipulator>
 
 #include <osgCal/CoreModel>
 #include <osgCal/Model>
@@ -48,9 +49,22 @@
 #include "../avatar/avatarupdatecallback.h"
 #include "../control/controlmanager.h"
 
+//#include "../../FollowNodeManip.h"
+
 using namespace ft;
 
 const std::string  AVATAR_TYPE = "../../data/models/freebie/freebie.cfg";
+
+bool PlaceCamera = false;
+bool CameraSet = false;
+
+void toggleView()
+{
+   PlaceCamera^=true;
+   CameraSet = true;
+}
+
+ 
 
 template < typename T >
 T normalize( const T& v )
@@ -174,9 +188,11 @@ class ToggleHandler : public osgGA::GUIEventHandler
 							_activeAvatarIndex = (_activeAvatarIndex+1) % ControlManager::getInstance()->getAvatarsCount();
 							ControlManager::getInstance()->setActiveAvatar(_activeAvatarIndex);
 							m_activeAvatar = ControlManager::getInstance()->getActiveAvatar();
+							CameraSet = true;
 						}
+					} else if ( ea.getKey() == ea.KEY_F10 ) { //camera
+						toggleView();			
 					}
-
                 }
                 default: break;
             }
@@ -667,8 +683,42 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 //    std::cout << "light: " << light << std::endl;
 //    viewer.getEventHandlerList().push_back( new osgGA::TrackballManipulator() );
 
-    viewer.setCameraManipulator(new osgGA::TrackballManipulator());
-    viewer.setRealizeOperation( new CompileStateSets( lightSource0 ) );
+	// Declare and set up a transform to 'follow' the avatar node.
+	//////osg::PositionAttitudeTransform *followerPAT = new osg::PositionAttitudeTransform();
+	//////followerPAT->setPosition( osg::Vec3(0,-1000,200) );
+	//////followerPAT->setAttitude( osg::Quat( osg::DegreesToRadians(-10.0f), osg::Vec3(1,0,0) ));
+
+	//////OsgAvatar* activeAvatar = static_cast<OsgAvatar*>(ft::ControlManager::getInstance()->getActiveAvatar()->getImplementation());
+	//////activeAvatar->getOffsetTransform()->addChild(followerPAT);
+
+	//////transformAccumulator* avatarWorldCoords = new transformAccumulator();
+	//////avatarWorldCoords->attachToGroup(followerPAT);
+
+ //////   followNodeMatrixManipulator* followAvatar = new followNodeMatrixManipulator(avatarWorldCoords);
+
+	//osgGA::TrackballManipulator *Tman = new osgGA::TrackballManipulator();
+ //   
+	//osgGA::MatrixManipulator *cView = Tman;
+	//
+	//viewer.setCameraManipulator(cView);
+ //   
+	//////osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;
+	//////keyswitchManipulator->addMatrixManipulator( '1', "Trackball", new osgGA::TrackballManipulator() ); 
+	//////keyswitchManipulator->addMatrixManipulator( '2', "Avatar", followAvatar );
+ //////   viewer.setCameraManipulator( keyswitchManipulator.get() );    
+	
+
+// next camera
+	osg::ref_ptr<osgGA::NodeTrackerManipulator> followAvatar = new osgGA::NodeTrackerManipulator;
+	followAvatar->setTrackerMode(osgGA::NodeTrackerManipulator::TrackerMode::NODE_CENTER);
+	followAvatar->setRotationMode(osgGA::NodeTrackerManipulator::ELEVATION_AZIM);
+
+	osg::ref_ptr<osgGA::TrackballManipulator> Tman = new osgGA::TrackballManipulator();
+	Tman->setAutoComputeHomePosition(true);
+	
+	viewer.setCameraManipulator(Tman.get());
+
+	viewer.setRealizeOperation( new CompileStateSets( lightSource0 ) );
 	//OsgAvatar* av = static_cast<OsgAvatar*>(avatar->getImplementation());
 	//osg::Node *trObj = av->getOffsetTransform();
 	//viewer.getCameraManipulator()->setNode(trObj);
@@ -703,6 +753,36 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
         double currentTime = osg::Timer::instance()->delta_s( 
             startTick,
             pauseState == Unpaused ? tick : pauseStartTick );
+
+		if (CameraSet)
+		{
+			if (PlaceCamera){
+
+				OsgAvatar* activeAvatar = static_cast<OsgAvatar*>(ft::ControlManager::getInstance()->getActiveAvatar()->getImplementation());
+				followAvatar->setTrackNode(activeAvatar->getOffsetTransform());
+				viewer.setCameraManipulator(followAvatar.get());
+	//			activeAvatar->getOffsetTransform()->addChild(followerPAT);
+	//			keyswitchManipulator->getMatrixManipulatorWithIndex(2)->setNode(NULL);
+	//			keyswitchManipulator->setNodeselectMatrixManipulator(2);
+				CameraSet = false;
+				
+			}
+			else
+			{
+				viewer.setCameraManipulator(Tman.get());
+				CameraSet = false;
+			}
+		}
+		//	//viewer.setCameraManipulator(followAvatar);
+		//	cView = followAvatar;
+		//	viewer.setCameraManipulator(cView);
+		//}
+		//else
+		//{
+		//	cView=Tman;
+		//	viewer.getCamera()->setViewport viewer.setCameraManipulator(cView);
+		//}
+			//viewer.setCameraManipulator(Tman->);
 
 		//m_world->Update(currentTime - totalPauseTime);
 		//avatar->ManualUpdate(currentTime - totalPauseTime);
