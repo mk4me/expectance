@@ -5,7 +5,7 @@
 
 #include "osgavatar.h"
 //#include "../app/gendebug.h"
-//#include "osgavatartype.h"
+#include "osgavatartype.h"
 #include "../motion/animation.h"
 
 using namespace ft;
@@ -28,8 +28,8 @@ OsgAvatar::OsgAvatar(osgCal::Model *osgModel, OsgAvatarType* type, const std::st
 //    m_localMsgSender = new MsgSender();
 //	m_localMsgSender->AddMsgListener(this);
 //    InitSpeedFactor();
-//	setFootDetector(new FootDetector());
-//	InitFootDetector();
+	setFootDetector(new FootDetector());
+	InitFootDetector();
 	setStopController(new StopController()); // mka 2008.09.19
 
 //	m_turnLeft = m_turnRight = true;
@@ -95,20 +95,20 @@ GIL_Animation* OsgAvatar::getAnimation(const std::string& animName)
  * \brief Collects all motions (animations) for ths avatar from CalCoreModel
  **/
 //TODO: recover it
-/*
-void CalAvatar::InitFootDetector()
+
+void OsgAvatar::InitFootDetector()
 {
     FootDetector* _fd = getFootDetector();
 
-    std::map<std::string,Animation*> motions = ((CalAvatarType*)GetCalCoreModel())->getMotionsMap();
-  	std::map<std::string,Animation*>::iterator it = motions.begin();
+//	std::map<std::string,Animation*> motions = ((OsgAvatarType*)getOsgModel()->getCoreModel()->getCalCoreModel())->getMotionsMap(); ???
+//  	std::map<std::string,Animation*>::iterator it = motions.begin();
 
-    for( ; it != motions.end(); ++it ) 
-    {
-        _fd->AddLimits(it->second->getAnimName(), it->second->footLimits);
-    }
+    //for( ; it != motions.end(); ++it ) 
+    //{
+    //    _fd->AddLimits(it->second->getAnimName(), it->second->footLimits);
+    //}
 }
-*/
+
 
 
 void OsgAvatar::Update(const double elapsedSeconds)

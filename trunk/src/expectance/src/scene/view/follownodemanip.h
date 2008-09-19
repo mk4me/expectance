@@ -17,7 +17,7 @@ public:
    virtual void setByInverseMatrix(const osg::Matrixd&mat);
    virtual osg::Matrixd getInverseMatrix() const;
    virtual osg::Matrixd getMatrix() const;
-   void setTransformAccumulator(transformAccumulator* ta);
+   //void setTransformAccumulator(transformAccumulator* ta);
 protected:
    ~followNodeMatrixManipulator() {}
    transformAccumulator* worldCoordinatesOfNode;

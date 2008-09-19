@@ -13,7 +13,7 @@
 #include "gil/gil_animation.h"
 #include "cal3d/cal3d.h"
 #include "../evolution_impl/cal3danimexecution.h"
-//#include "../timeline/footdetector.h"
+#include "../timeline/footdetector.h"
 #include "../timeline/stopcontroller.h"
 
 #include "osg/PositionAttitudeTransform"
@@ -80,8 +80,8 @@ namespace ft
 
 		//void OnMessage(Message* msg);
 
-		//void setFootDetector(FootDetector* detector) { m_footDetector = detector; }
-        //FootDetector* getFootDetector() { return m_footDetector; }
+		void setFootDetector(FootDetector* detector) { m_footDetector = detector; }
+        FootDetector* getFootDetector() { return m_footDetector; }
 		void setStopController(StopController* cntrl) {m_stopController = cntrl; }
 		StopController* getStopController() { return m_stopController; }
 
@@ -98,9 +98,9 @@ namespace ft
         float m_speedfactorMax;
 
 		//void InitSpeedFactor();
-		//void InitFootDetector();
+		void InitFootDetector();
 
-        //FootDetector* m_footDetector; //TODO: only temporarily here
+        FootDetector* m_footDetector; //TODO: only temporarily here
 		StopController* m_stopController; //TODO: only temporarily here 28-08-200
 		//bool m_turnLeft, m_turnRight, FOOT_DETECTOR;
     };

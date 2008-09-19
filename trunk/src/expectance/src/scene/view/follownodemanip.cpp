@@ -17,6 +17,10 @@ void followNodeMatrixManipulator::setByInverseMatrix(const osg::Matrixd& mat)
 void followNodeMatrixManipulator::updateTheMatrix()
 {
    theMatrix = worldCoordinatesOfNode->getMatrix();
+   
+   //osg::Vec3f softTransform = theMatrix.getTrans();
+   //softTransform.z() = -100.0;
+   //theMatrix.setTrans(softTransform);
 }
 osg::Matrixd followNodeMatrixManipulator::getInverseMatrix() const
 {
@@ -25,11 +29,11 @@ osg::Matrixd followNodeMatrixManipulator::getInverseMatrix() const
    return m;
 }
 
-void followNodeMatrixManipulator::setTransformAccumulator(transformAccumulator* ta)
-{
-   worldCoordinatesOfNode = ta;
-   theMatrix = osg::Matrixd::identity();
-}
+//void followNodeMatrixManipulator::setTransformAccumulator(transformAccumulator* ta)
+//{
+//   worldCoordinatesOfNode = ta;
+//   theMatrix = osg::Matrixd::identity();
+//}
 
 osg::Matrixd followNodeMatrixManipulator::getMatrix() const
 {

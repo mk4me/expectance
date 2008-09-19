@@ -403,7 +403,7 @@ osg::Node* createFloor(const osg::Vec3& center,float radius)
     geode->addDrawable(geom);
 	
 	// load an image by reading a file: 
-    osg::ref_ptr<osg::Image> image = osgDB::readImageFile("../../data/textures/0861_floor.tga");
+    osg::ref_ptr<osg::Image> image = osgDB::readImageFile("../../data/textures/floorhex3.tga");
     if (!image)
     {
 	   std::cout << " couldn't find texture, quitting." << std::endl;
@@ -653,6 +653,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 
 			ControlManager::getInstance()->AddAvatar(av);
 			av->AddController(new LCSModifier());
+			av->AddController(avImpl->getFootDetector());
 			av->AddController(avImpl->getStopController()); //mka 2008.08.19
 			m_world->AddAvatar(av);
 			IntiUpdateCallbackForAvatar(av);
@@ -751,26 +752,27 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
     lightSource0->addChild( root.get() );
 
 //     // -- light #1 --
-//     osg::Light* light1 = new osg::Light();
-//     light1->setLightNum( 1 );
-//     light1->setAmbient( osg::Vec4( 0, 0, 0, 1 ) );
-//     light1->setDiffuse( osg::Vec4( 0.4, 0.4, 0.4, 1 ) );
-//     light1->setSpecular( osg::Vec4( 1, 1, 1, 0 ) );
-//     // as in SceneView, except direction circa as in 3DSMax
-//     light1->setPosition( normalize(osg::Vec4( -0.15, -0.4, -1, 0 )) ); // w=0 - Directional
-//     light1->setDirection( osg::Vec3( 0, 0, 0 ) );  // Direction = (0,0,0) - Omni light
+     //osg::Light* light1 = new osg::Light();
+     //light1->setLightNum( 1 );
+     //light1->setAmbient( osg::Vec4( 0, 0, 0, 1 ) );
+     //light1->setDiffuse( osg::Vec4( 0.4, 0.4, 0.4, 1 ) );
+     //light1->setSpecular( osg::Vec4( 1, 1, 1, 0 ) );
+     //// as in SceneView, except direction circa as in 3DSMax
+     //light1->setPosition( normalize(osg::Vec4( -0.15, -0.4, -1, 0 )) ); // w=0 - Directional
+     //light1->setDirection( osg::Vec3( 0, 0, 0 ) );  // Direction = (0,0,0) - Omni light
 
-//     osg::LightSource* lightSource1 = new osg::LightSource();
-//     lightSource1->setLight( light1 );
-//     lightSource1->setReferenceFrame( osg::LightSource::ABSOLUTE_RF );
-//     lightSource1->addChild( lightSource0 );
+     //osg::LightSource* lightSource1 = new osg::LightSource();
+     //lightSource1->setLight( light1 );
+     //lightSource1->setReferenceFrame( osg::LightSource::ABSOLUTE_RF );
+     //lightSource1->addChild( lightSource0 );
 
-    viewer.setSceneData(/*root*/lightSource0);
-//    root->getOrCreateStateSet()->setMode( GL_LIGHTING,osg::StateAttribute::ON );
-//    root->getOrCreateStateSet()->setAttributeAndModes( light, osg::StateAttribute::ON );
+    osg::Light* light = (osg::Light*)
+        root->getOrCreateStateSet()->getAttribute( osg::StateAttribute::LIGHT );
+	viewer.setSceneData(/*root*/lightSource0);
+    root->getOrCreateStateSet()->setMode( GL_LIGHTING,osg::StateAttribute::ON );
+    root->getOrCreateStateSet()->setAttributeAndModes( light, osg::StateAttribute::ON );
 
-//    osg::Light* light = (osg::Light*)
-//        root->getOrCreateStateSet()->getAttribute( osg::StateAttribute::LIGHT );
+
 //    std::cout << "light: " << light << std::endl;
 //    viewer.getEventHandlerList().push_back( new osgGA::TrackballManipulator() );
 
@@ -781,37 +783,30 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	followerPAT->setPosition( osg::Vec3(0,-1000,200) );
 	followerPAT->setAttitude( osg::Quat( osg::DegreesToRadians(-10.0f), osg::Vec3(1,0,0) ));
 	
-
 	OsgAvatar* activeAvatar = static_cast<OsgAvatar*>(ft::ControlManager::getInstance()->getActiveAvatar()->getImplementation());
 	activeAvatar->getOffsetTransform()->addChild(followerPAT.get());
-	osg::ref_ptr<osg::Node> avatarTracker = createTracker();
-	activeAvatar->getOffsetTransform()->addChild(avatarTracker.get());
-
-	OsgAvatar* lastActiveAvatar = activeAvatar;
 
 	transformAccumulator* avatarWorldCoords = new transformAccumulator();
 	avatarWorldCoords->attachToGroup(followerPAT.get());
 
-    osg::ref_ptr<followNodeMatrixManipulator> followAvatar = new followNodeMatrixManipulator(avatarWorldCoords);
+	osg::ref_ptr<followNodeMatrixManipulator> followAvatar = new followNodeMatrixManipulator(avatarWorldCoords);
 
 
 // next camera
-	//////osg::ref_ptr<osgGA::NodeTrackerManipulator> followAvatar = new osgGA::NodeTrackerManipulator;
-	//////followAvatar->setTrackerMode(osgGA::NodeTrackerManipulator::TrackerMode::NODE_CENTER_AND_ROTATION);
-	//////followAvatar->setMinimumDistance(200);
-	//followAvatar->setRotationMode(osgGA::NodeTrackerManipulator::ELEVATION_AZIM);
-
 	osg::ref_ptr<osgGA::TrackballManipulator> Tman = new osgGA::TrackballManipulator();
 	Tman->setAutoComputeHomePosition(true);
+    Tman->setHomePosition(osg::Vec3d(-3000.0, -3000.0, 600.0), osg::Vec3d(0.0,0.0, 0.0), osg::Vec3d(0.0, 0.0, 1.0),false); // do not auto calculate home
+
+
 	viewer.setCameraManipulator(Tman.get());
+
+// create avatar tracker and attach it to active avatar
+	osg::ref_ptr<osg::Node> avatarTracker = createTracker();
+	activeAvatar->getOffsetTransform()->addChild(avatarTracker.get());
+	OsgAvatar* lastActiveAvatar = activeAvatar;
 
 
 	viewer.setRealizeOperation( new CompileStateSets( lightSource0 ) );
-	//OsgAvatar* av = static_cast<OsgAvatar*>(avatar->getImplementation());
-	//osg::Node *trObj = av->getOffsetTransform();
-	//viewer.getCameraManipulator()->setNode(trObj);
-	////viewer.getCamera()->setViewMatrixAsLookAt(osg::Vec3d(-1000,-1000,0),osg::Vec3d(0,0,0),osg::Vec3d(0,0,1));
-	
     viewer.realize();
 
 

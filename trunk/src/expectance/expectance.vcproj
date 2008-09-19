@@ -490,6 +490,18 @@
 				RelativePath=".\src\timeline\stopcontroller.h"
 				>
 			</File>
+			<Filter
+				Name="detector"
+				>
+				<File
+					RelativePath=".\src\timeline\footdetector.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\timeline\footdetector.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="evolution_impl"
