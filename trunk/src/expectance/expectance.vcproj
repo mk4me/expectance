@@ -395,6 +395,18 @@
 			Name="app"
 			>
 			<File
+				RelativePath=".\src\app\config.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\app\config.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\app\global.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\app\osgmain.cpp"
 				>
 			</File>
@@ -412,38 +424,6 @@
 			>
 		</Filter>
 		<Filter
-			Name="avatar"
-			>
-			<File
-				RelativePath=".\src\avatar\avatarupdatecallback.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\avatar\osgavatar.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\avatar\osgavatar.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\avatar\osgavatarfactory.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\avatar\osgavatarfactory.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\avatar\osgavatartype.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\avatar\osgavatartype.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="utility"
 			>
 			<File
@@ -452,6 +432,10 @@
 			</File>
 			<File
 				RelativePath=".\src\utility\mathutil.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\utility\stlhelper.h"
 				>
 			</File>
 			<File
@@ -540,6 +524,38 @@
 			</File>
 			<File
 				RelativePath=".\src\control\controlmanager.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="avatar"
+			>
+			<File
+				RelativePath=".\src\avatar\avatarupdatecallback.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\avatar\osgavatar.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\avatar\osgavatar.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\avatar\osgavatarfactory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\avatar\osgavatarfactory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\avatar\osgavatartype.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\avatar\osgavatartype.h"
 				>
 			</File>
 		</Filter>

@@ -48,6 +48,8 @@
 #include "../timeline/lcsmodifier.h"
 #include "../avatar/avatarupdatecallback.h"
 #include "../control/controlmanager.h"
+#include "config.h"
+#include "../utility/stringhelper.h"
 
 //#include "../../FollowNodeManip.h"
 
@@ -313,7 +315,6 @@ void InitWorld(World* world)
 	InitGraphForType(world, AVATAR_TYPE);
 	//InitGraphForType(world, "cally");
 	
-	ControlManager::getInstance()->getActiveAvatar()->ExecuteAction("idle");
 }
 
 void IntiUpdateCallbackForAvatar(Avatar* avatar)
@@ -509,7 +510,10 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
         osg::setNotifyLevel( osg::DEBUG_FP );
     }
 
-//    osg::Group* root = new osg::Group();
+	// Loads configuration from 'application.cfg'
+    Config::getInstance()->LoadConfigFile();  //with creation of singleton in getInstance()
+    Config::TEST_CONFIG();
+
 
 
 	osg::ref_ptr< osg::Group > root = new osg::Group();
@@ -527,9 +531,6 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	root->addChild(worldTransformNode);
 
 
-
-
-
 	//------------ EVOLUTION init
 
 	Cal3dImpl m_evolutionImpl;
@@ -542,55 +543,66 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	//EvoDBG::setTimelineLevel(1);
 	ft::ControlManager::getInstance()->Init(); //enforced creation of singleton
 
+    int avatar_number = -1;
+    if (Config::getInstance()->IsKey("avatars_number"))
+    {
+        avatar_number = Config::getInstance()->GetIntVal("avatars_number");
+    }
+    else
+    {
+        avatar_number = 1;
+    }
+
+    Avatar* av;
+	osg::Vec3d vStartPos(0,0,0);
+    float x_off = -150, z_off = 0;
+
+	std::string _nameHelper;
+    for (int i=0; i<avatar_number; i++)
+    {
+		_nameHelper.empty();
+		_nameHelper = "Avatar" + ft::StringHelper::itos(i);
+
+		std::string modelName;
+
+//		if (i%2==0)
+			modelName = "../../data/models/freebie/freebie.cfg";
+//	    else
+//			modelName = "../../data/models/freebie/cally.cfg";
+
+		av = dynamic_cast<Avatar*>(ft::Factory::getInstance()->createAvatar(_nameHelper, modelName)); 
+        if (av != NULL)  
+        {
+            //av->Init();
+            //av->Dump();
+
+			vStartPos.set(vStartPos.x() + x_off, vStartPos.y(), vStartPos.z() + z_off);
+
+			OsgAvatar* avImpl = static_cast<OsgAvatar*>(av->getImplementation());
+			worldTransformNode->addChild(  avImpl->getOffsetTransform()  );
+
+			ControlManager::getInstance()->AddAvatar(av);
+			av->AddController(new LCSModifier());
+			av->AddController(avImpl->getStopController()); //mka 2008.08.19
+			m_world->AddAvatar(av);
+			IntiUpdateCallbackForAvatar(av);
+			avImpl->setPosition(vStartPos);
 
 
+            if (i==0)
+            {
+                ControlManager::getInstance()->setActiveAvatar(0);
+            }
+			av->StartSimulation();
+        }
+    }
 
-  Avatar* avatar = Factory::getInstance()->createAvatar("av1",AVATAR_TYPE);
-  if (avatar != NULL)
-  {
-	  OsgAvatar* av = static_cast<OsgAvatar*>(avatar->getImplementation());
-	  worldTransformNode->addChild(  av->getOffsetTransform());
-
-	  ControlManager::getInstance()->AddAvatar(avatar);
-	  avatar->AddController(new LCSModifier());
-	  avatar->AddController(av->getStopController()); //mka 2008.08.19
-	  m_world->AddAvatar(avatar);
-	  IntiUpdateCallbackForAvatar(avatar);
-	  avatar->StartSimulation();
-	  
-  }
-
-  Avatar* avatar2 = Factory::getInstance()->createAvatar("av2",AVATAR_TYPE);
-  if (avatar2 != NULL)
-  {
-	  OsgAvatar* av = static_cast<OsgAvatar*>(avatar2->getImplementation());
-	  worldTransformNode->addChild(  av->getOffsetTransform()  );
-
-	  ControlManager::getInstance()->AddAvatar(avatar2);
-	  avatar2->AddController(new LCSModifier());
-	  avatar2->AddController(av->getStopController()); //mka 2008.08.19
-	  m_world->AddAvatar(avatar2);
-	  IntiUpdateCallbackForAvatar(avatar2);
-	  avatar2->StartSimulation();
-	  av->setPosition(osg::Vec3d(300,0,0));
-	  
-  }
-
-  ControlManager::getInstance()->setActiveAvatar(ControlManager::getInstance()->getAvatarsCount()-1);
-
-  InitWorld(m_world);
-  m_world->DumpActions();
-  m_world->DumpAvatars();
-
-//        root->addChild( makeModel( coreModel.get(),
-//                                   meshAdder.get(),
-//                                   animNum ) );
-
+	InitWorld(m_world);
+	m_world->DumpActions();
+	m_world->DumpAvatars();
+	m_world->SetActionForAvatars("idle");
 
 	m_world->StartThinking();
-
-//	if (avatar != NULL)
-//		avatar->ExecuteAction("idle");
 
     // -- Setup viewer --
 //    while ( true )
