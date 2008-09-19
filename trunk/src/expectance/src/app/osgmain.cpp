@@ -154,7 +154,12 @@ class ToggleHandler : public osgGA::GUIEventHandler
 							if (m_activeAvatar->getCurrTopMotion() != NULL)
 							{
 								if (m_activeAvatar->getCurrTopMotion()->getName().compare("walk") == 0)
-									m_activeAvatar->ExecuteAction("idle");
+								{
+									//mka 2008.08.30 send signal to get stop controller possibility to go on
+									OsgAvatar* avImpl = static_cast<OsgAvatar*>(m_activeAvatar->getImplementation());					
+									avImpl->getStopController()->setStop(true);
+									//m_activeAvatar->ExecuteAction("idle");
+								}
 								else if (m_activeAvatar->getCurrTopMotion()->getName().compare("run") == 0)
 									m_activeAvatar->ExecuteAction("walk");
 							}
@@ -437,6 +442,8 @@ osg::Node* createFloor(const osg::Vec3& center,float radius)
 }
 
 
+
+
 EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 {
     // use an ArgumentParser object to manage the program arguments.
@@ -546,6 +553,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 
 	  ControlManager::getInstance()->AddAvatar(avatar);
 	  avatar->AddController(new LCSModifier());
+	  avatar->AddController(av->getStopController()); //mka 2008.08.19
 	  m_world->AddAvatar(avatar);
 	  IntiUpdateCallbackForAvatar(avatar);
 	  avatar->StartSimulation();
@@ -560,6 +568,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 
 	  ControlManager::getInstance()->AddAvatar(avatar2);
 	  avatar2->AddController(new LCSModifier());
+	  avatar2->AddController(av->getStopController()); //mka 2008.08.19
 	  m_world->AddAvatar(avatar2);
 	  IntiUpdateCallbackForAvatar(avatar2);
 	  avatar2->StartSimulation();

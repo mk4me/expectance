@@ -30,6 +30,7 @@ OsgAvatar::OsgAvatar(osgCal::Model *osgModel, OsgAvatarType* type, const std::st
 //    InitSpeedFactor();
 //	setFootDetector(new FootDetector());
 //	InitFootDetector();
+	setStopController(new StopController()); // mka 2008.09.19
 
 //	m_turnLeft = m_turnRight = true;
 //	FOOT_DETECTOR = ((Config::getInstance()->IsKey("foot_detector")) 

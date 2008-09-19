@@ -498,6 +498,14 @@
 				RelativePath=".\src\timeline\lcsmodifier.h"
 				>
 			</File>
+			<File
+				RelativePath=".\src\timeline\stopcontroller.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\timeline\stopcontroller.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="evolution_impl"
