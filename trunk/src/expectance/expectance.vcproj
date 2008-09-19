@@ -559,6 +559,30 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="scene"
+			>
+			<Filter
+				Name="view"
+				>
+				<File
+					RelativePath=".\src\scene\view\follownodemanip.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\scene\view\follownodemanip.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\scene\view\transformaccumulator.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\scene\view\transformaccumulator.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

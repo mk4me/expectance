@@ -51,7 +51,7 @@
 #include "config.h"
 #include "../utility/stringhelper.h"
 
-//#include "../../FollowNodeManip.h"
+#include "../scene/view/follownodemanip.h"
 
 using namespace ft;
 
@@ -704,40 +704,31 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 //    std::cout << "light: " << light << std::endl;
 //    viewer.getEventHandlerList().push_back( new osgGA::TrackballManipulator() );
 
+//first tracking camera
 	// Declare and set up a transform to 'follow' the avatar node.
-	//////osg::PositionAttitudeTransform *followerPAT = new osg::PositionAttitudeTransform();
-	//////followerPAT->setPosition( osg::Vec3(0,-1000,200) );
-	//////followerPAT->setAttitude( osg::Quat( osg::DegreesToRadians(-10.0f), osg::Vec3(1,0,0) ));
+	osg::ref_ptr<osg::PositionAttitudeTransform> followerPAT = new osg::PositionAttitudeTransform();
+	followerPAT->setPosition( osg::Vec3(0,-1000,200) );
+	followerPAT->setAttitude( osg::Quat( osg::DegreesToRadians(-10.0f), osg::Vec3(1,0,0) ));
 
-	//////OsgAvatar* activeAvatar = static_cast<OsgAvatar*>(ft::ControlManager::getInstance()->getActiveAvatar()->getImplementation());
-	//////activeAvatar->getOffsetTransform()->addChild(followerPAT);
+	OsgAvatar* activeAvatar = static_cast<OsgAvatar*>(ft::ControlManager::getInstance()->getActiveAvatar()->getImplementation());
+	activeAvatar->getOffsetTransform()->addChild(followerPAT.get());
 
-	//////transformAccumulator* avatarWorldCoords = new transformAccumulator();
-	//////avatarWorldCoords->attachToGroup(followerPAT);
+	transformAccumulator* avatarWorldCoords = new transformAccumulator();
+	avatarWorldCoords->attachToGroup(followerPAT.get());
 
- //////   followNodeMatrixManipulator* followAvatar = new followNodeMatrixManipulator(avatarWorldCoords);
+    osg::ref_ptr<followNodeMatrixManipulator> followAvatar = new followNodeMatrixManipulator(avatarWorldCoords);
 
-	//osgGA::TrackballManipulator *Tman = new osgGA::TrackballManipulator();
- //   
-	//osgGA::MatrixManipulator *cView = Tman;
-	//
-	//viewer.setCameraManipulator(cView);
- //   
-	//////osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;
-	//////keyswitchManipulator->addMatrixManipulator( '1', "Trackball", new osgGA::TrackballManipulator() ); 
-	//////keyswitchManipulator->addMatrixManipulator( '2', "Avatar", followAvatar );
- //////   viewer.setCameraManipulator( keyswitchManipulator.get() );    
-	
 
 // next camera
-	osg::ref_ptr<osgGA::NodeTrackerManipulator> followAvatar = new osgGA::NodeTrackerManipulator;
-	followAvatar->setTrackerMode(osgGA::NodeTrackerManipulator::TrackerMode::NODE_CENTER);
-	followAvatar->setRotationMode(osgGA::NodeTrackerManipulator::ELEVATION_AZIM);
+	//////osg::ref_ptr<osgGA::NodeTrackerManipulator> followAvatar = new osgGA::NodeTrackerManipulator;
+	//////followAvatar->setTrackerMode(osgGA::NodeTrackerManipulator::TrackerMode::NODE_CENTER_AND_ROTATION);
+	//////followAvatar->setMinimumDistance(200);
+	//followAvatar->setRotationMode(osgGA::NodeTrackerManipulator::ELEVATION_AZIM);
 
 	osg::ref_ptr<osgGA::TrackballManipulator> Tman = new osgGA::TrackballManipulator();
 	Tman->setAutoComputeHomePosition(true);
-	
 	viewer.setCameraManipulator(Tman.get());
+
 
 	viewer.setRealizeOperation( new CompileStateSets( lightSource0 ) );
 	//OsgAvatar* av = static_cast<OsgAvatar*>(avatar->getImplementation());
@@ -755,6 +746,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
     PauseState   pauseState = Unpaused;
     osg::Timer_t pauseStartTick = 0;
     double       totalPauseTime = 0; 
+	OsgAvatar* lastActiveAvatar = NULL;
 
     while ( !viewer.done() )
     {
@@ -780,12 +772,20 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 			if (PlaceCamera){
 
 				OsgAvatar* activeAvatar = static_cast<OsgAvatar*>(ft::ControlManager::getInstance()->getActiveAvatar()->getImplementation());
-				followAvatar->setTrackNode(activeAvatar->getOffsetTransform());
+				
+				if ( !activeAvatar->getOffsetTransform()->containsNode(followerPAT.get()) ) //if camera node is not already attached to active avatar
+				{
+					activeAvatar->getOffsetTransform()->addChild(followerPAT.get()); // attach camera to new avatar
+					if (lastActiveAvatar!=NULL)
+						lastActiveAvatar->getOffsetTransform()->removeChild(followerPAT.get()); // and release from previous one
+					//correct worldCoordinates matrix - not necessary here
+					//avatarWorldCoords->attachToGroup(followerPAT.get());
+					//followAvatar->setTransformAccumulator(avatarWorldCoords);
+				}
+
 				viewer.setCameraManipulator(followAvatar.get());
-	//			activeAvatar->getOffsetTransform()->addChild(followerPAT);
-	//			keyswitchManipulator->getMatrixManipulatorWithIndex(2)->setNode(NULL);
-	//			keyswitchManipulator->setNodeselectMatrixManipulator(2);
 				CameraSet = false;
+				lastActiveAvatar = activeAvatar; // update current avatar pointer
 				
 			}
 			else
@@ -794,20 +794,6 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 				CameraSet = false;
 			}
 		}
-		//	//viewer.setCameraManipulator(followAvatar);
-		//	cView = followAvatar;
-		//	viewer.setCameraManipulator(cView);
-		//}
-		//else
-		//{
-		//	cView=Tman;
-		//	viewer.getCamera()->setViewport viewer.setCameraManipulator(cView);
-		//}
-			//viewer.setCameraManipulator(Tman->);
-
-		//m_world->Update(currentTime - totalPauseTime);
-		//avatar->ManualUpdate(currentTime - totalPauseTime);
-		//avatar2->ManualUpdate(currentTime - totalPauseTime);
         viewer.frame( currentTime - totalPauseTime );
 
     }
