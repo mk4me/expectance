@@ -57,16 +57,9 @@ using namespace ft;
 
 const std::string  AVATAR_TYPE = "../../data/models/freebie/freebie.cfg";
 
-bool PlaceCamera = false;
-bool CameraSet = false;
-
-void toggleView()
-{
-   PlaceCamera^=true;
-   CameraSet = true;
-}
-
- 
+bool ChangeCamera = false;
+bool AllowRefreshCamera = false;
+bool SelectActiveAvatar = false;
 
 template < typename T >
 T normalize( const T& v )
@@ -195,10 +188,12 @@ class ToggleHandler : public osgGA::GUIEventHandler
 							_activeAvatarIndex = (_activeAvatarIndex+1) % ControlManager::getInstance()->getAvatarsCount();
 							ControlManager::getInstance()->setActiveAvatar(_activeAvatarIndex);
 							m_activeAvatar = ControlManager::getInstance()->getActiveAvatar();
-							CameraSet = true;
+							SelectActiveAvatar = true; // allow change avatar camera and tracker when active avatar changed
+							
 						}
-					} else if ( ea.getKey() == ea.KEY_F10 ) { //camera
-						toggleView();			
+					} else if ( ea.getKey() == ea.KEY_F10 ) { // camera toggle view
+						 ChangeCamera^=true;
+						 AllowRefreshCamera = true;		
 					}
                 }
                 default: break;
@@ -442,7 +437,82 @@ osg::Node* createFloor(const osg::Vec3& center,float radius)
     return geode;
 }
 
+osg::Node* createTracker()//(const osg::BoundingSphere& bs)
+{
+	//osg::ref_ptr<osg::BoundingBox> bb = new osg::BoundingBox();
+	//bb->expandBy(bs);
+	osg::Geode* tracerGeode = new osg::Geode();
+	osg::Geometry* tracerGeometry = new osg::Geometry();
+	tracerGeode->addDrawable(tracerGeometry); 
+	// Specify the vertices:
+	osg::Vec3Array* tracerVertices = new osg::Vec3Array;
+	tracerVertices->push_back( osg::Vec3(0, -10, 130) ); // front left 
+	tracerVertices->push_back( osg::Vec3(0, -10, 130) ); // front right 
+	tracerVertices->push_back( osg::Vec3(10, 10, 130) ); // back right 
+	tracerVertices->push_back( osg::Vec3(-10, 10, 130) ); // back left 
+	tracerVertices->push_back( osg::Vec3(0, 0, 110) ); // bottom 
+	tracerGeometry->setVertexArray( tracerVertices );
 
+	osg::DrawElementsUInt* tracerBase = 
+	  new osg::DrawElementsUInt(osg::PrimitiveSet::QUADS, 0);
+	tracerBase->push_back(3);
+	tracerBase->push_back(2);
+	tracerBase->push_back(1);
+	tracerBase->push_back(0);
+	tracerGeometry->addPrimitiveSet(tracerBase);
+   
+	osg::DrawElementsUInt* tracerFaceOne = 
+      new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLES, 0);
+   tracerFaceOne->push_back(0);
+   tracerFaceOne->push_back(1);
+   tracerFaceOne->push_back(4);
+   tracerGeometry->addPrimitiveSet(tracerFaceOne);
+
+   osg::DrawElementsUInt* tracerFaceTwo = 
+      new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLES, 0);
+   tracerFaceTwo->push_back(1);
+   tracerFaceTwo->push_back(2);
+   tracerFaceTwo->push_back(4);
+   tracerGeometry->addPrimitiveSet(tracerFaceTwo);
+
+   osg::DrawElementsUInt* tracerFaceThree = 
+      new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLES, 0);
+   tracerFaceThree->push_back(2);
+   tracerFaceThree->push_back(3);
+   tracerFaceThree->push_back(4);
+   tracerGeometry->addPrimitiveSet(tracerFaceThree);
+
+   osg::DrawElementsUInt* tracerFaceFour = 
+      new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLES, 0);
+   tracerFaceFour->push_back(3);
+   tracerFaceFour->push_back(0);
+   tracerFaceFour->push_back(4);
+   tracerGeometry->addPrimitiveSet(tracerFaceFour);
+
+   osg::Vec4Array* colors = new osg::Vec4Array;
+   colors->push_back(osg::Vec4(1.0f, 0.0f, 0.0f, 1.0f) ); //index 0 red
+   colors->push_back(osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f) ); //index 1 green
+   colors->push_back(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f) ); //index 1 green
+   osg::TemplateIndexArray<unsigned int, osg::Array::UIntArrayType,4,4> 
+      *colorIndexArray;colorIndexArray = new 
+      osg::TemplateIndexArray<unsigned int, osg::Array::UIntArrayType,4,4>;
+   colorIndexArray->push_back(0); // vertex 0 assigned color array element 0
+   colorIndexArray->push_back(1); // vertex 1 assigned color array element 1
+   colorIndexArray->push_back(2); // vertex 2 assigned color array element 2
+   colorIndexArray->push_back(0); // vertex 3 assigned color array element 3
+   colorIndexArray->push_back(1); // vertex 4 assigned color array element 3
+   tracerGeometry->setColorArray(colors);
+   tracerGeometry->setColorIndices(colorIndexArray);
+   tracerGeometry->setColorBinding(osg::Geometry::BIND_PER_PRIMITIVE);
+	osg::StateSet* state = new osg::StateSet();
+	// Additionally Turn on blending
+	osg::BlendFunc* bf = new osg::BlendFunc(
+		osg::BlendFunc::SRC_ALPHA, osg::BlendFunc::ONE_MINUS_SRC_ALPHA );
+	state->setAttributeAndModes( bf );
+	tracerGeode->setStateSet(state);
+
+	return tracerGeode;
+}
 
 
 EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
@@ -704,14 +774,20 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 //    std::cout << "light: " << light << std::endl;
 //    viewer.getEventHandlerList().push_back( new osgGA::TrackballManipulator() );
 
+
 //first tracking camera
 	// Declare and set up a transform to 'follow' the avatar node.
 	osg::ref_ptr<osg::PositionAttitudeTransform> followerPAT = new osg::PositionAttitudeTransform();
 	followerPAT->setPosition( osg::Vec3(0,-1000,200) );
 	followerPAT->setAttitude( osg::Quat( osg::DegreesToRadians(-10.0f), osg::Vec3(1,0,0) ));
+	
 
 	OsgAvatar* activeAvatar = static_cast<OsgAvatar*>(ft::ControlManager::getInstance()->getActiveAvatar()->getImplementation());
 	activeAvatar->getOffsetTransform()->addChild(followerPAT.get());
+	osg::ref_ptr<osg::Node> avatarTracker = createTracker();
+	activeAvatar->getOffsetTransform()->addChild(avatarTracker.get());
+
+	OsgAvatar* lastActiveAvatar = activeAvatar;
 
 	transformAccumulator* avatarWorldCoords = new transformAccumulator();
 	avatarWorldCoords->attachToGroup(followerPAT.get());
@@ -746,7 +822,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
     PauseState   pauseState = Unpaused;
     osg::Timer_t pauseStartTick = 0;
     double       totalPauseTime = 0; 
-	OsgAvatar* lastActiveAvatar = NULL;
+
 
     while ( !viewer.done() )
     {
@@ -767,33 +843,42 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
             startTick,
             pauseState == Unpaused ? tick : pauseStartTick );
 
-		if (CameraSet)
+		if (SelectActiveAvatar) //allow to change camera and marcer after active avatar was changed
 		{
-			if (PlaceCamera){
-
-				OsgAvatar* activeAvatar = static_cast<OsgAvatar*>(ft::ControlManager::getInstance()->getActiveAvatar()->getImplementation());
-				
-				if ( !activeAvatar->getOffsetTransform()->containsNode(followerPAT.get()) ) //if camera node is not already attached to active avatar
-				{
-					activeAvatar->getOffsetTransform()->addChild(followerPAT.get()); // attach camera to new avatar
-					if (lastActiveAvatar!=NULL)
-						lastActiveAvatar->getOffsetTransform()->removeChild(followerPAT.get()); // and release from previous one
-					//correct worldCoordinates matrix - not necessary here
-					//avatarWorldCoords->attachToGroup(followerPAT.get());
-					//followAvatar->setTransformAccumulator(avatarWorldCoords);
+			OsgAvatar* activeAvatar = static_cast<OsgAvatar*>(ft::ControlManager::getInstance()->getActiveAvatar()->getImplementation());
+			
+			if ( !activeAvatar->getOffsetTransform()->containsNode(followerPAT.get()) ) //if camera node is not already attached to active avatar
+			{
+				activeAvatar->getOffsetTransform()->addChild(followerPAT.get()); // attach camera to new avatar
+				activeAvatar->getOffsetTransform()->addChild(avatarTracker.get()); // attach marker to new active avatar
+				if (lastActiveAvatar!=NULL){
+					lastActiveAvatar->getOffsetTransform()->removeChild(followerPAT.get()); // and release from previous one
+					lastActiveAvatar->getOffsetTransform()->removeChild(avatarTracker.get()); // and release from previous one
 				}
-
+				//correct worldCoordinates matrix - not necessary here
+				//avatarWorldCoords->attachToGroup(followerPAT.get());
+				//followAvatar->setTransformAccumulator(avatarWorldCoords);
+			}
+			lastActiveAvatar = activeAvatar; // update current avatar pointer
+			SelectActiveAvatar = false;
+		}
+		
+		
+		if (AllowRefreshCamera) // allow switch between global and local camera
+		{
+			if (ChangeCamera) // helps to choose between global and local camera
+			{
 				viewer.setCameraManipulator(followAvatar.get());
-				CameraSet = false;
-				lastActiveAvatar = activeAvatar; // update current avatar pointer
-				
+				AllowRefreshCamera = false;	
 			}
 			else
 			{
 				viewer.setCameraManipulator(Tman.get());
-				CameraSet = false;
+				AllowRefreshCamera = false;
 			}
+			
 		}
+
         viewer.frame( currentTime - totalPauseTime );
 
     }
