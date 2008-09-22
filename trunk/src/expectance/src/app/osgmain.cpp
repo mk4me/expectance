@@ -625,8 +625,11 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 
     Avatar* av;
 	osg::Vec3d vStartPos(0,0,0);
-    float x_off = -150, z_off = 0;
+	osg::Quat  vStartAttitude;
+    srand(time(NULL));
 
+	float x_off = -150, z_off = 0;
+	
 	std::string _nameHelper;
     for (int i=0; i<avatar_number; i++)
     {
@@ -645,11 +648,40 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
         {
             //av->Init();
             //av->Dump();
-
-			vStartPos.set(vStartPos.x() + x_off, vStartPos.y(), vStartPos.z() + z_off);
-
 			OsgAvatar* avImpl = static_cast<OsgAvatar*>(av->getImplementation());
+			
+
+			// set random position and direction
+			bool isInScope = true;
+			int scopeRadius = (int)radius; //2000;
+			vStartAttitude = osg::Quat(osg::DegreesToRadians((float)(rand()%360)), osg::Vec3(0,0,1));
+			while (isInScope)
+			{
+				int sign=((rand()%2)==1)?-1:1;
+				vStartPos.x() =  (rand() % scopeRadius-300)*sign;
+				vStartPos.y() =  (rand() % scopeRadius-300)*sign;
+
+				// check collision by radius distance
+				int children = worldTransformNode->getNumChildren();
+				int distCnt = 0;
+				for (int j = 0; j < children; j++)
+				{
+					osg::Node * avTmp =  worldTransformNode->getChild(j);
+					osg::Vec3d _center = avTmp->getBound().center();
+					double radius1 = 300; //avTmp->getBound().radius();
+					double distance = sqrt( (vStartPos.x()-center.x())*(vStartPos.x()-center.x())
+						+(vStartPos.y()-center.y())*(vStartPos.y()-center.y()) );
+					if ((distance <= radius1*3) && (children > 1))
+						distCnt++;
+				}
+				if(distCnt == 0) isInScope = false;
+				else isInScope = true;
+			//	vStartPos.set(vStartPos.x() + x_off, vStartPos.y(), vStartPos.z() + z_off);
+			}
+
 			worldTransformNode->addChild(  avImpl->getOffsetTransform()  );
+
+
 
 			ControlManager::getInstance()->AddAvatar(av);
 			av->AddController(new LCSModifier());
@@ -658,6 +690,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 			m_world->AddAvatar(av);
 			IntiUpdateCallbackForAvatar(av);
 			avImpl->setPosition(vStartPos);
+			avImpl->setGlobalRotation(vStartAttitude);
 
 
             if (i==0)

@@ -99,14 +99,14 @@ GIL_Animation* OsgAvatar::getAnimation(const std::string& animName)
 void OsgAvatar::InitFootDetector()
 {
     FootDetector* _fd = getFootDetector();
+	//OsgAvatarType* _osgt = getAvatarType();
+	std::map<std::string,Animation*> motions = getAvatarType()->getMotionsMap();
+	std::map<std::string,Animation*>::iterator it = motions.begin();
 
-//	std::map<std::string,Animation*> motions = ((OsgAvatarType*)getOsgModel()->getCoreModel()->getCalCoreModel())->getMotionsMap(); ???
-//  	std::map<std::string,Animation*>::iterator it = motions.begin();
-
-    //for( ; it != motions.end(); ++it ) 
-    //{
-    //    _fd->AddLimits(it->second->getAnimName(), it->second->footLimits);
-    //}
+    for( ; it != motions.end(); ++it ) 
+    {
+        _fd->AddLimits(it->second->getAnimName(), it->second->footLimits);
+    }
 }
 
 

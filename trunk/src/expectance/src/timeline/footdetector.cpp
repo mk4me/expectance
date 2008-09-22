@@ -104,7 +104,7 @@ void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
 
        ////     if (GenDebug::FOOTSTEP>0)
        ////     {
-			    ////_dbg << "====>>> Left foot on the ground <<<=====" << endl;
+			std::cout << "====>>> Left foot on the ground <<<=====" << std::endl;
        ////     }
 		}
 
@@ -123,7 +123,8 @@ void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
        ////     if (GenDebug::FOOTSTEP>0)
        ////     {
 			    ////_dbg << "====>>> Left foot swinging <<<=====" << endl;
-       ////     }
+ 			std::cout << "====>>> Left foot swinging <<<=====" << std::endl;
+			////     }
 		}
 
 	// RIGHT FOOT
@@ -134,7 +135,8 @@ void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
 			m_rightFootPlant = true;
 			////////avImpl->getLocalMsgSender()->SendMsg(new Message(MSG_DETECTOR_RIGHT_FOOT_ON_THE_FLOOR,
 			////////														   new MessageParam(true)), true);
-			// std::cout<< "====>>> Right foot on the ground <<<=====" << endl;
+			
+			std::cout<< "====>>> Right foot on the ground <<<=====" << std::endl;
 		}
 			
 		////if (FOOTPLANT_TRACE)
@@ -149,7 +151,7 @@ void FootDetector::Apply(float elapsedSeconds, TimeLineContext * timeLineContext
 			m_rightFootPlant = false;
 			////////avImpl->getLocalMsgSender()->SendMsg(new Message(MSG_DETECTOR_RIGHT_FOOT_ON_THE_FLOOR,
 			////////														   new MessageParam(false)), true);
-
+			std::cout << "====>>> Right foot swinging <<<=====" << std::endl;
 		}
 }
 
