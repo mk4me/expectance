@@ -150,6 +150,7 @@ GIL_AnimExecution* OsgAvatar::PlayCyclicAnimation(int animID, float fade_in)
 void OsgAvatar::StopCyclicAnimation(int animID, float fade_out)
 {
 	getOsgModel()->getCalModel()->getMixer()->clearCycle(animID, fade_out);
+	getOsgModel()->getCalModel()->getMixer()->setAnimationTime(0.0f);  // ABAK (22-09-2008): to reset influence of this cyclic animation on global animation time
 }
 
 bool OsgAvatar::isAnimValid(GIL_AnimExecution* animExec)
