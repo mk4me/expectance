@@ -48,6 +48,10 @@
 #include "../timeline/lcsmodifier.h"
 #include "../avatar/avatarupdatecallback.h"
 #include "../control/controlmanager.h"
+#include "../ai/goals/randommovegoal.h"
+#include "../ai/goals/changedirgoal.h"
+#include "../ai/goals/limitedareagoal.h"
+#include "../ai/constraints/limitedareaconstraint.h"
 #include "config.h"
 #include "../utility/stringhelper.h"
 
@@ -292,14 +296,14 @@ void InitGraphForType(World* world, const std::string& avatarType)
 
 void InitWorld(World* world)
 {
-//	Goal* goal = new RandomMoveGoal();
-//	m_world->AddGoal(goal);
+	Goal* goal = new RandomMoveGoal();
+	world->AddGoal(goal);
 
-//	goal = new ChangeDirGoal();
-//	m_world->AddGoal(goal);
+	goal = new ChangeDirGoal();
+	world->AddGoal(goal);
 
-//	Rule* rule = new Rule(new LimitedAreaConstraint(), new LimitedAreaGoal());
-//	m_world->AddRule(rule);
+	Rule* rule = new Rule(new LimitedAreaConstraint(), new LimitedAreaGoal());
+	world->AddRule(rule);
 
 
 	//world->LoadDataForType("data/motions.xml", "cally");

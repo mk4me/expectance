@@ -422,6 +422,46 @@
 		<Filter
 			Name="ai"
 			>
+			<Filter
+				Name="goals"
+				>
+				<File
+					RelativePath=".\src\ai\goals\changedirgoal.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ai\goals\changedirgoal.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ai\goals\limitedareagoal.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ai\goals\limitedareagoal.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ai\goals\randommovegoal.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ai\goals\randommovegoal.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="constraints"
+				>
+				<File
+					RelativePath=".\src\ai\constraints\limitedareaconstraint.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ai\constraints\limitedareaconstraint.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="utility"
@@ -432,6 +472,14 @@
 			</File>
 			<File
 				RelativePath=".\src\utility\mathutil.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\utility\randomgen.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\utility\randomgen.h"
 				>
 			</File>
 			<File
