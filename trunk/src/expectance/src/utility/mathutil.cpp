@@ -28,11 +28,12 @@ CalQuaternion&  UTIL_diff_quats(CalQuaternion& rot, const CalQuaternion& val)
  *      NOTE that passed vector arguments should be normalized
  * \param CalVector& oldDir - vertor which is the base for angle sign determiation
  * \param CalVector& newDir - vector for which angle sign in relation to oldDir
+ * \param CalVector& normal - normal of surface on which the angle is calculated
  * \return float - value -1 or 1 representing sign
  */
-float UTIL_GetSignForDirChange(CalVector& oldDir, CalVector& newDir)
+float UTIL_GetSignForDirChange(CalVector& oldDir, CalVector& newDir, CalVector& normal)
 {
-    CalVector rightDir = CalVector(0,1,0)%oldDir;
+    CalVector rightDir = normal%oldDir;
     rightDir.normalize();
     float dot = newDir * rightDir;
     float angle = radToDeg( acos(UTIL_GetRightArgForArcCos(dot)) );

@@ -11,7 +11,7 @@
 #include "osg/vec3d"
 
 CalQuaternion&  UTIL_diff_quats(CalQuaternion& rot, const CalQuaternion& val);
-float UTIL_GetSignForDirChange(CalVector& oldDir, CalVector& newDir);
+float UTIL_GetSignForDirChange(CalVector& oldDir, CalVector& newDir, CalVector& normal);
 float UTIL_GetRightArgForArcCos(float arg);
 float UTIL_GetVectorsAngle(const CalVector& vect1, const CalVector& vect2);
 //	void UTIL_DumpQuat(const CalQuaternion& quat, std::string caption = "");
