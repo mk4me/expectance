@@ -66,9 +66,9 @@ void StopController::Apply(float elapsedSeconds, TimeLineContext * timeLineConte
 			// interpoluj ostatecznie (tutaj trzeba chyba dolozyc jeszcze parametr dotyczacy polozenia animacji IDLE)
 			Motion* idle = DataProvider::getInstance()->getMotion(av->getType(), "idle"); // wez ruch docelowy
 			av->AddMotion(idle->Clone());    // dodaj do timeline
-			Motion* mot=av->getCurrMotion(); // pobierz biezacy ruch
-			Blender* bl=mot->getBlender();   // pobierz blender biezacego ruchu
-			bl->setOverlap(0.5);			 // i ustaw go na 0.5 sec
+			//Motion* mot=av->getCurrMotion(); // pobierz biezacy ruch
+			//Blender* bl=mot->getBlender();   // pobierz blender biezacego ruchu
+			//bl->setOverlap(0.5);			 // i ustaw go na 0.5 sec
 			av->StopCurrentAnimation();		 // zatrzymaj biezaca animacje wedlug ustawionych wartosci
 		}
 	}
@@ -142,16 +142,17 @@ bool StopController::isFrontLeg(Avatar* av)
 	CalVector _RArmPos  = _boneRArm->getTranslationAbsolute();  
 	CalVector _LArmPos  = _boneLArm->getTranslationAbsolute();  
 	CalVector _RootPos  = _boneRoot->getTranslationAbsolute();
-	
+
 	// calculate vectors lrarms (from left ro right arm) and root2RightFoot and root2LeftFoot
 	CalVector _LRArmsDir = _RArmPos - _LArmPos;      // base skeleton vector (between arms)
 	CalVector _root2RFoot = _RFootPos - _RootPos;	 // root to right foot position vector
 	CalVector _root2LFoot = _LFootPos - _RootPos;    // root to left foot position vector
+	
 
 //	double _currArcF2D;
 	float _signL, _signR = 0;
 	bool _isfront = false;
-
+	CalVector normal2VectorSurface =  CalVector(0,0,1); //(coordinate system XZY)
 	////if (STOPCONTROLLER_TRACE)
 	////{
 	////	// visualization
@@ -162,12 +163,14 @@ bool StopController::isFrontLeg(Avatar* av)
 	////	m_rootRFootVector->setEnd(_LFootPos);
 	////}
 	
-	_LRArmsDir.y = _root2RFoot.y = 0;
+	_LRArmsDir.z = _root2RFoot.z = _root2LFoot.z = 0;
 	_LRArmsDir.normalize();
 	_root2RFoot.normalize();
 	_root2RFoot.normalize();
-	_signL = UTIL_GetSignForDirChange(_root2LFoot, _LRArmsDir, CalVector(0,1,0));
-	_signR = UTIL_GetSignForDirChange(_root2RFoot, _LRArmsDir, CalVector(0,1,0));
+	_signL = UTIL_GetSignForDirChange( _root2LFoot, _LRArmsDir, normal2VectorSurface );
+	_signR = UTIL_GetSignForDirChange( _root2RFoot, _LRArmsDir, normal2VectorSurface );
+	//if (_signL == _signR)
+	//	std::cout << "ERROR wrong signs between wectors.."<< std::endl; // mijaja sie i moga wtedy miec wspolny znak
 	if (_signL == 1) // left foot is in front of the body
 	{ 
 		_isfront = true;
