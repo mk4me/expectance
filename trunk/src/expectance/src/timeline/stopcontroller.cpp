@@ -166,8 +166,8 @@ bool StopController::isFrontLeg(Avatar* av)
 	_LRArmsDir.normalize();
 	_root2RFoot.normalize();
 	_root2RFoot.normalize();
-	_signL = UTIL_GetSignForDirChange(_root2LFoot, _LRArmsDir);
-	_signR = UTIL_GetSignForDirChange(_root2RFoot, _LRArmsDir);
+	_signL = UTIL_GetSignForDirChange(_root2LFoot, _LRArmsDir, CalVector(0,1,0));
+	_signR = UTIL_GetSignForDirChange(_root2RFoot, _LRArmsDir, CalVector(0,1,0));
 	if (_signL == 1) // left foot is in front of the body
 	{ 
 		_isfront = true;
