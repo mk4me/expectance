@@ -49,7 +49,11 @@ void ChangeDirController::Apply(float elapsedSeconds, TimeLineContext * timeLine
 	if (timeLineContext->getAvatar()->getCurrTopMotion() != NULL)
 	{
 		if (timeLineContext->getAvatar()->getCurrTopMotion()->getName().compare("idle") == 0)
+		{
 			timeLineContext->getAvatar()->ExecuteAction("walk");
+			//cout << " ChagerDir::Apply execute walk " << endl;
+			isInMotion = true;
+		}
 		else
 			isInMotion = true;
 	}
@@ -105,6 +109,7 @@ ChangeDirGoal::~ChangeDirGoal()
 
 void ChangeDirGoal::OnEnter(Avatar* av)
 {
+	//cout << " ChagerDir::OnEnter " << endl;
 /*
 	cout << " ChangeDirGoal::OnEnter " << endl;
 	if (av->getCurrTopMotion() != NULL)
@@ -118,10 +123,12 @@ void ChangeDirGoal::OnEnter(Avatar* av)
 		cout << " ChangeDirGoal::OnEnter - motion NULL " << endl;
 	}
 	*/
+
 }
 
 void ChangeDirGoal::OnExit(Avatar* av)
 {
+	//cout << " ChagerDir::OnExit " << endl;
 //	av->ExecuteAction("idle");
 }
 

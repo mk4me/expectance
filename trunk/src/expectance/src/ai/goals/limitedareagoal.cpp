@@ -16,12 +16,24 @@ LimitedAreaController::LimitedAreaController(Avatar *av)
 {
 	OsgAvatar* avImpl = dynamic_cast<OsgAvatar*>(av->getImplementation());
 	osg::Vec3d pos = avImpl->getPosition();
-	CalVector distVect (pos.x(),pos.y(),pos.z());
+	CalVector distVect (-pos.x(),-pos.y(),0);
     //reverse vector on the XY plane
-    distVect.x = -distVect.x; distVect.z = -distVect.z;
+    //distVect.x = -distVect.x; distVect.y = -distVect.y;
     distVect.normalize();
 
-	CalVector sceneDirection(0,1,0);
+
+	//cout << " dist(" << distVect.x << "," << distVect.y << ","  << distVect.z << ")" << endl;
+
+	CalVector sceneDirection(0,-1,0);
+
+	CalQuaternion qGlobalRotation =  QuatToCalQuat(avImpl->getGlobalRotation());
+	qGlobalRotation.invert();
+	sceneDirection *= qGlobalRotation;
+	sceneDirection.normalize();
+
+	//cout << " scene(" << sceneDirection.x << "," << sceneDirection.y << ","  << sceneDirection.z << ")" << endl;
+
+	//cout << "ROT " << radToDeg(getZangle(avImpl->getGlobalRotation())) << endl;
     
 
     float dot = sceneDirection*distVect;
@@ -30,14 +42,16 @@ LimitedAreaController::LimitedAreaController(Avatar *av)
     float angle = acos(dot);
     m_fAngle = radToDeg(angle);
 
+	//cout << " angle " << m_fAngle << endl;
+
     float changeDir = UTIL_GetSignForDirChange(sceneDirection, distVect, CalVector(0,0,1));
     if (changeDir > 0)
     {
-        m_changeToLeft = false;
+        m_changeToLeft = true;
     }
     else
     {
-        m_changeToLeft = true;
+        m_changeToLeft = false;
     }
 
 //    _dbg << " !!!---------!!! ----------  Awaryjny zwrot " << m_fAngle << endl;
@@ -85,4 +99,15 @@ GoalController* LimitedAreaGoal::CreateController(Avatar *av)
 {
     return new LimitedAreaController(av);
 }
+
+void LimitedAreaGoal::OnEnter(Avatar* av)
+{
+	//cout << " LimitedAreaGoal::OnEnter " << endl;
+}
+
+void LimitedAreaGoal::OnExit(Avatar* av)
+{
+	//	cout << " LimitedAreaGoal::OnExit " << endl;
+}
+
 

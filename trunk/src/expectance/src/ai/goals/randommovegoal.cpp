@@ -5,6 +5,7 @@
 #include "randommovegoal.h"
 #include "../../utility/randomgen.h"
 //#include "../../app/gendebug.h"
+#include <iostream>
 
 using namespace ft;
 using namespace std;
@@ -72,20 +73,36 @@ RandomMoveGoal::~RandomMoveGoal()
 void RandomMoveGoal::OnEnter(Avatar* av)
 {
 	
+	//cout << " RandomMove::OnEnter " << endl;
 
-	int action_id = RandomGenerator::RanIntValue(2);
-	if (action_id ==0)
+//	int action_id = RandomGenerator::RanIntValue(2);
+//	if (action_id ==0)
 	{
-		av->ExecuteAction("walk");
+//		cout << " RandomMove::OnEnter execute walk " << endl;
+		if (av->getCurrTopMotion()!=NULL)
+		{
+			if (av->getCurrTopMotion()->getName().compare("idle") == 0)
+				av->ExecuteAction("walk");
+
+			if (av->getCurrTopMotion()->getName().compare("walk") == 0)
+				av->ExecuteAction("run");
+			
+
+			if (av->getCurrTopMotion()->getName().compare("walk") == 0)
+				av->ExecuteAction("run");
+		}
+
     }
-	else
+//	else
 	{
-		av->ExecuteAction("run");
+//		cout << " RandomMove::OnEnter execute run " << endl;
+//		av->ExecuteAction("run");
 	}
 }
 
 void RandomMoveGoal::OnExit(Avatar* av)
 {
+	//cout << " RandomMove::OnExit " << endl;
 }
 
 int RandomMoveGoal::getActionToPerform()

@@ -39,6 +39,9 @@ namespace ft
         LimitedAreaGoal();
         virtual ~LimitedAreaGoal(void);
         virtual GoalController* CreateController(Avatar *av);
+		virtual void OnEnter(Avatar* av);
+		virtual void OnExit(Avatar* av);
+
     };
 }
 

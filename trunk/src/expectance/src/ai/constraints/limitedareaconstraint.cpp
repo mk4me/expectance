@@ -30,8 +30,11 @@ bool LimitedAreaConstraint::Check(Avatar *av)
 	ft::OsgAvatar* avImpl = dynamic_cast<OsgAvatar*>(av->getImplementation());
     bool result = true;
     float dist = avImpl->getPosition().length();
-    if (dist > 1200)
+    if (dist > 1300)
+	{
+		//cout << " dist " << dist << endl;
         result = false;
+	}
     else
         result = true;
 
