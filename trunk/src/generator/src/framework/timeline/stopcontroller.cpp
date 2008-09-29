@@ -64,9 +64,9 @@ void StopController::Apply(float elapsedSeconds, TimeLineContext * timeLineConte
 			// interpoluj ostatecznie (tutaj trzeba chyba dolozyc jeszcze parametr dotyczacy polozenia animacji IDLE)
 			Motion* idle = DataProvider::getInstance()->getMotion(av->getType(), "idle"); // wez ruch docelowy
 			av->AddMotion(idle->Clone());    // dodaj do timeline
-			Motion* mot=av->getCurrMotion(); // pobierz biezacy ruch
-			Blender* bl=mot->getBlender();   // pobierz blender biezacego ruchu
-			bl->setOverlap(0.5);			 // i ustaw go na 0.5 sec
+			//Motion* mot=av->getCurrMotion(); // pobierz biezacy ruch
+			//Blender* bl=mot->getBlender();   // pobierz blender biezacego ruchu
+			//bl->setOverlap(0.5);			 // i ustaw go na 0.5 sec
 			av->StopCurrentAnimation();		 // zatrzymaj biezaca animacje wedlug ustawionych wartosci
 		}
 	}
