@@ -43,8 +43,9 @@ LimitedAreaController::LimitedAreaController(Avatar *av)
     m_fAngle = radToDeg(angle);
 
 	//cout << " angle " << m_fAngle << endl;
-
-    float changeDir = UTIL_GetSignForDirChange(sceneDirection, distVect, CalVector(0,0,1));
+    CalVector normal2VectorSurface =  CalVector(0,0,1); //(coordinate system XZY)	
+    
+    float changeDir = UTIL_GetSignForDirChange(sceneDirection, distVect, normal2VectorSurface);
     if (changeDir > 0)
     {
         m_changeToLeft = true;

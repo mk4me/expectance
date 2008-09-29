@@ -36,10 +36,15 @@ make
 
 # generator needs /data directory in the same scope so must be copied into apropriate place (main source directory)
 #echo "4. Moves output into _deploy/linux directory"
-#mkdir -p -v _out/linux/data
-#find _out/linux/ -maxdepth 1 -type f -name "*" -delete
-#rsync -rv data _out/linux/ --exclude=\".svn\"
-#rsync -rv python/* _out/linux/ --exclude=\".svn\"
+mkdir -p -v _out/linux/data
+find _out/linux/ -maxdepth 1 -type f -name "*" -delete
+rsync -rv data _out/linux/ --exclude=\".svn\"
+rsync -v src/cal3d/libCal3D.so _out/linux
+rsync -v src/evolution/libevolution.so _out/linux
+rsync -v src/osgcal/lib/libosgCal.so _out/linux
+rsync -v src/expectance/expectance _out/linux
+
+*rsync -rv python/* _out/linux/ --exclude=\".svn\"
 
 #rsync -v src/generator/generator _out/linux
 #rsync -v src/pygen/libpygen.so _out/linux

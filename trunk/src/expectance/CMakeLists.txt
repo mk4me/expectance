@@ -22,6 +22,11 @@ SET(SOURCE_FILES
   src/avatar/osgavatartype.cpp
   src/scene/view/follownodemanip.cpp
   src/scene/view/transformaccumulator.cpp
+  src/utility/randomgen.cpp
+  src/ai/goals/limitedareagoal.cpp
+  src/ai/goals/changedirgoal.cpp
+  src/ai/goals/randommovegoal.cpp
+  src/ai/constraints/limitedareaconstraint.cpp
 )
 
 INCLUDE_DIRECTORIES(
