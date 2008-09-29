@@ -7,6 +7,7 @@
 //#include "../app/gendebug.h"
 #include "osgavatartype.h"
 #include "../motion/animation.h"
+#include "cal3d/coremodel.h"
 
 using namespace ft;
 using namespace ft::gil;
@@ -55,7 +56,8 @@ void OsgAvatar::Destroy(void)
 
 const std::string OsgAvatar::getType()
 {
-	return getOsgModel()->getCoreModel()->getCalCoreModel()->getName();
+	//std::string& name = getOsgModel()->getCoreModel()->getCalCoreModel()->getName();
+	return "../../data/models/freebie/freebie.cfg";
 }
 
 GIL_Animation* OsgAvatar::getAnimation(const std::string& animName)

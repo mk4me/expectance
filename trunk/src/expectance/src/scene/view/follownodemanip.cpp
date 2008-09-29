@@ -1,4 +1,4 @@
-#include "FollowNodeManip.h"
+#include "follownodemanip.h"
 
 followNodeMatrixManipulator::followNodeMatrixManipulator( transformAccumulator* ta)
 {

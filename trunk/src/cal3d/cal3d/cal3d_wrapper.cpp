@@ -321,7 +321,7 @@ int CalCoreBone_GetChildId( struct CalCoreBone *self, int childIndex )
 {
 	int	childBoneID = -1;
 	std::list<int>&		childBoneIDs( self->getListChildId() );
-	if (childIndex < (int)childBoneIDs.size())
+	if (childIndex < childBoneIDs.size())
 	{
 		std::list<int>::iterator i = childBoneIDs.begin();
 		while (childIndex > 0)
@@ -472,10 +472,10 @@ static CalColorValue	ColorToValue( const CalCoreMaterial::Color& inColor )
 static CalCoreMaterial::Color ValueToColor( CalColorValue inValue )
 {
 	CalCoreMaterial::Color	theColor = {
-		(unsigned char)(inValue >> 24),
-		(unsigned char)((inValue & 0x00FF0000) >> 16),
-		(unsigned char)((inValue & 0x0000FF00) >> 8),
-		(unsigned char)(inValue & 0x000000FF)
+		inValue >> 24,
+		(inValue & 0x00FF0000) >> 16,
+		(inValue & 0x0000FF00) >> 8,
+		(inValue & 0x000000FF)
 	};
 	return theColor;
 }
@@ -1151,7 +1151,7 @@ CalCoreBone *CalCoreSkeleton_GetRootCoreBone(CalCoreSkeleton *self, int rootBone
 {
 	CalCoreBone*	theBone = NULL;
 	std::vector<int>&	rootIDs( self->getVectorRootCoreBoneId() );
-	if ( (rootBoneIndex >= 0) && (rootBoneIndex < (int)rootIDs.size()) )
+	if ( (rootBoneIndex >= 0) && (rootBoneIndex < rootIDs.size()) )
 	{
 		int	boneID = rootIDs[ rootBoneIndex ];
 		theBone = CalCoreSkeleton_GetCoreBone( self, boneID );
@@ -1257,7 +1257,7 @@ CalCoreSubmesh *CalCoreSubmesh_New()
 void CalCoreSubmesh_GetVertex( struct CalCoreSubmesh* self, int vertID, float* outPosition, float* outNormal )
 {
 	std::vector<CalCoreSubmesh::Vertex>&	vertices( self->getVectorVertex() );
-	if ( (vertID >= 0) && (vertID < (int)vertices.size()) )
+	if ( (vertID >= 0) && (vertID < vertices.size()) )
 	{
 		CalCoreSubmesh::Vertex&		theVertex( vertices[ vertID ] );
 		
@@ -1327,9 +1327,8 @@ CalBoolean CalCoreSubmesh_IsTangentsEnabled(CalCoreSubmesh *self, int mapId)
 }
 
 CalBoolean CalCoreSubmesh_EnableTangents(struct CalCoreSubmesh *self, int mapId, enum CalBoolean enabled)
-{	
-	bool _enabled = (enabled==1)? true : false ;
-	return self->enableTangents(mapId, _enabled) ? True : False;
+{
+  return self->enableTangents(mapId, enabled) ? True : False;
 }
 
 int CalCoreSubmesh_AddSubMorphTarget( CalCoreSubmesh *self, CalCoreSubMorphTargetDiffMap* inTarget )
@@ -1683,6 +1682,11 @@ CalMesh *CalModel_GetMesh(CalModel *self, int coreMeshId)
   return self->getMesh(coreMeshId);
 }
 
+const CalMesh *CalModel_GetMeshConst(const CalModel *self, int coreMeshId)
+{
+  return self->getMesh(coreMeshId);
+}
+
 CalMixer *CalModel_GetMixer(CalModel *self)
 {
   return self->getMixer();
@@ -1693,7 +1697,17 @@ CalMorphTargetMixer *CalModel_GetMorphTargetMixer(CalModel *self)
   return self->getMorphTargetMixer();
 }
 
+const CalMorphTargetMixer *CalModel_GetMorphTargetMixerConst(const CalModel *self)
+{
+  return self->getMorphTargetMixer();
+}
+
 CalPhysique *CalModel_GetPhysique(CalModel *self)
+{
+  return self->getPhysique();
+}
+
+const CalPhysique *CalModel_GetPhysiqueConst(const CalModel *self)
 {
   return self->getPhysique();
 }
@@ -1714,6 +1728,11 @@ CalSkeleton *CalModel_GetSkeleton(CalModel *self)
 }
 
 CalSpringSystem *CalModel_GetSpringSystem(CalModel *self)
+{
+  return self->getSpringSystem();
+}
+
+const CalSpringSystem *CalModel_GetSpringSystemConst(const CalModel *self)
 {
   return self->getSpringSystem();
 }
@@ -1739,7 +1758,7 @@ struct CalMesh *CalModel_GetMeshByMeshID(struct CalModel *self, int meshId)
 {
 	CalMesh*	theMesh = 0;
 	
-	if ( (meshId >= 0) && (meshId < (int)self->getVectorMesh().size()) )
+	if ( (meshId >= 0) && (meshId < self->getVectorMesh().size()) )
 	{
 		theMesh = self->getVectorMesh()[ meshId ];
 	}
@@ -2018,7 +2037,7 @@ void CalSaver_Delete(CalSaver *self)
 
 CalSaver *CalSaver_New()
 {
-  return new(std::nothrow) CalSaver;  // has been CalSaver() by mka
+  return new(std::nothrow) CalSaver();
 }
 
 CalBoolean CalSaver_SaveCoreAnimation(CalSaver *self, const char *strFilename, CalCoreAnimation *pCoreAnimation)
@@ -2065,12 +2084,22 @@ CalBone *CalSkeleton_GetBone(CalSkeleton *self, int boneId)
   return self->getBone(boneId);
 }
 
-int CalSkeleton_GetBoneCount(CalSkeleton *self)
+const CalBone *CalSkeleton_GetBoneConst(const CalSkeleton *self, int boneId)
+{
+  return self->getBone(boneId);
+}
+
+int CalSkeleton_GetBoneCount(const CalSkeleton *self)
 {
 	return self->getVectorBone().size();
 }
 
 CalCoreSkeleton *CalSkeleton_GetCoreSkeleton(CalSkeleton *self)
+{
+  return self->getCoreSkeleton();
+}
+
+const CalCoreSkeleton *CalSkeleton_GetCoreSkeletonConst(const CalSkeleton *self)
 {
   return self->getCoreSkeleton();
 }
@@ -2155,12 +2184,12 @@ void CalSpringSystem_Update(CalSpringSystem *self, float deltaTime)
   self->update(deltaTime);
 }
 
-CalVector* CalSpringSystem_GetGravityVector(CalSpringSystem *self)
+const CalVector *CalSpringSystem_GetGravityVector(const CalSpringSystem *self)
 {
 	return &self->getGravityVector();
 }
 
-CalVector* CalSpringSystem_GetForceVector(CalSpringSystem *self)
+const CalVector *CalSpringSystem_GetForceVector(const CalSpringSystem *self)
 {
 	return &self->getForceVector();
 }

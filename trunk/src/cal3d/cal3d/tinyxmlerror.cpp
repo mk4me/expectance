@@ -1,13 +1,13 @@
 /*
 www.sourceforge.net/projects/tinyxml
-Original code (2.0 and earlier )copyright (c) 2000-2006 Lee Thomason (www.grinninglizard.com)
+Original code (2.0 and earlier )copyright (c) 2000-2002 Lee Thomason (www.grinninglizard.com)
 
-This software is provided 'as-is', without any express or implied
-warranty. In no event will the authors be held liable for any
+This software is provided 'as-is', without any express or implied 
+warranty. In no event will the authors be held liable for any 
 damages arising from the use of this software.
 
-Permission is granted to anyone to use this software for any
-purpose, including commercial applications, and to alter it and
+Permission is granted to anyone to use this software for any 
+purpose, including commercial applications, and to alter it and 
 redistribute it freely, subject to the following restrictions:
 
 1. The origin of this software must not be misrepresented; you must
@@ -24,14 +24,15 @@ distribution.
 
 #include "tinyxml.h"
 
+namespace cal3d
+{
+
 // The goal of the seperate error file is to make the first
 // step towards localization. tinyxml (currently) only supports
-// english error messages, but the could now be translated.
+// latin-1, but at least the error messages could now be translated.
 //
 // It also cleans up the code a bit.
 //
-namespace cal3d
-{
 
 const char* TiXmlBase::errorString[ TIXML_ERROR_STRING_COUNT ] =
 {
@@ -48,10 +49,7 @@ const char* TiXmlBase::errorString[ TIXML_ERROR_STRING_COUNT ] =
 	"Error parsing Unknown.",
 	"Error parsing Comment.",
 	"Error parsing Declaration.",
-	"Error document empty.",
-	"Error null (0) or unexpected EOF found in input stream.",
-	"Error parsing CDATA.",
-	"Error when TiXmlDocument added to document, because TiXmlDocument can only be at the root.",
+	"Error document empty."
 };
 
 }

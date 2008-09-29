@@ -4,7 +4,7 @@
 #include <osgGA/MatrixManipulator>
 #include <osgViewer/Viewer>     // for M_PI
 
-#include "TransformAccumulator.h"
+#include "transformaccumulator.h"
 ///#include "FollowNodeManip.h"
 
 class followNodeMatrixManipulator : public osgGA::MatrixManipulator

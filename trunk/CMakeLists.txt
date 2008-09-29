@@ -3,7 +3,8 @@
 # refer to the root source directory of the project as ${GENERATOR_SOURCE_DIR} and
 # to the root binary directory of the project as ${GENERATOR_BINARY_DIR}.
 
-project (generator)
+##project (generator)
+project (expectance)
 
 # Recurse into the "cal3d", "engine" and "generator" subdirectories.  This does not actually
 # cause another cmake executable to run.  The same process will walk through
@@ -12,13 +13,18 @@ project (generator)
 #OPTION(DEBUG_BUILD "Compile projects in debug mode" ON)
 OPTION(DEBUG_BUILD "Compile projects in debug mode" OFF)
 
-#OPTION(BUILD_FOR_PYTHON "Build library for use in python" OFF)
-OPTION(BUILD_FOR_PYTHON "Build library for use in python" ON)
+OPTION(BUILD_FOR_PYTHON "Build library for use in python" OFF)
+#OPTION(BUILD_FOR_PYTHON "Build library for use in python" ON)
 
 
 add_subdirectory (src/cal3d)
-add_subdirectory (src/engine)
-add_subdirectory (src/generator)
+##add_subdirectory (src/engine)
+##add_subdirectory (src/generator)
+
+add_subdirectory (src/osgcal)
+add_subdirectory (src/evolution)
+add_subdirectory (src/expectance)
+
 
 IF (BUILD_FOR_PYTHON)
 	add_subdirectory (src/pygen)

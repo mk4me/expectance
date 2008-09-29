@@ -137,7 +137,7 @@ OsgAvatarType* OsgAvatarFactory::CreateAvatarType(const std::string &typeName)
     }
     
 	CalCoreModel* calCoreModel = coreModel->getCalCoreModel();
-	calCoreModel->setName(typeName.c_str());  //replace "Dummy" with proper type name
+	/// TODO change it... calCoreModel->setName(typeName.c_str());  //replace "Dummy" with proper type name
 
 	avatarType = new OsgAvatarType(typeName, coreModel);
 

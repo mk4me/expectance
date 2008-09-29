@@ -11,7 +11,6 @@
 #ifndef CAL_LOADER_H
 #define CAL_LOADER_H
 
-
 //****************************************************************************//
 // Includes                                                                   //
 //****************************************************************************//
@@ -25,7 +24,6 @@
 #include "cal3d/corematerial.h"
 #include "cal3d/coremesh.h"
 #include "cal3d/coreskeleton.h"
-#include "cal3d/tinyxml.h"
 
 //****************************************************************************//
 // Forward declarations                                                       //
@@ -35,6 +33,11 @@ class CalCoreModel;
 class CalCoreBone;
 class CalCoreSubmesh;
 class CalCoreKeyframe;
+
+namespace cal3d
+{
+	class TiXmlDocument;
+}
 
 enum
 {

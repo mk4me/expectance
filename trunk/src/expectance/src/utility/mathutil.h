@@ -7,8 +7,8 @@
 
 #include "cal3d/vector.h"
 #include "cal3d/quaternion.h"
-#include "osg/quat"
-#include "osg/vec3d"
+#include <osg/Quat>
+//#include <osg/vec3d>
 
 CalQuaternion&  UTIL_diff_quats(CalQuaternion& rot, const CalQuaternion& val);
 float UTIL_GetSignForDirChange(CalVector& oldDir, CalVector& newDir, CalVector& normal);
@@ -43,3 +43,4 @@ float getZangle(const osg::Quat& q);
 
 
 #endif //_FT_MATHUTIL_DATA_H
+

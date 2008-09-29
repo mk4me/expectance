@@ -34,7 +34,7 @@
   * This function is the default constructor of the spring system instance.
   *****************************************************************************/
 
-CalSpringSystem::CalSpringSystem(CalModel* pModel)
+CalSpringSystem::CalSpringSystem(CalModel *pModel)
 {
   assert(pModel);
   m_pModel = pModel;
@@ -59,7 +59,7 @@ CalSpringSystem::CalSpringSystem(CalModel* pModel)
 
 void CalSpringSystem::calculateForces(CalSubmesh *pSubmesh, float deltaTime)
 {
-//by mka #pragma unused( deltaTime )
+#pragma unused( deltaTime )
   // get the vertex vector of the submesh
   std::vector<CalVector>& vectorVertex = pSubmesh->getVectorVertex();
 
@@ -395,7 +395,7 @@ void CalSpringSystem::update(float deltaTime)
   * @return the gravity vector as vector.
   *****************************************************************************/
 
-CalVector & CalSpringSystem::getGravityVector()
+const CalVector & CalSpringSystem::getGravityVector() const
 {
 	return m_vGravity;
 }
@@ -409,7 +409,7 @@ CalVector & CalSpringSystem::getGravityVector()
   *****************************************************************************/
 
 
-CalVector & CalSpringSystem::getForceVector()
+const CalVector & CalSpringSystem::getForceVector() const
 {
 	return m_vForce;
 }

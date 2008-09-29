@@ -1,4 +1,4 @@
-#include "TransformAccumulator.h"
+#include "transformaccumulator.h"
 
 osg::Matrix transformAccumulator::getMatrix()
 {

@@ -29,13 +29,13 @@ namespace ft
 	class OsgAvatar : public gil::GIL_Avatar
     {
     public:
-		OsgAvatar(osgCal::Model* osgModel, OsgAvatarType* type,  const std::string name);
-	    virtual ~OsgAvatar(void);
+	OsgAvatar(osgCal::Model* osgModel, OsgAvatarType* type,  const std::string name);
+	virtual ~OsgAvatar(void);
         virtual void Destroy(void);
 
-		virtual const std::string getType(); 
-		OsgAvatarType* getAvatarType() { return m_avatarType; }
-		gil::GIL_Animation* getAnimation(const std::string& animName);
+	virtual const std::string getType(); 
+	OsgAvatarType* getAvatarType() { return m_avatarType; }
+	gil::GIL_Animation* getAnimation(const std::string& animName);
 
         //MsgSender* getLocalMsgSender() { return m_localMsgSender; }
 

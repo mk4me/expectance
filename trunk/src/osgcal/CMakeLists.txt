@@ -26,7 +26,7 @@ INCLUDE(osgcalUtils)
 # packages
 
 FIND_PACKAGE(OSG)
-FIND_PACKAGE(CAL3D)
+#FIND_PACKAGE(CAL3D)
 FIND_PACKAGE(OpenThreads)
 FIND_PACKAGE(OpenGL)
 
@@ -38,14 +38,14 @@ IF (NOT OPEN_THREADS_FOUND)
   MESSAGE(FATAL_ERROR "Unable to locate OpenThreads libary")
 ENDIF (NOT OPEN_THREADS_FOUND)
 
-IF (NOT CAL3D_FOUND)
-  MESSAGE(FATAL_ERROR "Unable to locate Cal3D libary")
-ENDIF (NOT CAL3D_FOUND)
+#IF (NOT CAL3D_FOUND)
+#  MESSAGE(FATAL_ERROR "Unable to locate Cal3D libary")
+#ENDIF (NOT CAL3D_FOUND)
 
 SET(WRAPPER_PREFIX  osgwrapper_)
 
 # sources
 
 ADD_SUBDIRECTORY(src)
-ADD_SUBDIRECTORY(applications)
+#ADD_SUBDIRECTORY(applications)
 
