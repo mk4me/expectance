@@ -56,8 +56,7 @@ void OsgAvatar::Destroy(void)
 
 const std::string OsgAvatar::getType()
 {
-	//std::string& name = getOsgModel()->getCoreModel()->getCalCoreModel()->getName();
-	return "../../data/models/freebie/freebie.cfg";
+	return getAvatarType()->getName();
 }
 
 GIL_Animation* OsgAvatar::getAnimation(const std::string& animName)

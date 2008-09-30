@@ -25,6 +25,10 @@ namespace ft
 
 		osgCal::CoreModel* getCoreModel() { return m_osgCoreModel; }
 
+		const std::string& getName() const;
+		void setName( const char* inName );
+
+
         bool AddMotion(Animation* motion);
         bool  RemoveMotion(Animation* motion);
         Animation* GetMotion(std::string motionName);
@@ -36,10 +40,11 @@ namespace ft
         //virtual void Dump();
     
     private:
+		std::string m_strName;
 		osgCal::CoreModel* m_osgCoreModel;
         std::map<std::string,Animation*> m_motions;
-       
     };
 }
 
 #endif //_GEN_OSGAVATARTYPE_H
+

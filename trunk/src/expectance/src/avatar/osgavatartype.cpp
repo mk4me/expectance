@@ -17,6 +17,7 @@ using namespace ft;
  **/
 OsgAvatarType::OsgAvatarType(const std::string &typeName, osgCal::CoreModel* coreModel)
 {
+	setName(typeName.c_str());
 	m_osgCoreModel = coreModel;
 	InitMotions();
 	InitTransforms();
@@ -32,6 +33,18 @@ OsgAvatarType::~OsgAvatarType()
 
 	//TODO:  delete m_osgCoreModel when it is possible - right now destructor is provate !!
 	//delete m_osgCoreModel;
+}
+
+
+const std::string& OsgAvatarType::getName() const
+{
+  return m_strName;
+}
+
+
+void OsgAvatarType::setName( const char* inName )
+{
+	m_strName.assign( inName );
 }
 
 /**
