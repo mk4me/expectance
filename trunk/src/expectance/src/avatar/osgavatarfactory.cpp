@@ -5,6 +5,8 @@
 
 #include "osgavatarfactory.h"
 
+#include "../avatar/avatarupdatecallback.h"
+
 using namespace ft;
 
 OsgAvatarFactory* OsgAvatarFactory::m_instance = NULL;
@@ -157,3 +159,32 @@ void OsgAvatarFactory::ReleaseAvatarTypes()
     m_instance->m_avatarTypes.clear();
 }
 
+void IntiUpdateCallbackForAvatar(Avatar* avatar)
+{
+	OsgAvatar* avImpl = static_cast<OsgAvatar*>(avatar->getImplementation());
+	osgCal::Model* model = avImpl->getOsgModel();
+
+	//replace update callback from OsgCal with proper one for evolution
+	model->setUpdateCallback(0);
+	// TODO: check how to destroy updatecallback
+	//osg::NodeCallback* oldUpdateCallback = model->getUpdateCallback();
+	//delete oldUpdateCallback.;
+	model->setUpdateCallback(new AvatarUpdateCallback(avatar));
+
+}
+
+void OsgAvatarFactory::AddAvatarToScene(Avatar* av, osg::MatrixTransform* worldTransformNode, 
+										const osg::Vec3d& vStartPos, const osg::Quat  vStartRotation)
+{
+		OsgAvatar* avImpl = static_cast<OsgAvatar*>(av->getImplementation());					
+		worldTransformNode->addChild(  avImpl->getOffsetTransform()  );
+		IntiUpdateCallbackForAvatar(av);
+		avImpl->setPosition(vStartPos);
+		avImpl->setGlobalRotation(vStartRotation);
+}
+
+std::string OsgAvatarFactory::getAvatarPath(const std::string& modelName)
+{
+	std::string path = FT_MODELS_PATH + modelName + "/" + modelName + ".cfg";
+	return path;		
+}

@@ -46,7 +46,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\cal3d;..\evolution\api;..\osgcal\include"
-				PreprocessorDefinitions="WIN32,_WINDOWS,_DEBUG"
+				PreprocessorDefinitions="WIN32,_WINDOWS,_DEBUG,TIXML_USE_STL"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=""
@@ -139,7 +139,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="2"
 				AdditionalIncludeDirectories="..\cal3d;..\evolution\api;..\osgcal\include"
-				PreprocessorDefinitions="WIN32,_WINDOWS,NDEBUG"
+				PreprocessorDefinitions="WIN32,_WINDOWS,NDEBUG;TIXML_USE_STL"
 				StringPooling="false"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="false"
@@ -639,6 +639,46 @@
 				</File>
 				<File
 					RelativePath=".\src\scene\view\transformaccumulator.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="data"
+			>
+			<File
+				RelativePath=".\src\data\xmlsceneparser.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\data\xmlsceneparser.h"
+				>
+			</File>
+			<Filter
+				Name="tinyxml"
+				>
+				<File
+					RelativePath=".\src\data\tinyxml\tinystr.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\data\tinyxml\tinystr.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\data\tinyxml\tinyxml.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\data\tinyxml\tinyxml.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\data\tinyxml\tinyxmlerror.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\data\tinyxml\tinyxmlparser.cpp"
 					>
 				</File>
 			</Filter>

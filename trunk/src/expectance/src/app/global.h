@@ -16,6 +16,7 @@
 namespace ft
 {
     static const std::string FT_DATA_PATH = "../../data/";  
+	static const std::string FT_MODELS_PATH = FT_DATA_PATH + "models/";  
 }
 
 #endif //GLOBAL_H

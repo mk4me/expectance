@@ -8,6 +8,8 @@
 
 #include "osgavatartype.h"
 #include "osgavatar.h"
+#include <osg/MatrixTransform>
+#include "../app/global.h"
 
 namespace ft
 {
@@ -27,6 +29,11 @@ namespace ft
         OsgAvatar* CreateAvatar(const std::string avatarTypeName, const std::string objectName);
 		
 		OsgAvatarType* getAvatarType(const std::string &typeName);
+
+		static void AddAvatarToScene(Avatar* av, osg::MatrixTransform* worldTransformNode,
+						const osg::Vec3d& vStartPos, const osg::Quat  vStartRotation);
+
+		static std::string OsgAvatarFactory::getAvatarPath(const std::string& modelName);
 
     protected:
 		        

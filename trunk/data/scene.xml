@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<Objects>
+
+	<Avatar name="av01" type="freebie">
+		<Position x="-500" y="-500" z="500"/>
+		<Rotation angle="0"/>
+
+	</Avatar>
+
+	<Avatar name="av02" type="freebie">
+		<Position x="-400" y="-500" z="500"/>
+		<Rotation angle="0"/>
+
+	</Avatar>
+
+</Objects>
+
+

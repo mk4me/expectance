@@ -46,7 +46,6 @@
 #include "../avatar/osgavatar.h"
 #include "evolution/evodbg.h"
 #include "../timeline/lcsmodifier.h"
-#include "../avatar/avatarupdatecallback.h"
 #include "../control/controlmanager.h"
 #include "../ai/goals/randommovegoal.h"
 #include "../ai/goals/changedirgoal.h"
@@ -54,12 +53,14 @@
 #include "../ai/constraints/limitedareaconstraint.h"
 #include "config.h"
 #include "../utility/stringhelper.h"
+#include "global.h"
+#include "../data/xmlsceneparser.h"
+#include"../avatar/osgavatarfactory.h"
 
 #include "../scene/view/follownodemanip.h"
 
 using namespace ft;
 
-const std::string  AVATAR_TYPE = "../../data/models/freebie/freebie.cfg";
 
 bool ChangeCamera = false;
 bool AllowRefreshCamera = false;
@@ -246,7 +247,6 @@ class CompileStateSets : public osg::Operation
         osg::Node* node;
 };
 
-
 void InitActionsForType(World* world, const std::string& avatarType)
 {
 	//---------------- IDLE
@@ -305,30 +305,31 @@ void InitWorld(World* world)
 	Rule* rule = new Rule(new LimitedAreaConstraint(), new LimitedAreaGoal());
 	world->AddRule(rule);
 
-
 	//world->LoadDataForType("data/motions.xml", "cally");
-	world->LoadDataForType("../../data/motions.xml", AVATAR_TYPE);
 
-	InitActionsForType(world, AVATAR_TYPE);
-	//InitActionsForType(world, "cally");
-	InitGraphForType(world, AVATAR_TYPE);
-	//InitGraphForType(world, "cally");
-	
+	std::string _models_str = "";
+	if (Config::getInstance()->IsKey("avatar_models"))
+	{
+		_models_str = Config::getInstance()->GetStrVal("avatar_models");
+	}
+	vector<std::string>  models = StringHelper::Split(_models_str,",");
+
+	//abak: NOTE that is only one motions file for all avatar types. It can be extended in application.cfg to handle separate
+	// motions file for each avatar type.
+	std::string motions_file = "";
+	if (Config::getInstance()->IsKey("motions_file"))
+	{
+		motions_file = Config::getInstance()->GetStrVal("motions_file");
+	}
+
+	for (unsigned int i=0; i < models.size(); i++)
+	{
+		world->LoadDataForType(FT_DATA_PATH + motions_file, OsgAvatarFactory::getAvatarPath(models[0]));
+		InitActionsForType(world, OsgAvatarFactory::getAvatarPath(models[0]));
+		InitGraphForType(world, OsgAvatarFactory::getAvatarPath(models[0]));
+	}
 }
 
-void IntiUpdateCallbackForAvatar(Avatar* avatar)
-{
-	OsgAvatar* avImpl = static_cast<OsgAvatar*>(avatar->getImplementation());
-	osgCal::Model* model = avImpl->getOsgModel();
-
-	//replace update callback from OsgCal with proper one for evolution
-	model->setUpdateCallback(0);
-	// TODO: check how to destroy updatecallback
-	//osg::NodeCallback* oldUpdateCallback = model->getUpdateCallback();
-	//delete oldUpdateCallback.;
-	model->setUpdateCallback(new AvatarUpdateCallback(avatar));
-
-}
 
 osg::Node* createFloor(const osg::Vec3& center,float radius)
 {
@@ -407,7 +408,7 @@ osg::Node* createFloor(const osg::Vec3& center,float radius)
     geode->addDrawable(geom);
 	
 	// load an image by reading a file: 
-    osg::ref_ptr<osg::Image> image = osgDB::readImageFile("../../data/textures/floorhex3.tga");
+    osg::ref_ptr<osg::Image> image = osgDB::readImageFile(FT_DATA_PATH + "textures/floorhex3.tga");
     if (!image)
     {
 	   std::cout << " couldn't find texture, quitting." << std::endl;
@@ -518,6 +519,104 @@ osg::Node* createTracker()//(const osg::BoundingSphere& bs)
 	return tracerGeode;
 }
 
+void InitSceneFromFile(World* world, osg::MatrixTransform* worldTransformNode)
+{
+	std::string scene_file = "";
+	if (Config::getInstance()->IsKey("scene_file"))
+	{
+		scene_file = Config::getInstance()->GetStrVal("scene_file");
+
+		XMLSceneParser parser;
+		parser.LoadScene(FT_DATA_PATH + scene_file, world, worldTransformNode);
+	}
+}
+
+void InitSceneFromCode(World* world, osg::MatrixTransform* worldTransformNode)
+{
+	// floor
+
+	osg::Vec3 center(0.0f,0.0f,0.0f);
+    float radius = 2000.0f;
+    osg::Node* floorModel = createFloor(center,radius);
+
+    worldTransformNode->addChild(floorModel);
+
+    int avatar_number = -1;
+    if (Config::getInstance()->IsKey("avatars_number"))
+    {
+        avatar_number = Config::getInstance()->GetIntVal("avatars_number");
+    }
+    else
+    {
+        avatar_number = 1;
+    }
+
+    Avatar* av;
+	osg::Vec3d vStartPos(0,0,0);
+	osg::Quat  vStartAttitude;
+    srand(time(NULL));
+
+	float x_off = -150, z_off = 0;
+	
+	std::string _nameHelper;
+    for (int i=0; i<avatar_number; i++)
+    {
+		_nameHelper.empty();
+		_nameHelper = "Avatar" + ft::StringHelper::itos(i);
+
+//		if (i%2==0)
+			
+			std::string modelPath = OsgAvatarFactory::getAvatarPath("freebie");
+//	    else
+//			modelName = "../../data/models/freebie/cally.cfg";
+
+		av = dynamic_cast<Avatar*>(ft::Factory::getInstance()->createAvatar(_nameHelper, modelPath)); 
+        if (av != NULL)  
+        {
+            //av->Init();
+            //av->Dump();
+			OsgAvatar* avImpl = static_cast<OsgAvatar*>(av->getImplementation());
+			
+
+			// set random position and direction
+			bool isInScope = true;
+			int scopeRadius = (int)radius; //2000;
+			vStartAttitude = osg::Quat(osg::DegreesToRadians((float)(rand()%360)), osg::Vec3(0,0,1));
+			while (isInScope)
+			{
+				int sign=((rand()%2)==1)?-1:1;
+				vStartPos.x() =  (rand() % scopeRadius-300)*sign;
+				vStartPos.y() =  (rand() % scopeRadius-300)*sign;
+
+				// check collision by radius distance
+				int children = worldTransformNode->getNumChildren();
+				int distCnt = 0;
+				for (int j = 0; j < children; j++)
+				{
+					osg::Node * avTmp =  worldTransformNode->getChild(j);
+					osg::Vec3d _center = avTmp->getBound().center();
+					double radius1 = 300; //avTmp->getBound().radius();
+					double distance = sqrt( (vStartPos.x()-center.x())*(vStartPos.x()-center.x())
+						+(vStartPos.y()-center.y())*(vStartPos.y()-center.y()) );
+					if ((distance <= radius1*3) && (children > 1))
+						distCnt++;
+				}
+				if(distCnt == 0) isInScope = false;
+				else isInScope = true;
+			//	vStartPos.set(vStartPos.x() + x_off, vStartPos.y(), vStartPos.z() + z_off);
+			}
+
+			ControlManager::getInstance()->AddAvatar(av);
+			av->AddController(new LCSModifier());
+			av->AddController(avImpl->getFootDetector());
+			av->AddController(avImpl->getStopController()); //mka 2008.08.19
+			world->AddAvatar(av);
+			av->StartSimulation();
+
+			OsgAvatarFactory::AddAvatarToScene(av, worldTransformNode, vStartPos, vStartAttitude);
+        }
+    }
+}
 
 EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 {
@@ -572,12 +671,12 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
         }
     }
 
-    if ( arguments.argc() <= 1 || fn == "" )
-    {
-        arguments.getApplicationUsage()->write( std::cout,
-                                                osg::ApplicationUsage::COMMAND_LINE_OPTION );
-        return 1;
-    }
+//    if ( arguments.argc() <= 1 || fn == "" )
+//    {
+//        arguments.getApplicationUsage()->write( std::cout,
+//                                                osg::ApplicationUsage::COMMAND_LINE_OPTION );
+//        return 1;
+//    }
 
     if ( arguments.read( "--no-debug" ) == false )
     {
@@ -592,19 +691,6 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 
 	osg::ref_ptr< osg::Group > root = new osg::Group();
 	
-	// floor
-
-	osg::Vec3 center(0.0f,0.0f,0.0f);
-    float radius = 2000.0f;
-    osg::Node* floorModel = createFloor(center,radius);
-    osg::MatrixTransform* worldTransformNode = new osg::MatrixTransform;
-	worldTransformNode->setMatrix(osg::Matrix::rotate(osg::inDegrees(5.0f),1.0f,0.0f,0.0f));
-
-    worldTransformNode->addChild(floorModel);
-
-	root->addChild(worldTransformNode);
-
-
 	//------------ EVOLUTION init
 
 	Cal3dImpl m_evolutionImpl;
@@ -617,93 +703,14 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	//EvoDBG::setTimelineLevel(1);
 	ft::ControlManager::getInstance()->Init(); //enforced creation of singleton
 
-    int avatar_number = -1;
-    if (Config::getInstance()->IsKey("avatars_number"))
-    {
-        avatar_number = Config::getInstance()->GetIntVal("avatars_number");
-    }
-    else
-    {
-        avatar_number = 1;
-    }
+    osg::MatrixTransform* worldTransformNode = new osg::MatrixTransform;
+	worldTransformNode->setMatrix(osg::Matrix::rotate(osg::inDegrees(5.0f),1.0f,0.0f,0.0f));
+	root->addChild(worldTransformNode);
 
-    Avatar* av;
-	osg::Vec3d vStartPos(0,0,0);
-	osg::Quat  vStartAttitude;
-    srand(time(NULL));
+	InitSceneFromFile(m_world, worldTransformNode);
+	InitSceneFromCode(m_world, worldTransformNode);
 
-	float x_off = -150, z_off = 0;
-	
-	std::string _nameHelper;
-    for (int i=0; i<avatar_number; i++)
-    {
-		_nameHelper.empty();
-		_nameHelper = "Avatar" + ft::StringHelper::itos(i);
-
-		std::string modelName;
-
-//		if (i%2==0)
-			modelName = "../../data/models/freebie/freebie.cfg";
-//	    else
-//			modelName = "../../data/models/freebie/cally.cfg";
-
-		av = dynamic_cast<Avatar*>(ft::Factory::getInstance()->createAvatar(_nameHelper, modelName)); 
-        if (av != NULL)  
-        {
-            //av->Init();
-            //av->Dump();
-			OsgAvatar* avImpl = static_cast<OsgAvatar*>(av->getImplementation());
-			
-
-			// set random position and direction
-			bool isInScope = true;
-			int scopeRadius = (int)radius; //2000;
-			vStartAttitude = osg::Quat(osg::DegreesToRadians((float)(rand()%360)), osg::Vec3(0,0,1));
-			while (isInScope)
-			{
-				int sign=((rand()%2)==1)?-1:1;
-				vStartPos.x() =  (rand() % scopeRadius-300)*sign;
-				vStartPos.y() =  (rand() % scopeRadius-300)*sign;
-
-				// check collision by radius distance
-				int children = worldTransformNode->getNumChildren();
-				int distCnt = 0;
-				for (int j = 0; j < children; j++)
-				{
-					osg::Node * avTmp =  worldTransformNode->getChild(j);
-					osg::Vec3d _center = avTmp->getBound().center();
-					double radius1 = 300; //avTmp->getBound().radius();
-					double distance = sqrt( (vStartPos.x()-center.x())*(vStartPos.x()-center.x())
-						+(vStartPos.y()-center.y())*(vStartPos.y()-center.y()) );
-					if ((distance <= radius1*3) && (children > 1))
-						distCnt++;
-				}
-				if(distCnt == 0) isInScope = false;
-				else isInScope = true;
-			//	vStartPos.set(vStartPos.x() + x_off, vStartPos.y(), vStartPos.z() + z_off);
-			}
-
-			worldTransformNode->addChild(  avImpl->getOffsetTransform()  );
-
-
-
-			ControlManager::getInstance()->AddAvatar(av);
-			av->AddController(new LCSModifier());
-			av->AddController(avImpl->getFootDetector());
-			av->AddController(avImpl->getStopController()); //mka 2008.08.19
-			m_world->AddAvatar(av);
-			IntiUpdateCallbackForAvatar(av);
-			avImpl->setPosition(vStartPos);
-			avImpl->setGlobalRotation(vStartAttitude);
-
-
-            if (i==0)
-            {
-                ControlManager::getInstance()->setActiveAvatar(0);
-            }
-			av->StartSimulation();
-        }
-    }
+	ControlManager::getInstance()->setActiveAvatar(0);
 
 	InitWorld(m_world);
 	m_world->DumpActions();
