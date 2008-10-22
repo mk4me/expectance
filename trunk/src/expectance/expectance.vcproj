@@ -642,6 +642,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="object"
+				>
+				<File
+					RelativePath=".\src\scene\object\traceline.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\scene\object\traceline.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="data"

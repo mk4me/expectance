@@ -11,7 +11,7 @@
 			<DebugSettings
 				Command="$(TargetPath)"
 				WorkingDirectory=""
-				CommandArguments=" ..\..\data\models\freebie\freebie.cfg --no-debug"
+				CommandArguments=" --no-debug"
 				Attach="false"
 				DebuggerType="3"
 				Remote="1"

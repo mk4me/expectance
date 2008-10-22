@@ -117,7 +117,8 @@ Avatar* XMLSceneParser::ParseAvatar(TiXmlElement *element,  osg::MatrixTransform
 		ControlManager::getInstance()->AddAvatar(av);
 		av->AddController(new LCSModifier());
 
-		OsgAvatar* avImpl = static_cast<OsgAvatar*>(av->getImplementation());					
+		OsgAvatar* avImpl = static_cast<OsgAvatar*>(av->getImplementation());
+		avImpl->getOffsetTransform()->setName(avatarName); //mka 2008.09.06
 		av->AddController(avImpl->getFootDetector());
 		av->AddController(avImpl->getStopController()); //mka 2008.08.19
 		OsgAvatarFactory::AddAvatarToScene(av, worldTransformNode, vStartPos, qStartRotation);

@@ -58,7 +58,7 @@
 #include"../avatar/osgavatarfactory.h"
 
 #include "../scene/view/follownodemanip.h"
-
+#include "../scene/object/traceline.h"
 using namespace ft;
 
 
@@ -193,6 +193,7 @@ class ToggleHandler : public osgGA::GUIEventHandler
 							_activeAvatarIndex = (_activeAvatarIndex+1) % ControlManager::getInstance()->getAvatarsCount();
 							ControlManager::getInstance()->setActiveAvatar(_activeAvatarIndex);
 							m_activeAvatar = ControlManager::getInstance()->getActiveAvatar();
+							//m_activeAvatar->SetThink(false);
 							SelectActiveAvatar = true; // allow change avatar camera and tracker when active avatar changed
 							
 						}
@@ -539,6 +540,7 @@ void InitSceneFromCode(World* world, osg::MatrixTransform* worldTransformNode)
     float radius = 2000.0f;
     osg::Node* floorModel = createFloor(center,radius);
 
+
     worldTransformNode->addChild(floorModel);
 
     int avatar_number = -1;
@@ -552,6 +554,7 @@ void InitSceneFromCode(World* world, osg::MatrixTransform* worldTransformNode)
     }
 
     Avatar* av;
+	 
 	osg::Vec3d vStartPos(0,0,0);
 	osg::Quat  vStartAttitude;
     srand(time(NULL));
@@ -576,7 +579,7 @@ void InitSceneFromCode(World* world, osg::MatrixTransform* worldTransformNode)
             //av->Init();
             //av->Dump();
 			OsgAvatar* avImpl = static_cast<OsgAvatar*>(av->getImplementation());
-			
+			avImpl->getOffsetTransform()->setName(_nameHelper);
 
 			// set random position and direction
 			bool isInScope = true;
@@ -614,8 +617,71 @@ void InitSceneFromCode(World* world, osg::MatrixTransform* worldTransformNode)
 			av->StartSimulation();
 
 			OsgAvatarFactory::AddAvatarToScene(av, worldTransformNode, vStartPos, vStartAttitude);
+
+
         }
     }
+}
+
+
+
+void analyseGeode(osg::Geode *geode);
+
+void analysePrimSet(osg::PrimitiveSet*prset, const osg::Vec3Array *verts);
+
+void analyse(osg::Node *nd) {
+	/// here you have found a group.
+    osg::Geode *geode = dynamic_cast<osg::Geode *> (nd);
+	if (geode) { // analyse the geode. If it isnt a geode the dynamic cast gives NULL.
+		analyseGeode(geode);
+	} else {
+		osg::Group *gp = dynamic_cast<osg::Group *> (nd);
+		if (gp) {
+			osg::notify(osg::WARN) << "Group "<<  gp->getName() <<std::endl;
+			for (unsigned int ic=0; ic<gp->getNumChildren(); ic++) {
+				analyse(gp->getChild(ic));
+			}
+		} else {
+			osg::notify(osg::WARN) << "Unknown node "<<  nd <<std::endl;
+		}
+	}
+}
+// divide the geode into its drawables and primitivesets:
+
+void analyseGeode(osg::Geode *geode) {
+    for (unsigned int i=0; i<geode->getNumDrawables(); i++) {
+		osg::Drawable *drawable=geode->getDrawable(i);
+		osg::Geometry *geom=dynamic_cast<osg::Geometry *> (drawable);
+		for (unsigned int ipr=0; ipr<geom->getNumPrimitiveSets(); ipr++) {
+			osg::PrimitiveSet* prset=geom->getPrimitiveSet(ipr);
+			osg::notify(osg::WARN) << "Primitive Set "<< ipr << std::endl;
+			//analysePrimSet(prset, dynamic_cast<const osg::Vec3Array*>(geom->getVertexArray()));
+		}
+    }
+}
+
+void analysePrimSet(osg::PrimitiveSet*prset, const osg::Vec3Array *verts) {
+	unsigned int ic;
+	unsigned int i2;
+	unsigned int nprim=0;
+	osg::notify(osg::WARN) << "Prim set type "<< prset->getMode() << std::endl;
+	for (ic=0; ic<prset->getNumIndices(); ic++) { // NB the vertices are held in the drawable -
+		osg::notify(osg::WARN) << "vertex "<< ic << " is index "<<prset->index(ic) << " at " <<
+			(* verts)[prset->index(ic)].x() << "," <<
+			(* verts)[prset->index(ic)].y() << "," << 
+			(* verts)[prset->index(ic)].z() << std::endl;
+    }
+	// you might want to handle each type of primset differently: such as:
+	switch (prset->getMode()) {
+	case osg::PrimitiveSet::TRIANGLES: // get vertices of triangle
+		osg::notify(osg::WARN) << "Triangles "<< nprim << " is index "<<prset->index(ic) << std::endl;
+		for (i2=0; i2<prset->getNumIndices()-2; i2+=3) {
+		}
+	break;
+	case osg::PrimitiveSet::TRIANGLE_STRIP: // look up how tristrips are coded
+	break;
+	// etc for all the primitive types you expect. EG quads, quadstrips lines line loops....
+	}
 }
 
 EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
@@ -703,14 +769,31 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	//EvoDBG::setTimelineLevel(1);
 	ft::ControlManager::getInstance()->Init(); //enforced creation of singleton
 
-    osg::MatrixTransform* worldTransformNode = new osg::MatrixTransform;
+	osg::ref_ptr<osg::MatrixTransform> worldTransformNode = new osg::MatrixTransform;
+	worldTransformNode->setName("worldTransformNode");
 	worldTransformNode->setMatrix(osg::Matrix::rotate(osg::inDegrees(5.0f),1.0f,0.0f,0.0f));
-	root->addChild(worldTransformNode);
+	root->addChild(worldTransformNode.get());
 
-	InitSceneFromFile(m_world, worldTransformNode);
-	InitSceneFromCode(m_world, worldTransformNode);
+	InitSceneFromFile(m_world, worldTransformNode.get());
+	InitSceneFromCode(m_world, worldTransformNode.get());
 
 	ControlManager::getInstance()->setActiveAvatar(0);
+
+	int children = worldTransformNode->getNumChildren();
+	for (int i = 0; i < children; i++)
+	{
+		osg::PositionAttitudeTransform * tmpNode =  dynamic_cast<osg::PositionAttitudeTransform*>(worldTransformNode->getChild(i));
+		if (tmpNode!=NULL)
+		{
+			osg::ref_ptr<osg::Group> tracer = new ft::TraceLine();
+			tracer->setName(tmpNode->getName()+"__tracer__");
+			//ft::TraceNode* tracer = new ft::TraceNode();
+			tmpNode->addChild(tracer.get());
+		}
+		//avTmp->getName();
+
+	}
+	//analyse(worldTransformNode.get());
 
 	InitWorld(m_world);
 	m_world->DumpActions();
@@ -826,7 +909,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	osg::ref_ptr<osg::PositionAttitudeTransform> followerPAT = new osg::PositionAttitudeTransform();
 	followerPAT->setPosition( osg::Vec3(0,-1000,200) );
 	followerPAT->setAttitude( osg::Quat( osg::DegreesToRadians(-10.0f), osg::Vec3(1,0,0) ));
-	
+	followerPAT->setName("CameraFollowerPAT");
 	OsgAvatar* activeAvatar = static_cast<OsgAvatar*>(ft::ControlManager::getInstance()->getActiveAvatar()->getImplementation());
 	activeAvatar->getOffsetTransform()->addChild(followerPAT.get());
 
@@ -834,13 +917,11 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	avatarWorldCoords->attachToGroup(followerPAT.get());
 
 	osg::ref_ptr<followNodeMatrixManipulator> followAvatar = new followNodeMatrixManipulator(avatarWorldCoords);
-
-
+	followAvatar->setName("followAvatarMatrix");
 // next camera
 	osg::ref_ptr<osgGA::TrackballManipulator> Tman = new osgGA::TrackballManipulator();
 	Tman->setAutoComputeHomePosition(true);
     Tman->setHomePosition(osg::Vec3d(-3000.0, -3000.0, 600.0), osg::Vec3d(0.0,0.0, 0.0), osg::Vec3d(0.0, 0.0, 1.0),false); // do not auto calculate home
-
 
 	viewer.setCameraManipulator(Tman.get());
 
@@ -882,7 +963,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
             startTick,
             pauseState == Unpaused ? tick : pauseStartTick );
 
-		if (SelectActiveAvatar) //allow to change camera and marcer after active avatar was changed
+		if (SelectActiveAvatar) //allow to change camera and marker after active avatar was changed
 		{
 			OsgAvatar* activeAvatar = static_cast<OsgAvatar*>(ft::ControlManager::getInstance()->getActiveAvatar()->getImplementation());
 			
@@ -894,10 +975,20 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 					lastActiveAvatar->getOffsetTransform()->removeChild(followerPAT.get()); // and release from previous one
 					lastActiveAvatar->getOffsetTransform()->removeChild(avatarTracker.get()); // and release from previous one
 				}
+	
 				//correct worldCoordinates matrix - not necessary here
 				//avatarWorldCoords->attachToGroup(followerPAT.get());
 				//followAvatar->setTransformAccumulator(avatarWorldCoords);
 			}
+			//if ( !viewer.getCamera()->containsNode(activeAvatar->getOffsetTransform()) )
+			//{
+			//	osg::Node* tmpNode = activeAvatar->getOffsetTransform();
+			//	viewer.getCamera()->addChild(tmpNode);
+			//	if (lastActiveAvatar!=NULL){
+			//		if ( viewer.getCamera()->containsNode(lastActiveAvatar->getOffsetTransform()) )
+			//				viewer.getCamera()->removeChild(lastActiveAvatar->getOffsetTransform());
+			//	}
+			//}
 			lastActiveAvatar = activeAvatar; // update current avatar pointer
 			SelectActiveAvatar = false;
 		}
@@ -944,3 +1035,111 @@ int main(int argc, char *argv[])
     return RunOSGApp(argc, argv);
 }
 
+// Lazy, global variables
+////osg::ref_ptr<osg::Geode> lineGeode;
+////osg::ref_ptr<osg::Geometry> lineGeometry;
+////osg::ref_ptr<osg::DrawArrays> lineDrawArrays;
+////osg::ref_ptr<osg::Vec3Array> lineVertices;
+////osg::ref_ptr<osg::Vec4Array> lineColors;
+////osg::ref_ptr<osg::VertexBufferObject> lineVertexBufferObject;
+////
+////
+////class Change : public osg::Drawable::UpdateCallback
+////{
+////    public:
+////        Change() {}
+////
+////        virtual void update(osg::NodeVisitor*nv, osg::Drawable* dbl) 
+////        {
+////            const osg::FrameStamp *fs = nv->getFrameStamp();
+////            if( fs != 0L )
+////            {
+////				for( int i = 0; i < 360.0; i++ )
+////				{
+////					double a = (double)(i)*3.141516/180.0;
+////					(*lineVertices)[i] = osg::Vec3( (double)i/180.0, sin(a + fs->getReferenceTime() ) , 0.0 );
+////				}
+////				// Do I need this? Re-set the vertexArray to force OSG to recognize the data has been changed?
+////				lineGeometry.get()->setVertexArray(lineVertices.get());
+////				lineDrawArrays.get()->setCount( lineVertices.get()->size() );	
+////				lineGeometry.get()->dirtyDisplayList();
+////				lineGeometry.get()->dirtyBound();
+////
+////            }
+////        }
+////    private:
+////
+////};
+////osg::ref_ptr<osg::Geode> aLine()
+////{
+////
+////    lineVertices = new osg::Vec3Array;
+////    lineColors = new osg::Vec4Array;
+////    lineColors->push_back( osg::Vec4( 1, 1, 0, 1 ));
+////
+////    for( int i = 0; i < 360.0; i++ )
+////    {
+////        double a = (double)(i)*3.141516/180.0;
+////        lineVertices->push_back( osg::Vec3( (double)i/180.0, sin(a), 0.0 ));
+////    }
+////	
+////	
+////    lineGeometry = new osg::Geometry;
+////	lineDrawArrays = new osg::DrawArrays;
+////	lineGeode = new osg::Geode;
+////	lineVertexBufferObject = new osg::VertexBufferObject;
+////
+////	
+////	
+////	lineGeometry.get()->setVertexArray(lineVertices.get());
+////	lineGeometry.get()->setColorBinding(osg::Geometry::BIND_OVERALL);
+////	lineGeometry.get()->setColorArray(lineColors.get());
+////	lineDrawArrays.get()->setMode(osg::PrimitiveSet::LINE_STRIP);
+////	lineGeometry.get ()->addPrimitiveSet(lineDrawArrays.get());
+////
+////	lineDrawArrays.get()->setCount( lineVertices.get()->size() );
+////
+////		
+////
+////
+////	lineVertices.get ()->setVertexBufferObject(lineVertexBufferObject.get());
+////
+////	lineGeometry.get()->setUseDisplayList(false);
+////
+////	// Things work when this is false. What's wrong???
+//////	lineGeometry.get()->setUseVertexBufferObjects(true);
+//////	lineGeometry.get()->setUseVertexBufferObjects(false);
+////
+////	
+////	
+////	lineVertexBufferObject->dirty();
+////
+////	lineGeometry.get()->dirtyDisplayList();
+////	lineGeometry.get()->dirtyBound();
+////	
+////	lineGeode.get()->addDrawable(lineGeometry.get());
+////    lineGeometry->setUpdateCallback( new Change );
+////
+////    return lineGeode;
+////}
+////
+////
+////int main(int argc, char **argv)
+////{
+////    // Set up the viewer
+////    osgViewer::Viewer viewer;
+////
+////    // Load up the models specified on the command line
+////
+////    osg::ref_ptr< osg::Switch> sw = new osg::Switch;
+////    sw->addChild( aLine().get() );
+////    sw->setAllChildrenOn();
+////    osg::ref_ptr<osg::Node> database = sw.get();
+////
+////    // set the scene to render
+////    viewer.setSceneData(database.get());
+////
+////    // Realize the viewer
+////    viewer.run();
+////    return 0;
+////}
