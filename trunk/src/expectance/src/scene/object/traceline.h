@@ -10,6 +10,8 @@
 #include <osg/Geode>
 #include <osg/Geometry>
 
+#include "../worldmanager.h"
+
 
 namespace ft
 {
@@ -18,8 +20,11 @@ namespace ft
 	public:
 		TraceLine(void);
 		void updateTrackingInformation(void);
+//		void setPAT(osg::PositionAttitudeTransform* pat) { m_tracerPAT = pat; }
+		/*! \brief Adds new point to the collection for rendering*/
+		void AddPoint(const osg::Vec3d& point);
 	protected:
-		~TraceLine(void){};
+		~TraceLine(void){WorldManager::getInstance()->RemoveFromScene(this);};
 
 	private:
 		osg::ref_ptr<osg::Geode> m_tracerGeode;
@@ -30,8 +35,11 @@ namespace ft
 		osg::ref_ptr<osg::VertexBufferObject> m_tracerVertexBufferObject;
 		osg::ref_ptr<osg::StateSet> m_tracerStateSet;
 
-		osg::Vec3d m_currentValue, m_deltaValue;
-		unsigned int m_bufferSize;
+		//osg::Vec3d m_currentValue, m_deltaValue;
+		osg::PositionAttitudeTransform* m_tracerPAT;
+		unsigned long m_bufferSize;
+		//unsigned int m_counter;
+		
 	};
 
 	class LineChange : public osg::Drawable::UpdateCallback

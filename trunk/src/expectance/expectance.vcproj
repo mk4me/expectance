@@ -622,6 +622,14 @@
 		<Filter
 			Name="scene"
 			>
+			<File
+				RelativePath=".\src\scene\worldmanager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\scene\worldmanager.h"
+				>
+			</File>
 			<Filter
 				Name="view"
 				>

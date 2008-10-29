@@ -59,6 +59,8 @@
 
 #include "../scene/view/follownodemanip.h"
 #include "../scene/object/traceline.h"
+#include "../scene/worldmanager.h"
+
 using namespace ft;
 
 
@@ -752,7 +754,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	// Loads configuration from 'application.cfg'
     Config::getInstance()->LoadConfigFile();  //with creation of singleton in getInstance()
     Config::TEST_CONFIG();
-
+	
 
 
 	osg::ref_ptr< osg::Group > root = new osg::Group();
@@ -774,26 +776,29 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	worldTransformNode->setMatrix(osg::Matrix::rotate(osg::inDegrees(5.0f),1.0f,0.0f,0.0f));
 	root->addChild(worldTransformNode.get());
 
+	WorldManager::getInstance()->Init(worldTransformNode.get()); //Initialize osg nodes collector
+
 	InitSceneFromFile(m_world, worldTransformNode.get());
 	InitSceneFromCode(m_world, worldTransformNode.get());
 
 	ControlManager::getInstance()->setActiveAvatar(0);
 
-	int children = worldTransformNode->getNumChildren();
-	for (int i = 0; i < children; i++)
-	{
-		osg::PositionAttitudeTransform * tmpNode =  dynamic_cast<osg::PositionAttitudeTransform*>(worldTransformNode->getChild(i));
-		if (tmpNode!=NULL)
-		{
-			osg::ref_ptr<osg::Group> tracer = new ft::TraceLine();
-			tracer->setName(tmpNode->getName()+"__tracer__");
-			//ft::TraceNode* tracer = new ft::TraceNode();
-			tmpNode->addChild(tracer.get());
-		}
-		//avTmp->getName();
-
-	}
-	//analyse(worldTransformNode.get());
+//	int children = worldTransformNode->getNumChildren();
+//	for (int i = 0; i < children; i++)
+//	{
+//		osg::PositionAttitudeTransform * tmpNode =  dynamic_cast<osg::PositionAttitudeTransform*>(worldTransformNode->getChild(i));
+//		if (tmpNode!=NULL)
+//		{
+//			osg::ref_ptr<ft::TraceLine> tracer = new ft::TraceLine();
+//			tracer->setName(tmpNode->getName()+"__TRACE__LINE__");
+////			tracer->setPAT(tmpNode);
+//			//ft::TraceNode* tracer = new ft::TraceNode();
+//			worldTransformNode->addChild(tracer.get());
+//		}
+//		//avTmp->getName();
+//
+//	}
+//	analyse(worldTransformNode.get());
 
 	InitWorld(m_world);
 	m_world->DumpActions();

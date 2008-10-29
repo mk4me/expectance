@@ -10,7 +10,7 @@
 #include "evolution/timelinecontext.h"
 #include "../avatar/osgavatar.h"
 #include "../motion/transform.h"
-
+#include "../scene/object/traceline.h"
 
 
 namespace ft
@@ -43,7 +43,7 @@ namespace ft
         CalVector m_vLastPos;
         CalVector m_vLastPrevPos;  //used only for OVERLAP state
 		float m_fLastAnimTime;
-
+		osg::ref_ptr<ft::TraceLine> m_tracer;
 //        CalVector m_vLastPos;
 		Transform* GetTransformForAnim(CalAnimation* anim, OsgAvatar* avatar);
     };

@@ -20,6 +20,8 @@ LCSModifier::LCSModifier()
 
      m_fLastAnimTime = 0;
 
+	 m_tracer = new TraceLine();
+
      INTERPOLATION = true;
      REST_TRANS_CALC = true;
 }
@@ -40,6 +42,9 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
 {
     UpdateRotation(elapsedSeconds, timeLineContext);
     UpdateTranslation(elapsedSeconds, timeLineContext);
+	
+	OsgAvatar* avImpl = (OsgAvatar*)timeLineContext->getAvatarImpl();
+	m_tracer->AddPoint(avImpl->getPosition());
 }
 
 ////////////////// ROTATION ///////////////////////////////
