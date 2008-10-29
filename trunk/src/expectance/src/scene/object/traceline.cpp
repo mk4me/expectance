@@ -56,38 +56,11 @@ m_bufferSize(100)
 
 void TraceLine::updateTrackingInformation(void)
 {
-
-//	m_deltaValue.set(osg::Vec3(0, 0, 0));
-	//osg::PositionAttitudeTransform* _tmpParent = dynamic_cast<osg::PositionAttitudeTransform*>(this->getParent(0));
-////	if (m_tracerPAT!=NULL)
-////	{
-////		m_currentValue = m_tracerPAT->getPosition(); // osg::Vec3( 0.0, 0.0, 0.0 ); //_tmpParent->getPosition();
-////		
-////		std::cout << "tracer--> (x= " << m_currentValue.x()<<", y= " << m_currentValue.y() <<", z= " << m_currentValue.z() << " )"<< std::endl;
-////		//m_currentValue.set(osg::Vec3(10,10,10));
-////		//if ((counter <= m_bufferSize) && (counter < m_tracerVertices.get()->size()))
-////		//m_deltaValue = (*m_tracerVertices)[counter];
-////		//m_deltaValue-=m_currentValue;
-////		//if(m_deltaValue.length() > 5.0)
-////		//{
-////			
-////			if (m_counter >= m_bufferSize) m_counter=0;				 
-////			else
-////			{
-////				if (m_counter >= m_tracerVertices.get()->size())
-////					m_tracerVertices.get()->push_back(m_currentValue);
-////				else
-////					(*m_tracerVertices)[m_counter] = m_currentValue;
-////		 		
-				m_tracerGeometry.get()->setVertexArray(m_tracerVertices.get());
-				m_tracerDrawArrays.get()->setCount( m_tracerVertices.get()->size() );	
-				m_tracerGeometry.get()->dirtyDisplayList();
-				m_tracerGeometry.get()->dirtyBound();
-////			}
-////			m_counter++;
-////
-//////		}
-////	}
+	// update data for geometry primitive (you can do it as well in AddPoint but here seems to work more effectively)
+	m_tracerGeometry.get()->setVertexArray(m_tracerVertices.get());
+	m_tracerDrawArrays.get()->setCount( m_tracerVertices.get()->size() );	
+	m_tracerGeometry.get()->dirtyDisplayList();
+	m_tracerGeometry.get()->dirtyBound();
 }
 
 void TraceLine::AddPoint(const osg::Vec3d &point)
@@ -96,12 +69,6 @@ void TraceLine::AddPoint(const osg::Vec3d &point)
 	{
 		m_tracerVertices.get()->push_back(point);
 		unsigned long _size = m_tracerVertices.get()->size();
-
-		// update data for geometry primitive
-		//m_tracerGeometry.get()->setVertexArray(m_tracerVertices.get());
-		//m_tracerDrawArrays.get()->setCount( m_tracerVertices.get()->size() );	
-		//m_tracerGeometry.get()->dirtyDisplayList();
-		//m_tracerGeometry.get()->dirtyBound();
 
 		//remove points when buffer is too long
 		if ((m_bufferSize != 0)&&(_size > m_bufferSize))

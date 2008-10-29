@@ -18,7 +18,7 @@ namespace ft
         
         static WorldManager* getInstance();
         static void DestroyInstance();
-
+		osg::MatrixTransform* getWorldNode() {return m_matrixTransformPtr;}
 		void Init(osg::MatrixTransform* worldMatrix) {m_matrixTransformPtr = worldMatrix;};
 
 		bool AddToScene(osg::Group* node);

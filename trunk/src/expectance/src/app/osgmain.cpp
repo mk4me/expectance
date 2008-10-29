@@ -774,30 +774,16 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	osg::ref_ptr<osg::MatrixTransform> worldTransformNode = new osg::MatrixTransform;
 	worldTransformNode->setName("worldTransformNode");
 	worldTransformNode->setMatrix(osg::Matrix::rotate(osg::inDegrees(5.0f),1.0f,0.0f,0.0f));
-	root->addChild(worldTransformNode.get());
-
 	WorldManager::getInstance()->Init(worldTransformNode.get()); //Initialize osg nodes collector
 
-	InitSceneFromFile(m_world, worldTransformNode.get());
-	InitSceneFromCode(m_world, worldTransformNode.get());
+	root->addChild(WorldManager::getInstance()->getWorldNode());
+
+
+	InitSceneFromFile(m_world, WorldManager::getInstance()->getWorldNode());
+	InitSceneFromCode(m_world, WorldManager::getInstance()->getWorldNode());
 
 	ControlManager::getInstance()->setActiveAvatar(0);
 
-//	int children = worldTransformNode->getNumChildren();
-//	for (int i = 0; i < children; i++)
-//	{
-//		osg::PositionAttitudeTransform * tmpNode =  dynamic_cast<osg::PositionAttitudeTransform*>(worldTransformNode->getChild(i));
-//		if (tmpNode!=NULL)
-//		{
-//			osg::ref_ptr<ft::TraceLine> tracer = new ft::TraceLine();
-//			tracer->setName(tmpNode->getName()+"__TRACE__LINE__");
-////			tracer->setPAT(tmpNode);
-//			//ft::TraceNode* tracer = new ft::TraceNode();
-//			worldTransformNode->addChild(tracer.get());
-//		}
-//		//avTmp->getName();
-//
-//	}
 //	analyse(worldTransformNode.get());
 
 	InitWorld(m_world);
@@ -1040,111 +1026,3 @@ int main(int argc, char *argv[])
     return RunOSGApp(argc, argv);
 }
 
-// Lazy, global variables
-////osg::ref_ptr<osg::Geode> lineGeode;
-////osg::ref_ptr<osg::Geometry> lineGeometry;
-////osg::ref_ptr<osg::DrawArrays> lineDrawArrays;
-////osg::ref_ptr<osg::Vec3Array> lineVertices;
-////osg::ref_ptr<osg::Vec4Array> lineColors;
-////osg::ref_ptr<osg::VertexBufferObject> lineVertexBufferObject;
-////
-////
-////class Change : public osg::Drawable::UpdateCallback
-////{
-////    public:
-////        Change() {}
-////
-////        virtual void update(osg::NodeVisitor*nv, osg::Drawable* dbl) 
-////        {
-////            const osg::FrameStamp *fs = nv->getFrameStamp();
-////            if( fs != 0L )
-////            {
-////				for( int i = 0; i < 360.0; i++ )
-////				{
-////					double a = (double)(i)*3.141516/180.0;
-////					(*lineVertices)[i] = osg::Vec3( (double)i/180.0, sin(a + fs->getReferenceTime() ) , 0.0 );
-////				}
-////				// Do I need this? Re-set the vertexArray to force OSG to recognize the data has been changed?
-////				lineGeometry.get()->setVertexArray(lineVertices.get());
-////				lineDrawArrays.get()->setCount( lineVertices.get()->size() );	
-////				lineGeometry.get()->dirtyDisplayList();
-////				lineGeometry.get()->dirtyBound();
-////
-////            }
-////        }
-////    private:
-////
-////};
-////osg::ref_ptr<osg::Geode> aLine()
-////{
-////
-////    lineVertices = new osg::Vec3Array;
-////    lineColors = new osg::Vec4Array;
-////    lineColors->push_back( osg::Vec4( 1, 1, 0, 1 ));
-////
-////    for( int i = 0; i < 360.0; i++ )
-////    {
-////        double a = (double)(i)*3.141516/180.0;
-////        lineVertices->push_back( osg::Vec3( (double)i/180.0, sin(a), 0.0 ));
-////    }
-////	
-////	
-////    lineGeometry = new osg::Geometry;
-////	lineDrawArrays = new osg::DrawArrays;
-////	lineGeode = new osg::Geode;
-////	lineVertexBufferObject = new osg::VertexBufferObject;
-////
-////	
-////	
-////	lineGeometry.get()->setVertexArray(lineVertices.get());
-////	lineGeometry.get()->setColorBinding(osg::Geometry::BIND_OVERALL);
-////	lineGeometry.get()->setColorArray(lineColors.get());
-////	lineDrawArrays.get()->setMode(osg::PrimitiveSet::LINE_STRIP);
-////	lineGeometry.get ()->addPrimitiveSet(lineDrawArrays.get());
-////
-////	lineDrawArrays.get()->setCount( lineVertices.get()->size() );
-////
-////		
-////
-////
-////	lineVertices.get ()->setVertexBufferObject(lineVertexBufferObject.get());
-////
-////	lineGeometry.get()->setUseDisplayList(false);
-////
-////	// Things work when this is false. What's wrong???
-//////	lineGeometry.get()->setUseVertexBufferObjects(true);
-//////	lineGeometry.get()->setUseVertexBufferObjects(false);
-////
-////	
-////	
-////	lineVertexBufferObject->dirty();
-////
-////	lineGeometry.get()->dirtyDisplayList();
-////	lineGeometry.get()->dirtyBound();
-////	
-////	lineGeode.get()->addDrawable(lineGeometry.get());
-////    lineGeometry->setUpdateCallback( new Change );
-////
-////    return lineGeode;
-////}
-////
-////
-////int main(int argc, char **argv)
-////{
-////    // Set up the viewer
-////    osgViewer::Viewer viewer;
-////
-////    // Load up the models specified on the command line
-////
-////    osg::ref_ptr< osg::Switch> sw = new osg::Switch;
-////    sw->addChild( aLine().get() );
-////    sw->setAllChildrenOn();
-////    osg::ref_ptr<osg::Node> database = sw.get();
-////
-////    // set the scene to render
-////    viewer.setSceneData(database.get());
-////
-////    // Realize the viewer
-////    viewer.run();
-////    return 0;
-////}
