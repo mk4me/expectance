@@ -168,7 +168,7 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
 
     if (REST_TRANS_CALC)
     {
-        vCycleRest.y = 0;
+        vCycleRest.z = 0;
         diff += vCycleRest;
     }
 
@@ -184,7 +184,9 @@ void LCSModifier::UpdateTranslation(float elapsedSeconds, TimeLineContext * time
 
 	CalQuaternion rot (qGlobalRotation);
 	rot.invert(); // probably different coordinate system than on OSG 
-	diff *= rot;
+
+	if (diff.length() > 0)
+		diff *= rot;
 
     float z_to_set = currPos.z;
 
