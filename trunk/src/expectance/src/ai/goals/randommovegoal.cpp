@@ -38,12 +38,13 @@ void RandomMoveController::Apply(float elapsedSeconds, TimeLineContext * timeLin
     {
         m_sumTime += elapsedSeconds;
 
-        if (m_sumTime > m_desiredGoalTime)
+		if (m_sumTime > m_desiredGoalTime)
         {
             setGoalReached(true);
 
+
 //            if (GenDebug::AI>0)
-//                _dbg << " RandomMoveController::Apply .. FINISH reached " << endl; 
+//               _dbg << " RandomMoveController::Apply .. FINISH reached " << endl; 
         }
     }
 }
@@ -56,6 +57,13 @@ void RandomMoveController::Reset(TimeLineContext * timeLineContext)
     m_sumTime = 0.0f;
     setGoalReached(false);
 }
+
+std::string RandomMoveController::toString()
+{
+    std::string result = TimeLineObject::toString() + "[RandomMoveController]";
+    return result;
+}
+
 
 ////////////////////////  RandomMoveGoal /////////////////////////
 
@@ -73,7 +81,7 @@ RandomMoveGoal::~RandomMoveGoal()
 void RandomMoveGoal::OnEnter(Avatar* av)
 {
 	
-	//cout << " RandomMove::OnEnter " << endl;
+//	cout << " RandomMove::OnEnter " << endl;
 
 //	int action_id = RandomGenerator::RanIntValue(2);
 //	if (action_id ==0)
@@ -88,8 +96,8 @@ void RandomMoveGoal::OnEnter(Avatar* av)
 				av->ExecuteAction("run");
 			
 
-			if (av->getCurrTopMotion()->getName().compare("walk") == 0)
-				av->ExecuteAction("run");
+			if (av->getCurrTopMotion()->getName().compare("run") == 0)
+				av->ExecuteAction("walk");
 		}
 
     }

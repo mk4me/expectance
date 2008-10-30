@@ -26,6 +26,8 @@ ChangeDirController::ChangeDirController(float minAngle, float maxAngle)
 
     m_fAngle = minAngle + angle;
 
+	m_motionEnforced = false;
+
     //_dbg << "  ------------ Random  angle -------- " <<  m_fAngle;
 }
 
@@ -50,12 +52,16 @@ void ChangeDirController::Apply(float elapsedSeconds, TimeLineContext * timeLine
 	{
 		if (timeLineContext->getAvatar()->getCurrTopMotion()->getName().compare("idle") == 0)
 		{
-			timeLineContext->getAvatar()->ExecuteAction("walk");
-			//cout << " ChagerDir::Apply execute walk " << endl;
-			isInMotion = true;
+			if (!m_motionEnforced)
+			{
+				timeLineContext->getAvatar()->ExecuteAction("walk");
+				m_motionEnforced = true;
+			}
 		}
 		else
+		{
 			isInMotion = true;
+		}
 	}
 
 	if (isInMotion)
@@ -94,6 +100,12 @@ void ChangeDirController::Apply(float elapsedSeconds, TimeLineContext * timeLine
 void ChangeDirController::Reset(TimeLineContext * timeLineContext)
 {
     GoalController::Reset(timeLineContext);
+}
+
+std::string ChangeDirController::toString()
+{
+    std::string result = TimeLineObject::toString() + "[ChangeDirController]";
+    return result;
 }
 
 /// \brief Constructor

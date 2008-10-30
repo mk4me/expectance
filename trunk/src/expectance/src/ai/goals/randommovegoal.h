@@ -23,6 +23,8 @@ namespace ft
         void Apply(float elapsedSeconds, TimeLineContext * timeLineContext);
 
         virtual void Reset(TimeLineContext * timeLineContext); // resets current object and its children    
+
+		std::string toString();
     private:
         float m_sumTime;
         float m_desiredGoalTime;

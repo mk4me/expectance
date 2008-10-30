@@ -84,6 +84,12 @@ void LimitedAreaController::Reset(TimeLineContext * timeLineContext)
     GoalController::Reset(timeLineContext);
 }
 
+std::string LimitedAreaController::toString()
+{
+    std::string result = TimeLineObject::toString() + "[LimitedAreaController]";
+    return result;
+}
+
 /// \brief Constructor
 LimitedAreaGoal::LimitedAreaGoal()
 {

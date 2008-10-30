@@ -25,10 +25,14 @@ namespace ft
 
         virtual void Reset(TimeLineContext * timeLineContext); // resets current object and its children    
 
+		std::string toString();
+
     protected:
         float m_fAngle;
         bool m_changeToLeft;  //true if changing direction to LEFT, false if cahnging to RIGHT
         float m_changeSpeed;
+
+		bool m_motionEnforced; // if motion was eforced when avatar had been in IDLE
 
     };
 
