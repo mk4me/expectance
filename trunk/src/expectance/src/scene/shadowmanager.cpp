@@ -10,7 +10,7 @@
 using namespace ft;
 
 ShadowManager* ShadowManager::m_instance = NULL;
-bool ShadowManager::DROP_SHADOW = false;
+
 /**
  * \brief Returns the only instance of ft::ShadowManager (creates it at first call to this method)
  *
@@ -22,12 +22,16 @@ ShadowManager* ShadowManager::getInstance()
     {
         std::cout << "ShadowManager::getInstace(): instance of ShadowManager created " << std::endl;
         m_instance = new ShadowManager();
-		DROP_SHADOW = ((Config::getInstance()->IsKey("osg_drop_shadow")) && (Config::getInstance()->GetIntVal("osg_drop_shadow")==1));
     }
 
     return m_instance;
 }
 
+ShadowManager::ShadowManager()
+{
+	DROP_SHADOW = ((Config::getInstance()->IsKey("osg_drop_shadow")) && (Config::getInstance()->GetIntVal("osg_drop_shadow")==1));
+	CreateGlobalShadowedScene();
+}
 
 /**
  * \brief Releases all resources related to this ShadowManager
@@ -57,6 +61,7 @@ void ShadowManager::CreateShadowScene(const std::string shadowSceneName)
 			osg::ref_ptr<osgShadow::ShadowedScene> shadowedScene = new osgShadow::ShadowedScene;
 			shadowedScene->setReceivesShadowTraversalMask(ReceivesShadowTraversalMask);
 			shadowedScene->setCastsShadowTraversalMask(CastsShadowTraversalMask);
+			//////osg::ref_ptr<osgShadow::ShadowMap> sm = new osgShadow::ShadowMap;
 			osg::ref_ptr<osgShadow::ShadowTexture> sm = new osgShadow::ShadowTexture;
 			//osg::ref_ptr<osgShadow::ParallelSplitShadowMap> sm = new osgShadow::ParallelSplitShadowMap(NULL, 3);
 			//sm->setTextureResolution(1024);
@@ -66,10 +71,18 @@ void ShadowManager::CreateShadowScene(const std::string shadowSceneName)
 			//double polyoffsetfactor = sm->getPolygonOffset().x();
 			//double polyoffsetunit   = sm->getPolygonOffset().y();
 			//sm->setPolygonOffset(osg::Vec2(polyoffsetfactor,polyoffsetunit));
-			//osg::ref_ptr<osgShadow::SoftShadowMap> sm = new osgShadow::SoftShadowMap;
+			////osg::ref_ptr<osgShadow::SoftShadowMap> sm = new osgShadow::SoftShadowMap;
 			shadowedScene->setShadowTechnique(sm.get());
-			//int mapres = 1024;
-			//sm->setTextureSize(osg::Vec2s(mapres,mapres));
+			//////int mapres = 1024;
+			//////sm->setTextureSize(osg::Vec2s(mapres,mapres));
+			//////osg::Vec4 lightpos = osg::Vec4(0.5f,0.25f,0.8f,0.0f);
+			//////osg::ref_ptr<osg::LightSource> ls = new osg::LightSource;
+			//////ls->getLight()->setPosition(lightpos);
+			//////ls->getLight()->setAmbient(osg::Vec4(0.2,0.2,0.2,1.0));
+			//////ls->getLight()->setDiffuse(osg::Vec4(0.8,0.8,0.8,1.0));
+			//////sm->setLight(ls.get());
+			////////shadowedScene->addChild(ls.get());
+
 			
 			m_matrixTransformPtr->addChild(shadowedScene.get());
 			
@@ -103,7 +116,7 @@ void ShadowManager::AddShadowCast(const std::string shadowSceneName, osg::Group*
 		{
 			//osg::Group* castShadowObject = new osg::Group();
 			//castShadowObject->addChild(shadowCastingObj);
-			shadowCastingObj->setNodeMask(CastsShadowTraversalMask);
+			shadowCastingObj->setNodeMask(shadowCastingObj->getNodeMask() | CastsShadowTraversalMask);
 			//shadowedScene->addChild(castShadowObject);
 			(dynamic_cast<osgShadow::ShadowedScene*>(it->second))->addChild(shadowCastingObj);
 		}
@@ -126,7 +139,7 @@ void ShadowManager::AddShadowReceiver(const std::string shadowSceneName, osg::Gr
 	}
 }
 
-void ShadowManager::CreateGlobalShadowScene()
+void ShadowManager::CreateGlobalShadowedScene()
 {
 	if (m_globalShadowedScene== NULL)
 	{
@@ -140,14 +153,37 @@ void ShadowManager::CreateGlobalShadowScene()
 	}
 }
 
-void ShadowManager::CreateGlobalShadowReceiver(osg::Group *node)
+void ShadowManager::AddToGlobalShadowedScene(osg::Node* node)
 {
-	if ( (m_globalShadowedScene != NULL) && (node!=NULL) )
+	if (node!=NULL)
+		m_globalShadowedScene->addChild(node);
+}
+
+void ShadowManager::setShadowMask(osg::Node* node, ShadowTraversalMask mask)
+{
+	if (node!=NULL)
 	{
-		node->setNodeMask(CastsShadowTraversalMask);
+		switch (mask)
+		{
+		case CastShadow: node->setNodeMask(node->getNodeMask() | CastsShadowTraversalMask);
+			break;
+		case ReceiveShadow: node->setNodeMask(node->getNodeMask() | ReceivesShadowTraversalMask);
+			break;
+		default:
+			break;
+		}
+		
 	}
 }
 
-void ShadowManager::AddShadowCastToGlobalScene(osg::Group *shadowCastingObj)
-{
-}
+//void ShadowManager::CreateGlobalShadowReceiver(osg::Group *node)
+//{
+//	if ( (m_globalShadowedScene != NULL) && (node!=NULL) )
+//	{
+//		node->setNodeMask(CastsShadowTraversalMask);
+//	}
+//}
+//
+//void ShadowManager::AddShadowCastToGlobalScene(osg::Group *shadowCastingObj)
+//{
+//}

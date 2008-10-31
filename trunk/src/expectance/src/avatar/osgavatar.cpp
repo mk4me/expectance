@@ -49,12 +49,12 @@ OsgAvatar::OsgAvatar(osgCal::Model *osgModel, OsgAvatarType* type, const std::st
     osgModel->getChild(0)->setNodeMask(CastsShadowTraversalMask);
 	osg::Group* receivesShadowObject = new osg::Group();
 	receivesShadowObject->addChild(osgModel);
-    //osgModel->getChild(0)->setNodeMask(ReceivesShadowTraversalMask);
     shadowedScene->addChild(castShadowObject);
     //shadowedScene->addChild(receivesShadowObject);
 
 	m_offsetTransform->addChild(shadowedScene.get());
 */
+    osgModel->setNodeMask(~0x2);
 
 	m_offsetTransform->addChild(osgModel);
 

@@ -549,28 +549,21 @@ void InitSceneFromCode(World* world, osg::MatrixTransform* worldTransformNode)
 	osg::Vec3 center(0.0f,0.0f,0.0f);
     float radius = 2000.0f;
     osg::Node* floorModel = createFloor(center,radius);
-
-	//const int ReceivesShadowTraversalMask = 0x1;
- //   const int CastsShadowTraversalMask = 0x2;
- //   osg::ref_ptr<osgShadow::ShadowedScene> shadowedScene = new osgShadow::ShadowedScene;
- //   shadowedScene->setReceivesShadowTraversalMask(ReceivesShadowTraversalMask);
- //   shadowedScene->setCastsShadowTraversalMask(CastsShadowTraversalMask);
- //   osg::ref_ptr<osgShadow::ShadowMap> sm = new osgShadow::ShadowMap;
- //   shadowedScene->setShadowTechnique(sm.get());
- //   int mapres = 1024;
- //   sm->setTextureSize(osg::Vec2s(mapres,mapres));
-  
-//    shadowedScene->addChild(receivesShadowObject);
-
-	std::string floorShadowScene = "FLOOR_SHADOW_";
-	ShadowManager::getInstance()->CreateShadowScene(floorShadowScene);
-	osg::Group* receivesShadowObject = new osg::Group();
-	receivesShadowObject->addChild(floorModel);
 	
-	ShadowManager::getInstance()->AddShadowReceiver(floorShadowScene, receivesShadowObject);
+	std::string floorShadowScene = "FLOOR_SHADOW";
 
+	if (ShadowManager::getInstance()->DROP_SHADOW)
+	{
 
-    worldTransformNode->addChild(floorModel);
+		ShadowManager::getInstance()->CreateShadowScene(floorShadowScene);
+		osg::Group* receivesShadowObject = new osg::Group();
+		receivesShadowObject->addChild(floorModel);
+		ShadowManager::getInstance()->AddShadowReceiver(floorShadowScene, receivesShadowObject);
+		ShadowManager::getInstance()->setShadowMask(receivesShadowObject->getChild(0), ReceiveShadow);
+	} 
+	else
+		worldTransformNode->addChild(floorModel);
+
 
     int avatar_number = -1;
     if (Config::getInstance()->IsKey("avatars_number"))
@@ -610,12 +603,13 @@ void InitSceneFromCode(World* world, osg::MatrixTransform* worldTransformNode)
 			OsgAvatar* avImpl = static_cast<OsgAvatar*>(av->getImplementation());
 			avImpl->getOffsetTransform()->setName(_nameHelper);
 
-			osg::Group* castShadowObject = new osg::Group();
-			castShadowObject->addChild(avImpl->getOffsetTransform());
-			ShadowManager::getInstance()->AddShadowCast(floorShadowScene, castShadowObject);
-			//avImpl->getOffsetTransform()->getChild(0)->setNodeMask(CastsShadowTraversalMask);
-			//shadowedScene->addChild(castShadowObject);
-
+			if (ShadowManager::getInstance()->DROP_SHADOW)
+			{
+				osg::Group* castShadowObject = new osg::Group();
+				castShadowObject->addChild(avImpl->getOffsetTransform());
+				ShadowManager::getInstance()->AddShadowCast(floorShadowScene, castShadowObject);
+				ShadowManager::getInstance()->setShadowMask(avImpl->getOffsetTransform()->getChild(0), CastShadow);
+			}
 
 			// set random position and direction
 			bool isInScope = true;
