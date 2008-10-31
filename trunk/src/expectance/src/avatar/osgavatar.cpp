@@ -9,6 +9,14 @@
 #include "../motion/animation.h"
 #include "cal3d/coremodel.h"
 
+// to shadow enable
+#include <osgShadow/ShadowedScene>
+#include <osgShadow/ShadowVolume>
+#include <osgShadow/ShadowTexture>
+#include <osgShadow/ShadowMap>
+#include <osgShadow/SoftShadowMap>
+#include <osgShadow/ParallelSplitShadowMap> 
+
 using namespace ft;
 using namespace ft::gil;
 
@@ -24,11 +32,35 @@ OsgAvatar::OsgAvatar(osgCal::Model *osgModel, OsgAvatarType* type, const std::st
 	m_osgModel = osgModel;
 	m_avatarType = type;
 	m_offsetTransform = new osg::PositionAttitudeTransform();
+
+ /* uncomment to enable shadow on the body enable
+      const int ReceivesShadowTraversalMask = 0x1;
+    const int CastsShadowTraversalMask = 0x2;
+    osg::ref_ptr<osgShadow::ShadowedScene> shadowedScene = new osgShadow::ShadowedScene;
+    shadowedScene->setReceivesShadowTraversalMask(ReceivesShadowTraversalMask);
+    shadowedScene->setCastsShadowTraversalMask(CastsShadowTraversalMask);
+    osg::ref_ptr<osgShadow::ShadowMap> sm = new osgShadow::ShadowMap;
+    shadowedScene->setShadowTechnique(sm.get());
+    int mapres = 1024;
+    sm->setTextureSize(osg::Vec2s(mapres,mapres));
+
+	osg::Group* castShadowObject = new osg::Group();
+	castShadowObject->addChild(osgModel);
+    osgModel->getChild(0)->setNodeMask(CastsShadowTraversalMask);
+	osg::Group* receivesShadowObject = new osg::Group();
+	receivesShadowObject->addChild(osgModel);
+    //osgModel->getChild(0)->setNodeMask(ReceivesShadowTraversalMask);
+    shadowedScene->addChild(castShadowObject);
+    //shadowedScene->addChild(receivesShadowObject);
+
+	m_offsetTransform->addChild(shadowedScene.get());
+*/
+
 	m_offsetTransform->addChild(osgModel);
 
-//    m_localMsgSender = new MsgSender();
+//  m_localMsgSender = new MsgSender();
 //	m_localMsgSender->AddMsgListener(this);
-//    InitSpeedFactor();
+//  InitSpeedFactor();
 	setFootDetector(new FootDetector());
 	InitFootDetector();
 	setStopController(new StopController()); // mka 2008.09.19

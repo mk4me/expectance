@@ -12,6 +12,8 @@
 #include "../motion/transform.h"
 #include "../scene/object/traceline.h"
 
+#include "../app/config.h"
+
 
 namespace ft
 {
@@ -25,10 +27,9 @@ namespace ft
         virtual ~LCSModifier(void);
 
         bool LOCAL_DEBUG;
-
         bool INTERPOLATION;
         bool REST_TRANS_CALC;  //if rest of translation lost at anim changes should be applied
-
+		bool DRAW_CURVES_TRANSLATION;
 
         void Apply(float elapsedSeconds, TimeLineContext * timeLineContext);
         void UpdateRotation(float elapsedSeconds, TimeLineContext * timeLineContext);

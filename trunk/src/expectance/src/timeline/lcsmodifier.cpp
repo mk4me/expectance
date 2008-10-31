@@ -17,10 +17,15 @@ LCSModifier::LCSModifier()
 {
      m_vLastPos = CalVector(0,0,0);
      m_vLastPrevPos = CalVector(0,0,0);
-
      m_fLastAnimTime = 0;
 
-	 m_tracer = new TraceLine();
+	 DRAW_CURVES_TRANSLATION = ((Config::getInstance()->IsKey("lcs_translation_curves")) && (Config::getInstance()->GetIntVal("lcs_translation_curves")==1));
+
+	 if (DRAW_CURVES_TRANSLATION)
+	 {
+		 m_tracer = new TraceLine();
+		 m_tracer->setLineColor(osg::Vec4(1,1,0,0.2f));
+	 }
 
      INTERPOLATION = true;
      REST_TRANS_CALC = true;
@@ -43,8 +48,11 @@ void LCSModifier::Apply(float elapsedSeconds, TimeLineContext * timeLineContext)
     UpdateRotation(elapsedSeconds, timeLineContext);
     UpdateTranslation(elapsedSeconds, timeLineContext);
 	
-	OsgAvatar* avImpl = (OsgAvatar*)timeLineContext->getAvatarImpl();
-	m_tracer->AddPoint(avImpl->getPosition());
+	 if (DRAW_CURVES_TRANSLATION)
+	 {
+		OsgAvatar* avImpl = (OsgAvatar*)timeLineContext->getAvatarImpl();
+		m_tracer->AddPoint(avImpl->getPosition());
+	 }
 }
 
 ////////////////// ROTATION ///////////////////////////////

@@ -61,6 +61,14 @@
 #include "../scene/object/traceline.h"
 #include "../scene/worldmanager.h"
 
+#include "../scene/shadowmanager.h"
+#include <osgShadow/ShadowedScene>
+#include <osgShadow/ShadowVolume>
+#include <osgShadow/ShadowTexture>
+#include <osgShadow/ShadowMap>
+#include <osgShadow/SoftShadowMap>
+#include <osgShadow/ParallelSplitShadowMap> 
+
 using namespace ft;
 
 
@@ -542,6 +550,25 @@ void InitSceneFromCode(World* world, osg::MatrixTransform* worldTransformNode)
     float radius = 2000.0f;
     osg::Node* floorModel = createFloor(center,radius);
 
+	//const int ReceivesShadowTraversalMask = 0x1;
+ //   const int CastsShadowTraversalMask = 0x2;
+ //   osg::ref_ptr<osgShadow::ShadowedScene> shadowedScene = new osgShadow::ShadowedScene;
+ //   shadowedScene->setReceivesShadowTraversalMask(ReceivesShadowTraversalMask);
+ //   shadowedScene->setCastsShadowTraversalMask(CastsShadowTraversalMask);
+ //   osg::ref_ptr<osgShadow::ShadowMap> sm = new osgShadow::ShadowMap;
+ //   shadowedScene->setShadowTechnique(sm.get());
+ //   int mapres = 1024;
+ //   sm->setTextureSize(osg::Vec2s(mapres,mapres));
+  
+//    shadowedScene->addChild(receivesShadowObject);
+
+	std::string floorShadowScene = "FLOOR_SHADOW_";
+	ShadowManager::getInstance()->CreateShadowScene(floorShadowScene);
+	osg::Group* receivesShadowObject = new osg::Group();
+	receivesShadowObject->addChild(floorModel);
+	
+	ShadowManager::getInstance()->AddShadowReceiver(floorShadowScene, receivesShadowObject);
+
 
     worldTransformNode->addChild(floorModel);
 
@@ -583,6 +610,13 @@ void InitSceneFromCode(World* world, osg::MatrixTransform* worldTransformNode)
 			OsgAvatar* avImpl = static_cast<OsgAvatar*>(av->getImplementation());
 			avImpl->getOffsetTransform()->setName(_nameHelper);
 
+			osg::Group* castShadowObject = new osg::Group();
+			castShadowObject->addChild(avImpl->getOffsetTransform());
+			ShadowManager::getInstance()->AddShadowCast(floorShadowScene, castShadowObject);
+			//avImpl->getOffsetTransform()->getChild(0)->setNodeMask(CastsShadowTraversalMask);
+			//shadowedScene->addChild(castShadowObject);
+
+
 			// set random position and direction
 			bool isInScope = true;
 			int scopeRadius = (int)radius; //2000;
@@ -623,6 +657,9 @@ void InitSceneFromCode(World* world, osg::MatrixTransform* worldTransformNode)
 
         }
     }
+
+	//worldTransformNode->addChild(shadowedScene.get());
+
 }
 
 
@@ -775,6 +812,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	worldTransformNode->setName("worldTransformNode");
 	worldTransformNode->setMatrix(osg::Matrix::rotate(osg::inDegrees(5.0f),1.0f,0.0f,0.0f));
 	WorldManager::getInstance()->Init(worldTransformNode.get()); //Initialize osg nodes collector
+	ShadowManager::getInstance()->Init(worldTransformNode.get());
 
 	root->addChild(WorldManager::getInstance()->getWorldNode());
 
@@ -886,9 +924,30 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 
     osg::Light* light = (osg::Light*)
         root->getOrCreateStateSet()->getAttribute( osg::StateAttribute::LIGHT );
-	viewer.setSceneData(/*root*/lightSource0);
+	//viewer.setSceneData(/*root*/lightSource0);
     root->getOrCreateStateSet()->setMode( GL_LIGHTING,osg::StateAttribute::ON );
     root->getOrCreateStateSet()->setAttributeAndModes( light, osg::StateAttribute::ON );
+
+	////	const int ReceivesShadowTraversalMask = 0x1;
+ ////       const int CastsShadowTraversalMask = 0x2;
+ ////       osg::ref_ptr<osgShadow::ShadowedScene> shadowedScene = new osgShadow::ShadowedScene;
+ ////       shadowedScene->setReceivesShadowTraversalMask(ReceivesShadowTraversalMask);
+ ////       shadowedScene->setCastsShadowTraversalMask(CastsShadowTraversalMask);
+ ////       osg::ref_ptr<osgShadow::ShadowMap> sm = new osgShadow::ShadowMap;
+ ////       shadowedScene->setShadowTechnique(sm.get());
+ ////       int mapres = 1024;
+ ////       sm->setTextureSize(osg::Vec2s(mapres,mapres));
+	////	osg::Group* lighted_scene = new osg::Group();
+	////	lighted_scene->addChild(lightSource0);
+ ////       lighted_scene->getChild(0)->setNodeMask(CastsShadowTraversalMask);
+ ////       shadowedScene->addChild(lighted_scene);
+	
+	//if (ShadowManager::getInstance()->DROP_SHADOW)
+	//{
+	//	viewer.setSceneData(ShadowManager::getInstance()->getShadowWorldNode shadowedScene.get());
+	//}
+	//else
+		viewer.setSceneData(/*root*/lightSource0);
 
 
 //    std::cout << "light: " << light << std::endl;

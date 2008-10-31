@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007, FutureToday. All rights reserved.
+ * Copyright (c) 2008, FutureToday. All rights reserved.
  * author: mka
  */
 #ifndef _TRACE_LINE_H
@@ -19,10 +19,14 @@ namespace ft
 	{
 	public:
 		TraceLine(void);
-		void updateTrackingInformation(void);
-//		void setPAT(osg::PositionAttitudeTransform* pat) { m_tracerPAT = pat; }
 		/*! \brief Adds new point to the collection for rendering*/
 		void AddPoint(const osg::Vec3d& point);
+		/*! \brief Updates geometric structures*/
+		void Update(void);
+		//! set size of buffer for data 0 means neverending buffer size
+		void setBufferSize(const long bufferSize){m_bufferSize = bufferSize;};
+		//! set marker Color
+		void setLineColor(const osg::Vec4 color);
 	protected:
 		~TraceLine(void){WorldManager::getInstance()->RemoveFromScene(this);};
 
@@ -38,7 +42,7 @@ namespace ft
 		//osg::Vec3d m_currentValue, m_deltaValue;
 		osg::PositionAttitudeTransform* m_tracerPAT;
 		unsigned long m_bufferSize;
-		//unsigned int m_counter;
+		osg::Vec4 m_color;
 		
 	};
 
@@ -54,7 +58,7 @@ namespace ft
 	            const osg::FrameStamp *fs = nv->getFrameStamp();
 		        if( fs != 0L )
 			    {
-					m_pat->updateTrackingInformation();
+					m_pat->Update();
 				}
             }
         }
