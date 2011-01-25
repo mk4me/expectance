@@ -31,7 +31,7 @@ cd ../..
 cmake .
 
 echo "3. Make projects"
-make clean
+#make clean
 make
 
 # generator needs /data directory in the same scope so must be copied into apropriate place (main source directory)

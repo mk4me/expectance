@@ -1,5 +1,5 @@
 #include "datacollector.h"
-#include <osg/Vec3d>
+#include <osg/Quat>
 #include "../avatar/osgavatar.h"
 #include "xmlsceneparser.h"
 #include "../app/global.h"
@@ -35,20 +35,21 @@ void DataCollector::Dump2File()
 
 		OsgAvatar* avImpl = (OsgAvatar*)avatarsCollection[i]->getImplementation();
 		double angle;
-		avImpl->getGlobalRotation().getRotate(angle, osg::Vec3d(0,0,1));
+		osg::Vec3d* vec = new osg::Vec3d(0,0,1);
+		avImpl->getGlobalRotation().getRotate(angle, *vec);
 		
-		TiXmlElement * _avatar = new TiXmlElement( TAG_AVATAR );  
-		TiXmlElement * _position = new TiXmlElement( TAG_POSITION );
-		TiXmlElement * _rotation = new TiXmlElement( TAG_ROTATION );
-		TiXmlElement * _speedFactor = new TiXmlElement( TAG_SPEEDFACTOR );
+		TiXmlElement * _avatar = new TiXmlElement( TAG_AVATAR.c_str() );  
+		TiXmlElement * _position = new TiXmlElement( TAG_POSITION.c_str() );
+		TiXmlElement * _rotation = new TiXmlElement( TAG_ROTATION.c_str() );
+		TiXmlElement * _speedFactor = new TiXmlElement( TAG_SPEEDFACTOR.c_str() );
 		_avatar->LinkEndChild( _position );
 		_avatar->LinkEndChild( _rotation );
 		_avatar->LinkEndChild( _speedFactor );
 
 		_avatarsNode->LinkEndChild( _avatar );
 
-		_avatar->SetAttribute(ATTR_NAME, avImpl->getName());
-		_avatar->SetAttribute(ATTR_TYPE, avImpl->getType());
+		_avatar->SetAttribute(ATTR_NAME.c_str(), avImpl->getName().c_str());
+		_avatar->SetAttribute(ATTR_TYPE.c_str(), avImpl->getType().c_str());
 		_position->SetDoubleAttribute(ATTR_X.c_str(), avImpl->getPosition()[0]);
 		_position->SetDoubleAttribute(ATTR_Y.c_str(), avImpl->getPosition()[1]);
 		_position->SetDoubleAttribute(ATTR_Z.c_str(), avImpl->getPosition()[2]);
@@ -59,7 +60,8 @@ void DataCollector::Dump2File()
 		
 	}
 	// create other parameters for application (maybe create special interface for that in the future)
-	_doc.SaveFile(FT_DATA_PATH+"datacollector.xml");
+	std::string path = FT_DATA_PATH+"datacollector.xml";
+	_doc.SaveFile(path.c_str());
 }
 
 
@@ -101,12 +103,16 @@ void DataCollector::ReadFromFile(const std::string& file)
 				{
 					std::string avName;
 					std::string avatarType;
-					int error =  avElement->QueryValueAttribute(ATTR_NAME, &avName);
-					if (error)
+					///int error =  avElement->QueryValueAttribute(ATTR_NAME.c_str(), &avName);
+					avName = avElement->Attribute(ATTR_NAME.c_str());
+					if(avName.length() == 0)
+					///if (error)
 							avName = "<UNDEFINED_NAME>";
-					error =  avElement->QueryValueAttribute(ATTR_TYPE, &avatarType);
+					///error =  avElement->QueryValueAttribute(ATTR_TYPE.c_str(), &avatarType);
+					avatarType = avElement->Attribute(ATTR_TYPE.c_str());
 
-					if (!error)
+					///if (!error)
+					if(avatarType.length() > 0)					
 					// rotation and translation
 					{
 						OsgAvatar* avImpl = getAvatar(avName);

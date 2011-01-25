@@ -14,6 +14,7 @@ SET(SOURCE_FILES
   src/timeline/lcsmodifier.cpp
   src/timeline/stopcontroller.cpp
   src/timeline/footdetector.cpp
+  src/timeline/speedcontroller.cpp
   src/evolution_impl/cal3danimprovider.cpp
   src/evolution_impl/cal3dimpl.cpp
   src/control/controlmanager.cpp
@@ -23,13 +24,14 @@ SET(SOURCE_FILES
   src/scene/view/follownodemanip.cpp
   src/scene/view/transformaccumulator.cpp
   src/scene/worldmanager.cpp
-  src/scene/shadowmanager.cpp
   src/scene/object/traceline.cpp
+#  src/scene/shadowmanager.cpp
 #  src/data/tinyxml/tinyxml.cpp
 #  src/data/tinyxml/tinyxmlerror.cpp
 #  src/data/tinyxml/tinyxmlparser.cpp
 #  src/data/tinyxml/tinystr.cpp
 #  src/data/xmlsceneparser.cpp
+#  src/data/datacollector.cpp
   src/utility/randomgen.cpp
   src/ai/goals/limitedareagoal.cpp
   src/ai/goals/changedirgoal.cpp

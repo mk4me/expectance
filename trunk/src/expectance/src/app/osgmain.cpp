@@ -47,7 +47,7 @@
 #include "../scene/object/othershapes.h"
 #include "../scene/worldmanager.h"
 
-#include "../data/datacollector.h"
+// #include "../data/datacollector.h"
 
 
 using namespace ft;
@@ -56,7 +56,7 @@ using namespace ft;
 bool ChangeCamera = false;
 bool AllowRefreshCamera = false;
 bool SelectActiveAvatar = false;
-DataCollector* DCOLL;
+// DataCollector* DCOLL;
 
 template < typename T >
 T normalize( const T& v )
@@ -192,11 +192,11 @@ class ToggleHandler : public osgGA::GUIEventHandler
 					} else if ( ea.getKey() == ea.KEY_F10 ) { // camera toggle view
 						 ChangeCamera^=true;
 						 AllowRefreshCamera = true;		
-					} else if ( ea.getKey() == ea.KEY_F11 ) { // refresh avatars parameters
-						 if (DCOLL != NULL)
-						 {
-							 DCOLL->Refresh();
-						 }
+					//} else if ( ea.getKey() == ea.KEY_F11 ) { // refresh avatars parameters
+						 //if (DCOLL != NULL)
+						 //{
+						 //	 DCOLL->Refresh();
+						 //}
 					}  else if ( ea.getKey() == ea.KEY_F3 ) {
 						if (m_activeAvatar != NULL)
 						{
@@ -565,8 +565,8 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	m_world->StartThinking();
 
 	// read actual configuration and dump it
-	DCOLL = new DataCollector();
-	DCOLL->Init();
+	///DCOLL = new DataCollector();
+	///DCOLL->Init();
 
 // -- Setup viewer --
     osgViewer::Viewer viewer;
