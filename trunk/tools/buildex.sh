@@ -19,7 +19,7 @@ cmake .
 cd ../osgcal
 cmake .
 
-cd ../expectance
+cd src/expectance
 cmake .
 
 
@@ -44,7 +44,7 @@ rsync -v src/evolution/libevolution.so _out/linux
 rsync -v src/osgcal/lib/libosgCal.so _out/linux
 rsync -v src/expectance/expectance _out/linux
 
-*rsync -rv python/* _out/linux/ --exclude=\".svn\"
+#*rsync -rv python/* _out/linux/ --exclude=\".svn\"
 
 #rsync -v src/generator/generator _out/linux
 #rsync -v src/pygen/libpygen.so _out/linux

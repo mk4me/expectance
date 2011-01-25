@@ -21,7 +21,7 @@ using namespace std;
 
 bool XMLSceneParser::LoadScene(const std::string& file, World* world, osg::MatrixTransform* worldTransformNode)
 {
-	TiXmlDocument doc( file );
+	TiXmlDocument doc( file.c_str() );
 	bool loadOkay = doc.LoadFile();
 
 	if ( !loadOkay )
@@ -118,7 +118,7 @@ Avatar* XMLSceneParser::ParseAvatar(TiXmlElement *element,  osg::MatrixTransform
 		av->AddController(new LCSModifier());
 
 		OsgAvatar* avImpl = static_cast<OsgAvatar*>(av->getImplementation());
-		avImpl->getOffsetTransform()->setName(avatarName); //mka 2008.09.06
+		avImpl->setName(avatarName); //mka 2008.09.06
 		av->AddController(avImpl->getFootDetector());
 		av->AddController(avImpl->getStopController()); //mka 2008.08.19
 		OsgAvatarFactory::AddAvatarToScene(av, worldTransformNode, vStartPos, qStartRotation);

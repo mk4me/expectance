@@ -71,10 +71,8 @@ namespace ft
 
 	    //! init foot limits from configuration for given animName
 		
-		//TODO:  recover this
-	    //bool initFootLimits(const std::string animName); 
-		//TODO:  recover this
-        //void InitSpeedFactorLimits(const std::string animName);
+	    bool initFootLimits(const std::string animName); 
+        void InitSpeedFactorLimits(const std::string animName);
 
         bool isNullAnim() { return (m_anim_id == -1);}
 

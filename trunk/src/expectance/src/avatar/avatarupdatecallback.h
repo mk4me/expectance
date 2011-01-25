@@ -59,13 +59,18 @@ namespace ft {
 //					if (calMixer->getAnimationActionList().size() > 0 
 //						 || calMixer->getAnimationCycle().size() > 0 )
 					{
-						calMixer->updateAnimation( deltaTime ); 
+						float elapsedTimeForAnims = deltaTime *  avatarImpl->getCurrSpeedFactor();
+
+						calMixer->updateAnimation( elapsedTimeForAnims ); 
 						calMixer->updateSkeleton();
 
-						m_avatar->ManualUpdateAI(deltaTime);
-						m_avatar->ManualUpdateMotions(deltaTime);
+						m_avatar->ManualUpdateAI(deltaTime); // abak: NOTE that this is deltaTime not elapsedTimeForAnims !!!
+															 // it is because AI is not depentent on speed factor
 
-						m_avatar->ManualUpdateControllers(deltaTime);
+
+						m_avatar->ManualUpdateMotions(elapsedTimeForAnims);
+
+						m_avatar->ManualUpdateControllers(elapsedTimeForAnims);
 
 						if ( modelData->update())
 							model->updateMeshes();

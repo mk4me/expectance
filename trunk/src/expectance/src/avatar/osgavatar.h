@@ -29,7 +29,7 @@ namespace ft
 	class OsgAvatar : public gil::GIL_Avatar
     {
     public:
-	OsgAvatar(osgCal::Model* osgModel, OsgAvatarType* type,  const std::string name);
+	OsgAvatar(osgCal::Model* osgModel, OsgAvatarType* type,  const std::string& name);
 	virtual ~OsgAvatar(void);
         virtual void Destroy(void);
 
@@ -38,6 +38,8 @@ namespace ft
 	gil::GIL_Animation* getAnimation(const std::string& animName);
 
         //MsgSender* getLocalMsgSender() { return m_localMsgSender; }
+		void setName(const std::string& avatarName) {m_name = avatarName; m_offsetTransform->setName(avatarName);}
+		const std::string& getName() { return m_name; }
 
         void setCurrSpeedFactor(float factor) { m_currSpeedFactor = factor; }
         float getCurrSpeedFactor() { return m_currSpeedFactor; }
@@ -97,7 +99,9 @@ namespace ft
         float m_speedfactorMin;
         float m_speedfactorMax;
 
-		//void InitSpeedFactor();
+		std::string m_name;
+
+		void InitSpeedFactor();
 		void InitFootDetector();
 
         FootDetector* m_footDetector; //TODO: only temporarily here

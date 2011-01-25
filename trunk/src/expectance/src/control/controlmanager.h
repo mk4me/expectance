@@ -36,10 +36,12 @@ namespace ft
 		int getActiveAvatarInd(){return m_activeAvatarInd;};
 		int getAvatarsCount(){ return (int)m_vAvatars.size();};
         Avatar* getActiveAvatar();
-
+		std::vector<Avatar*> getAvatarsCollection() {return m_vAvatars;};
         OsgAvatar* getActiveAvatarImpl();
 
         bool AddAvatar(Avatar* av);
+
+		///Avatar* getAvatar(const std::string& name);
 
         //TODO: uncommnet it when RemoveAvatar is implemented
         //bool  RemoveAvatar(AIAvatar* av);

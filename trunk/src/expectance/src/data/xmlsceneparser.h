@@ -15,6 +15,8 @@ namespace ft
 	static const std::string TAG_AVATAR = "Avatar";
 	static const std::string TAG_POSITION = "Position";
 	static const std::string TAG_ROTATION = "Rotation";
+	static const std::string TAG_SPEEDFACTOR = "SpeedFactor";
+
 
 	static const std::string ATTR_NAME = "name";
 	static const std::string ATTR_TYPE = "type";
@@ -22,6 +24,9 @@ namespace ft
 	static const std::string ATTR_Y = "y";
 	static const std::string ATTR_Z = "z";
 	static const std::string ATTR_ANGLE = "angle";
+	static const std::string ATTR_SPEED = "value";
+	static const std::string ATTR_MINSPEED = "min";
+	static const std::string ATTR_MAXSPEED = "max";
 
 
 	/**

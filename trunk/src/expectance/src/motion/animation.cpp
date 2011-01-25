@@ -4,6 +4,7 @@
  */
 
 #include "animation.h"
+#include "../app/config.h"
 #include "../utility/stringhelper.h"
 
 using namespace ft;
@@ -25,18 +26,15 @@ Animation::Animation(CalCoreAnimation* anim, const std::string animName, int ani
     setAnimName(animName);
     setAnimID(anim_id); 
 	
-	//TODO:  recover this
-//    if (!initFootLimits(animName))
-//    {
-//	footLimits[0] = footLimits[2] = footLimits[1] = footLimits[3] = 1000.0f; 
-//    }
+    if (!initFootLimits(animName))
+    {
+		footLimits[0] = footLimits[2] = footLimits[1] = footLimits[3] = 1000.0f; 
+	}
 
-	//TODO:  recover this
-//    InitSpeedFactorLimits(animName);
+    InitSpeedFactorLimits(animName);
 }
 
-//TODO:  recover this
-/*bool Animation::initFootLimits(const std::string animName)
+bool Animation::initFootLimits(const std::string animName)
 {
 	vector<string> _tokens;
 	std::string _limitsStr;
@@ -53,13 +51,10 @@ Animation::Animation(CalCoreAnimation* anim, const std::string animName, int ani
 	}
 	return false;
 }
-*/
 
 /**
  * \brief Inits limits for speed factor
  **/
-//TODO:  recover this
-/*
 void Animation::InitSpeedFactorLimits(const std::string animName)
 {
     string limitKeyStr = "speed_limits_" + animName;
@@ -95,7 +90,6 @@ void Animation::InitSpeedFactorLimits(const std::string animName)
         setMaxSpeedfactor(maxSpeed);
     }
 }
-*/
 
 float Animation::getDuration() 
 {

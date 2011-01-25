@@ -8,14 +8,8 @@
 #include "osgavatartype.h"
 #include "../motion/animation.h"
 #include "cal3d/coremodel.h"
+#include "../app/config.h"
 
-// to shadow enable
-#include <osgShadow/ShadowedScene>
-#include <osgShadow/ShadowVolume>
-#include <osgShadow/ShadowTexture>
-#include <osgShadow/ShadowMap>
-#include <osgShadow/SoftShadowMap>
-#include <osgShadow/ParallelSplitShadowMap> 
 
 using namespace ft;
 using namespace ft::gil;
@@ -27,40 +21,19 @@ using namespace ft::gil;
  * \param CalCoreModel * calCoreModel - type defined in Cal3d that has been used to create CalModel for this avatar
  * \param const std::string modelName - name defined in ft::BaseObject which is the base class for Avatar
  **/
-OsgAvatar::OsgAvatar(osgCal::Model *osgModel, OsgAvatarType* type, const std::string name)
+OsgAvatar::OsgAvatar(osgCal::Model *osgModel, OsgAvatarType* type, const std::string& name)
 {
 	m_osgModel = osgModel;
 	m_avatarType = type;
 	m_offsetTransform = new osg::PositionAttitudeTransform();
-
- /* uncomment to enable shadow on the body enable
-      const int ReceivesShadowTraversalMask = 0x1;
-    const int CastsShadowTraversalMask = 0x2;
-    osg::ref_ptr<osgShadow::ShadowedScene> shadowedScene = new osgShadow::ShadowedScene;
-    shadowedScene->setReceivesShadowTraversalMask(ReceivesShadowTraversalMask);
-    shadowedScene->setCastsShadowTraversalMask(CastsShadowTraversalMask);
-    osg::ref_ptr<osgShadow::ShadowMap> sm = new osgShadow::ShadowMap;
-    shadowedScene->setShadowTechnique(sm.get());
-    int mapres = 1024;
-    sm->setTextureSize(osg::Vec2s(mapres,mapres));
-
-	osg::Group* castShadowObject = new osg::Group();
-	castShadowObject->addChild(osgModel);
-    osgModel->getChild(0)->setNodeMask(CastsShadowTraversalMask);
-	osg::Group* receivesShadowObject = new osg::Group();
-	receivesShadowObject->addChild(osgModel);
-    shadowedScene->addChild(castShadowObject);
-    //shadowedScene->addChild(receivesShadowObject);
-
-	m_offsetTransform->addChild(shadowedScene.get());
-*/
-    osgModel->setNodeMask(~0x2);
-
 	m_offsetTransform->addChild(osgModel);
-
+	
+	m_name = name;
+	m_offsetTransform->setName(name); // additionally not sure if necessary
+	
 //  m_localMsgSender = new MsgSender();
 //	m_localMsgSender->AddMsgListener(this);
-//  InitSpeedFactor();
+    InitSpeedFactor();
 	setFootDetector(new FootDetector());
 	InitFootDetector();
 	setStopController(new StopController()); // mka 2008.09.19
@@ -103,8 +76,7 @@ GIL_Animation* OsgAvatar::getAnimation(const std::string& animName)
 /**
  * \brief Init speed factor and all scopes for factor changing
  **/
-//TODO: recover it
-/*void CalAvatar::InitSpeedFactor()
+void OsgAvatar::InitSpeedFactor()
 {
     setCurrSpeedFactor(1);
     setDestSpeedFactor(1);
@@ -123,7 +95,7 @@ GIL_Animation* OsgAvatar::getAnimation(const std::string& animName)
     }
     setSpeedFactorMax(maxSpeed);
 }
-*/
+
 
 /**
  * \brief Collects all motions (animations) for ths avatar from CalCoreModel

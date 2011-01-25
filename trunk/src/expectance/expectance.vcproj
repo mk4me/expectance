@@ -531,6 +531,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\timeline\speedcontroller.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\timeline\speedcontroller.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\timeline\stopcontroller.cpp"
 				>
 			</File>
@@ -623,11 +631,7 @@
 			Name="scene"
 			>
 			<File
-				RelativePath=".\src\scene\shadowmanager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\scene\shadowmanager.h"
+				RelativePath=".\src\scene\object\othershapes.h"
 				>
 			</File>
 			<File
@@ -674,6 +678,14 @@
 		<Filter
 			Name="data"
 			>
+			<File
+				RelativePath=".\src\data\datacollector.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\data\datacollector.h"
+				>
+			</File>
 			<File
 				RelativePath=".\src\data\xmlsceneparser.cpp"
 				>

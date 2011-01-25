@@ -33,7 +33,7 @@ namespace ft
 		static void AddAvatarToScene(Avatar* av, osg::MatrixTransform* worldTransformNode,
 						const osg::Vec3d& vStartPos, const osg::Quat  vStartRotation);
 
-		static std::string OsgAvatarFactory::getAvatarPath(const std::string& modelName);
+		static std::string getAvatarPath(const std::string& modelName);
 
     protected:
 		        

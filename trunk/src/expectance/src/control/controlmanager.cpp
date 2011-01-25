@@ -120,6 +120,16 @@ bool ControlManager::AddAvatar(Avatar* av)
 	return true;
 }
 
+////Avatar * ControlManager::getAvatar(const std::string& name)
+////{
+////	Avatar av* = null;
+////	for (int i=0; i< m_vAvatars.size(); i++)
+////	{
+////		av = m_vAvatars[i];
+////		if (av.getImplementation()->getn
+////	}
+////}
+
 /// \brief Sets active avatar index in ControlManager
 /// \param int ind - index of avatar on the list of control avatars
 void ControlManager::setActiveAvatar(int ind)

@@ -2,7 +2,7 @@
 
 SET(TARGET_NAME expectance)
 
-SET(OSG_LIBS OpenThreads osg osgDB osgUtil osgGA osgViewer osgText)
+SET(OSG_LIBS OpenThreads osg osgDB osgUtil osgGA osgViewer osgText osgShadow)
 
 SET(SOURCE_FILES 
   src/app/config.cpp
@@ -22,6 +22,14 @@ SET(SOURCE_FILES
   src/avatar/osgavatartype.cpp
   src/scene/view/follownodemanip.cpp
   src/scene/view/transformaccumulator.cpp
+  src/scene/worldmanager.cpp
+  src/scene/shadowmanager.cpp
+  src/scene/object/traceline.cpp
+#  src/data/tinyxml/tinyxml.cpp
+#  src/data/tinyxml/tinyxmlerror.cpp
+#  src/data/tinyxml/tinyxmlparser.cpp
+#  src/data/tinyxml/tinystr.cpp
+#  src/data/xmlsceneparser.cpp
   src/utility/randomgen.cpp
   src/ai/goals/limitedareagoal.cpp
   src/ai/goals/changedirgoal.cpp

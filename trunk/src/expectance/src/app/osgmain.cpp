@@ -8,31 +8,15 @@
 #include <osgViewer/Viewer>
 #include <osg/ArgumentParser>
 #include <osg/MatrixTransform>
-#include <osg/CullFace>
 #include <osg/Light>
-#include <osg/Notify>
 #include <osg/ShadeModel>
 #include <osg/LightModel>
-#include <osgDB/ReadFile>
-#include <osgDB/FileNameUtils>
-#include <osgGA/TrackballManipulator>
-#include <osgGA/KeySwitchMatrixManipulator>
-#include <osg/Texture2D>
-#include <osg/BlendFunc>
-#include <osg/AlphaFunc>
-#include <osgUtil/GLObjectsVisitor>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
 #include <osgGA/TrackballManipulator>
-#include <osgGA/FlightManipulator>
-#include <osgGA/DriveManipulator>
-#include <osgGA/KeySwitchMatrixManipulator>
 #include <osgGA/StateSetManipulator>
-#include <osgGA/AnimationPathManipulator>
-#include <osgGA/TerrainManipulator>
-#include <osgGA/NodeTrackerManipulator>
 
 #include <osgCal/CoreModel>
 #include <osgCal/Model>
@@ -46,6 +30,7 @@
 #include "../avatar/osgavatar.h"
 #include "evolution/evodbg.h"
 #include "../timeline/lcsmodifier.h"
+#include "../timeline/speedcontroller.h"
 #include "../control/controlmanager.h"
 #include "../ai/goals/randommovegoal.h"
 #include "../ai/goals/changedirgoal.h"
@@ -54,20 +39,16 @@
 #include "config.h"
 #include "../utility/stringhelper.h"
 #include "global.h"
-#include "../data/xmlsceneparser.h"
+// to fix #include "../data/xmlsceneparser.h"
 #include"../avatar/osgavatarfactory.h"
 
 #include "../scene/view/follownodemanip.h"
 #include "../scene/object/traceline.h"
+#include "../scene/object/othershapes.h"
 #include "../scene/worldmanager.h"
 
-#include "../scene/shadowmanager.h"
-#include <osgShadow/ShadowedScene>
-#include <osgShadow/ShadowVolume>
-#include <osgShadow/ShadowTexture>
-#include <osgShadow/ShadowMap>
-#include <osgShadow/SoftShadowMap>
-#include <osgShadow/ParallelSplitShadowMap> 
+#include "../data/datacollector.h"
+
 
 using namespace ft;
 
@@ -75,6 +56,7 @@ using namespace ft;
 bool ChangeCamera = false;
 bool AllowRefreshCamera = false;
 bool SelectActiveAvatar = false;
+DataCollector* DCOLL;
 
 template < typename T >
 T normalize( const T& v )
@@ -210,6 +192,29 @@ class ToggleHandler : public osgGA::GUIEventHandler
 					} else if ( ea.getKey() == ea.KEY_F10 ) { // camera toggle view
 						 ChangeCamera^=true;
 						 AllowRefreshCamera = true;		
+					} else if ( ea.getKey() == ea.KEY_F11 ) { // refresh avatars parameters
+						 if (DCOLL != NULL)
+						 {
+							 DCOLL->Refresh();
+						 }
+					}  else if ( ea.getKey() == ea.KEY_F3 ) {
+						if (m_activeAvatar != NULL)
+						{
+							OsgAvatar* avImpl = (OsgAvatar*)m_activeAvatar->getImplementation();
+							float newSpeedFactor = avImpl->getDestSpeedFactor() * 1.1f;
+							newSpeedFactor = newSpeedFactor > avImpl->getSpeedFactorMax() ? avImpl->getSpeedFactorMax() :  newSpeedFactor;
+							avImpl->setDestSpeedFactor(newSpeedFactor);
+//							std::cout << " new speed factor " << newSpeedFactor << " curr " << avImpl->getCurrSpeedFactor() << std::endl;
+						}
+					}  else if ( ea.getKey() == ea.KEY_F4 ) {
+						if (m_activeAvatar != NULL)
+						{
+							OsgAvatar* avImpl = (OsgAvatar*)m_activeAvatar->getImplementation();
+				            float newSpeedFactor = avImpl->getDestSpeedFactor() * 0.9f;
+				            newSpeedFactor = newSpeedFactor < avImpl->getSpeedFactorMin() ? avImpl->getSpeedFactorMin() :  newSpeedFactor;
+							avImpl->setDestSpeedFactor(newSpeedFactor);
+//							std::cout << " new speed factor " << newSpeedFactor << " curr " << avImpl->getCurrSpeedFactor() << std::endl;
+						}
 					}
                 }
                 default: break;
@@ -258,6 +263,7 @@ class CompileStateSets : public osg::Operation
         osg::Node* node;
 };
 
+// -- Expectance initializations --
 void InitActionsForType(World* world, const std::string& avatarType)
 {
 	//---------------- IDLE
@@ -342,193 +348,7 @@ void InitWorld(World* world)
 }
 
 
-osg::Node* createFloor(const osg::Vec3& center,float radius)
-{
 
-   
-    int numTilesX = 10;
-    int numTilesY = 10;
-   
-    float width = 2*radius;
-    float height = 2*radius;
-   
-    osg::Vec3 v000(center - osg::Vec3(width*0.5f,height*0.5f,0.0f));
-    osg::Vec3 dx(osg::Vec3(width/((float)numTilesX),0.0,0.0f));
-    osg::Vec3 dy(osg::Vec3(0.0f,height/((float)numTilesY),0.0f));
-   
-    // fill in vertices for grid, note numTilesX+1 * numTilesY+1...
-    osg::Vec3Array* coords = new osg::Vec3Array;
-    int iy;
-    for(iy=0;iy<=numTilesY;++iy)
-    {
-        for(int ix=0;ix<=numTilesX;++ix)
-        {
-            coords->push_back(v000+dx*(float)ix+dy*(float)iy);
-        }
-    }
-   
-    //colors when textures doesn't work
-    osg::Vec4Array* colors = new osg::Vec4Array;
-    colors->push_back(osg::Vec4(1,1,1,1)); //(0.245f,0.245f,0.245f,1.0f)); // gray
-
-   
-    int numIndicesPerRow=numTilesX+1;
-    osg::UByteArray* coordIndices = new osg::UByteArray; // assumes we are using less than 256 points...
-    osg::UByteArray* textureIndices = new osg::UByteArray;
-	osg::ref_ptr<osg::Vec2Array> texCoords (new osg::Vec2Array());
-    for(iy=0;iy<numTilesY;++iy)
-    {
-        for(int ix=0;ix<numTilesX;++ix)
-        {
-            // four vertices per quad.
-            coordIndices->push_back(ix    +(iy+1)*numIndicesPerRow);
-            coordIndices->push_back(ix    +iy*numIndicesPerRow);
-            coordIndices->push_back((ix+1)+iy*numIndicesPerRow);
-            coordIndices->push_back((ix+1)+(iy+1)*numIndicesPerRow);
-           
-            // one texture per quad
-            //textureIndices->push_back(ix+iy);
-			
-			texCoords->push_back (osg::Vec2 (0.0f, 0.0f));
-			texCoords->push_back (osg::Vec2 (0.0f, 1.0f));
-			texCoords->push_back (osg::Vec2 (1.0f, 1.0f));
-			texCoords->push_back (osg::Vec2 (1.0f, 0.0f));
-        }
-
-    }
-   
-
-    // set up a single normal
-    osg::Vec3Array* normals = new osg::Vec3Array;
-    normals->push_back(osg::Vec3(0.0f,0.0f,1.0f));
-   
-
-    osg::Geometry* geom = new osg::Geometry;
-    geom->setVertexArray(coords);
-    geom->setVertexIndices(coordIndices);
-    geom->setTexCoordArray (0, texCoords.get());
-    geom->setColorArray(colors);
-	geom->setColorBinding(osg::Geometry::BIND_PER_PRIMITIVE_SET);
-   
-    geom->setNormalArray(normals);
-    geom->setNormalBinding(osg::Geometry::BIND_OVERALL);
-   
-    geom->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUADS,0,coordIndices->size()));
-   
-    osg::Geode* geode = new osg::Geode;
-    geode->addDrawable(geom);
-	
-	// load an image by reading a file: 
-    osg::ref_ptr<osg::Image> image = osgDB::readImageFile(FT_DATA_PATH + "textures/floorhex3.tga");
-    if (!image)
-    {
-	   std::cout << " couldn't find texture, quitting." << std::endl;
-       exit (EXIT_FAILURE);
-    }
-	else
-	{
-		//_floorTexture->setBorderWidth(0.8f);
-		// texture in stateset
-		osg::ref_ptr<osg::Texture2D> tex = new osg::Texture2D;
-		tex->setImage(image.get());
-		// After creating the OpenGL texture object, release the internal ref_ptr<Image> (to delete the Image).
-		tex->setUnRefImageDataAfterApply( true );
-		osg::StateSet* state = new osg::StateSet();
-		// Assign texture unit 0 of our new StateSet to the texture we just created and enable the texture.
-		state->setTextureAttributeAndModes(0,tex.get());
-		
-		// Additionally but not necessary Turn on blending
-		osg::BlendFunc* bf = new osg::BlendFunc(
-			osg::BlendFunc::SRC_ALPHA, osg::BlendFunc::ONE_MINUS_SRC_ALPHA );
-		state->setAttributeAndModes( bf );
-
-		// Turn on alpha testing
-		osg::AlphaFunc* af = new osg::AlphaFunc(
-			osg::AlphaFunc::GREATER, 0.05f );
-		state->setAttributeAndModes( af );
-
-		geode->setStateSet(state);
-	}
-
-    return geode;
-}
-
-osg::Node* createTracker()//(const osg::BoundingSphere& bs)
-{
-	//osg::ref_ptr<osg::BoundingBox> bb = new osg::BoundingBox();
-	//bb->expandBy(bs);
-	osg::Geode* tracerGeode = new osg::Geode();
-	osg::Geometry* tracerGeometry = new osg::Geometry();
-	tracerGeode->addDrawable(tracerGeometry); 
-	// Specify the vertices:
-	osg::Vec3Array* tracerVertices = new osg::Vec3Array;
-	tracerVertices->push_back( osg::Vec3(0, -10, 130) ); // front left 
-	tracerVertices->push_back( osg::Vec3(0, -10, 130) ); // front right 
-	tracerVertices->push_back( osg::Vec3(10, 10, 130) ); // back right 
-	tracerVertices->push_back( osg::Vec3(-10, 10, 130) ); // back left 
-	tracerVertices->push_back( osg::Vec3(0, 0, 110) ); // bottom 
-	tracerGeometry->setVertexArray( tracerVertices );
-
-	osg::DrawElementsUInt* tracerBase = 
-	  new osg::DrawElementsUInt(osg::PrimitiveSet::QUADS, 0);
-	tracerBase->push_back(3);
-	tracerBase->push_back(2);
-	tracerBase->push_back(1);
-	tracerBase->push_back(0);
-	tracerGeometry->addPrimitiveSet(tracerBase);
-   
-	osg::DrawElementsUInt* tracerFaceOne = 
-      new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLES, 0);
-   tracerFaceOne->push_back(0);
-   tracerFaceOne->push_back(1);
-   tracerFaceOne->push_back(4);
-   tracerGeometry->addPrimitiveSet(tracerFaceOne);
-
-   osg::DrawElementsUInt* tracerFaceTwo = 
-      new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLES, 0);
-   tracerFaceTwo->push_back(1);
-   tracerFaceTwo->push_back(2);
-   tracerFaceTwo->push_back(4);
-   tracerGeometry->addPrimitiveSet(tracerFaceTwo);
-
-   osg::DrawElementsUInt* tracerFaceThree = 
-      new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLES, 0);
-   tracerFaceThree->push_back(2);
-   tracerFaceThree->push_back(3);
-   tracerFaceThree->push_back(4);
-   tracerGeometry->addPrimitiveSet(tracerFaceThree);
-
-   osg::DrawElementsUInt* tracerFaceFour = 
-      new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLES, 0);
-   tracerFaceFour->push_back(3);
-   tracerFaceFour->push_back(0);
-   tracerFaceFour->push_back(4);
-   tracerGeometry->addPrimitiveSet(tracerFaceFour);
-
-   osg::Vec4Array* colors = new osg::Vec4Array;
-   colors->push_back(osg::Vec4(1.0f, 0.0f, 0.0f, 1.0f) ); //index 0 red
-   colors->push_back(osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f) ); //index 1 green
-   colors->push_back(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f) ); //index 1 green
-   osg::TemplateIndexArray<unsigned int, osg::Array::UIntArrayType,4,4> 
-      *colorIndexArray;colorIndexArray = new 
-      osg::TemplateIndexArray<unsigned int, osg::Array::UIntArrayType,4,4>;
-   colorIndexArray->push_back(0); // vertex 0 assigned color array element 0
-   colorIndexArray->push_back(1); // vertex 1 assigned color array element 1
-   colorIndexArray->push_back(2); // vertex 2 assigned color array element 2
-   colorIndexArray->push_back(0); // vertex 3 assigned color array element 3
-   colorIndexArray->push_back(1); // vertex 4 assigned color array element 3
-   tracerGeometry->setColorArray(colors);
-   tracerGeometry->setColorIndices(colorIndexArray);
-   tracerGeometry->setColorBinding(osg::Geometry::BIND_PER_PRIMITIVE);
-	osg::StateSet* state = new osg::StateSet();
-	// Additionally Turn on blending
-	osg::BlendFunc* bf = new osg::BlendFunc(
-		osg::BlendFunc::SRC_ALPHA, osg::BlendFunc::ONE_MINUS_SRC_ALPHA );
-	state->setAttributeAndModes( bf );
-	tracerGeode->setStateSet(state);
-
-	return tracerGeode;
-}
 
 void InitSceneFromFile(World* world, osg::MatrixTransform* worldTransformNode)
 {
@@ -537,8 +357,9 @@ void InitSceneFromFile(World* world, osg::MatrixTransform* worldTransformNode)
 	{
 		scene_file = Config::getInstance()->GetStrVal("scene_file");
 
-		XMLSceneParser parser;
-		parser.LoadScene(FT_DATA_PATH + scene_file, world, worldTransformNode);
+//to fix under linux
+//		XMLSceneParser parser;
+//		parser.LoadScene(FT_DATA_PATH + scene_file, world, worldTransformNode);
 	}
 }
 
@@ -549,20 +370,7 @@ void InitSceneFromCode(World* world, osg::MatrixTransform* worldTransformNode)
 	osg::Vec3 center(0.0f,0.0f,0.0f);
     float radius = 2000.0f;
     osg::Node* floorModel = createFloor(center,radius);
-	
-	std::string floorShadowScene = "FLOOR_SHADOW";
-
-	if (ShadowManager::getInstance()->DROP_SHADOW)
-	{
-
-		ShadowManager::getInstance()->CreateShadowScene(floorShadowScene);
-		osg::Group* receivesShadowObject = new osg::Group();
-		receivesShadowObject->addChild(floorModel);
-		ShadowManager::getInstance()->AddShadowReceiver(floorShadowScene, receivesShadowObject);
-		ShadowManager::getInstance()->setShadowMask(receivesShadowObject->getChild(0), ReceiveShadow);
-	} 
-	else
-		worldTransformNode->addChild(floorModel);
+	worldTransformNode->addChild(floorModel);
 
 
     int avatar_number = -1;
@@ -602,15 +410,6 @@ void InitSceneFromCode(World* world, osg::MatrixTransform* worldTransformNode)
             //av->Dump();
 			OsgAvatar* avImpl = static_cast<OsgAvatar*>(av->getImplementation());
 			avImpl->getOffsetTransform()->setName(_nameHelper);
-
-			if (ShadowManager::getInstance()->DROP_SHADOW)
-			{
-				osg::Group* castShadowObject = new osg::Group();
-				castShadowObject->addChild(avImpl->getOffsetTransform());
-				ShadowManager::getInstance()->AddShadowCast(floorShadowScene, castShadowObject);
-				ShadowManager::getInstance()->setShadowMask(avImpl->getOffsetTransform()->getChild(0), CastShadow);
-			}
-
 			// set random position and direction
 			bool isInScope = true;
 			int scopeRadius = (int)radius; //2000;
@@ -641,81 +440,20 @@ void InitSceneFromCode(World* world, osg::MatrixTransform* worldTransformNode)
 
 			ControlManager::getInstance()->AddAvatar(av);
 			av->AddController(new LCSModifier());
+			SpeedController* speedCtl = new SpeedController();
+			av->AddController(speedCtl);
 			av->AddController(avImpl->getFootDetector());
 			av->AddController(avImpl->getStopController()); //mka 2008.08.19
 			world->AddAvatar(av);
 			av->StartSimulation();
 
 			OsgAvatarFactory::AddAvatarToScene(av, worldTransformNode, vStartPos, vStartAttitude);
-
-
         }
     }
-
-	//worldTransformNode->addChild(shadowedScene.get());
-
 }
 
 
 
-void analyseGeode(osg::Geode *geode);
-
-void analysePrimSet(osg::PrimitiveSet*prset, const osg::Vec3Array *verts);
-
-void analyse(osg::Node *nd) {
-	/// here you have found a group.
-    osg::Geode *geode = dynamic_cast<osg::Geode *> (nd);
-	if (geode) { // analyse the geode. If it isnt a geode the dynamic cast gives NULL.
-		analyseGeode(geode);
-	} else {
-		osg::Group *gp = dynamic_cast<osg::Group *> (nd);
-		if (gp) {
-			osg::notify(osg::WARN) << "Group "<<  gp->getName() <<std::endl;
-			for (unsigned int ic=0; ic<gp->getNumChildren(); ic++) {
-				analyse(gp->getChild(ic));
-			}
-		} else {
-			osg::notify(osg::WARN) << "Unknown node "<<  nd <<std::endl;
-		}
-	}
-}
-// divide the geode into its drawables and primitivesets:
-
-void analyseGeode(osg::Geode *geode) {
-    for (unsigned int i=0; i<geode->getNumDrawables(); i++) {
-		osg::Drawable *drawable=geode->getDrawable(i);
-		osg::Geometry *geom=dynamic_cast<osg::Geometry *> (drawable);
-		for (unsigned int ipr=0; ipr<geom->getNumPrimitiveSets(); ipr++) {
-			osg::PrimitiveSet* prset=geom->getPrimitiveSet(ipr);
-			osg::notify(osg::WARN) << "Primitive Set "<< ipr << std::endl;
-			//analysePrimSet(prset, dynamic_cast<const osg::Vec3Array*>(geom->getVertexArray()));
-		}
-    }
-}
-
-void analysePrimSet(osg::PrimitiveSet*prset, const osg::Vec3Array *verts) {
-	unsigned int ic;
-	unsigned int i2;
-	unsigned int nprim=0;
-	osg::notify(osg::WARN) << "Prim set type "<< prset->getMode() << std::endl;
-	for (ic=0; ic<prset->getNumIndices(); ic++) { // NB the vertices are held in the drawable -
-		osg::notify(osg::WARN) << "vertex "<< ic << " is index "<<prset->index(ic) << " at " <<
-			(* verts)[prset->index(ic)].x() << "," <<
-			(* verts)[prset->index(ic)].y() << "," << 
-			(* verts)[prset->index(ic)].z() << std::endl;
-    }
-	// you might want to handle each type of primset differently: such as:
-	switch (prset->getMode()) {
-	case osg::PrimitiveSet::TRIANGLES: // get vertices of triangle
-		osg::notify(osg::WARN) << "Triangles "<< nprim << " is index "<<prset->index(ic) << std::endl;
-		for (i2=0; i2<prset->getNumIndices()-2; i2+=3) {
-		}
-	break;
-	case osg::PrimitiveSet::TRIANGLE_STRIP: // look up how tristrips are coded
-	break;
-	// etc for all the primitive types you expect. EG quads, quadstrips lines line loops....
-	}
-}
 
 EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 {
@@ -806,8 +544,6 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	worldTransformNode->setName("worldTransformNode");
 	worldTransformNode->setMatrix(osg::Matrix::rotate(osg::inDegrees(5.0f),1.0f,0.0f,0.0f));
 	WorldManager::getInstance()->Init(worldTransformNode.get()); //Initialize osg nodes collector
-	ShadowManager::getInstance()->Init(worldTransformNode.get());
-
 	root->addChild(WorldManager::getInstance()->getWorldNode());
 
 
@@ -815,6 +551,9 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	InitSceneFromCode(m_world, WorldManager::getInstance()->getWorldNode());
 
 	ControlManager::getInstance()->setActiveAvatar(0);
+	
+
+
 
 //	analyse(worldTransformNode.get());
 
@@ -825,10 +564,11 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 
 	m_world->StartThinking();
 
-    // -- Setup viewer --
-//    while ( true )
-    // shaders recompiled and linked OK but doesn't work on reloads (glValidateProgram FAILED?)
-    {
+	// read actual configuration and dump it
+	DCOLL = new DataCollector();
+	DCOLL->Init();
+
+// -- Setup viewer --
     osgViewer::Viewer viewer;
 
     if ( arguments.read( "--four-window" ) )
@@ -867,18 +607,11 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
     while (arguments.read("--DrawThreadPerContext")) viewer.setThreadingModel(osgViewer::Viewer::DrawThreadPerContext);
     while (arguments.read("--CullThreadPerCameraDrawThreadPerContext")) viewer.setThreadingModel(osgViewer::Viewer::CullThreadPerCameraDrawThreadPerContext);
 
-//    viewer.getCullSettings().setDefaults();
-//    viewer.getCullSettings().setComputeNearFarMode( osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR );
-//    viewer.getCullSettings().setCullingMode( osg::CullSettings::DEFAULT_CULLING & ~osg::CullSettings::NEAR_PLANE_CULLING);
-
-//    root->getOrCreateStateSet()->setAttributeAndModes( new osg::CullFace, osg::StateAttribute::ON );
-    // turn on back face culling
-
 
 // light is already smooth by default
-//    osg::ShadeModel* shadeModel = new osg::ShadeModel;
-//    shadeModel->setMode( osg::ShadeModel::SMOOTH );
-//    root->getOrCreateStateSet()->setAttributeAndModes( shadeModel, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
+    osg::ShadeModel* shadeModel = new osg::ShadeModel;
+    shadeModel->setMode( osg::ShadeModel::SMOOTH );
+    root->getOrCreateStateSet()->setAttributeAndModes( shadeModel, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
 
      osg::LightModel* lightModel = new osg::LightModel();
 //    lightModel->setColorControl( osg::LightModel::SINGLE_COLOR );
@@ -901,54 +634,17 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
     lightSource0->setReferenceFrame( osg::LightSource::ABSOLUTE_RF );
     lightSource0->addChild( root.get() );
 
-//     // -- light #1 --
-     //osg::Light* light1 = new osg::Light();
-     //light1->setLightNum( 1 );
-     //light1->setAmbient( osg::Vec4( 0, 0, 0, 1 ) );
-     //light1->setDiffuse( osg::Vec4( 0.4, 0.4, 0.4, 1 ) );
-     //light1->setSpecular( osg::Vec4( 1, 1, 1, 0 ) );
-     //// as in SceneView, except direction circa as in 3DSMax
-     //light1->setPosition( normalize(osg::Vec4( -0.15, -0.4, -1, 0 )) ); // w=0 - Directional
-     //light1->setDirection( osg::Vec3( 0, 0, 0 ) );  // Direction = (0,0,0) - Omni light
-
-     //osg::LightSource* lightSource1 = new osg::LightSource();
-     //lightSource1->setLight( light1 );
-     //lightSource1->setReferenceFrame( osg::LightSource::ABSOLUTE_RF );
-     //lightSource1->addChild( lightSource0 );
-
     osg::Light* light = (osg::Light*)
         root->getOrCreateStateSet()->getAttribute( osg::StateAttribute::LIGHT );
 	//viewer.setSceneData(/*root*/lightSource0);
     root->getOrCreateStateSet()->setMode( GL_LIGHTING,osg::StateAttribute::ON );
     root->getOrCreateStateSet()->setAttributeAndModes( light, osg::StateAttribute::ON );
 
-	////	const int ReceivesShadowTraversalMask = 0x1;
- ////       const int CastsShadowTraversalMask = 0x2;
- ////       osg::ref_ptr<osgShadow::ShadowedScene> shadowedScene = new osgShadow::ShadowedScene;
- ////       shadowedScene->setReceivesShadowTraversalMask(ReceivesShadowTraversalMask);
- ////       shadowedScene->setCastsShadowTraversalMask(CastsShadowTraversalMask);
- ////       osg::ref_ptr<osgShadow::ShadowMap> sm = new osgShadow::ShadowMap;
- ////       shadowedScene->setShadowTechnique(sm.get());
- ////       int mapres = 1024;
- ////       sm->setTextureSize(osg::Vec2s(mapres,mapres));
-	////	osg::Group* lighted_scene = new osg::Group();
-	////	lighted_scene->addChild(lightSource0);
- ////       lighted_scene->getChild(0)->setNodeMask(CastsShadowTraversalMask);
- ////       shadowedScene->addChild(lighted_scene);
-	
-	//if (ShadowManager::getInstance()->DROP_SHADOW)
-	//{
-	//	viewer.setSceneData(ShadowManager::getInstance()->getShadowWorldNode shadowedScene.get());
-	//}
-	//else
-		viewer.setSceneData(/*root*/lightSource0);
+	viewer.setSceneData(/*root*/lightSource0);
 
 
-//    std::cout << "light: " << light << std::endl;
-//    viewer.getEventHandlerList().push_back( new osgGA::TrackballManipulator() );
 
-
-//first tracking camera
+//-- Tracking Camera Definition
 	// Declare and set up a transform to 'follow' the avatar node.
 	osg::ref_ptr<osg::PositionAttitudeTransform> followerPAT = new osg::PositionAttitudeTransform();
 	followerPAT->setPosition( osg::Vec3(0,-1000,200) );
@@ -966,7 +662,6 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	osg::ref_ptr<osgGA::TrackballManipulator> Tman = new osgGA::TrackballManipulator();
 	Tman->setAutoComputeHomePosition(true);
     Tman->setHomePosition(osg::Vec3d(-3000.0, -3000.0, 600.0), osg::Vec3d(0.0,0.0, 0.0), osg::Vec3d(0.0, 0.0, 1.0),false); // do not auto calculate home
-
 	viewer.setCameraManipulator(Tman.get());
 
 // create avatar tracker and attach it to active avatar
@@ -974,12 +669,10 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 	activeAvatar->getOffsetTransform()->addChild(avatarTracker.get());
 	OsgAvatar* lastActiveAvatar = activeAvatar;
 
-
 	viewer.setRealizeOperation( new CompileStateSets( lightSource0 ) );
     viewer.realize();
 
-
-    // -- Main loop --
+// -- Main loop --
     osg::Timer_t startTick = osg::Timer::instance()->tick();
 
     enum PauseState { Unpaused, Paused };
@@ -1003,9 +696,7 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
             totalPauseTime += osg::Timer::instance()->delta_s( pauseStartTick, tick );
         }
 
-        double currentTime = osg::Timer::instance()->delta_s( 
-            startTick,
-            pauseState == Unpaused ? tick : pauseStartTick );
+        double currentTime = osg::Timer::instance()->delta_s( startTick, pauseState == Unpaused ? tick : pauseStartTick );
 
 		if (SelectActiveAvatar) //allow to change camera and marker after active avatar was changed
 		{
@@ -1015,24 +706,12 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 			{
 				activeAvatar->getOffsetTransform()->addChild(followerPAT.get()); // attach camera to new avatar
 				activeAvatar->getOffsetTransform()->addChild(avatarTracker.get()); // attach marker to new active avatar
-				if (lastActiveAvatar!=NULL){
+				if (lastActiveAvatar!=NULL)
+				{
 					lastActiveAvatar->getOffsetTransform()->removeChild(followerPAT.get()); // and release from previous one
 					lastActiveAvatar->getOffsetTransform()->removeChild(avatarTracker.get()); // and release from previous one
 				}
-	
-				//correct worldCoordinates matrix - not necessary here
-				//avatarWorldCoords->attachToGroup(followerPAT.get());
-				//followAvatar->setTransformAccumulator(avatarWorldCoords);
 			}
-			//if ( !viewer.getCamera()->containsNode(activeAvatar->getOffsetTransform()) )
-			//{
-			//	osg::Node* tmpNode = activeAvatar->getOffsetTransform();
-			//	viewer.getCamera()->addChild(tmpNode);
-			//	if (lastActiveAvatar!=NULL){
-			//		if ( viewer.getCamera()->containsNode(lastActiveAvatar->getOffsetTransform()) )
-			//				viewer.getCamera()->removeChild(lastActiveAvatar->getOffsetTransform());
-			//	}
-			//}
 			lastActiveAvatar = activeAvatar; // update current avatar pointer
 			SelectActiveAvatar = false;
 		}
@@ -1055,10 +734,6 @@ EXPECTANCE_API int RunOSGApp(int argc, char *argv[])
 
         viewer.frame( currentTime - totalPauseTime );
 
-    }
-
-//    viewer.setSceneData( new osg::Group() ); // destroy scene data before viewer
-    // ^ buggy in multi-threaded mode, or not???
     }
 
     return 0;
