@@ -5,7 +5,7 @@
 ----------------------------------------
 1. How To Use repository
 
-a) when you want to introduce your modifications to SVN:
+a) when you want to introduce your modifications to github:
 
 - first check out latest repository from github to a new directory on your PC
 - run above version in Visual Studio and check if compilation is correct and apllication 
